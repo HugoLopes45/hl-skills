@@ -186,7 +186,7 @@ Every name starts with `hl-`, so no skill replaces a command your agent ships wi
 | Say | Skill | You get |
 |---|---|---|
 | "Show me how auth works" | `hl-show-me` | A diagram, a tree, pseudocode, or an interactive HTML page |
-| "Make a short video explaining CRDTs" | `hl-explainer-video` | A narrated explainer video, with a local voice by default |
+| "Make a short video explaining CRDTs" | `hl-explainer-video` (experimental) | A narrated explainer video, with a local voice by default |
 | "Can SQLite handle our write load?" | `hl-spike` | A time-boxed experiment that answers one question |
 | "Write an ADR for moving to Postgres" | `hl-adr` | A decision record with options and the cost of reversal |
 
@@ -239,7 +239,7 @@ npx skills remove --all             # remove every skill
 
 ### Pin a version
 
-Releases follow semantic versioning. A major version renames or removes a skill, or changes how one is invoked. See [CHANGELOG.md](./CHANGELOG.md).
+Releases follow semantic versioning. A major version renames or removes a skill, or changes how one is invoked. Skills marked experimental are outside this promise and may change in any release. See [CHANGELOG.md](./CHANGELOG.md).
 
 ```bash
 npx skills add HugoLopes45/hl-skills#v1.0.0              # every skill at v1.0.0
