@@ -20,6 +20,21 @@
         "type": "first_line",
         "pattern": "^(?!(here|sure|let me|i.ll|okay|ok\\b|great|below)).",
         "text": "contract: No preamble"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(shown)",
+        "text": "contract: Verdict line says Shown"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|shown)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(checked|checks run|refs read|scope|path|settings)\\s*:",
+        "text": "contract: No metadata label line"
       }
     ]
   },
@@ -32,8 +47,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|nothing to show|no topic",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|nothing to show|no topic",
         "text": "task: Says there is nothing to show or asks"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
       }
     ]
   }

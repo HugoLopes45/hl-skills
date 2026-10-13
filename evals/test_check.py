@@ -195,6 +195,16 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(email, "The spec doesn't say who receives the email."))
         self.assertFalse(passes(email, "Columns: name, email, signup date."))
 
+    def test_ask_accepts_numbered_ways_to_unblock(self):
+        for skill, case, text, good in [
+            ("receive-review", "no-review", "task: Asks for the missing input", "**I need the review comments.**\nVerdict: Stopped\n1. Paste the comments here. (default)"),
+            ("improve", "refactor-none", "task: Asks for the missing input", "Verdict: Stopped\n\n1. Send the file or symbol and the change you want. (default)"),
+            ("writing-for-agents", "prompt-empty", "task: Says there is no prompt", "Verdict: Stopped\n\n1. Paste the prompt or give its path (default)."),
+        ]:
+            ask = spec(skill, case, text)
+            self.assertTrue(passes(ask, good), case)
+            self.assertFalse(passes(ask, "Verdict: Stopped\n1. Change `>` to `>=`. (default)"), case)
+
     def test_tickets_approval_accepts_a_numbered_approve_step(self):
         approval = spec("tickets", "invites", "contract: Asks for approval")
         self.assertTrue(passes(approval, "**Next:**\n1. Approve this breakdown, or name a slice to split or merge."))

@@ -29,7 +29,7 @@ That is all. No config, no server, no API key.
 
 ## Examples
 
-Real answers from the skills, trimmed with `[...]` and wrapped to fit.
+Real answers from the skills, trimmed with `[...]` and wrapped to fit. Some long code comments are shortened.
 
 ### "Why does this test fail?"
 
@@ -41,27 +41,45 @@ Real answers from the skills, trimmed with `[...]` and wrapped to fit.
 <summary>Answer</summary>
 
 ````
-Status: defect proven. test_report.py is fine. The bug is in invoice.py,
-and it's a production bug as well as a test problem.
+**`test_report.py` is correct. `invoice.py:15` changes the shared settings that
+`get_settings()` returns, so every later test sees German formatting.**
 
-Call path:
-test_invoice.py:9  render(..., locale="de")
-└─ invoice.py:13   settings = get_settings()   -> shared cached dict
-   └─ invoice.py:15  settings.update(LOCALES[locale], ...)   <- DEFECT: mutates shared state
-test_report.py:6   render_total(orders)
-└─ report.py:8     get_settings()  -> returns the mutated dict -> "1.234,50"
+Any code that runs after an invoice is rendered with a locale gets the wrong
+separators. In production, `report.render_total` would show `1.234,50 EUR` for the
+internal report once a German invoice had been rendered in the same process. [...] I
+did not edit your tree; the toggle ran in a temporary copy.
 
-| Test order                                  | Result   |
-| test_customer_locale, then test_report      | fails    |
-| test_report, then test_invoice              | 3 passed |
-| [...]                                       |          |
-| Full suite, with only line 13 changed       | 6 passed |
+1. **Where it goes wrong.** `get_settings()` is cached with `lru_cache`, so every
+   caller gets the same dict object. `invoice.render` updates that dict in place when
+   a locale is passed.
+   ```text
+   test_invoice.py:9   test_customer_locale       # runs first, passes
+   `-- invoice.py:13   settings = get_settings()  # the cached dict, not a copy
+       `-- invoice.py:15  settings.update(...)    # changes it for the whole process
+   test_report.py:6    test_report_total          # fails: '1.234,50 EUR'
+   `-- report.py:8     get_settings()             # returns the changed dict
+   ```
 
-Impact: In production, the first invoice rendered with a customer locale
-switches every later internal report and default-locale invoice in that
-process to that locale. [...]
+2. **The trigger and the defect are different things.** The trigger is test order: in
+   the full suite `test_invoice.py` runs before `test_report.py`. The defect is the
+   in-place change of the cached dict. Two-test runs show it:
+   ```text
+   test_customer_locale + test_report      1 failed, 1 passed
+   test_default_invoice + test_report      2 passed   (no locale, no change)
+   full suite, as shipped                  1 failed, 5 passed
+   full suite, only line 13 -> dict(...)   6 passed
+   ```
+[...]
 
-I haven't edited the repo. Want me to apply the fix with that regression test?
+Verdict: Defect proven
+
+**Next:**
+1. Add a regression test that calls `render([("W", 1)], locale="de")` and then asserts
+   `get_settings()["decimal_sep"] == "."`. It should fail now.
+2. Change `invoice.py:13` to `settings = dict(get_settings())`. Then rerun the full
+   suite.
+
+Do you want me to make that fix? (default: yes)
 ````
 
 </details>
@@ -76,19 +94,35 @@ Ask for the fix and `hl-debug` writes a failing test first, then the smallest ch
 <summary>Answer</summary>
 
 ````
-Status: defect proven and fixed. The retry loop in client.py isn't off by one.
-The bug was in the config precedence.
+**Fixed: `--retries 5` was overridden by the `APP_RETRIES=3` that `run.sh` sets,
+because `config.py:13-15` applied the environment after the command line.**
 
-Cause: config.resolve (config.py:9-15) applied --retries first, then
-APP_RETRIES from the environment, which overwrote it. run.sh exports
-APP_RETRIES=3, so --retries 5 was silently replaced by 3.
+The retry loop in `client.py` is correct. It makes 1 + `retries` attempts, so
+`retries=3` gives 4 attempts, which matches what you saw. Every command-line
+`--retries` and `--timeout` passed through `./run.sh` was silently ignored. [...]
 
-Tests:
-- I added test_config.py. Before the fix, test_cli_overrides_env failed with assert 3 == 5.
-- After the fix, all 3 tests pass.
-- ./run.sh --retries 5 now makes 6 attempts.
+1. **Where it goes wrong:**
+   ```text
+   run.sh:4              exports APP_RETRIES=3          # the trigger
+   app.py:13             config.resolve(args)
+   `-- config.py:10-15   cli applied first, then env    # env overwrites cli
+   app.py:15             call_with_retries(..., 3)
+   `-- client.py:4       range(1, retries + 2)          # correct: 4 attempts
+   ```
+[...]
 
-The same bug affected --timeout and is fixed by the same change.
+```text
+test_cli_overrides_env   before: fail (3 != 5)          after: pass
+full suite               before: 1 failed, 2 passed     after: 3 passed
+./run.sh --retries 5     before: 4 attempts             after: 6 attempts
+```
+No debug markers remain.
+
+Verdict: Defect proven (fixed)
+
+**Next:** Review and commit. I haven't committed anything.
+
+**Changed:** `config.py`, `test_config.py` (new)
 ````
 
 </details>
@@ -103,24 +137,46 @@ The same bug affected --timeout and is fixed by the same change.
 <summary>Answer</summary>
 
 ````
-fix first. Claim 2 is contradicted by admin.py, so the cache as planned
-would serve stale prices. [...]
+**Prices do change after creation, so the cache would show stale prices until
+restart.**
 
-Blockers
-- "Prices never change after a product is created, so no invalidation"
-  (plan.md:6): contradicted. admin.py:4-6: set_sale_price runs
-  UPDATE prices SET price_cents = ?. Its docstring says it is called by the
-  nightly promotions job and by the admin UI.
-- lru_cache on get_price is correct across the deployment: contradicted.
-  admin.py runs in a different process from the web workers [...], so no
-  in-process cache_clear can reach the workers' caches.
+I checked `plan.md` (goal: product pages under 100 ms, down from 350 ms) against
+`prices.py`, `admin.py` and `db.py`. [...] I ran nothing because `db.py` only raises
+`NotImplementedError`.
 
-Decides the goal: that removing the 250 ms gets the page under 100 ms.
-350 - 250 = 100 ms, which is not under 100 ms. [...]
+1. **The plan's "prices never change" claim is wrong, and the cache would serve
+   outdated prices.**
+   After a sale starts or ends, pages keep showing the old price until the process
+   restarts. Each worker process also holds its own cache, so different servers would
+   show different prices.
+   ```text
+   plan.md:6    "Prices never change after a product is created"
+   admin.py:4   set_sale_price(sku, cents)  # nightly promotions job, admin UI
+   admin.py:6   UPDATE prices SET price_cents = ? ...
+   ```
+   Fix: don't build with "no invalidation". Either use a short expiry (TTL, a time
+   limit per entry) or clear the entry when a price changes.
 
-Decisions for you
-- How stale may a price be? I recommend at most 60 seconds, because sale
-  start and end times need to show up quickly, but not instantly. [...]
+Risks:
+1. The 100 ms goal is probably met only on cache hits. [...] The plan has no hit rate
+   and no measurement, so this is untested, and it decides the goal.
+[...]
+
+Smaller version:
+```diff
+~ step 1: cache get_price with a short TTL (e.g. 60 s), not an unbounded lru_cache
+- step 2: "no invalidation needed" (false; set_sale_price changes prices)
+~ step 3: also test that a price change shows up within the TTL
+```
+
+Verdict: Fix first
+
+**Next:**
+1. Replace step 2 with an expiry or invalidation design. Add a test that
+   `set_sale_price` followed by `get_price` returns the new price within the allowed
+   delay.
+[...]
+3. Decide: how stale may a price be? Recommended: 60 seconds or less.
 ````
 
 </details>
@@ -135,11 +191,38 @@ Decisions for you
 <summary>Answer</summary>
 
 ````
-Verdict: Fix 1 S1 finding (ratio swallows every exception and returns 0).
-| S1 | calc.py:4-5 | except Exception: return 0 hides every error [...] |
-| S2 | greet.py:2  | greet("") does not raise ValueError as spec.md item 2 requires |
-Trigger: ratio(1, 0), ratio("a", 2) or ratio(None, 1). [...]
-Not run: tests, and --deep, --cold and --spec.
+**`ratio` now returns 0 for any error, so a zero divisor looks like a real result of
+0.**
+
+I compared the merge base `c5966d1` (which is `origin/main`) with `f8cc554`.
+`origin/main` is a local remote-tracking ref and I did not fetch it, so it is
+unchecked. [...] I also treated `spec.md` as the requirements.
+
+1. **`ratio` hides every failure behind a 0, a material bug.**
+   `except Exception: return 0` at `calc.py:4-5` catches more than division by zero.
+   `ratio(1, 0)` returns 0, which is also the correct answer for `ratio(0, 5)`, so
+   callers can't tell an error from a real result. [...]
+   ```text
+   calc.py:2   try:
+   calc.py:3       return a / b
+   calc.py:4   except Exception:   # also catches TypeError and others
+   calc.py:5       return 0        # same value as a real 0 result
+   ```
+
+2. **`greet("")` returns "Hello, !" instead of raising `ValueError`, a material bug.**
+   Spec line 2 says `greet("")` raises `ValueError`. `greet` at `greet.py:2` has no
+   check. This requirement is missing from the diff. I'm sure of this one.
+[...]
+
+Verdict: Fix (2 problems)
+
+**Next:**
+1. In `calc.py:4`, replace `except Exception: return 0` with a narrow handler that
+   doesn't return 0. Answer one question first: should `ratio(x, 0)` raise (default),
+   return `None`, or return 0 on purpose?
+2. In `greet.py`, raise `ValueError` for an empty `name`.
+[...]
+4. Add tests for `greet("")`, `ratio(1, 0)`, and `ratio(None, 2)`.
 ````
 
 </details>
