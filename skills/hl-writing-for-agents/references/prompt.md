@@ -43,18 +43,20 @@ Per turn: **plan** the single next step · **do** · **verify** by running each 
 
 ## Output
 
-`## optimized prompt`, then one fence holding the prompt alone: what sits between the fences is what gets pasted, byte for byte. No heading, no commentary, no `settings:` line inside it. Make the outer fence longer than any fence the prompt itself contains (````).
+Line 1, bold: one plain sentence saying what the prompt does now, in the user's words. Under it, plain sentences for any caveat or missing input.
 
-One line after the block, outside it:
+Then one fence holding the prompt alone: what sits between the fences is what gets pasted, byte for byte. No heading, no commentary, no settings inside it. Make the outer fence longer than any fence the prompt itself contains (````).
 
-```
-settings: <reasoning effort> · <model tier if it matters> · <token budget if agentic>
-verify: <only for a task: the check embedded, `given` or `derived`>
-run-mode: <only with --for>
-  goal → goal condition: `<deterministic condition, ready to paste>`
-  loop → loop invocation for the host's scheduler: `<interval> <one-line reference to the prompt>`
-```
+After the block, plain sentences, no labels, one per fact:
+- The reasoning setting and the token budget when agentic, for example "Use high reasoning; no agentic budget is needed."
+- For a task: the check the run uses for done, and whether you took it from the request (`given`) or derived it (`derived`), so the user can replace it.
+- With `--for goal`: the goal condition, ready to paste, in backticks.
+- With `--for loop`: the schedule, and a one-line reference to the prompt for the host's scheduler, in backticks.
 
-That is the entire default output. `--changelog`, and only that flag, appends `cut:` / `kept:` / `added:` lines, one reason each, holding to what teaches; `kept:` is for what the user expected you to cut. Without the flag: no rationale, no cut list, no note on what changed, not one sentence of it. Iterating: hand back one observable check per change, never "should be tested".
+`--changelog`, and only that flag, adds a numbered list after the block: one point per change, in this order: `1. **Cut the persona line.** It adds no information.` Lead words are `Cut`, `Kept`, `Added`, `Moved`, or `Fixed`; the sentence after gives the reason, in plain words, and defines any term a newcomer may not know. `Kept` is for what the user expected you to cut. Without the flag: no rationale, no cut list, no note on what changed, not one sentence of it. Iterating: hand back one observable check per change, never "should be tested".
 
-Your first character is `## optimized prompt`. No opener, no recap, no trailer, no summary. The prompt you emit obeys what you just applied, and so does this file: delete a line here and the output changes.
+Then `Verdict: Rewritten`, just before `**Next:**`, then the steps, one line each:
+1. Paste the prompt into a new session with its inputs filled in.
+2. For a task only: run the verify check and confirm it passes.
+
+No opener before line 1 and no recap after `**Next:**`. The prompt you emit obeys what you just applied, and so does this file: delete a line here and the output changes.
