@@ -15,6 +15,41 @@
         "type": "first_line",
         "pattern": "\\b(\\d+|one|two|three|four|five) lessons?\\b",
         "text": "contract: First line gives the lesson count"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*lessons\\b",
+        "text": "contract: Verdict line says Lessons"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|lessons?|no new lessons|\\d+|one|two|three|four|five)\\b)",
+        "text": "contract: Line 1 opens with no label or count"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: No Changed line; this skill writes nothing"
       }
     ]
   },
@@ -32,8 +67,43 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(lint|rule|check|hook|ci)\\b[^.\\n]{0,40}\\b(did ?n.t|is ?n.t|not|never) (run|ran|wired|enforced|executed|catch|caught)|\\bnothing (runs|enforces|wires)\\b|\\bno (hook|ci|pre-commit)\\b",
+        "pattern": "(lint|rule|check|hook|ci)\\b[^.\\n]{0,40}\\b(did ?n.t|is ?n.t|not|never) (run|ran|wired|enforced|executed|catch|caught)|\\bnothing (runs|enforces|wires)\\b|\\bno (hook|ci|pre-commit)\\b|\\b(did ?n.t|did not|never) stop\\w*[^.\\n]{0,30}\\bbecause\\b",
         "text": "task: Names why the existing check did not stop the repeat"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*no new lessons",
+        "text": "contract: Verdict line says No new lessons"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|lessons?|no new lessons|\\d+|one|two|three|four|five)\\b)",
+        "text": "contract: Line 1 opens with no label or count"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: No Changed line; this skill writes nothing"
       }
     ]
   }
