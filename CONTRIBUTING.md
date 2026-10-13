@@ -1,5 +1,7 @@
 # Contributing
 
+By taking part, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## Workflow
 
 ```bash
