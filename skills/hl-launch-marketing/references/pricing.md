@@ -19,10 +19,10 @@ Price from the buyer's alternative and segment, not from cost or fear. Show the 
 
 1. **Buyer**: the segment (solo, small business, mid-market, enterprise).
 2. **Current alternative**: what the buyer pays today (tool, staff hours, workaround), with an estimated amount.
-3. **Anchor**: a price near one tenth of the alternative signals a toy; near the alternative signals a real product. Choose on purpose.
+3. **Price comparison**: a price near one tenth of the alternative signals a toy; near the alternative signals a real product. Choose on purpose.
 4. **Free or paid**: does a free plan drive acquisition or network effects, or does it cannibalize paid plans? Unclear means paid.
-5. **Friction line**: the highest price the buyer accepts without pausing to deliberate.
-6. **Verdict**: `charge X` / `charge X, annual discount Y` / `wrong segment` / `no buyer, do not build`.
+5. **Highest price without pause**: the highest price the buyer accepts without pausing to deliberate.
+6. **Verdict**: at the end of the reply, `Charge X` (or `Charge X, annual discount Y`, `Wrong segment`, `Do not build`); line 1 gives the price in plain words.
 
 ### `tiers`
 
