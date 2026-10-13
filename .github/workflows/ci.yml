@@ -22,8 +22,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Install ffmpeg for the video oracle tests
-        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg
+      - name: Install ffmpeg and pytest for the eval check tests
+        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg python3-pytest
       - name: Validate skills
         run: python3 scripts/validate.py
       - name: Test the validator

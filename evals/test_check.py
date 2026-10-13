@@ -1173,6 +1173,9 @@ class EnvprecRegressionTest(unittest.TestCase):
             self.workspace(ws, fix, test)
             return check.run_check(regression, "", Path(ws), None, check.Run([]))[0]
 
+    @unittest.skipUnless(
+        subprocess.run(["python3", "-m", "pytest", "--version"], capture_output=True).returncode == 0, "needs pytest"
+    )
     def test_committed_fix_with_regression_test_passes(self):
         self.assertTrue(self.check(fix=True, test=True))
 
