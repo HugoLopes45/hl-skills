@@ -20,6 +20,16 @@
         "type": "output_not_matches",
         "pattern": "^\\s*\\|[\\s:-]*-{3}",
         "text": "contract: Asks only whether it meets the need: no options table"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(already met)",
+        "text": "contract: Verdict line is Already met"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   },
@@ -55,13 +65,23 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
         "pattern": "(?im)^\\W*round \\d|recommended( answer)?\\s*:",
         "text": "task: Invents no idea"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line is Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   },
@@ -73,9 +93,14 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(Round 1,? \\d+ questions?\\b)",
+        "text": "contract: Verdict line is Round 1, K questions"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*Round 1: \\d+ questions?\\b",
-        "text": "contract: First line is `Round 1: K questions`"
+        "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
@@ -84,7 +109,7 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "\\bQ6\\b",
+        "pattern": "\\bQ6\\b|^\\s*\\**6\\.\\s+\\**[^\\n]*\\?",
         "text": "contract: At most five questions in a round"
       },
       {
@@ -118,7 +143,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks the user to resolve it"
       }
     ]
@@ -154,6 +179,16 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(round|here|options)\\b).*\\b(index|paginat|limit|cache|redis)",
         "text": "contract: First line is the recommended option"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(recommended)",
+        "text": "contract: Verdict line is Recommended"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   },
@@ -182,7 +217,7 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "^\\W*\\**Q\\d+[^\\n]*((which|what) (export |file |output )format|\\bcsv or\\b|\\bor (csv|json|xlsx|pdf)\\b|whose notes|\\b(include|export|see|access)\\b[^\\n?]*\\bother users[^\\n.?]*\\?)",
+        "pattern": "^\\W*\\**(Q\\d+|\\d+\\.)[^\\n]*((which|what) (export |file |output )format|\\bcsv or\\b|\\bor (csv|json|xlsx|pdf)\\b|whose notes|\\b(include|export|see|access)\\b[^\\n?]*\\bother users[^\\n.?]*\\?)",
         "text": "contract: Does not reask a settled decision"
       }
     ]
@@ -195,9 +230,14 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(Gaps,?\\s*\\d+\\s*blockers?\\b)",
+        "text": "contract: Verdict line has totals by severity"
+      },
+      {
         "type": "first_line",
-        "pattern": "\\d+\\s*blockers?\\b",
-        "text": "contract: First line has totals by severity"
+        "pattern": "^(?!\\W*((verdict|status|stopped|round|recommended|already met|shared understanding|gaps)\\b|\\d+\\s*blockers?\\b))",
+        "text": "contract: Line 1 does not open with a label or count"
       },
       {
         "type": "output_matches",
@@ -211,7 +251,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^[^\\n]*\\bfast\\b[^\\n]*(\\?|target|number|measurable|p9\\d|seconds|minutes|threshold|metric)|^[^\\n]*\\?[^\\n]*\\bfast\\b",
+        "pattern": "(?m)^[^\\n]*\\bfast\\b[^\\n]*(\\?|target|number|measurable|p9\\d|seconds|minutes|threshold|metric)|^[^\\n]*\\?[^\\n]*\\bfast\\b|^[^\\n]*\\bfast\\b[^\\n]*\\n[^\\n]*(\\?|target|number|measurable|threshold|metric)",
         "text": "task: Asks for a measurable meaning of 'fast'"
       },
       {
@@ -236,7 +276,7 @@
       },
       {
         "type": "command",
-        "command": "head -5 spec-gaps.md | grep -Eiq '[0-9]+ *blockers?|blockers?:? *[0-9]+'",
+        "command": "grep -Eiq '[0-9]+ *blockers?|blockers?:? *[0-9]+' spec-gaps.md",
         "text": "contract: spec-gaps.md saved with totals"
       },
       {
@@ -262,6 +302,16 @@
         "type": "output_not_matches",
         "pattern": "(?i)\\d+\\s*blockers?\\b|\\bblockers?:?\\s*\\d",
         "text": "task: No invented gaps"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line is Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   }

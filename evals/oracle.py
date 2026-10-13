@@ -9,7 +9,8 @@ Usage: python3 "$EVALS/oracle.py" <oracle> [argument]
                            or refuses or withholds it; a publisher or a "confirmed" does not excuse it
   column-qualified <regex> every digit in a table column whose header matches the regex, and every amount on a
                            line outside tables that matches the regex, cites a source or carries a label;
-                           "roughly" or "my own estimate" also labels a figure
+                           "roughly", "my own estimate" or a publisher that reports it ("IBISWorld puts") also
+                           labels a figure; headings and numbered bold points open the section
   mp4-av <seconds>         the first existing .mp4 path in the answer (relative paths resolve from the
                            working directory) has video and audio streams, each with a length, all within the given seconds of each other
 """
@@ -46,8 +47,12 @@ SOURCE = re.compile(
     r"\b([Pp]er|[Aa]ccording to|[Ss]ource:?)\s+[A-Z]|\(" + NOT_PUBLISHER + r"[A-Z][A-Za-z.&' -]{0,40},\s*(19|20)\d\d\)"
     r"|\(" + NOT_PUBLISHER + r"[A-Z][\w.]*(, [A-Z][\w.]*)+\)"
 )
+# A named publisher that reports a figure ("IBISWorld puts", "$66M (Latka)"), or a figure said not to be revenue.
+REPORTED = re.compile(r"\b(?!(It|This|That|The|Which|We|They|I)\b)[A-Z][A-Za-z]+\s+(puts|says|reports|counts|forecasts|estimates|cites|lists)\b"
+                      r"|\d\s?(k|K|M|B|bn|million|billion)\s*\([A-Z][\w.]+\)|\bnot (its )?revenue\b")
 SOURCE_COLUMN = r"source|basis|confidence|label|note"
-MONEY = re.compile(r"[$€£]\s?\d|\d\s?(k|M|B|million|billion)\b")
+# A revenue-sized amount; a price such as "$25 per month" is not one.
+AMOUNT = re.compile(r"\d\s?(k|K|M|B|bn|million|billion)\b")
 
 
 def largest_block(text):
@@ -63,9 +68,10 @@ def column_cells(text, header):
     for line in text.splitlines():
         if not line.lstrip().startswith("|"):
             columns = []
-            if re.match(r"\s*(#+\s|\*\*[^*]+\*\*:?\s*$)", line):
+            # A numbered bold point opens a section; a bold sentence ending in a period is an answer, not a heading.
+            if re.match(r"\s*(#+\s|\d+\.\s+\*\*[^*]+\*\*:?\s*$|\*\*[^*]+[^.*]\*\*:?\s*$)", line):
                 section = bool(re.search(header, line, re.I))
-            elif (section or re.search(header, line, re.I)) and MONEY.search(line):
+            elif (section or re.search(header, line, re.I)) and AMOUNT.search(line):
                 judged.append(line)
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
@@ -97,7 +103,7 @@ def check(oracle, argument, text):
         bare = [line for line in text.splitlines() if re.search(argument, line, re.I) and not any(r.search(line) for r in accepted)]
         return not bare, f"unqualified: {bare[0].strip()[:160]!r}" if bare else "every matching line is qualified"
     if oracle == "column-qualified":
-        bare = [cell for cell in column_cells(text, argument) if not any(r.search(cell) for r in (LABEL, SOURCE, ROUGH))]
+        bare = [cell for cell in column_cells(text, argument) if not any(r.search(cell) for r in (LABEL, SOURCE, ROUGH, REPORTED))]
         return not bare, f"unqualified: {bare[0].strip()[:160]!r}" if bare else "every matching figure is qualified"
     if oracle == "mp4-av":
         paths = re.findall(r"([^\s`*'\"()]+\.mp4)\b", text)

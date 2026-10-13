@@ -10,6 +10,44 @@ Make the topic visible. Open with the one or two sentences of the answer, then t
 
 When the topic is a wall of prose, restate it as views, with prose only for what they cannot show. Nothing to show: say so and stop.
 
+## Reply
+
+Reader: a newcomer to this code who asked to see a flow, a shape, or a change, and must understand it before acting.
+
+- Line 1, bold: one plain sentence that answers the question, effect before the name of the thing shown. Under 100 characters.
+- Under line 1, plain sentences for each caveat the view hides that the reader would act on, such as a missing check or a connection never closed. Say what you did not read or run only when it limits the answer.
+- One view under it. Add a heading above the view only when the reply makes two or more points.
+- Flow: show only the calls that answer the question, one per line, `file:line`, with a plain annotation. Leave out internal details the reader does not need (connection setup, unused fields). Over 8 lines: split the view under two headings.
+- `Verdict: Shown` on its own line just before `**Next:**`, or last when there are no next steps.
+- `**Next:**` only when the reader must act now: open the HTML page, or answer one question. Each step names a file as `file:line`, a command, or a question.
+- `**Changed:**` only for the HTML page: its path, or `none`.
+- Nothing to show: line 1 `**There is no topic to show yet. Name the file, flow, or change you want to see.**`, then up to 2 numbered ways out, the default first: 1. Name the topic, for example `show me the login flow` (default). 2. Paste the code or the diff. Then `Verdict: Stopped`.
+- Name an unfamiliar view in a few words at first use, for example `call tree (functions in call order)`.
+- Annotations after `#` say what the line means in plain words (`# sends the email`), never a code or rule ID. Counts carry their unit: `4 steps`, not `4`.
+
+The example below fixes the shape, not the content.
+
+````markdown
+**A returned book is checked in, and its hold moves to the next patron.**
+The email goes out before the response is sent, so a failed email fails the return.
+
+One request runs in this order. A hold is a reservation a patron placed.
+```text
+POST /returns               routes/returns.ts:14
+  checkInCopy               returns/checkIn.ts:8
+    markAvailable           catalog/copies.ts:31
+    notifyNextHold          holds/notify.ts:19   # sends the email to the next patron
+  respond 200               routes/returns.ts:22   # HTTP 200: success
+```
+
+Verdict: Shown
+
+**Next:**
+1. Open `holds/notify.ts:19` to read the email wording.
+
+**Changed:** none
+````
+
 ## Views
 
 Logic or an algorithm, as pseudocode:

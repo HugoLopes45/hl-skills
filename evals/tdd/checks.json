@@ -24,14 +24,19 @@
         "text": "contract: Ran the tests before editing calendar_utils.py"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*green",
+        "text": "contract: Verdict line is green"
+      },
+      {
         "type": "first_line",
-        "pattern": "green",
-        "text": "contract: First line states the behavior ended green"
+        "pattern": "^(?!\\W*(verdict|status|stopped|green|red)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\s*\\|[\\s:-]*-{3}",
-        "text": "contract: Has the red-green table"
+        "pattern": "before the change|^\\s*\\d+ - test (fails|passes|added)",
+        "text": "contract: Shows each case before and after the change"
       }
     ]
   },
@@ -50,8 +55,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "already[ -]green|already (passes|passing|implemented)",
+        "pattern": "already[ -]green|already (passes|passing|implemented)|already (returns|handles|does|works)|never failed",
         "text": "contract: Reports already green"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*green",
+        "text": "contract: Verdict line is green"
       }
     ]
   },
@@ -63,8 +73,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|green|red)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   },
@@ -79,6 +99,16 @@
       {
         "type": "workspace_untouched",
         "text": "contract: Waits for seam agreement before the first test"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|green|red)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   }

@@ -23,18 +23,28 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "^[^\\n]*(CSV)[^\\n]*(agree\\W*fix)|^[^\\n]*(agree\\W*fix)[^\\n]*(CSV)",
+        "pattern": "^(?!\\W*\\d+\\s+agree)[^\\n]*(CSV)[^\\n]*(agree\\W*fix(?!\\W*later))|^(?!\\W*\\d+\\s+agree)[^\\n]*(agree\\W*fix(?!\\W*later))[^\\n]*(CSV)",
         "text": "task: Does not accept the CSV export as a fix"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Mixed\\b[^\\n]*\\d",
+        "text": "contract: Verdict line gives the verdict word and counts"
+      },
+      {
         "type": "first_line",
-        "pattern": "\\d+\\s*\\W*\\s*(agree|disagree|defer|clarify)",
-        "text": "contract: First line counts verdicts"
+        "pattern": "^(?!\\W*(verdict|stopped|agree|disagree|mixed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\s*\\|[\\s:-]*-{3}",
-        "text": "contract: Has the item table"
+        "pattern": "(?m)^\\s*1\\.\\s+\\*\\*[\\s\\S]*?^\\s*4\\.\\s+\\*\\*",
+        "text": "contract: Numbered bold point for each of the 4 items"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
       }
     ]
   },
@@ -61,9 +71,19 @@
         "text": "task: Accepts the quantity bug"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Agree\\b",
+        "text": "contract: Verdict line gives the verdict word"
+      },
+      {
         "type": "first_line",
-        "pattern": "(?i)\\d+\\W*(agree|disagree|defer|clarify|ignore)|(agree|disagree|defer|clarify|ignore)\\w*\\W*\\d",
-        "text": "contract: First line counts verdicts"
+        "pattern": "^(?!\\W*(verdict|stopped|agree|disagree|mixed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
       }
     ]
   },
@@ -76,13 +96,28 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
         "pattern": "(?im)^\\|[^\\n]*\\b(agree|disagree)\\b[^\\n]*\\|",
         "text": "task: Invents no verdicts"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\b",
+        "text": "contract: Stopped verdict is present"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\b[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Stopped verdict sits just before Next"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bI (checked|looked|tried|ran|searched|could(n't| not) (fetch|find|reach))\\b",
+        "text": "contract: Says what it checked"
       }
     ]
   }

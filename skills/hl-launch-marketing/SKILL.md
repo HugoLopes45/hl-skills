@@ -28,7 +28,7 @@ Needs a product (even hypothetical) and a stage. Neither in args nor conversatio
 2. Write the positioning block: for-statement ("For [buyer] who [pain], [product] is the [category] that [outcome], unlike [alternative], it [mechanism]"), a one-liner ≤10 words, three ranked proof points.
 3. Stress it: would the named buyer recognize themselves in five seconds? Could the incumbent paste this on their own site? Interchangeable → sharpen the mechanism, rewrite once.
 
-Lead with a verdict line: the one-liner plus the venue to test it in this week.
+Open the reply with the one-liner and the venue to test it in this week.
 
 ### landing
 
@@ -46,11 +46,71 @@ Rank the three best acquisition channels for this product, buyer, and founder fr
 
 30-day content engine for one channel: pillar topics derived from buyer pains (not keywords first), twelve post/article prompts with hooks, a repurposing chain (article → thread → newsletter), weekly time budget ≤4 hours. Lead with the channel and the pillar topics. When the channel is SEO: keyword intent tiers, one programmatic pattern if the product's data supports it, and an honest timeline in months, not days.
 
-## Output rules
+## Output
 
-- `--depth quick` ≤300 words, position and channels only: the lead line, then the artifact itself (position: for-statement, one-liner, three proof points; channels: the ranked table, with each channel's first experiment in its row and no blocks below), one line per item. The extraction and stress test stay internal; report only a rewrite they forced. landing, launch, content are artifacts and always ship complete. deep: full artifact, no padding.
-- Buyer's words over marketing-speak: pull phrases from reviews/threads the user provided; invented voice is labeled as such.
-- Every number labeled measured, public, or estimate.
+Reader: a solo founder who must act this week: publish a post, change a price, or pick a channel. The decision served: what to do next and where.
+
+Line 1, bold: one plain sentence, under 100 characters, that answers the founder's question with the decision in it. Never opens with a label, verdict word, or number.
+
+The verdict line sits just before `**Next:**`, per mode:
+- position: `Sharp` (the stress test passed) or `Rewritten` (the first draft failed; the rewrite follows).
+- channels: `Commit` (one primary channel plus one compounding channel).
+- launch: `Launch` (the venue and launch date).
+- landing: `Draft` (copy complete; proof left as placeholders).
+- content: `Plan` (the channel and pillar topics).
+- pricing: `Charge <amount>`, `Wrong segment`, or `Do not build`.
+- offer: `Strong`, `Not yet, fix <term>`, or `Wrong buyer`.
+- economics: `Hold` (a number is under its threshold) or `Scale`. Line 1 names the number that hurts most, for example `**Each customer costs $120 and returns $80, so do not scale ads yet.**`
+- constraint: `Optimize` or `Push volume`.
+
+Under line 1, plain sentences, one each, only when they apply: the input that blocks the first action, a venue rule that gets posts removed, a placeholder that must be replaced before posting, and each detail you did not get, with the default you chose (for example "I assumed you post from your personal profile, not a company page."). For a minor gap, pick a safe default and say so; ask only when the gap blocks the work.
+
+Body by mode, numbered points unless the view says otherwise:
+- position: the for-statement in a fence with `[PLACEHOLDER]` slots, then the one-liner as a bold sentence, then up to three proof points, one sentence each, numbered.
+- channels: table of up to 5 channels: channel, hours a week, kill signal (the sign to stop). Under it, one numbered point per channel: its first experiment, runnable in a week.
+- launch: table of day, action, done when for the 14 days. Hour-by-hour launch-day table. Post copy and first-comment copy in fences with `[PLACEHOLDER]` slots, after the tables.
+- content: 12 numbered prompts with hooks. The repurposing chain as a `text` flow: article -> thread -> newsletter.
+- pricing: the calculation, one step per line in a `text` fence of at most 8 lines: item, amount, basis (`your figure, not measured`, `public`, or `estimate`). Then the verdict.
+- offer: one numbered point per step, in plain words: the outcome the buyer wants, proof it works, time to first win, effort for the buyer, bonuses, price and what it is compared with, the buyer. Each bold sentence names the problem, or says the step is fine.
+- economics: table of metric, value, basis, up to 5 rows: cost to win a customer (CAC), lifetime profit per customer (LTV), payback, gross margin, runway. Warning lines under it, as plain sentences.
+- landing, launch, and content are artifacts: they ship complete. `quick` depth (position and channels only) is at most 300 words in total, gate lines and `**Next:**` included; cut prose before table rows; `deep` is the full artifact with no padding.
+
+End with `**Next:**`, one step per line: the post to publish, the message to send, the number to measure.
+
+Stopped: line 1 says in plain words what is missing and why it blocks. Then up to 3 numbered ways to unblock, default marked, then `Verdict: Stopped`. Example:
+1. Which product, in one line, and at what stage: pre-launch, launched, or flat revenue? (default)
+2. Name the venue you already use, if any.
+
+Reader rules:
+- Define once: CTA (the button or link readers press), DM (direct message), CAC (cost to win one paying customer), LTV (profit one customer brings over their time), churn (share of customers who cancel each month), payback (months until a customer's profit covers their win cost), SEO (free search traffic).
+- Buyer's words over marketing-speak: pull phrases from reviews or threads the user gave. Label invented voice as invented.
+- Label every number `your figure, not measured` (a figure the user gave), `public` (with where to confirm it), or `estimate`. Never call a figure measured unless someone measured it. In tables, put the label in the basis column, not on each row's prose.
+- Never invent testimonials, logos, badges, or metrics. Use `[PLACEHOLDER]` and say what real proof replaces it.
+- No hype, no blame. Use the output words, not the method's labels: "the outcome the buyer wants", not "dream outcome".
+
+Example (position, depth quick):
+
+````markdown
+**The first draft fit any kitchen app; the rewrite names the pan. Test it in a baking forum.**
+I have not tested whether bakers scale by pan size: ask five bakers before building more.
+
+Rewrite of the positioning statement:
+
+```text
+For home bakers who halve, double, or convert recipes by hand, BakeScale is the recipe
+scaler that resizes ingredients to your real pan, unlike apps that only multiply amounts.
+```
+
+1. **Scaling follows your pan, not a multiplier.** Ingredients change to fit a 20 cm round.
+2. **The recipe prints as one sheet for the cupboard.** Keep it next to the tin.
+3. **The converted list works offline.** It survives a bad signal in the kitchen.
+
+Verdict: Rewritten
+
+**Next:**
+1. Post a question in the forum: "How do you scale a recipe to a different pan?" No link.
+2. Write the answers down; reuse the exact words in the next draft.
+````
 
 ## Anti-patterns (don't do these)
 

@@ -2,7 +2,7 @@
 
 Input: `--prd [quick|deep] [idea text | brief path] [type: saas|mobile|cli|api|internal]`
 
-Parse the input: the mode (default `deep`), the idea or a readable brief, and an optional product type. Missing product: ask. Confirm ambiguous type before drafting.
+Parse the input: the mode (default `deep`), the idea or a readable brief, and an optional product type. Missing product: ask one plain question, naming the product, and offer the mode and type only if asked. Confirm ambiguous type before drafting.
 
 ## Intake
 
@@ -24,4 +24,4 @@ Check behavioral acceptance criteria, security boundaries, failure modes, source
 
 Keep section files, supporting research, and a changelog in the run directory. Derive revision from recorded changes; assemble sections in explicit order into `PRD.md`, then read the assembled document for omissions and contradictions.
 
-Report path and revision first, then open decisions, sources, and skipped research or checks. A document with no customer evidence is a hypothesis to test, not a validated product. Do not contact users, create tracker items, or start implementation.
+Report the path and revision first, in one plain sentence within 100 characters, bold. Then plain sentences without labels: what was skipped (research or checks) and any blocker. Then open decisions as a numbered list, and sources as a numbered list of links, each once. Then `Verdict: PRD draft` on its own line, `**Next:**`, and `**Changed:**` with the files written in the run directory. A document with no customer evidence is a hypothesis to test, not a validated product. Do not contact users, create tracker items, or start implementation.

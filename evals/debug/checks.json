@@ -17,9 +17,14 @@
         "text": "task: Names the boundary defect"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "ran",
@@ -30,6 +35,11 @@
         "type": "output_matches",
         "pattern": "`[^`\\n]*(pytest|python3?)\\b[^`\\n]*`",
         "text": "contract: Reports the reproduction command"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -51,19 +61,29 @@
         "text": "task: Names the delimiter"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
-        "pattern": "scratch|toggl|temporary (copy|dir)",
+        "pattern": "scratch|toggl|temporary (copy|dir)|\\bcopy\\b[^.\\n]{0,40}\\boutside\\b",
         "text": "contract: Proves the defect by toggling it in a scratch copy"
       },
       {
         "type": "output_matches",
         "pattern": "`[^`\\n]*(pytest|python3?)\\b[^`\\n]*`",
         "text": "contract: Reports the reproduction command"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -75,8 +95,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   },
@@ -98,9 +128,14 @@
         "text": "task: Names no cause"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*insufficient",
+        "text": "contract: Verdict line is insufficient evidence"
+      },
+      {
         "type": "first_line",
-        "pattern": "insufficient",
-        "text": "contract: First line is insufficient evidence"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   },
@@ -128,9 +163,14 @@
         "text": "contract: Cites spec.md as the source of the expectation"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "workspace_untouched",
@@ -157,14 +197,24 @@
         "text": "contract: Separates the trigger from the defect"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "command",
         "command": "test -z \"$(git status --porcelain)\"",
         "text": "contract: No file changed since the last commit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -187,13 +237,23 @@
         "text": "contract: Measures the failure rate over repeated runs"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "workspace_untouched",
         "text": "contract: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -202,7 +262,7 @@
     "checks": [
       {
         "type": "output_matches",
-        "pattern": "(culprit|first bad|bad commit|broke|breaking|introduc\\w*|caus\\w*|lands on|regress\\w*)[^\\n]{0,80}add day unit|add day unit[`\\\"'*)\\s]*(is the (culprit|first bad)|broke|introduced|caused)",
+        "pattern": "(culprit|first bad|bad commit|broke|breaking|introduc\\w*|caus\\w*|lands on|regress\\w*)[^\\n]{0,80}add day unit|add day unit[`\\\"'*)\\s]*(is the (culprit|first bad)|broke|introduced|caused|re-?sort\\w*|added|swapped|put|moved|reorder\\w*)",
         "text": "task: Names the culprit commit"
       },
       {
@@ -221,9 +281,14 @@
         "text": "contract: Confirms the culprit by toggling it"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   },
@@ -276,9 +341,19 @@
         "text": "contract: No debug instrumentation left"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -302,7 +377,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)\\A(?!.*(only (affects |in )?(the )?tests|not (in |affect\\w* )?production|production (is |would be )?(not|un)affected))(?=.*((affect\\w*|reach\\w*|hit\\w*|break\\w*|happen\\w*|show\\w*|also)[^\\n]{0,40}production|production[^\\n]{0,60}(too|also|as well|is affected|same bug|would|will)|same process|rest of the process|long[- ]running|every later|later (report|call|request)s?|real (bug|defect)|not (only|just) (a )?test))",
+        "pattern": "(?s)\\A(?!.*(only (affects |in )?(the )?tests|not (in |affect\\w* )?production|production (is |would be )?(not|un)affected))(?=.*((affect\\w*|includ\\w*|reach\\w*|hit\\w*|break\\w*|happen\\w*|show\\w*|also)[^\\n]{0,40}production|production[^\\n]{0,60}(too|also|as well|is affected|same bug|would|will)|same process|rest of the process|long[- ]running|every later|later (report|call|request)s?|real (bug|defect)|not (only|just) (a )?test))",
         "text": "task: Says production is affected"
       },
       {
@@ -311,13 +386,23 @@
         "text": "contract: Isolates the polluter with a targeted run"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "workspace_untouched",
         "text": "contract: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   },
@@ -326,12 +411,12 @@
     "checks": [
       {
         "type": "output_matches",
-        "pattern": "exhaust\\w*|consum\\w*|(generator|iterator)[^\\n]{0,80}(twice|second|again|empty|only (be )?(read|iterated|consumed) once)|iterat\\w*[^\\n]{0,30}twice|(twice|second pass)[^\\n]{0,60}(generator|iterator)",
+        "pattern": "exhaust\\w*|consum\\w*|(generator|iterator)[^\\n]{0,80}(twice|second|again|empty|only (be )?(read|iterated|consumed) once)|iterat\\w*[^\\n]{0,30}twice|(twice|second pass)[^\\n]{0,60}(generator|iterator)|\\bus(es|ed|ing) up\\b|\\bread only once\\b",
         "text": "task: Names the exhausted generator"
       },
       {
         "type": "output_matches",
-        "pattern": "(not|n't) (a |the )?cron|cron[^\\n]{0,60}(is not|isn't|not)[^\\n]{0,20}(the )?(cause|problem|issue|culprit)|cron[^\\n]{0,40}\\b(unrelated|irrelevant|innocent|ruled out)\\b|nothing to do with cron|rul\\w* out cron|cron[^\\n]{0,40}(?<!not )\\bcleared\\b",
+        "pattern": "(not|n't) (a |the )?(cron|PATH|locale)|cron[^\\n]{0,60}(is not|isn't|not)[^\\n]{0,20}(the )?(cause|problem|issue|culprit|involved)|cron[^\\n]{0,40}\\b(unrelated|irrelevant|innocent|ruled out)\\b|nothing to do with cron|rul\\w* out cron|cron[^\\n]{0,40}(?<!not )\\bcleared\\b|\\benvironment (is not|isn't) (involved|the cause)",
         "text": "task: Rules out the cron environment"
       },
       {
@@ -345,13 +430,23 @@
         "text": "contract: Reproduces without the verbose flag"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(defect proven|leading|insufficient)",
+        "text": "contract: Verdict line is the status"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(status|proven|defect proven|leading|insufficient)",
-        "text": "contract: First line is the status"
+        "pattern": "^(?!\\W*(verdict|status|stopped|defect proven|leading|insufficient)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "workspace_untouched",
         "text": "contract: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
+        "text": "contract: Draws the traced path as a fenced call tree with file:line"
       }
     ]
   }

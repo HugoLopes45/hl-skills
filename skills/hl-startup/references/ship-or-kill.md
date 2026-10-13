@@ -51,9 +51,10 @@ Several topics: name both, answer the dominant one. "Fastest stack to ship this?
 
 ## Formats
 
-- **answer**: the decision, the take, one action doable this week, and "flips to <alternative> if <trigger>". Quick: at most 200 words: the decision in one line, the take in at most 70 words (it names what to keep), the action in at most 40, the flip in at most 30; no other paragraphs, sections, or lists. Deep: at most 600.
-- **debate**: one verdict line with the reason, then the case for each side in at most 80 words each.
-- **playbook**: at most 7 numbered steps, each with action, why, and done-when. More than 7 means the question is too big; split it.
+- **answer**: line 1 one plain sentence with the reason, under 100 characters. Then the take, which names what to keep. Then one line: "The decision flips to <alternative> if <trigger>." Then `Verdict: Kill` (or `Pivot`, `Keep`, `Ship`; for Ship, line 1 names the smallest version). Then `**Next:**` with the one action for this week. Quick: at most 200 words: take at most 70, action at most 40, flip at most 30; no other sections or lists. Deep: at most 600.
+- **debate**: line 1 one plain sentence with the verdict and its reason, then a heading for each side, at most 80 words each, then `Verdict: <word>`.
+- **playbook**: line 1 the goal. Then a table of at most 7 steps: step, action, why, done when. More than 7 means the question is too big; split it.
+- Outside both decisions: still answer the question. Line 1 is your direct answer in plain words ("**Charge $29: at $9 you need three times the customers to earn the same.**"). Then at most 3 sentences with the reason and what would change it, each assumption named as a guess. Then one sentence naming the better skill from the table for a full answer, then `Verdict: Quick take`, then `**Next:**` with one action. At most 150 words.
 
 ## Rules
 

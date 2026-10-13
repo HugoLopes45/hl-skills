@@ -100,31 +100,75 @@ Precedents:
 
 ## Phase 5, Report
 
-With `--report`, or for a whole-repository `standard` or `deep` run, write `security-audit.md` in the repository root. Otherwise print the report.
+With `--report`, or for a whole-repository `standard` or `deep` run, write `security-audit.md` in the repository root, using the stored template below. The reply presents the same findings in the shape below and names that file in `**Changed:**`. Otherwise `**Changed:** none`.
 
-```markdown
-# Security Audit: <repo>
+Reader: a developer or security lead who decides what to fix first and whether to trust the audit. Define each term once in the reply, where it first appears: CWE-n is the public ID of a weakness type; assurance is how much of the code the checks covered, not how safe the code is; a sink is where untrusted input does harm; transitive means pulled in by another dependency.
 
-Verdict: <count of findings per severity, or the found-nothing line from the Coverage gate>
-Date: <date> · Commit: <short SHA> · Scope: <path / whole repo> · Depth: quick|standard|deep
-Scanners: npm audit ✓ · semgrep ✓ · gitleaks ✓ · bandit n/a   (mark what didn't run)
-Assurance: HIGH | MEDIUM | LOW: what was actually verified, and the blind spots a reader must not assume are clean.
+Line 1, bold, one plain sentence, 100 characters at most: the risk in everyday words, or for a clean result, what the checks covered. Never open with a label, severity word, CWE ID, or count.
 
-## Executive summary
-3 to 5 bullets a decision-maker can act on. Each: the risk, the impact if unaddressed, the fix.
+Under line 1, plain sentences without labels, in this order:
+- Assurance, as one sentence that gives the level and names what did not run: "Assurance is medium: gitleaks ran, semgrep did not, and I did not review the PIN service."
+- Each risk seen outside the requested scope, as one line that starts "Outside what you asked:", with its `file:line` and why it matters. Never a numbered point, never in the findings.
+
+Then numbered points, worst first. Each point: a bold plain sentence that states the problem and its seriousness in words ("critical", "high", "medium"); one or two sentences on how an attacker reaches it and whether you read or ran it; a `text` view of the traced hops, only when it helps; the fix in one sentence.
+
+Then the verdict line, `**Next:**`, and `**Changed:**`:
+- `Verdict: Exploitable`: a critical or high finding with a traced path an attacker can use.
+- `Verdict: Risks`: medium findings only.
+- `Verdict: No high-confidence exploitable vulnerabilities in <scope>`: HIGH assurance only. Set the assurance first; it picks this wording. Below HIGH: `Verdict: No vulnerabilities surfaced by the checks that ran`.
+- `**Next:**`: each step to act on, in severity order, then the rerun.
+
+````markdown
+**Anyone can run shell commands through the class-booking email field.**
+Assurance is medium: gitleaks and bandit ran, semgrep did not, and the door-lock service is outside this repository, so I did not review it.
+Outside what you asked: `staff/payroll.py:8` writes salaries to a log file (CWE-532). I did not review it.
+
+1. **Email text runs as a shell command, a critical risk (CWE-78).**
+   I read the code from the form to the call. Typing `a@b.c; ls -la` runs a second command on the server.
+   ```text
+   booking/notify.py:9   addr = request.form["email"]   # typed by anyone
+   booking/notify.py:14  os.system(f"sendmail {addr}")  # runs a shell command
+   ```
+   Pass the address as one argument: `subprocess.run(["sendmail", addr])`.
+
+2. **A failed door-code check leaves the door open, a high risk (CWE-287).**
+   I read `gym/door.py:19` and did not run it. The check returns True when it fails.
+   Return False on error, so the door stays locked.
+
+Verdict: Exploitable
+
+**Next:**
+1. Fix `booking/notify.py:14` as shown, then rerun the audit on `booking/`.
+2. Make `gym/door.py:19` return False on a failed code.
+3. Install `semgrep` and rerun the audit; assurance stays medium until then.
+
+**Changed:** security-audit.md
+````
+
+A clean result reads the same way: line 1 says what the checks covered, the assurance sentence follows, plain sentences state what was read, and the verdict is `No vulnerabilities surfaced by the checks that ran`.
+
+The stored `security-audit.md` uses this template, with every section kept:
+
+````markdown
+**<line 1 of the reply>**
+Verdict: <the reply's verdict>
+Assurance: HIGH | MEDIUM | LOW; not checked: <the unchecked surface, or "nothing">
+Out of scope: <risk, file:line, why it matters>
 
 ## Findings
-| # | Severity | Finding (CWE) | Evidence | Fix |
+| # | Severity | Finding (CWE) | Where | Fix |
 |---|---|---|---|---|
-| 01 | CRITICAL | SQLi (CWE-89): sort param concatenated into ORDER BY | api/users.py:42 + semgrep | Parameterize; whitelist columns |
+| 1 | CRITICAL | SQLi (CWE-89) | clinic/search.py:42 | Whitelist sort columns |
 
-## Detail
-### Vuln 1: SQL Injection, api/users.py:42
-Severity CRITICAL · CWE-89 · Confidence H
-Input: request.args["sort"] (HTTP query param)
-Path: query param → string-built ORDER BY → DB
-Exploit: ?sort=id;DROP TABLE users-- runs attacker SQL on prod.
-Fix: parameterized ordering; whitelist columns (see api/orders.py:88).
+## 1. SQL injection, clinic/search.py:42
+CRITICAL · CWE-89 · confidence H · evidence: semgrep + traced path
+```text
+clinic/search.py:38  sort = request.args["sort"]    # untrusted: query param
+clinic/search.py:42  f"... ORDER BY {sort}"         # SINK: string-built SQL
+clinic/db.py:17         cursor.execute(query)          # runs on the production database
+```
+Exploit: `?sort=id;DROP TABLE users--` runs attacker SQL.
+Fix: whitelist the sort columns, as `clinic/schedule.py:88` does.
 
 ## Dependencies
 | Package | CVE (severity) | Direct/Transitive | Reachable | Fix version |
@@ -137,8 +181,21 @@ Findings matched by security-exceptions.json, with rationale and expiry.
 `deep` only. Candidates not confirmed or below confidence H, with what would confirm each.
 
 ## Considered and dismissed
-Candidates investigated and dropped, with the reason, so the next audit doesn't re-raise them.
-```
+Closed candidates only, with the reason, so the next audit doesn't re-raise them.
+
+## Scanners
+| Tool | Status |
+|---|---|
+| semgrep | ran |
+| npm audit | ran, nothing to check (no lockfile) |
+| bandit | skipped: not installed |
+
+**Next:**
+1. <the fix for the highest finding, then the rest in severity order>
+2. <install and rerun the skipped scanners, when assurance is below HIGH>
+
+Date: <date> · Commit: <short SHA> · Scope: <path / whole repo> · Depth: quick|standard|deep
+````
 
 ## Coverage gate
 

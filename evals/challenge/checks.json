@@ -13,19 +13,29 @@
         "text": "task: Finds the missing accent stripping"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(fix first\\b)",
+        "text": "contract: Verdict line is Fix first"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*((verdict|recommendation)\\W*)?fix first\\b",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\W*judged against:",
+        "pattern": "\\b(checked|judged|compared|tested|ran)\\b[^\\n]{0,80}\\bagainst\\b",
         "text": "contract: States the goal and reference"
       },
       {
         "type": "output_not_matches",
         "pattern": "\\b\\d{1,3}\\s?%",
         "text": "contract: No numerical confidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*next:",
+        "text": "contract: Ends with a Next block of the changes to make"
       }
     ]
   },
@@ -42,14 +52,19 @@
         "text": "task: Traces a weakness to the plan text"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(fatal|serious|minor|no supported failure cause)\\b",
+        "text": "contract: Verdict line gives the worst rank"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*(S[012]\\b|no supported failure cause)",
-        "text": "contract: First line is the worst cause"
+        "pattern": "^(?!\\W*(verdict|status|stopped|fatal|serious|minor|no supported failure cause)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "hypothetical",
-        "text": "contract: Labels scenarios hypothetical"
+        "pattern": "hypothetical|imagined|assumed|not (yet )?happened",
+        "text": "contract: Says which events are imagined"
       },
       {
         "type": "output_not_matches",
@@ -76,9 +91,14 @@
         "text": "task: Names the duplication"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*((fix first|stop)\\b(?!-))",
+        "text": "contract: Verdict line is Fix first or Stop"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*((verdict|recommendation)\\W*)?(fix first|stop)\\b(?!-)",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
@@ -89,6 +109,11 @@
         "type": "output_not_matches",
         "pattern": "\\b\\d{1,3}\\s?%",
         "text": "contract: No numerical confidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*next:",
+        "text": "contract: Ends with a Next block of the changes to make"
       }
     ]
   },
@@ -125,8 +150,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\W*panel:",
-        "text": "contract: Panel line"
+        "pattern": "\\b(ran|run)\\b[^\\n]*\\b(independent\\w*|separate subagents?|own subagent|in parallel|one after another)",
+        "text": "contract: Says which lenses ran and whether independently"
       },
       {
         "type": "output_matches",
@@ -149,13 +174,23 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
-        "pattern": "(?im)^\\W*(verdict|proceed|fix first|smaller version)\\b",
+        "pattern": "(?im)^\\W*(verdict\\b(?!:\\W*stopped\\b)|proceed\\b|fix first\\b|smaller version\\b)",
         "text": "contract: Invents no verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^\\W*verdict:\\W*stopped\\b",
+        "text": "contract: Verdict line is Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   },
@@ -177,19 +212,29 @@
         "text": "contract: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*((fix first|stop)\\b(?!-))",
+        "text": "contract: Verdict line is Fix first or Stop"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*((verdict|recommendation)\\W*)?(fix first|stop)\\b(?!-)",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\W*judged against:",
+        "pattern": "\\b(checked|judged|compared|tested|ran)\\b[^\\n]{0,80}\\bagainst\\b",
         "text": "contract: States the goal and reference"
       },
       {
         "type": "output_not_matches",
-        "pattern": "\\b\\d{1,3}\\s?%",
+        "pattern": "\\b\\d{1,3}\\s?%\\s*(confiden\\w*|sure|certain\\w*|likely|chance)|\\bconfiden\\w*\\W{1,3}\\d{1,3}\\s?%",
         "text": "contract: No numerical confidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*next:",
+        "text": "contract: Ends with a Next block of the changes to make"
       }
     ]
   },
@@ -211,13 +256,18 @@
         "text": "contract: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(proceed\\b)",
+        "text": "contract: Verdict line is Proceed"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*((verdict|recommendation)\\W*)?proceed\\b",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\W*judged against:",
+        "pattern": "\\b(checked|judged|compared|tested|ran)\\b[^\\n]{0,80}\\bagainst\\b",
         "text": "contract: States the goal and reference"
       },
       {
@@ -241,19 +291,29 @@
         "text": "task: Does not edit the code"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(fix first\\b)",
+        "text": "contract: Verdict line is Fix first"
+      },
+      {
         "type": "first_line",
-        "pattern": "^\\W*((verdict|recommendation)\\W*)?fix first\\b",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|stop|fix first|proceed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\W*judged against:",
+        "pattern": "\\b(checked|judged|compared|tested|ran)\\b[^\\n]{0,80}\\bagainst\\b",
         "text": "contract: States the goal and reference"
       },
       {
         "type": "output_not_matches",
         "pattern": "\\b\\d{1,3}\\s?%",
         "text": "contract: No numerical confidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*next:",
+        "text": "contract: Ends with a Next block of the changes to make"
       }
     ]
   }

@@ -31,6 +31,49 @@ Project instructions load into every session: add a line there only when no othe
 
 ## Output
 
-First line: the lesson count and the most important lesson. Then a table ordered by cost of a repeat: lesson, evidence, destination, exact change (rule text, check sketch, or pointer line). Then lessons already covered. No quota; small sessions and diffs can hold useful lessons.
+Reader: the person who ended a session or merged a change, and who decides which lessons to apply. The skill writes nothing; each change is theirs to apply.
 
-Do not write files. A proposed check is sound only if it would fail on the original mistake; say how to show that.
+Line 1: one bold plain sentence, under 100 characters, that says in plain words how many lessons there are and the most important one, for example "This session teaches one lesson: ..." or, when nothing is new, "Your rule already covers this, but its lint check misses deeper paths.". Never start it with a count, a label, or the verdict word. No quota; small sessions and diffs can hold useful lessons.
+
+Under line 1, a plain sentence for each source you could not read, only when that limits the answer.
+
+Body, one numbered point per lesson, most costly repeat first:
+- A bold plain sentence that states the lesson.
+- One or two sentences: the evidence from the session or the change, and the destination (the file or place that changes).
+- The exact change in a fence, indented under the point (rule text, check sketch, or pointer line).
+- For a check: one sentence on how to show it fails on the original mistake.
+
+Lessons already covered: after the new lessons, one numbered point each, in one sentence, with its `file:line` and why it did not stop the repeat. Omit when none.
+
+Before `**Next:**`, one line: `Verdict: <word>`, one of:
+- `Lessons`: at least one lesson is new.
+- `No new lessons`: every lesson is already covered, even when its rule or check has a gap. Line 1 says so; the gap is a numbered point, and its fix goes in `**Next:**`.
+
+`**Next:**` holds each change to apply, in order.
+
+Reader rules:
+- Name the mistake and the fix, never the person: "the lint rule did not run", not "the agent ignored it".
+- Define at first use: "lint" (the automatic code checker), "project instructions" (the file each session loads, for example `AGENTS.md`), "pointer line" (one line in those instructions).
+- Search existing instructions, standards, checks, and ADRs first. Do not write files. A proposed check is sound only if it would fail on the original mistake.
+
+Example:
+
+````markdown
+**This session teaches one lesson: a banned import should fail lint, not rely on review.**
+
+1. **Ban `pickle` imports in lint.**
+   The session fixed a `pickle` import twice, and no check caught it. Add the rule to `pyproject.toml`, in the ruff settings.
+   ```toml
+   [tool.ruff.lint]
+   extend-select = ["TID251"]
+
+   [tool.ruff.lint.flake8-tidy-imports.banned-api]
+   "pickle".msg = "Use json; pickle runs code when it loads."
+   ```
+   To prove it, add `import pickle` to `src/cache.py` and run `ruff check src/cache.py`. It should fail with TID251.
+
+Verdict: Lessons
+
+**Next:**
+1. Add the block to `pyproject.toml`, then run `ruff check .`.
+````

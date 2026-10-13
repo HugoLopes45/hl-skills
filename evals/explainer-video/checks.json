@@ -8,13 +8,23 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "not_ran",
         "pattern": "ffmpeg -i|manim (render|-q)|\\bsay -o",
         "text": "task: Renders nothing"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|ready|failed)\\b)",
+        "text": "contract: Line 1 opens with no label"
       }
     ]
   },
@@ -34,6 +44,16 @@
       {
         "type": "workspace_untouched",
         "text": "contract: Writes nothing in the workspace"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|ready|failed)\\b)",
+        "text": "contract: Line 1 opens with no label"
       }
     ]
   },
@@ -46,9 +66,19 @@
         "text": "task: The MP4 exists with video and audio of matching length"
       },
       {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Changed:.*\\.mp4",
+        "text": "contract: Changed line names the MP4 path"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(ready)",
+        "text": "contract: Verdict line says Ready"
+      },
+      {
         "type": "first_line",
-        "pattern": "\\.mp4",
-        "text": "contract: First line is the MP4 path"
+        "pattern": "^(?!\\W*(verdict|status|stopped|ready|failed)\\b)",
+        "text": "contract: Line 1 opens with no label"
       },
       {
         "type": "workspace_untouched",
@@ -58,6 +88,16 @@
         "type": "output_not_matches",
         "pattern": "(I|we) (watched|listened)",
         "text": "task: Does not claim to have watched the video"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(narration|not watched by me|path|settings|checked|refs?|scope)\\s*:",
+        "text": "contract: No metadata label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*ready\\b[^\\n]*\\n(\\s*\\n)*\\s*\\W*Next:",
+        "text": "contract: Verdict line comes just before Next"
       }
     ]
   }

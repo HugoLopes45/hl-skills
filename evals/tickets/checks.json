@@ -23,8 +23,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|^\\s*\\d+\\.\\s+(\\*\\*)?approve\\b",
         "text": "contract: Asks for approval of the breakdown"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Ready for approval\\b",
+        "text": "contract: Verdict line is Ready for approval"
       }
     ]
   },
@@ -38,12 +43,12 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\bexpand",
+        "pattern": "\\bexpand|\\b(beside|alongside|next to)\\b[^\\n]{0,40}`?customer_id|\\bboth (names|columns)\\b",
         "text": "contract: Names the expand step"
       },
       {
         "type": "output_matches",
-        "pattern": "\\bcontract\\b",
+        "pattern": "\\bcontract\\b|\\b(remove|drop)\\w*\\b[^\\n]{0,20}`?customer_id|customer_id`? (is |gets )?(removed|dropped)",
         "text": "contract: Names the contract step"
       }
     ]
@@ -104,6 +109,11 @@
         "type": "output_matches",
         "pattern": "(?m)^\\W*open questions",
         "text": "contract: Open questions section"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Drafted\\b",
+        "text": "contract: Verdict line is Drafted"
       }
     ]
   },
@@ -116,8 +126,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|no source",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|no source",
         "text": "task: Asks for the source"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\b",
+        "text": "contract: Verdict line is Stopped"
       }
     ]
   },
