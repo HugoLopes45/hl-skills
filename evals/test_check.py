@@ -195,6 +195,10 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(email, "The spec doesn't say who receives the email."))
         self.assertFalse(passes(email, "Columns: name, email, signup date."))
 
+    def test_tickets_approval_accepts_a_numbered_approve_step(self):
+        approval = spec("tickets", "invites", "contract: Asks for approval")
+        self.assertTrue(passes(approval, "**Next:**\n1. Approve this breakdown, or name a slice to split or merge."))
+
     def test_spike_experiments_are_a_numbered_list_with_status(self):
         listed = spec("spike", "spike-sqlite", "contract: Experiments as a numbered list")
         self.assertTrue(passes(listed, "## Inserts are fast\n1. Time the insert only (`python3 b.py`). Results were 0.13 s. Ran."))
@@ -214,6 +218,13 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(culprit, 'Commit `1c4339d` ("feat: add day unit") added `"d"` and swapped the order of `"ms"` and `"m"`.'))
         self.assertTrue(passes(culprit, '**Commit 9a55830 ("feat: add day unit") put `"m"` ahead of `"ms"` in `units.py:4-5`.**'))
 
+    def test_pricecache_percent_of_requests_is_not_confidence(self):
+        none = spec("challenge", "pricecache", "contract: No numerical confidence")
+        self.assertTrue(passes(none, "Measure p95 (the time 95 % of requests beat), and a hit rate below 100 % misses the goal."))
+        self.assertFalse(passes(none, "Confidence: 80%"))
+        self.assertFalse(passes(none, "I am 70% sure the cache is stale."))
+        self.assertFalse(passes(none, "Fix first (85% confident)."))
+
     def test_security_clean_line_one_may_scope_to_the_checks_that_ran(self):
         scoped = spec("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran")
         self.assertTrue(passes(scoped, "**The checks that ran found no vulnerabilities in this small shop API.**\nVerdict: No vulnerabilities surfaced by the checks that ran"))
@@ -223,6 +234,11 @@ class OutputChecks(unittest.TestCase):
         csv = spec("receive-review", "mixed", "task: Does not accept the CSV export as a fix")
         self.assertTrue(passes(csv, "| 4 | Add CSV export | Agree, fix later | out of scope | Your call |"))
         self.assertFalse(passes(csv, "| 4 | Add CSV export | Agree, fix it | none | Add it |"))
+
+    def test_grill_fast_accepts_the_question_on_the_next_line(self):
+        fast = spec("grill", "gaps-report", "task: Asks for a measurable meaning of 'fast'")
+        self.assertTrue(passes(fast, '1. **Ambiguous term**: "The export must be fast."\n   Question: what is the time limit at a stated user count?'))
+        self.assertFalse(passes(fast, '1. "The export must be fast."\n   Columns: name, email.'))
 
     def test_deslop_report_may_explain_why_it_left_the_old_comment(self):
         scope = spec("deslop", "report", "task: Leaves the line outside the diff alone")
@@ -289,15 +305,17 @@ class OutputChecks(unittest.TestCase):
             self.assertFalse(passes(cite, "`calc.py:12`"))
 
     def test_challenge_verdict_is_the_first_word(self):
-        fixable = spec("challenge", "finished-work", "contract: First line is the verdict")
-        self.assertTrue(passes(fixable, "**fix first**: accent stripping is missing."))
-        self.assertTrue(passes(fixable, "**Verdict: fix first.** Accents are kept."))
-        self.assertTrue(passes(fixable, "**Verdict**: fix first. Accents are kept."))
-        self.assertFalse(passes(fixable, "**stop**: accent stripping is missing."))
+        fixable = spec("challenge", "finished-work", "contract: Verdict line is Fix first")
+        self.assertTrue(passes(fixable, "**Accented names still miss.**\nVerdict: Fix first"))
+        self.assertTrue(passes(fixable, "**Accented names still miss.**\n**Verdict:** fix first."))
+        self.assertFalse(passes(fixable, "**Accented names still miss.**\nVerdict: Stop"))
         self.assertFalse(passes(fixable, "**Verdict: stop-gap `fix first`.**"))
-        either = spec("challenge", "smaller-version", "contract: First line is the verdict")
-        self.assertTrue(passes(either, "**Verdict: stop.** The plan duplicates utils/retry.py."))
-        self.assertFalse(passes(either, "**Verdict: stop-gap** fix."))
+        plain = spec("challenge", "finished-work", "contract: Line 1 does not open with a label")
+        self.assertTrue(passes(plain, "**Accented names still miss.**\nVerdict: Fix first"))
+        self.assertFalse(passes(plain, "**Fix first.** Accent stripping is missing."))
+        either = spec("challenge", "smaller-version", "contract: Verdict line is Fix first or Stop")
+        self.assertTrue(passes(either, "**The plan duplicates utils/retry.py.**\nVerdict: Stop"))
+        self.assertFalse(passes(either, "Verdict: stop-gap fix."))
 
     def test_contract_step_is_a_word_not_a_document(self):
         step = spec("tickets", "wide-rename", "contract: Names the contract step")
@@ -596,10 +614,33 @@ class AnswerOracles(unittest.TestCase):
         prod = spec("debug", "pollution", "task: Says production is affected")
         self.assertTrue(passes(prod, "Anything that renders after a localized invoice gets that format. That includes the internal report in production."))
 
+    def test_wide_rename_steps_in_plain_words(self):
+        expand = spec("tickets", "wide-rename", "contract: Names the expand step")
+        contract = spec("tickets", "wide-rename", "contract: Names the contract step")
+        self.assertTrue(passes(expand, "2. **Orders table gets `account_id` beside `customer_id`, kept in sync**"))
+        self.assertTrue(passes(contract, "9. **Remove `customer_id` from `orders` and the code**"))
+        self.assertTrue(passes(contract, "6. **`customer_id` is removed from the orders table and the code**"))
+        self.assertFalse(passes(expand, "1. **Rename `customer_id` to `account_id` everywhere**"))
+        self.assertFalse(passes(contract, "1. **Rename `customer_id` to `account_id` everywhere**"))
+
     def test_panel_needs_three_lens_sections(self):
         panel = spec("challenge", "panel", "contract: At least three lens sections")
         self.assertTrue(passes(panel, "## minimalist\nx\n## failure-hunter\ny\n## discovery\nz\n"))
         self.assertFalse(passes(panel, "## minimalist\nx\n## discovery\nz\n"))
+
+    def test_panel_says_which_lenses_ran_and_how(self):
+        panel = spec("challenge", "panel", "contract: Says which lenses ran")
+        self.assertTrue(passes(panel, "I ran discovery, failure-hunter and minimalist. Each ran in its own subagent."))
+        self.assertTrue(passes(panel, "Lenses run: discovery and minimalist. They ran as separate subagents, independently."))
+        self.assertTrue(passes(panel, "I ran the three lenses one after another, so they were not independent."))
+        self.assertFalse(passes(panel, "## minimalist\nx\n## discovery\nz\n"))
+
+    def test_challenge_states_what_it_checked_against(self):
+        for case in ("export", "finished-work"):
+            goal = spec("challenge", case, "contract: States the goal and reference")
+            self.assertTrue(passes(goal, "**Quoting is missing.**\nI checked this against the requirement in `TASK.md:4`."))
+            self.assertTrue(passes(goal, "I checked the three bullets in `TASK.md` against `slugify.py` by running it."))
+            self.assertFalse(passes(goal, "**Quoting is missing.**\nThe tests pass."))
 
 
 class NewSuiteOutputs(unittest.TestCase):
@@ -681,7 +722,7 @@ class NewSuiteOutputs(unittest.TestCase):
 
     def test_new_mode_checks_separate_good_from_bad(self):
         cases = [
-            ("improve", "quick-audit", "contract: Opens with the vetted-findings count",
+            ("improve", "quick-audit", "contract: Line 1 gives the vetted-findings count",
              "3 vetted findings; plans written for the top 3.", "Here is the audit.\n3 findings"),
             ("improve", "quick-audit", "task: Finds the SQL injection",
              "| 1 | SQL injection in `find_user` (shop/db.py:5) |", "| 1 | Slow query in find_user |"),
@@ -1035,6 +1076,15 @@ class NewSuiteOutputs(unittest.TestCase):
             (Path(workspace) / "users.csv").write_text("b\n")
             self.assertFalse(check.run_check(check_spec, "", Path(workspace), None, check.Run([]))[0])
 
+    def test_saved_gaps_file_may_give_totals_at_the_end(self):
+        saved = spec("grill", "write", "contract: spec-gaps.md saved with totals")
+        with tempfile.TemporaryDirectory() as workspace:
+            gaps = Path(workspace) / "spec-gaps.md"
+            gaps.write_text("**Two gaps block the work.**\n\n## Blockers\n\n1. a\n2. b\n3. c\n4. d\n\nVerdict: Gaps, 2 blockers, 1 major, 0 minor\n")
+            self.assertTrue(check.run_check(saved, "", Path(workspace), None, check.Run([]))[0])
+            gaps.write_text("**Two gaps block the work.**\n\n## Blockers\n\n1. a\n")
+            self.assertFalse(check.run_check(saved, "", Path(workspace), None, check.Run([]))[0])
+
     def test_third_review_findings(self):
         cases = [
             ("security-audit", "audit-deep", "task: Finds the SQL injection in find_user",
@@ -1155,6 +1205,58 @@ class NewSuiteOutputs(unittest.TestCase):
         first = spec("show-me", "show-flow", "contract: No preamble")
         self.assertTrue(passes(first, "`post_order` hands the JSON to `create_order`, which prices and saves it."))
         self.assertFalse(passes(first, "Here is how the request flows:"))
+
+    def test_rollout_checks_accept_correct_plain_outputs(self):
+        long_line = "**I did not open a pull request: `gh` doesn't work here, and this repository has no remote to push to.**\nMore."
+        runaway = "**" + "word " * 30 + "end.**\nMore."
+        for skill, case in [("commit", "ticket-hook"), ("open-pr", "no-gh"), ("split-pr", "three"),
+                            ("checkpoint", "stuck"), ("lessons", "covered")]:
+            bold = spec(skill, case, "contract: Line 1 is one bold sentence")
+            self.assertTrue(passes(bold, long_line), (skill, case))
+            self.assertFalse(passes(bold, runaway), (skill, case))
+            self.assertFalse(passes(bold, "The branch is main, so I stop.\n\n**Stopped.**\n"), (skill, case))
+            labels = spec(skill, case, "contract: No label lines")
+            self.assertTrue(passes(labels, "Read the file first.\n- **Evidence:** you checked `a=b=c` by hand."), (skill, case))
+            self.assertFalse(passes(labels, "Left out: README.md"), (skill, case))
+            self.assertFalse(passes(labels, "**Scope:** calc.py"), (skill, case))
+        cases = [
+            ("code-review", "plain", "contract: Numbered finding with file:line",
+             "1. **`greet(\"\")` does not raise.**\n   ```text\n   greet.py:2   return\n   ```\n\n"
+             "2. **`ratio` turns every exception into 0.**\n   ```text\n   calc.py:4   except Exception:\n   ```",
+             "1. **`greet(\"\")` does not raise.**\n   greet.py:2\n\n2. **`ratio` hides errors.**\n   See the handler.\n\nVerdict: Fix\n\n**Next:**\n1. Fix calc.py:4"),
+            ("receive-review", "no-review", "contract: Says what it checked",
+             "I couldn't fetch the PR. `gh` reports it isn't available, and `git remote -v` shows no remote.",
+             "Paste the review comments."),
+            ("open-pr", "on-base", "contract: Says the current branch is the base",
+             "**I can't preview a pull request against `main`, because you are on `main` and the diff is empty.**",
+             "**I can't preview a pull request: the diff is empty.**"),
+            ("improve", "reconcile", "contract: Proposes an unblock path for 003",
+             "3. **Plan 003 stays blocked on a decision.**\n" + "x" * 600 +
+             "\n2. Decide plan 003: should `render` raise an error naming the row (default), or skip it?",
+             "3. **Plan 003 stays blocked on a decision.**\n" + "x" * 600 + "\nVerdict: Reconciled"),
+            ("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran",
+             "**The checks found no exploitable flaws in this 21-line shop handler, but semgrep never ran.**",
+             "**The code is clean.**"),
+            ("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran",
+             "**The two shop request handlers use safe database queries, and I found no exploitable flaw in them.**",
+             "**I found no vulnerabilities.**"),
+            ("deslop", "report", "task: Leaves the line outside the diff alone",
+             "7. **I did not touch the comment `# increment the counter` (app.py:7).**",
+             "7. **Removed the comment `# increment the counter`.**"),
+            ("tdd", "already-green", "contract: Reports already green",
+             "**`clamp(x, lo, hi)` already returns `lo` when `x` is below `lo`, so I changed no production code.**\nThe test never failed.",
+             "**`clamp` now returns `lo`; the test failed first, then passed.**"),
+            ("spec", "invite-plan", "contract: Failure scenarios table",
+             "## Failure cases\n| Case | Detection | Response |\n|---|---|---|\n| Mail send fails | exception | retry |",
+             "## Failure cases\n1. **Mail send fails.** Retry."),
+            ("lessons", "covered", "task: Names why the existing check did not stop the repeat",
+             "It didn't stop the repeat because it is a prose rule with only a partial check behind it.",
+             "The rule is already in `AGENTS.md:3`."),
+        ]
+        for skill, case, text, good, bad in cases:
+            check_spec = spec(skill, case, text)
+            self.assertTrue(passes(check_spec, good), (skill, case, text, good))
+            self.assertFalse(passes(check_spec, bad), (skill, case, text, bad))
 
 
 class Suites(unittest.TestCase):

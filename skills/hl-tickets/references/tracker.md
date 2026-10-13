@@ -6,7 +6,7 @@ A ticket is finished when someone who was in none of the meetings can pick it up
 
 This mode decides how each ticket reads in the target tracker. Take the tree (epics, stories, sub-tasks) from the source when it defines one; otherwise split the source into slices first, as `SKILL.md` describes, and render each slice as a ticket.
 
-The input is the source. No source: pull the spec, issue, or intent from the recent conversation. None there: `No source: pass a spec, an issue URL, or describe the work.` and stop.
+The input is the source. No source: pull the spec, issue, or intent from the recent conversation. None there: line 1 `**No source: pass a spec, an issue URL, or describe the work.**`, then `Verdict: Stopped`, then stop.
 
 Tracker: `--tracker`, else infer from the issue URL or project key, else ask. For Jira, follow [jira.md](jira.md) in steps 1 and 2.
 
@@ -52,4 +52,4 @@ Draft to a file, show it. Create only when the user explicitly asks. One issue a
 
 ## Output
 
-Open with the grounding line (tracker, markup, reference issue, required fields), then draft path and ticket count by type. Close with **Open questions**: every `TBD` plus question, every unobservable convention. Nothing unknown, no section.
+Line 1, bold, one plain sentence: the ticket count by type and the path. Then one plain sentence on what you matched: the tracker, its markup, the reference ticket, the required fields. Say which ones you could not observe; never default them. Then **Open questions**: every `TBD` plus its question, and every convention you could not observe. Nothing unknown, no section. End with `Verdict: Drafted, N tickets`, then `**Next:**`.
