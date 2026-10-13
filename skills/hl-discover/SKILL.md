@@ -80,7 +80,7 @@ End: `Verdict: <word>` on its own line, then `**Next:**`:
 - `Partly mapped (<section>)`: a section failed or was truncated; name it.
 - `Stopped`: the map cannot start yet; see Stopped.
 
-`**Next:**` has one step per line, each something the reader can do now: a command to run, a file to open, a question to answer.
+`**Next:**` has one step per line, each something the reader can do now: a command to run, a file to open, a question to answer. A credential that may be live: step 1 says to rotate it, naming the variable and `file:line`.
 
 Example (plain structure, not a fixed answer):
 
@@ -107,6 +107,7 @@ I read the whole repository at quick depth; I did not install, test, or run proj
 Verdict: Mapped
 
 **Next:**
-1. Run `make test` yourself; discover did not run it.
-2. Open `internal/pricing/hourly.go` first: it holds the uncommitted edits.
+1. Rotate the token in `config/dev.env:3` if it is live.
+2. Run `make test` yourself; discover did not run it.
+3. Open `internal/pricing/hourly.go` first: it holds the uncommitted edits.
 ````

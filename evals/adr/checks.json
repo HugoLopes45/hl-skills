@@ -30,6 +30,11 @@
         "type": "output_not_matches",
         "pattern": "cassandra|cockroach|mysql|redis|sqlite",
         "text": "task: Invents no extra option"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)\\*\\*Next:\\*\\*.*revers",
+        "text": "contract: Next asks to fill the reversal cost"
       }
     ]
   },

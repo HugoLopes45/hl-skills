@@ -226,6 +226,22 @@ class OutputChecks(unittest.TestCase):
             self.assertTrue(passes(ways, once), (skill, case))
             self.assertFalse(passes(ways, twice), (skill, case))
 
+    def test_a_blank_to_fill_is_a_next_step(self):
+        fill = spec("adr", "next-number", "contract: Next asks to fill the reversal cost")
+        self.assertTrue(passes(fill, "Reversal cost is unknown.\nVerdict: Proposed\n\n**Next:**\n1. Fill in the reversal cost.\n2. Save the file."))
+        self.assertFalse(passes(fill, "Reversal cost is unknown.\nVerdict: Proposed\n\n**Next:**\n1. Check the decision.\n2. Save the file."))
+
+    def test_a_live_secret_is_the_first_next_step(self):
+        rotate = spec("discover", "full-pack", "contract: Next step 1 rotates the live token")
+        self.assertTrue(passes(rotate, "x\nVerdict: Mapped\n\n**Next:**\n1. Rotate `LEDGER_TOKEN` now.\n2. Run make test."))
+        self.assertFalse(passes(rotate, "Rotate LEDGER_TOKEN.\nVerdict: Mapped\n\n**Next:**\n1. Run make test.\n2. Rotate the token."))
+
+    def test_a_venue_rule_check_sits_in_the_posting_step(self):
+        rule = spec("launch-marketing", "position-quick", "contract: A venue rule check sits in Next, not only above it")
+        self.assertTrue(passes(rule, "x\nVerdict: Sharp\n\n**Next:**\n1. Read the forum's self-promotion rules, then post the question."))
+        self.assertTrue(passes(rule, "x\nVerdict: Sharp\n\n**Next:**\n1. Post the question."))
+        self.assertFalse(passes(rule, "Check the forum rules first.\nVerdict: Sharp\n\n**Next:**\n1. Post the question."))
+
     def test_tickets_approval_accepts_a_numbered_approve_step(self):
         approval = spec("tickets", "invites", "contract: Asks for approval")
         self.assertTrue(passes(approval, "**Next:**\n1. Approve this breakdown, or name a slice to split or merge."))

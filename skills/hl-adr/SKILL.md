@@ -34,7 +34,7 @@ Reader rules:
 - Write each option as one sentence: what it is and what it costs. Spell out reversal cost at first use.
 - Name each option as the source names it. Options and reasons come only from the input; a missing one stays a placeholder.
 
-End: `**Next:**` with these steps, in order: check the decision and its reason; save the block as the file name in the repository's ADR folder; change `Proposed` to `Accepted` once the team agrees.
+End: `**Next:**` with these steps, in order: when the reversal cost is not stated, fill it in; check the decision and its reason; save the block as the file name in the repository's ADR folder; change `Proposed` to `Accepted` once the team agrees.
 
 ````markdown
 **I drafted the record of the GraphQL choice. Save it as 0004-use-graphql-for-the-mobile-api.md.**
