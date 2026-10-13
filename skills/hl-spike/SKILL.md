@@ -45,11 +45,9 @@ Verdict: Proceed
 1. Measure 200 real photos on the server before choosing Pillow.
 ````
 
-Stopped, when no hypothesis is set: line 1 says what is missing and why the spike cannot start, for example `**I can't start the spike yet: no pass or fail number is set.**`. Then a question that asks for them, then up to 3 numbered ways to unblock, the default marked:
+Stopped, when no hypothesis is set: line 1 says what is missing and why the spike cannot start, for example `**I can't start the spike yet: no pass or fail number is set.**`. Then a question that asks for them, then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, the default marked; they appear nowhere else:
 1. Restate the question as pass and fail numbers, for example "under 2 s" (default).
 2. Name the topic and the time budget, and the skill proposes the hypothesis.
 3. Point to a README that states the question.
-
-Then `Verdict: Stopped`.
 
 No file deliverable unless requested. No `**Changed:**` line: this skill does not write to the project.

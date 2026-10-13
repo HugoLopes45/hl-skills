@@ -21,7 +21,7 @@ Reader: a newcomer to this code who asked to see a flow, a shape, or a change, a
 - `Verdict: Shown` on its own line just before `**Next:**`, or last when there are no next steps.
 - `**Next:**` only when the reader must act now: open the HTML page, or answer one question. Each step names a file as `file:line`, a command, or a question.
 - `**Changed:**` only for the HTML page: its path, or `none`.
-- Nothing to show: line 1 `**There is no topic to show yet. Name the file, flow, or change you want to see.**`, then up to 2 numbered ways out, the default first: 1. Name the topic, for example `show me the login flow` (default). 2. Paste the code or the diff. Then `Verdict: Stopped`.
+- Nothing to show: line 1 `**There is no topic to show yet. Name the file, flow, or change you want to see.**`, then `Verdict: Stopped`, then `**Next:**` with up to 2 numbered ways out, the default first, listed nowhere else: 1. Name the topic, for example `show me the login flow` (default). 2. Paste the code or the diff.
 - Name an unfamiliar view in a few words at first use, for example `call tree (functions in call order)`.
 - Annotations after `#` say what the line means in plain words (`# sends the email`), never a code or rule ID. Counts carry their unit: `4 steps`, not `4`.
 

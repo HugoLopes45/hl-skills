@@ -48,11 +48,11 @@ Verdict: Green
 **Changed:** `rates.py`, commit `4f0b2d1` pushed to PR 41
 ````
 
-Stopped, when the PR or its logs cannot be read: line 1 says what is missing and why it blocks (for example `**I can't read the checks of PR 12, so I can't find the failure.**`). Under it, the plain sentence `I changed nothing.` Then at most 3 numbered ways to unblock, the default marked `(default)`:
+Stopped, when the PR or its logs cannot be read: line 1 says what is missing and why it blocks (for example `**I can't read the checks of PR 12, so I can't find the failure.**`). Under it, the plain sentence `I changed nothing.` Then `Verdict: Stopped`, then `**Next:**` with at most 3 numbered ways to unblock, the default marked `(default)`, listed nowhere else:
 1. Sign in to the GitHub CLI with `gh auth login`, then rerun the skill. (default)
 2. Paste the failing log lines of each check.
 3. Name the PR to use, when the current branch has none.
 
-Then `Verdict: Stopped`, then `**Changed:** none`.
+Then `**Changed:** none`.
 
 Reader rules: name each check as CI shows it. Never write that CI is green without the head and the check list. No blame on the person who broke the check.

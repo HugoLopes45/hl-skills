@@ -67,7 +67,7 @@ Answer:
 - Line 1 is the answer in bold, within 100 characters where possible and never over 140: one plain sentence that answers what the user asked, in their words where possible ("test_report is fine; another test changes the settings it reads."). It never opens with a label, verdict word, rank, ID, count, path, hash, or tool name. No title, heading, or metadata above it.
 - Directly under it, in plain sentences without labels: every finding that alone defeats the goal, every blocker, every precondition of the first step, any security, credential, or data-loss risk seen out of scope (say "outside what you asked"), and what you did not read or run when that limits the answer. Nothing else goes there: how you worked (commands, timings, which agent found what, refs compared) appears once, inside the point it proves, or not at all. Never file an open risk as dismissed.
 - A claim of absence names its coverage in the same sentence: "No injection in the 4 handlers I read; I did not review `admin/`", never "nothing found".
-- Stopped, input needed: line 1 says in plain words what is missing and why it blocks ("**I need the error message before I can look for the cause.**"), then at most 3 numbered ways to unblock, the default marked, then `Verdict: Stopped`.
+- Stopped, input needed: line 1 says in plain words what is missing and why it blocks ("**I need the error message before I can look for the cause.**"), then `Verdict: Stopped`. `**Next:**` holds at most 3 numbered ways to unblock, the default marked; they appear nowhere else.
 - Several agents or lenses: line 1 states where they agree and where they split; then the disagreements; per-agent detail last, without repeating shared findings.
 
 Body:

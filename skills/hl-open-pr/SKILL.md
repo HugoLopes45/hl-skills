@@ -35,7 +35,7 @@ Before `**Next:**`, one line: `Verdict: <word>`, one of:
 - `Opened, as draft` (or `Opened, ready`): the pull request exists.
 - `Preview`: `--dry-run`. The text is printed; nothing was pushed or created. If the remote or `gh` could not be checked, say the text is a draft written from the diff, not a tool preview.
 - `Already open`: a pull request for this branch exists. Stop.
-- `Stopped`: the base is the current branch, the diff is empty, local and remote branches diverged, or the GitHub command-line tool (`gh`) is missing. Line 1 names which one and what it blocks. Before the verdict, at most 3 numbered ways to unblock, default marked. Do not print the body.
+- `Stopped`: the base is the current branch, the diff is empty, local and remote branches diverged, or the GitHub command-line tool (`gh`) is missing. Line 1 names which one and what it blocks. `**Next:**` holds at most 3 numbered ways to unblock, default marked; they appear nowhere else. Do not print the body.
 
 Printed or previewed: `## Pull request text`, then the title and body in a `markdown` fence, complete. The body is the exact artifact; never shorten it to fit the reply.
 

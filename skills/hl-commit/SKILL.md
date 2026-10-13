@@ -36,7 +36,7 @@ Before `**Next:**`, one line: `Verdict: <word>`, one of:
 
 Committed or previewed: `## Commit message`, then the message in a `text` fence. Never reflow it.
 
-Stopped with a choice to make: before the verdict, at most 3 numbered options, default marked. For mixed concerns, show the files as a tree, one concern per entry:
+Stopped with a choice to make: `**Next:**` holds at most 3 numbered options, default marked; they appear nowhere else. For mixed concerns, before the verdict, show the files as a tree, one concern per entry:
 
 ```text
 invoice/tax.py    # fix: round tax per line
@@ -78,11 +78,9 @@ Stopped example:
 **Nothing is staged, so there is nothing to commit yet.**
 `invoice/tax.py` has changes, but they are not added for the next commit.
 
-1. Add the file, then ask again: `git add invoice/tax.py` (default).
-2. Stop; nothing changes.
-
 Verdict: Stopped
 
 **Next:**
-1. Reply `1` to add the file, or `2` to stop.
+1. Add the file, then ask again: `git add invoice/tax.py` (default).
+2. Stop; nothing changes.
 ````

@@ -98,6 +98,11 @@
         "type": "output_matches",
         "pattern": "^\\W*Verdict:\\W*stopped",
         "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },
@@ -171,6 +176,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|done|not done|verified|not verified|inconclusive|supported|partly supported|corrected|nothing to check)\\b)",
         "text": "contract: First line opens with no label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

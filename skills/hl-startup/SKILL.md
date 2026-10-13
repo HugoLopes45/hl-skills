@@ -52,8 +52,8 @@ End with `Verdict: <word>` on its own line, one per mode:
 
 Then `**Next:**`, one step per line, each something the founder can do now. A stage run ends with "Reply `next` to run the Competition stage."
 
-Stopped: line 1 says in plain words what is missing and why it blocks; then up to 3 numbered ways to unblock, default marked; then `Verdict: Stopped`:
-- No idea given: `**I need your product idea before I can evaluate it; the request does not describe one.**`, then 1. Which idea, in one line, and who pays for it? (default). 2. Run `scout` to find ideas first.
+Stopped: line 1 says in plain words what is missing and why it blocks; then `Verdict: Stopped`; then `**Next:**` with up to 3 numbered ways to unblock, default marked, listed nowhere else:
+- No idea given: `**I need your product idea before I can evaluate it; the request does not describe one.**`, then in Next: 1. Which idea, in one line, and who pays for it? (default). 2. Run `scout` to find ideas first.
 
 Reader rules:
 - Define each term once: MRR (monthly recurring revenue), churn (customers who cancel), CAC (cost to win one paying customer), LTV (profit one customer brings over their time), MVP (smallest test that answers one question), cohort (customers who signed up in the same period), pivot (change the customer or problem, keep some assets), sunk cost (money and time already spent).

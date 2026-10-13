@@ -77,7 +77,7 @@ Body by mode, numbered points unless the view says otherwise:
 
 End with `**Next:**`, one step per line: the post to publish, the message to send, the number to measure.
 
-Stopped: line 1 says in plain words what is missing and why it blocks. Then up to 3 numbered ways to unblock, default marked, then `Verdict: Stopped`. Example:
+Stopped: line 1 says in plain words what is missing and why it blocks. Then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, default marked, listed nowhere else. Example Next:
 1. Which product, in one line, and at what stage: pre-launch, launched, or flat revenue? (default)
 2. Name the venue you already use, if any.
 

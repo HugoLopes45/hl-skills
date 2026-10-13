@@ -60,7 +60,7 @@ Reader: someone who asked for a short video and will watch or share it, without 
 - `**Next:**` the steps a person takes now: watch the MP4 with sound; for a failed step, the fix.
 - `**Changed:**` the temp directory, which holds the script, scene file, audio, captions, and MP4, and the MP4 path. The repository is not touched.
 
-Stopped cases: a bold line 1 in plain words, then up to 2 numbered ways out, the default first, then `Verdict: Stopped`:
+Stopped cases: a bold line 1 in plain words, then `Verdict: Stopped`, then `**Next:**` with up to 2 numbered ways out, the default first, listed nowhere else:
 - No topic: `**I need a topic before I can make the video. What should it explain, and how long?**`
   1. Name the topic and length, for example `a 20-second video on compound interest` (default).
 - Paid voice without a key or cost approval: `**I can't make the paid voice yet: no API key is set, and the cost needs your approval.**`

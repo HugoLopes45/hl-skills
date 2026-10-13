@@ -28,6 +28,18 @@ def passes(check_spec, output, run=None):
     return check.run_check(check_spec, output, None, None, run or check.Run([]))[0]
 
 
+STOPPED_CASES = [
+    ("adr", "no-decision"), ("challenge", "lens-no-target"), ("checkpoint", "no-rule"), ("ci-fix", "no-access"),
+    ("code-review", "pr-blocked"), ("commit", "nothing-staged"), ("commit", "mixed-concerns"), ("commit", "ticket-hook"),
+    ("debug", "no-symptom"), ("discover", "discover-nogit"), ("discover", "scope-ambiguous"),
+    ("explainer-video", "video-no-topic"), ("explainer-video", "video-paid-voice"), ("grill", "no-idea"), ("grill", "nothing"),
+    ("improve", "refactor-none"), ("launch-marketing", "landing-nothing"), ("open-pr", "no-gh"), ("open-pr", "on-base"),
+    ("receive-review", "no-review"), ("show-me", "show-nothing"), ("spec", "plan-nothing"), ("spike", "spike-undefined"),
+    ("tdd", "no-behavior"), ("tdd", "seam-missing"), ("tickets", "tracker-none"), ("verify", "claim-no-threshold"),
+    ("verify", "text-none"), ("writing-for-agents", "prompt-empty"),
+]
+
+
 class CommandOracles(unittest.TestCase):
     def ran(self, *commands):
         return check.Run([("Bash", {"command": c}) for c in commands])
@@ -204,6 +216,15 @@ class OutputChecks(unittest.TestCase):
             ask = spec(skill, case, text)
             self.assertTrue(passes(ask, good), case)
             self.assertFalse(passes(ask, "Verdict: Stopped\n1. Change `>` to `>=`. (default)"), case)
+
+    def test_stopped_ways_to_unblock_appear_once_in_next(self):
+        once = "**I need the prompt before I can tune it.**\nVerdict: Stopped\n\n**Next:**\n1. Paste the prompt (default).\n2. Give its path."
+        twice = ("**I need the prompt before I can tune it.**\n1. Paste the prompt (default).\n2. Give its path.\n\n"
+                 "Verdict: Stopped\n\n**Next:**\n1. Paste the prompt.")
+        for skill, case in STOPPED_CASES:
+            ways = spec(skill, case, "contract: Ways to unblock appear once, in Next")
+            self.assertTrue(passes(ways, once), (skill, case))
+            self.assertFalse(passes(ways, twice), (skill, case))
 
     def test_tickets_approval_accepts_a_numbered_approve_step(self):
         approval = spec("tickets", "invites", "contract: Asks for approval")

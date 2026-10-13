@@ -121,6 +121,11 @@
         "type": "output_matches",
         "pattern": "\\*\\*Changed:\\*\\*",
         "text": "contract: Changed line present, after Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },
@@ -181,6 +186,11 @@
         "type": "output_matches",
         "pattern": "\\*\\*Changed:\\*\\*",
         "text": "contract: Changed line present, after Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

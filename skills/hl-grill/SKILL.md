@@ -77,7 +77,7 @@ Line 1, bold, one plain sentence in everyday words. The reply ends with `Verdict
 
 Views: a table of three short columns for three or more options, with the question naming both options when there are two. No codes such as Q1: number the questions 1, 2, 3.
 
-Stopped, nothing to work on: `**I need an idea, a problem, a plan, or a file to work on: what do you want to build?**` Then up to 3 numbered ways, default marked: a sentence such as "a CLI that does X" (default); a path to a written plan or spec; `--gaps` to list what a plan misses. Then `Verdict: Stopped`.
+Stopped, nothing to work on: `**I need an idea, a problem, a plan, or a file to work on: what do you want to build?**` Then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways, default marked, listed nowhere else: a sentence such as "a CLI that does X" (default); a path to a written plan or spec; `--gaps` to list what a plan misses.
 
 Reader rules:
 - Say "decision" and "option", not "frontier", "prerequisite", or "design tree".

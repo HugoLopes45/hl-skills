@@ -28,7 +28,7 @@ End with `Verdict: <word>` on its own line, then `**Next:**`:
 - `Proposed`: a draft the team has not agreed to.
 - `Stopped`: no decision to record.
 
-Stopped, no decision: line 1 says in plain words what is missing and why it blocks: `**I need the decision before I can draft the record: what was chosen, and why.**` Then `Verdict: Stopped`, then `Send one of these:` and up to 3 numbered ways, default marked: a sentence such as "we chose X over Y because Z" (default); a path to meeting notes or a pull request. Naming the options you rejected also helps; the record shows only the ones you name.
+Stopped, no decision: line 1 says in plain words what is missing and why it blocks: `**I need the decision before I can draft the record: what was chosen, and why.**` Then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to send it, default marked, listed nowhere else: a sentence such as "we chose X over Y because Z" (default); a path to meeting notes or a pull request. Naming the options you rejected also helps; the record shows only the ones you name.
 
 Reader rules:
 - Write each option as one sentence: what it is and what it costs. Spell out reversal cost at first use.

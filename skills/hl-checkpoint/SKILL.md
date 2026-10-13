@@ -53,7 +53,7 @@ Saved:
 - `## Leftover changes`: a file tree of changes from failed attempts.
 - One sentence names the input the attempts got wrong, from the files you read.
 
-Stopped: line 1 says what is missing and why it blocks. Then the question as one sentence, then at most 3 numbered options, default marked, then the verdict.
+Stopped: line 1 says what is missing and why it blocks. Then the question as one sentence, then the verdict. `**Next:**` holds at most 3 numbered options, default marked; they appear nowhere else.
 
 `**Next:**` holds the steps, in order. Then `**Changed:**` names the handoff file, or `none`.
 

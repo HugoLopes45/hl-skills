@@ -23,7 +23,7 @@ Reader: someone who asked for a prompt or a skill, and will paste or save the re
   - `Stopped`: input is missing. See below.
 - `**Next:**` holds the steps a person takes now, in order.
 - `**Changed:** <path>` in skill mode: the saved file, or `none`.
-- Missing input: line 1 says what is missing and why it blocks; then up to 2 numbered ways out, the default first; then `Verdict: Stopped`. Prompt mode: `**I need the prompt before I can tune it. Send its text or its file path.**` 1. Paste the prompt or give its path (default). 2. Describe the task in one sentence.
+- Missing input: line 1 says what is missing and why it blocks; then `Verdict: Stopped`; then `**Next:**` with up to 2 numbered ways out, the default first, listed nowhere else. Prompt mode: `**I need the prompt before I can tune it. Send its text or its file path.**`, then in Next: 1. Paste the prompt or give its path (default). 2. Describe the task in one sentence.
 - Human-facing prose: define `verifier` once as the check that proves the task is done.
 
 The example below fixes the shape of a skill-mode reply, not its content.
