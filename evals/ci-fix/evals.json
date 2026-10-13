@@ -1,5 +1,5 @@
 {
-  "skill_name": "ci-fix",
+  "skill_name": "hl-ci-fix",
   "evals": [
     {
       "id": "no-access",

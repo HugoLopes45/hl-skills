@@ -1,5 +1,5 @@
 {
-  "skill_name": "security-audit",
+  "skill_name": "hl-security-audit",
   "evals": [
     {
       "id": "vuln",

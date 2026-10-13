@@ -3,7 +3,7 @@
 # Runs the suite with and without the skill in Claude Code.
 # User-level settings, skills, commands, and CLAUDE.md are excluded so the baseline is a bare agent.
 # EVAL_SKILLS: directory holding the skills under test (default: the repository's skills/).
-# EVAL_SKILL: skill to install when it differs from the suite name.
+# EVAL_SKILL: skill to install when it is not hl-<suite>.
 # gh, jira, and acli are stubs that fail. A case fixture .eval-setup.sh runs in the workspace before the agent.
 # A suite with repo.sh gets a git repository built by `repo.sh <dir> <skills dir>` as every workspace.
 set -eu
@@ -45,7 +45,7 @@ if [ -f "$root/evals/$suite/repo.sh" ]; then
   set -- --source-repo "$repo" "$@"
 fi
 PATH="$shim:$PATH" uvx --from agent-skill-eval==0.7.0 agent-skill-eval run \
-  --skill "$skills/${EVAL_SKILL:-$suite}" --evals "$root/evals/$suite/evals.json" \
+  --skill "$skills/${EVAL_SKILL:-hl-$suite}" --evals "$root/evals/$suite/evals.json" \
   --agent claude-code --agent-model "claude-code=${EVAL_MODEL:-sonnet}" \
   --workspace "${EVAL_WORKSPACE:-/tmp/hl-evals}" \
   --post-grade-command "PATH='$PATH' python3 '$root/evals/check.py'" \

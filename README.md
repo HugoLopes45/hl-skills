@@ -21,7 +21,7 @@ npx skills add HugoLopes45/hl-skills
 
 1. Install: `npx skills add HugoLopes45/hl-skills`. The CLI finds your agents and asks which skills you want.
 2. Talk to your agent as usual: *"Why does this test fail?"* The matching skill loads by itself.
-3. Or call one by name: *"use code-review on this branch"*, `/code-review` in Claude Code, `$code-review` in Codex. [Each agent](#your-agent) has its own syntax.
+3. Or call one by name: *"use hl-code-review on this branch"*, `/hl-code-review` in Claude Code, `$hl-code-review` in Codex. [Each agent](#your-agent) has its own syntax.
 
 That is all. No config, no server, no API key.
 
@@ -33,7 +33,7 @@ Real answers from the skills, trimmed with `[...]` and wrapped to fit.
 
 > test_report.py passes when I run it alone but fails in the full suite, and CI is red. Something in test_report must be wrong. Find out what.
 
-`debug` does not trust the guess. It finds the test that pollutes the other one, proves it, and leaves your files untouched:
+`hl-debug` does not trust the guess. It finds the test that pollutes the other one, proves it, and leaves your files untouched:
 
 <details open>
 <summary>Answer</summary>
@@ -68,7 +68,7 @@ I haven't edited the repo. Want me to apply the fix with that regression test?
 
 > `./run.sh --retries 5` gives up after 4 attempts instead of 6. The retry loop in client.py must be off by one. Find the cause and fix it.
 
-Ask for the fix and `debug` writes a failing test first, then the smallest change:
+Ask for the fix and `hl-debug` writes a failing test first, then the smallest change:
 
 <details>
 <summary>Answer</summary>
@@ -95,7 +95,7 @@ The same bug affected --timeout and is fixed by the same change.
 
 > Poke holes in plan.md before I build it.
 
-`challenge` checks each claim of the plan against your code:
+`hl-challenge` checks each claim of the plan against your code:
 
 <details>
 <summary>Answer</summary>
@@ -127,7 +127,7 @@ Decisions for you
 
 > Review this branch against origin/main.
 
-`code-review` gives each finding a location, a trigger, and what it breaks:
+`hl-code-review` gives each finding a location, a trigger, and what it breaks:
 
 <details>
 <summary>Answer</summary>
@@ -146,70 +146,72 @@ Not run: tests, and --deep, --cold and --spec.
 
 ```mermaid
 flowchart LR
-  discover --> grill --> spec --> challenge --> tickets --> tdd --> review["code-review"] --> verify --> commit --> pr["open-pr"]
-  debug -. "something breaks" .-> tdd
+  discover["hl-discover"] --> grill["hl-grill"] --> spec["hl-spec"] --> challenge["hl-challenge"] --> tickets["hl-tickets"] --> tdd["hl-tdd"] --> review["hl-code-review"] --> verify["hl-verify"] --> commit["hl-commit"] --> pr["hl-open-pr"]
+  debug["hl-debug"] -. "something breaks" .-> tdd
 ```
 
 Use any skill alone, or chain them:
 
-- **Idea to pull request:** `grill`, `spec`, `challenge`, `tdd` for each behavior, `code-review`, `verify`, `commit`, `open-pr`.
-- **Production bug:** `debug` to prove the cause, then ask it for the fix.
-- **Before a risky merge:** `code-review --deep`, then `deslop`.
-- **Inherited codebase:** `discover --depth full`, then `improve arch`, then `improve`.
-- **Startup idea:** `startup scout` without an idea, `startup` to evaluate one, `startup ship` or `startup kill` after launch.
+- **Idea to pull request:** `hl-grill`, `hl-spec`, `hl-challenge`, `hl-tdd` for each behavior, `hl-code-review`, `hl-verify`, `hl-commit`, `hl-open-pr`.
+- **Production bug:** `hl-debug` to prove the cause, then ask it for the fix.
+- **Before a risky merge:** `hl-code-review --deep`, then `hl-deslop`.
+- **Inherited codebase:** `hl-discover --depth full`, then `hl-improve arch`, then `hl-improve`.
+- **Startup idea:** `hl-startup scout` without an idea, `hl-startup` to evaluate one, `hl-startup ship` or `hl-startup kill` after launch.
 
 ## All 26 skills
+
+Every name starts with `hl-`, so no skill replaces a command your agent ships with, such as `/debug` in Claude Code.
 
 ### Build
 
 | Say | Skill | You get |
 |---|---|---|
-| "Where do I start in this repo?" | `discover` | Purpose, stack, git state, and the real build and test commands; `--scope` maps one area |
-| "Grill me on the export idea" | `grill` | Rounds of questions, each with a recommended answer; `--gaps` lists what a spec leaves unsaid |
-| "Plan the export feature" | `spec` | Scope, acceptance criteria, assumptions, failure scenarios; `--prd` writes a full product spec |
-| "Poke holes in this plan" | `challenge` | Each claim checked against code: proceed, fix first, or stop; `--premortem`, `--lens`, [`--panel`](./skills/challenge/references/lenses.md) |
-| "Build it test-first" | `tdd` | A test that fails for the right reason, then the smallest change |
-| "Why does this fail?" | `debug` | The cause, proven; on request, the fix behind a regression test |
-| "Review this branch" | `code-review` | Findings with location, trigger, and consequence; `--deep` adds parallel reviewers |
-| "Clean up this AI-written diff" | `deslop` | Slop and invented APIs removed from the change |
-| "Are we done?" | `verify` | One row per request: passed, failed, unverified, or blocked |
-| "Commit this" | `commit` | A message written from the staged diff, then the commit |
-| "Open a PR" | `open-pr` | A draft pull request with why, changes, verification, and risks |
-| "Save where we are" | `checkpoint` | Decisions and next action before a context reset; `--stuck` breaks a loop |
+| "Where do I start in this repo?" | `hl-discover` | Purpose, stack, git state, and the real build and test commands; `--scope` maps one area |
+| "Grill me on the export idea" | `hl-grill` | Rounds of questions, each with a recommended answer; `--gaps` lists what a spec leaves unsaid |
+| "Plan the export feature" | `hl-spec` | Scope, acceptance criteria, assumptions, failure scenarios; `--prd` writes a full product spec |
+| "Poke holes in this plan" | `hl-challenge` | Each claim checked against code: proceed, fix first, or stop; `--premortem`, `--lens`, [`--panel`](./skills/hl-challenge/references/lenses.md) |
+| "Build it test-first" | `hl-tdd` | A test that fails for the right reason, then the smallest change |
+| "Why does this fail?" | `hl-debug` | The cause, proven; on request, the fix behind a regression test |
+| "Review this branch" | `hl-code-review` | Findings with location, trigger, and consequence; `--deep` adds parallel reviewers |
+| "Clean up this AI-written diff" | `hl-deslop` | Slop and invented APIs removed from the change |
+| "Are we done?" | `hl-verify` | One row per request: passed, failed, unverified, or blocked |
+| "Commit this" | `hl-commit` | A message written from the staged diff, then the commit |
+| "Open a PR" | `hl-open-pr` | A draft pull request with why, changes, verification, and risks |
+| "Save where we are" | `hl-checkpoint` | Decisions and next action before a context reset; `--stuck` breaks a loop |
 
 ### Decide and explain
 
 | Say | Skill | You get |
 |---|---|---|
-| "Show me how auth works" | `show-me` | A diagram, a tree, pseudocode, or an interactive HTML page |
-| "Make a short video explaining CRDTs" | `explainer-video` | A narrated explainer video, with a local voice by default |
-| "Can SQLite handle our write load?" | `spike` | A time-boxed experiment that answers one question |
-| "Write an ADR for moving to Postgres" | `adr` | A decision record with options and the cost of reversal |
+| "Show me how auth works" | `hl-show-me` | A diagram, a tree, pseudocode, or an interactive HTML page |
+| "Make a short video explaining CRDTs" | `hl-explainer-video` | A narrated explainer video, with a local voice by default |
+| "Can SQLite handle our write load?" | `hl-spike` | A time-boxed experiment that answers one question |
+| "Write an ADR for moving to Postgres" | `hl-adr` | A decision record with options and the cost of reversal |
 
 ### Audit
 
 | Say | Skill | You get |
 |---|---|---|
-| "Audit this app for security issues" | `security-audit` | Untrusted input traced to dangerous sinks, scored by CWE and CVSS |
-| "What should we fix first?" | `improve` | Ranked fixes as plans another agent can run; `arch` and `refactor` modes |
+| "Audit this app for security issues" | `hl-security-audit` | Untrusted input traced to dangerous sinks, scored by CWE and CVSS |
+| "What should we fix first?" | `hl-improve` | Ranked fixes as plans another agent can run; `arch` and `refactor` modes |
 
 ### Ship
 
 | Say | Skill | You get |
 |---|---|---|
-| "Split this into tickets" | `tickets` | End-to-end slices, one pull request each; `--tracker` for Jira, Linear, GitHub, GitLab |
-| "This PR is too big" | `split-pr` | Smaller pull requests in dependency order |
-| "CI is red" | `ci-fix` | Failing checks fixed without weakening tests or CI |
-| "Handle these review comments" | `receive-review` | Agree, defer, disagree, or clarify for each comment |
-| "What did we learn here?" | `lessons` | Checks, rules, or pointers, cheapest first |
-| "Write a skill for our deploy process" | `writing-for-agents` | The shortest prompt or skill that gets the behavior |
+| "Split this into tickets" | `hl-tickets` | End-to-end slices, one pull request each; `--tracker` for Jira, Linear, GitHub, GitLab |
+| "This PR is too big" | `hl-split-pr` | Smaller pull requests in dependency order |
+| "CI is red" | `hl-ci-fix` | Failing checks fixed without weakening tests or CI |
+| "Handle these review comments" | `hl-receive-review` | Agree, defer, disagree, or clarify for each comment |
+| "What did we learn here?" | `hl-lessons` | Checks, rules, or pointers, cheapest first |
+| "Write a skill for our deploy process" | `hl-writing-for-agents` | The shortest prompt or skill that gets the behavior |
 
 ### Product
 
 | Say | Skill | You get |
 |---|---|---|
-| "Is this startup idea worth it?" | `startup` | Problem, competition, first customers, MVP test: go, pivot, or stop |
-| "Write our launch page" | `launch-marketing` | Positioning, landing copy, launch plan, channels, pricing |
+| "Is this startup idea worth it?" | `hl-startup` | Problem, competition, first customers, MVP test: go, pivot, or stop |
+| "Write our launch page" | `hl-launch-marketing` | Positioning, landing copy, launch plan, channels, pricing |
 
 ## Install, update, remove
 
@@ -219,16 +221,16 @@ The installer is the [`skills`](https://github.com/vercel-labs/skills) CLI. Comm
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
 npx skills add HugoLopes45/hl-skills --list                 # see the 26 skills first
-npx skills add HugoLopes45/hl-skills -s debug -s tdd        # only some skills
+npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)
-npx skills use HugoLopes45/hl-skills@tdd                    # print one skill as a prompt, install nothing
+npx skills use HugoLopes45/hl-skills@hl-tdd                 # print one skill as a prompt, install nothing
 
 # Manage (add -g for global skills)
-npx skills list                    # what is installed, and for which agents
-npx skills update debug tdd        # update these skills
-npx skills remove -s tdd           # remove one skill
-npx skills remove --all            # remove every skill
+npx skills list                     # what is installed, and for which agents
+npx skills update hl-debug hl-tdd   # update these skills
+npx skills remove -s hl-tdd         # remove one skill
+npx skills remove --all             # remove every skill
 ```
 
 `npx skills update` without names updates every skill in that scope, from every source, not only this repo.
@@ -256,20 +258,19 @@ Each agent reads skills from its own folders. Links go to the official docs.
 
 | Agent | Project folder | Global folder | Call a skill | Reload | Checked |
 |---|---|---|---|---|---|
-| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/` | `~/.claude/skills/` | `/debug` | `/reload-skills` | 2.1.295 |
-| [Codex](https://developers.openai.com/codex/skills) | `.agents/skills/` | `~/.agents/skills/` | `$debug` or `/skills` | restart | 0.162.1 |
-| [Cursor](https://cursor.com/docs/skills) | `.agents/skills/` | `~/.agents/skills/` | `/debug` in Agent chat | restart | docs only |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/` | `~/.claude/skills/` | `/hl-debug` | `/reload-skills` | 2.1.295 |
+| [Codex](https://developers.openai.com/codex/skills) | `.agents/skills/` | `~/.agents/skills/` | `$hl-debug` or `/skills` | restart | 0.162.1 |
+| [Cursor](https://cursor.com/docs/skills) | `.agents/skills/` | `~/.agents/skills/` | `/hl-debug` in Agent chat | restart | docs only |
 | [Gemini CLI](https://geminicli.com/docs/cli/skills/) | `.agents/skills/` | `~/.agents/skills/` | by description | `/skills reload` | 0.63.0 |
-| [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) | `.agents/skills/` | `~/.agents/skills/` | `/debug` | `/skills reload` | 1.0.14 |
+| [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) | `.agents/skills/` | `~/.agents/skills/` | `/hl-debug` | `/skills reload` | 1.0.14 |
 | [OpenCode](https://opencode.ai/docs/skills/) | `.agents/skills/` | `~/.agents/skills/` | by description | restart | 1.19.0 |
-| [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) | `.agents/skills/` | `~/.agents/skills/` | `/skill:debug` | `/reload` | 1.2.0 |
+| [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) | `.agents/skills/` | `~/.agents/skills/` | `/skill:hl-debug` | `/reload` | 1.2.0 |
 
 "Checked": the version that loaded skills from both folders in a test on macOS.
 
 ### If a skill does not show up
 
 - **Claude Code**: a personal skill or a `~/.claude/commands/<name>.md` file with the same name wins over the project skill. Rename or remove it, then check with `/skills`.
-- **Claude Code**: `debug`, `code-review`, and `verify` replace the bundled commands with the same name. Bundled aliases such as `/review` still run the bundled command.
 - **Gemini CLI and Pi**: project skills load only in a trusted folder. Accept the trust prompt.
 - **Gemini CLI**: needs a recent version. 0.17 has no `gemini skills` command; 0.63.0 works.
 - **Any agent**: start a new session after you install.

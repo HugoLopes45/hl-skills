@@ -30,8 +30,8 @@ class RunPasses(unittest.TestCase):
 
 class IterationDir(unittest.TestCase):
     def test_uses_the_skill_name_of_the_suite(self):
-        self.assertEqual(report.iteration_dir(report.Path("/w"), "routing", "10"), report.Path("/w/debug-workspace/iteration-10"))
-        self.assertEqual(report.iteration_dir(report.Path("/w"), "tdd", "3"), report.Path("/w/tdd-workspace/iteration-3"))
+        self.assertEqual(report.iteration_dir(report.Path("/w"), "routing", "10"), report.Path("/w/hl-debug-workspace/iteration-10"))
+        self.assertEqual(report.iteration_dir(report.Path("/w"), "tdd", "3"), report.Path("/w/hl-tdd-workspace/iteration-3"))
 
 
 class RunResults(unittest.TestCase):

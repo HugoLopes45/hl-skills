@@ -1,5 +1,5 @@
 {
-  "skill_name": "receive-review",
+  "skill_name": "hl-receive-review",
   "evals": [
     {
       "id": "mixed",

@@ -6,7 +6,7 @@ body:
     id: skill
     attributes:
       label: Skill
-      description: Skill name, for example code-review.
+      description: Skill name, for example hl-code-review.
     validations:
       required: true
   - type: input

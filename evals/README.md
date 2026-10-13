@@ -16,25 +16,27 @@ Requirements: `uvx`, an authenticated `claude` CLI, and `pytest` on `PATH`. A ru
 | `EVAL_MODEL` | `sonnet` | Agent model |
 | `EVAL_WORKSPACE` | `/tmp/hl-evals` | Run output directory |
 | `EVAL_SKILLS` | `skills/` | Skills root, for example an older copy to measure a change |
-| `EVAL_SKILL` | suite name | Skill to install, when it differs from the suite name |
+| `EVAL_SKILL` | `hl-<suite>` | Skill to install, when it is not `hl-<suite>` |
 | `EVAL_MAX_COST` | `1.5` | Cost cap per case in USD |
 
 Natural triggering, with every skill installed and no skill named:
 
 ```bash
-EVAL_SKILL=debug EVAL_WORKSPACE=/tmp/hl-evals-routing evals/run.sh routing --runs 3 --concurrency 3 --no-baseline
+EVAL_SKILL=hl-debug EVAL_WORKSPACE=/tmp/hl-evals-routing evals/run.sh routing --runs 3 --concurrency 3 --no-baseline
 python3 evals/report.py /tmp/hl-evals-routing routing:1 --failures
 ```
 
 ## Layout
 
+A suite is named after its skill without the `hl-` prefix: suite `debug` tests `hl-debug`.
+
 | Path | Content |
 |---|---|
-| `<skill>/evals.json` | Cases in the [agent-skill-eval](https://pypi.org/project/agent-skill-eval/) format |
-| `<skill>/files/<fixture>/` | Files copied into the agent workspace |
-| `<skill>/files/<fixture>/.eval-setup.sh` | Optional: shell script that builds the case's git state (branches, commits, staged changes) in the workspace, then is deleted before the agent starts |
-| `<skill>/checks.json` | Deterministic checks for each case |
-| `<skill>/repo.sh` | Optional: builds a git repository for the cases, passed as `--source-repo` |
+| `<suite>/evals.json` | Cases in the [agent-skill-eval](https://pypi.org/project/agent-skill-eval/) format |
+| `<suite>/files/<fixture>/` | Files copied into the agent workspace |
+| `<suite>/files/<fixture>/.eval-setup.sh` | Optional: shell script that builds the case's git state (branches, commits, staged changes) in the workspace, then is deleted before the agent starts |
+| `<suite>/checks.json` | Deterministic checks for each case |
+| `<suite>/repo.sh` | Optional: builds a git repository for the cases, passed as `--source-repo` |
 | `check.py` | Post-grade hook that runs the checks |
 | `report.py` | Pass counts per skill, check kind, and configuration |
 
@@ -47,7 +49,7 @@ Output checks read the final answer. Process checks (`ran`, `not_ran`, `ran_befo
 
 Task checks accept any wording of the right outcome, such as "valid, fix it" for agree. Checks that need the skill's vocabulary or format are contract checks.
 
-`gh`, `jira`, and `acli` are stubs that fail, `GH_TOKEN`, `GITHUB_TOKEN`, and every `JIRA*` and `ATLASSIAN*` variable are unset, and the `gh` config directory is empty, so no run reaches a real GitHub or Jira account. Claude auto memory is off: it is keyed by workspace path, and paths repeat across iterations, so memory from one run could leak into the next. `open-pr` and `ci-fix` cases cover `--dry-run`, refusals, and the stop when GitHub is unreachable.
+`gh`, `jira`, and `acli` are stubs that fail, `GH_TOKEN`, `GITHUB_TOKEN`, and every `JIRA*` and `ATLASSIAN*` variable are unset, and the `gh` config directory is empty, so no run reaches a real GitHub or Jira account. Claude auto memory is off: it is keyed by workspace path, and paths repeat across iterations, so memory from one run could leak into the next. `hl-open-pr` and `hl-ci-fix` cases cover `--dry-run`, refusals, and the stop when GitHub is unreachable.
 
 Eval ids must be unique across suites: agent-skill-eval names each agent workspace after the eval id only, so two suites with the same id corrupt each other when run in parallel. A unit test enforces it.
 
@@ -55,7 +57,7 @@ A bare agent is not expected to meet a skill's contract. The task checks show wh
 
 ## Results
 
-Claude Code 2.1.295, `sonnet`, agent-skill-eval 0.7.0, 3 repetitions per case and configuration. Iteration 45 for `challenge`; iteration 43 for `grill`, `launch-marketing`, `spike`, `startup`, `tickets`, and `verify`, rerun after their checks changed; iteration 41 for `explainer-video`, after the shell fix below; iteration 40 for the rest. Auto memory was off. Runs passing, with the skill against a bare agent:
+Claude Code 2.1.295, `sonnet`, agent-skill-eval 0.7.0, 3 repetitions per case and configuration. Iteration 45 for `hl-challenge`; iteration 43 for `hl-grill`, `hl-launch-marketing`, `hl-spike`, `hl-startup`, `hl-tickets`, and `hl-verify`, rerun after their checks changed; iteration 41 for `hl-explainer-video`, after the shell fix below; iteration 40 for the rest. Auto memory was off. Runs passing, with the skill against a bare agent:
 
 | Skill | Task with | Task without | p | Contract with | Contract without | p |
 |---|---|---|---|---|---|---|
@@ -86,28 +88,28 @@ Claude Code 2.1.295, `sonnet`, agent-skill-eval 0.7.0, 3 repetitions per case an
 | verify | 15/15 | 10/15 | 0.021 | 12/12 | 3/12 | <0.001 |
 | writing-for-agents | 9/9 | 6/9 | 0.103 | 12/12 | 0/12 | <0.001 |
 
-Remaining failures with the skill, iteration 45: `challenge` 2 of 18 contract runs. One `finished-work` run wrote `stop`, then corrected itself to `fix first` in the same line; the rule now says to settle the verdict before writing it. One `lens-pick` quick answer ran 382 words, over the 360-word margin. Iteration 46, with the skill only, on the five cases that had contract checks then: 15 of 15 contract runs, quick answers 247 to 340 words.
+Remaining failures with the skill, iteration 45: `hl-challenge` 2 of 18 contract runs. One `finished-work` run wrote `stop`, then corrected itself to `fix first` in the same line; the rule now says to settle the verdict before writing it. One `lens-pick` quick answer ran 382 words, over the 360-word margin. Iteration 46, with the skill only, on the five cases that had contract checks then: 15 of 15 contract runs, quick answers 247 to 340 words.
 
 Fixes driven by these runs:
-- `verify` judged a requirement the task never stated (2 of 3 runs). It now judges stated requirements only.
-- `adr` wrote Accepted from "we chose", and numbered a file with no ADR sequence. It now needs a recorded approval, says the number is unknown, and keeps `<NNNN>`.
-- `commit` added the host's `Co-Authored-By` trailer in 1 of 3 runs. It now names that trailer and overrides the host default.
-- `grill` stopped triggering on "three ways to add retries, with trade-offs" after a rewrite. Its description leads with options again. It also records forced decisions as assumed instead of asking again.
-- `commit`, `adr`, and `challenge` put a status line before the required first line. Each now says the first line comes with no preamble.
-- `security-audit` did not trigger on an audit request phrased around user input. Its description now names that case.
-- `spike` gave a verdict before a success threshold existed. It now asks without a verdict.
-- `tickets` searched the environment for a Jira token, then counted `JIRA*` variables after a first fix. It now uses only access already set up, never reads the environment to find a credential, and reports no access otherwise.
-- `challenge` answered `stop` for a small missing requirement. The verdict rules now say that a small fix is `fix first`.
-- `writing-for-agents` rewrote an existing skill that covered the job, and wrote `Use before` instead of `Use when`. It now never rewrites a skill it was not given, and checks for the exact words.
-- Word limits: `startup` quick answers, `challenge --lens` quick answers, and `launch-marketing` quick positioning ran over their limits. A limit in words alone, or a sentence count, did not hold. Each now gives a per-part budget, such as five items of at most 30 words that replace the mode's sections. Last runs: 158 to 171, 226 to 310, and 191 to 281 words.
-- `debug` takes line numbers from numbered tool output: 6 of 6 runs cited the right line, against 5 of 7 in earlier iterations.
-- `explainer-video` answered a background-job notice instead of giving its report. The cause was the eval machine: `run.sh` now sets `CLAUDE_CODE_SHELL=/bin/bash`, because the agent shell inherited a zsh alias `ls=eza`, and `eza` with no path waits on standard input. Every hung command ended in a bare `ls`; 0 of 18 runs hung after the fix. The skill also says to run renders in the foreground.
+- `hl-verify` judged a requirement the task never stated (2 of 3 runs). It now judges stated requirements only.
+- `hl-adr` wrote Accepted from "we chose", and numbered a file with no ADR sequence. It now needs a recorded approval, says the number is unknown, and keeps `<NNNN>`.
+- `hl-commit` added the host's `Co-Authored-By` trailer in 1 of 3 runs. It now names that trailer and overrides the host default.
+- `hl-grill` stopped triggering on "three ways to add retries, with trade-offs" after a rewrite. Its description leads with options again. It also records forced decisions as assumed instead of asking again.
+- `hl-commit`, `hl-adr`, and `hl-challenge` put a status line before the required first line. Each now says the first line comes with no preamble.
+- `hl-security-audit` did not trigger on an audit request phrased around user input. Its description now names that case.
+- `hl-spike` gave a verdict before a success threshold existed. It now asks without a verdict.
+- `hl-tickets` searched the environment for a Jira token, then counted `JIRA*` variables after a first fix. It now uses only access already set up, never reads the environment to find a credential, and reports no access otherwise.
+- `hl-challenge` answered `stop` for a small missing requirement. The verdict rules now say that a small fix is `fix first`.
+- `hl-writing-for-agents` rewrote an existing skill that covered the job, and wrote `Use before` instead of `Use when`. It now never rewrites a skill it was not given, and checks for the exact words.
+- Word limits: `hl-startup` quick answers, `hl-challenge --lens` quick answers, and `hl-launch-marketing` quick positioning ran over their limits. A limit in words alone, or a sentence count, did not hold. Each now gives a per-part budget, such as five items of at most 30 words that replace the mode's sections. Last runs: 158 to 171, 226 to 310, and 191 to 281 words.
+- `hl-debug` takes line numbers from numbered tool output: 6 of 6 runs cited the right line, against 5 of 7 in earlier iterations.
+- `hl-explainer-video` answered a background-job notice instead of giving its report. The cause was the eval machine: `run.sh` now sets `CLAUDE_CODE_SHELL=/bin/bash`, because the agent shell inherited a zsh alias `ls=eza`, and `eza` with no path waits on standard input. Every hung command ended in a bare `ls`; 0 of 18 runs hung after the fix. The skill also says to run renders in the foreground.
 
-Natural triggering (`routing`, 21 requests, every skill installed): 122 of 126 runs over iterations 40 and 41 picked the expected skill and no excluded skill. The `debug` request is the weakest: 0 of 3 runs at iteration 40, 3 of 3 at iteration 41, because the agent can fix a trivial bug directly. `brainstorm-options` missed `grill` in 1 of 6 runs.
+Natural triggering (`routing`, 21 requests, every skill installed): 122 of 126 runs over iterations 40 and 41 picked the expected skill and no excluded skill. The `hl-debug` request is the weakest: 0 of 3 runs at iteration 40, 3 of 3 at iteration 41, because the agent can fix a trivial bug directly. `brainstorm-options` missed `hl-grill` in 1 of 6 runs.
 
 ### Mode cases
 
-Iteration 50 added 31 adversarial cases, one per mode that had no case, and 4 routing requests. Runs passing at iteration 50, graded with the current checks, new cases only. `improve` arch-audit and `security-audit` audit-scoped come from iteration 52, because their checks read files and a regrade keeps the recorded result. The `security-audit` audit-deep finding check changed after the run; it was rerun by hand on the stored answers:
+Iteration 50 added 31 adversarial cases, one per mode that had no case, and 4 routing requests. Runs passing at iteration 50, graded with the current checks, new cases only. `hl-improve` arch-audit and `hl-security-audit` audit-scoped come from iteration 52, because their checks read files and a regrade keeps the recorded result. The `hl-security-audit` audit-deep finding check changed after the run; it was rerun by hand on the stored answers:
 
 | Skill | Cases | Task with | Task without | p | Contract with | Contract without | p |
 |---|---|---|---|---|---|---|---|
@@ -123,22 +125,22 @@ Iteration 50 added 31 adversarial cases, one per mode that had no case, and 4 ro
 
 The 4 new routing requests (`adr-record`, `review-branch`, `respond-review`, `video-hashmap`): 12 of 12 runs picked the expected skill.
 
-Iteration 56 checked the 4 descriptions reworded to say "Use when" (`verify`, `checkpoint`, `deslop`, `lessons`) and added `slop-cleanup`, the first routing request for `deslop`: 15 of 15 runs on `verify-done`, `factcheck-doc`, `lessons-retro`, `stuck-loop`, and `slop-cleanup` picked the expected skill and no excluded skill.
+Iteration 56 checked the 4 descriptions reworded to say "Use when" (`hl-verify`, `hl-checkpoint`, `hl-deslop`, `hl-lessons`) and added `slop-cleanup`, the first routing request for `hl-deslop`: 15 of 15 runs on `verify-done`, `factcheck-doc`, `lessons-retro`, `stuck-loop`, and `slop-cleanup` picked the expected skill and no excluded skill.
 
 ### Hard cases for debug and challenge
 
-Iteration 60 added 6 cases that a bare agent can get wrong. For `debug`, a test that has a wrong expectation (`wrong-expectation`), a data commit that exposes a parser defect (`trigger`), and a test that fails with hash order (`flaky`). For `challenge`, a plan that a writer in the code contradicts (`pricecache`), a sound plan (`soundplan`), and finished work that has green tests but misses a requirement (`export`). `trigger` is from iteration 61: its no-edit check compared the files with the fixture, which the setup commit changes, and now uses `git status`. Runs passing:
+Iteration 60 added 6 cases that a bare agent can get wrong. For `hl-debug`, a test that has a wrong expectation (`wrong-expectation`), a data commit that exposes a parser defect (`trigger`), and a test that fails with hash order (`flaky`). For `hl-challenge`, a plan that a writer in the code contradicts (`pricecache`), a sound plan (`soundplan`), and finished work that has green tests but misses a requirement (`export`). `trigger` is from iteration 61: its no-edit check compared the files with the fixture, which the setup commit changes, and now uses `git status`. Runs passing:
 
 | Skill | Cases | Task with | Task without | p | Contract with | Contract without | p |
 |---|---|---|---|---|---|---|---|
 | debug | 3 | 9/9 | 5/9 | 0.041 | 9/9 | 0/9 | <0.001 |
 | challenge | 3 | 9/9 | 9/9 | 1.000 | 8/9 | 0/9 | <0.001 |
 
-The bare agent found the right cause and verdict in all 18 runs. It blamed the test, not `billing.py`. It blamed the parser, not the data. It found the set order, and it said `proceed` on the sound plan. The `debug` task gap comes from line citations (`report.py:6`, `tags.py:2`) and one run that did not rule out float precision. The skill adds measured proof: `flaky` with the skill measured the failure rate over seeds (for example 40 of 50) and ran a toggle test; the bare agent did not measure a rate in 3 of 3 runs. Median cost per run: `debug` 0.076 to 0.078 USD with the skill, 0.043 to 0.055 without; `flaky` took 97 s against 7 s.
+The bare agent found the right cause and verdict in all 18 runs. It blamed the test, not `billing.py`. It blamed the parser, not the data. It found the set order, and it said `proceed` on the sound plan. The `hl-debug` task gap comes from line citations (`report.py:6`, `tags.py:2`) and one run that did not rule out float precision. The skill adds measured proof: `flaky` with the skill measured the failure rate over seeds (for example 40 of 50) and ran a toggle test; the bare agent did not measure a rate in 3 of 3 runs. Median cost per run: `hl-debug` 0.076 to 0.078 USD with the skill, 0.043 to 0.055 without; `flaky` took 97 s against 7 s.
 
 ### Complex debug cases and the deeper debug skill
 
-Iteration 62 added 4 `debug` cases with decoys:
+Iteration 62 added 4 `hl-debug` cases with decoys:
 - `bisect`: a regression in 16 commits. The cause is a reordered regex alternation in a "feat: add day unit" commit. The decoys are parser commits before and after it. The checkout must stay on `main` at the same commit.
 - `envprec`: the user suspects an off-by-one in a correct retry loop and asks for a fix. The defect is the inverted precedence of the environment over the command line.
 - `pollution`: a test passes alone and fails in the suite, because another module mutates a cached settings dict.
@@ -165,22 +167,22 @@ Runs passing all checks, graded with the current checks (bare agent and old skil
 
 The bare agent found the cause in most runs. It failed on proof and safety: no toggle of the culprit, `git bisect` in the user's checkout, and an unrequested code change after "Investigate". The old skill refused the requested fix in `envprec` (0/3). The new skill fixed it behind a regression test that fails on the old `config.py` (3/3). The diagnosis ideas did not move the measured score: the old skill already passed the other 3 cases. Two edits came from these runs. Reading files with numbered output restored `failing-test` line citations (old skill 4/5, first new text 4/8, final text 5/5 at iteration 66). Asking who else the defect reaches restored the production impact in `pollution` (iteration 68: 1/3, iteration 69: 5/5). Median cost per run on the 4 cases: 0.066 USD for the bare agent, and 0.094 for the old and the new skill. An independent review of the checks found false passes: "production" matched "not production", and `cat -n test_invoice.py test_report.py` counted as a polluter run. Each fix has a unit test. The harness makes its own first commit, so commit hashes change per run: checks name the commit by its title. Limits: 3 to 5 runs per case, one model, and fixtures written for these checks.
 
-Three independent reviews of the checks found false passes, false fails, and task checks that required the skill's format. Each fix has a unit test. `report.py` reruns output checks and answer-only oracle commands with the current checks; other commands keep the recorded result, also when the check moved to another kind. Checks that read a report file also read the answer, so a correct answer given in chat passes. Compound checks were split, so cutting one feature does not pass the check for the other. Cases with no target have an "Invents no" check against made-up plans, verdicts, or rounds. `run.sh` isolates git from the global git config and hooks. The new no-target checks ran at iteration 52 with the baseline: `verify` text-none, `challenge` lens-no-target, and `grill` no-idea passed 3 of 3 runs in both configurations. The `verify` and `grill` rows above predate them.
+Three independent reviews of the checks found false passes, false fails, and task checks that required the skill's format. Each fix has a unit test. `report.py` reruns output checks and answer-only oracle commands with the current checks; other commands keep the recorded result, also when the check moved to another kind. Checks that read a report file also read the answer, so a correct answer given in chat passes. Compound checks were split, so cutting one feature does not pass the check for the other. Cases with no target have an "Invents no" check against made-up plans, verdicts, or rounds. `run.sh` isolates git from the global git config and hooks. The new no-target checks ran at iteration 52 with the baseline: `hl-verify` text-none, `hl-challenge` lens-no-target, and `hl-grill` no-idea passed 3 of 3 runs in both configurations. The `hl-verify` and `hl-grill` rows above predate them.
 
-Fixes driven by these runs, rerun with the skill only (iterations 51 to 54) or with the baseline (`launch-marketing` 55, `startup` 53, `improve` 51 and 52, `security-audit` 52):
-- `security-audit` quick kept MEDIUM findings. Quick now drops them: 3 of 3 contract runs.
-- `startup` quick scout ran 438 to 531 words against a 440-word cap, and 474 to 508 after a first fix. A per-part budget replaced the word total, and quick drops the build sketch and the risk list: 282 to 328 words in 6 of 6 runs at iterations 52 and 53.
-- `launch-marketing` economics did not lead with a figure. The first line now states the number that hurts most, as a figure; its example no longer uses the case's own figures: 3 of 3 runs at iteration 55. Quick channels put experiments in blocks under the table; they now go in the table rows. Launch plans gave venue rules such as a self-promotion ratio with no label; the rule's number is now labeled public or estimated: 3 of 3 contract runs at iteration 54.
-- Check fixes, each with a unit test: lead checks allow a `# title` line before the lead; the `discover` scoped-run check failed a run that only promised a read order; the `pricing-low` label check now targets the buyer's alternative cost, the one number the answer derives from an estimate; a `100%` done-when target is not a claim. `oracle.py` splits labels (estimate, measured, public), sources, and withheld numbers: a number label contract needs a label or a source, and a fake-claim check accepts a label or a refusal, never a publisher name alone. `code-review --deep` must start at least the six specialists the diff requires.
+Fixes driven by these runs, rerun with the skill only (iterations 51 to 54) or with the baseline (`hl-launch-marketing` 55, `hl-startup` 53, `hl-improve` 51 and 52, `hl-security-audit` 52):
+- `hl-security-audit` quick kept MEDIUM findings. Quick now drops them: 3 of 3 contract runs.
+- `hl-startup` quick scout ran 438 to 531 words against a 440-word cap, and 474 to 508 after a first fix. A per-part budget replaced the word total, and quick drops the build sketch and the risk list: 282 to 328 words in 6 of 6 runs at iterations 52 and 53.
+- `hl-launch-marketing` economics did not lead with a figure. The first line now states the number that hurts most, as a figure; its example no longer uses the case's own figures: 3 of 3 runs at iteration 55. Quick channels put experiments in blocks under the table; they now go in the table rows. Launch plans gave venue rules such as a self-promotion ratio with no label; the rule's number is now labeled public or estimated: 3 of 3 contract runs at iteration 54.
+- Check fixes, each with a unit test: lead checks allow a `# title` line before the lead; the `hl-discover` scoped-run check failed a run that only promised a read order; the `pricing-low` label check now targets the buyer's alternative cost, the one number the answer derives from an estimate; a `100%` done-when target is not a claim. `oracle.py` splits labels (estimate, measured, public), sources, and withheld numbers: a number label contract needs a label or a source, and a fake-claim check accepts a label or a refusal, never a publisher name alone. `hl-code-review --deep` must start at least the six specialists the diff requires.
 
 Limits:
 - Regular expressions and `oracle.py` check the contract. They show the shape of the output, not its quality.
 - Three repetitions detect large differences only.
-- Task checks do not separate the skill from the baseline for `challenge`, also on the hard cases, `checkpoint`, `ci-fix`, `receive-review`, `show-me`, and `spec`, the first cases of `code-review` and `improve`, all `security-audit` cases, and the new `deslop`, `launch-marketing`, `receive-review`, `startup`, and `tickets` cases: a bare agent also reaches the right outcome. Their gain is the contract.
-- The `improve` task gap on the new cases comes from prompts in the skill's command syntax, such as "Run improve branch." A bare agent cannot know what they mean, so the gap overstates the skill's outcome gain.
+- Task checks do not separate the skill from the baseline for `hl-challenge`, also on the hard cases, `hl-checkpoint`, `hl-ci-fix`, `hl-receive-review`, `hl-show-me`, and `hl-spec`, the first cases of `hl-code-review` and `hl-improve`, all `hl-security-audit` cases, and the new `hl-deslop`, `hl-launch-marketing`, `hl-receive-review`, `hl-startup`, and `hl-tickets` cases: a bare agent also reaches the right outcome. Their gain is the contract.
+- The `hl-improve` task gap on the new cases comes from prompts in the skill's command syntax, such as "Run improve branch." A bare agent cannot know what they mean, so the gap overstates the skill's outcome gain.
 - `oracle.py` takes any parenthesized list of capitalized names, such as "(ProZ, Reddit)", as a named source. A list of venues passes as a citation.
-- `ci-fix` and `open-pr` are not tested against a live pull request: no case reads real check logs, pushes, or creates a pull request.
-- An `improve` case that forced asking before a direct "fix it" was removed: the request and the case contradicted each other.
+- `hl-ci-fix` and `hl-open-pr` are not tested against a live pull request: no case reads real check logs, pushes, or creates a pull request.
+- An `hl-improve` case that forced asking before a direct "fix it" was removed: the request and the case contradicted each other.
 - agent-skill-eval runs `git init` in every workspace; a case that needs no repository deletes `.git` in `.eval-setup.sh`.
-- A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `tickets` has fewer baseline runs.
+- A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `hl-tickets` has fewer baseline runs.
 - A prompt that starts with `--` makes the bare `claude` CLI fail; start prompts with a word.

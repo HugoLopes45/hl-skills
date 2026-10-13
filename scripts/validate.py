@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ALLOWED_KEYS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+NAME_PREFIX = "hl-"
 LINK_RE = re.compile(r"references/[A-Za-z0-9._/-]+\.md")
 MAX_BODY_LINES = 500
 
@@ -46,6 +47,8 @@ def check(skill_md: Path) -> list[str]:
     name = fields.get("name", "")
     if not NAME_RE.match(name) or len(name) > 64:
         errors.append(f"invalid name: {name!r}")
+    elif not name.startswith(NAME_PREFIX):
+        errors.append(f"name {name!r} does not start with {NAME_PREFIX!r}")
     if name != skill_md.parent.name:
         errors.append(f"name {name!r} differs from directory {skill_md.parent.name!r}")
     description = fields.get("description", "")

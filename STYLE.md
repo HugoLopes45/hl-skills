@@ -4,9 +4,9 @@ Every skill in this repository follows this guide. Write the smallest thing a co
 
 ## Format
 
-One skill is one directory, `skills/<name>/SKILL.md`. Frontmatter holds `name` (equal to the directory name) and `description`; add `license`, `compatibility`, or `metadata` only when needed. Long tables, catalogs, and prompts for subagents go in `references/` next to `SKILL.md`.
+One skill is one directory, `skills/<name>/SKILL.md`. Frontmatter holds `name` (`hl-` prefix, equal to the directory name) and `description`; add `license`, `compatibility`, or `metadata` only when needed. Long tables, catalogs, and prompts for subagents go in `references/` next to `SKILL.md`.
 
-English only. Host-neutral: no host-specific tool names, slash-command syntax, argument variables such as `$ARGUMENTS`, or config paths. Name other skills in backticks (`code-review`). When a step needs a capability some hosts lack (subagents, web access), say what to do without it.
+English only. Host-neutral: no host-specific tool names, slash-command syntax, argument variables such as `$ARGUMENTS`, or config paths. Name other skills in backticks (`hl-code-review`). When a step needs a capability some hosts lack (subagents, web access), say what to do without it.
 
 No named people. A skill encodes a method, not an imitation of someone's voice or opinions.
 
@@ -41,7 +41,7 @@ A person skims what a skill returns. Design the output before the steps: what th
 
 - Prefer text views: they read the same in a terminal and on a rendered page.
 - Prose follows ASD-STE100 loosely: procedure sentences up to 20 words, descriptive up to 25; one meaning per word; active voice; articles kept. Replace jargon, or define it once.
-- A long explanation: offer an interactive HTML page; a video only on explicit request (`explainer-video`).
+- A long explanation: offer an interactive HTML page; a video only on explicit request (`hl-explainer-video`).
 - Keep verified facts, inferences, and unknowns visibly apart: a status column or a label.
 - Deliver the requested artifact (file, table, diagram, code) within the skill's permissions, not instructions to make it.
 - Quote only the log lines that prove a point; raw logs are never the result.
@@ -49,7 +49,7 @@ A person skims what a skill returns. Design the output before the steps: what th
 - No preamble, recap, or closing summary.
 - Agent-facing formats (subagent records, handoff briefs, plans for another agent, emitted prompts, commit messages, tracker tickets) stay exact; these rules do not apply to them.
 
-Before a skill ships, check its output on representative inputs, as `writing-for-agents --skill` describes.
+Before a skill ships, check its output on representative inputs, as `hl-writing-for-agents --skill` describes.
 
 ## Implementation workflows
 

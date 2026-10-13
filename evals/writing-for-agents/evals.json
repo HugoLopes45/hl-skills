@@ -1,5 +1,5 @@
 {
-  "skill_name": "writing-for-agents",
+  "skill_name": "hl-writing-for-agents",
   "evals": [
     {
       "id": "prompt-bloated",

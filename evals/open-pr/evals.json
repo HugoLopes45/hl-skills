@@ -1,5 +1,5 @@
 {
-  "skill_name": "open-pr",
+  "skill_name": "hl-open-pr",
   "evals": [
     {
       "id": "pr-dry-run",

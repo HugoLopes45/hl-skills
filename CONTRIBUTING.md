@@ -33,7 +33,7 @@ STYLE.md                        how a skill is written
 
    ```yaml
    ---
-   name: <name>            # lowercase, hyphens, equal to the directory name
+   name: <name>            # hl- prefix, lowercase, hyphens, equal to the directory name
    description: "<What it does>. Use when <trigger>."
    ---
    ```
@@ -42,7 +42,7 @@ STYLE.md                        how a skill is written
 4. Add the skill to the matching table in `README.md`.
 5. Run `python3 scripts/validate.py` and fix every error. CI runs the same checks and installs every skill with the `skills` CLI.
 
-The `writing-for-agents --skill` mode walks through these steps.
+The `hl-writing-for-agents --skill` mode walks through these steps.
 
 ## Rules
 
@@ -56,4 +56,4 @@ The `writing-for-agents --skill` mode walks through these steps.
 
 ## Reviewing
 
-Useful skills from this repository before you open a pull request: `code-review`, `deslop`, `verify`, and `split-pr` when the diff is larger than about 200 lines or mixes concerns.
+Useful skills from this repository before you open a pull request: `hl-code-review`, `hl-deslop`, `hl-verify`, and `hl-split-pr` when the diff is larger than about 200 lines or mixes concerns.
