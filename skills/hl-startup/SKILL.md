@@ -26,4 +26,66 @@ Work through five stages and ask before advancing to the next. A stage that ends
 
 Do not fabricate people, market numbers, customer quotes, traction, or certainty. Separate evidence from hypotheses and proposed targets. Payments and repeated use are stronger signals than expressed interest. Label every threshold as a proposal.
 
-After the last stage, lead with go, pivot, stop, or insufficient evidence. Then the decisive evidence, the riskiest assumption, the cheapest test, and the next 14 days as a table: day, action, done when. Do not write files or contact customers unless the user asks.
+After the last stage, give the verdict (go, pivot, stop, or insufficient evidence) in the Output layout. Then the decisive evidence, the riskiest assumption, the cheapest test, and the next 14 days as a table: day, action, done when. Do not write files or contact customers unless the user asks.
+
+## Output
+
+Reader: a founder deciding whether to spend the next two weeks on this idea. The decision served: go, change, or stop.
+
+Line 1, bold: one plain sentence, under 100 characters, that answers the founder's question in their words. It never opens with a label, verdict word, or count.
+
+Under line 1, plain sentences without labels: the missing evidence that decides the verdict, each precondition of the first step, and any risk seen outside the question (say so).
+
+Body, one numbered point per idea, each a bold plain sentence, then one or two sentences or one view:
+- Evaluate summary: each stage in one line: the stage, its verdict, the evidence that decides it.
+- Problem: the questions that mislead, each with why, then the questions to ask instead.
+- Competitors: a table of three short columns: alternative, price (with its source, or "no source"), why a customer would switch or stay.
+- Customers: a table of week, action, success signal.
+- MVP: each cut with its reason; the pass and fail rule; a 14-day table of day, action, evidence collected.
+- Final verdict: a 14-day table of day, action, done when.
+- Say in words, once per point, how each number or claim is known: "from your numbers", "my estimate", "no source yet", "my proposal" for a threshold. No status codes.
+
+End with `Verdict: <word>` on its own line, one per mode:
+- Evaluate: `Go` (the evidence supports the test), `Pivot` (change the customer or problem first), `Stop` (the evidence is against it), `Insufficient evidence` (the stages cannot judge yet).
+- Stage: `Proceed`, `Revise`, `Stop`, `Insufficient evidence`, with the same meanings for that stage only. The MVP stage names the riskiest assumption on line 1: `**Whether owners pay to stop plants dying is the riskiest assumption to test.**`
+- Kill: `Keep`, `Pivot`, `Kill`. Scout: `Verdict: Pick: <bet>, <score>/10` or `Verdict: No shippable bet`. Ship: `Verdict: Ship`, with the smallest first version on line 1.
+
+Then `**Next:**`, one step per line, each something the founder can do now. A stage run ends with "Reply `next` to run the Competition stage."
+
+Stopped: line 1 says in plain words what is missing and why it blocks; then up to 3 numbered ways to unblock, default marked; then `Verdict: Stopped`:
+- No idea given: `**I need your product idea before I can evaluate it; the request does not describe one.**`, then 1. Which idea, in one line, and who pays for it? (default). 2. Run `scout` to find ideas first.
+
+Reader rules:
+- Define each term once: MRR (monthly recurring revenue), churn (customers who cancel), CAC (cost to win one paying customer), LTV (profit one customer brings over their time), MVP (smallest test that answers one question), cohort (customers who signed up in the same period), pivot (change the customer or problem, keep some assets), sunk cost (money and time already spent).
+- Never invent people, market sizes, quotes, traction, or certainty. Say plainly what is not known yet.
+- Dollars and days carry units and a source or label.
+- No blame, no hype. Say "the plan", not "you".
+- No process narration: no "the skill says", "the framework", or "I read".
+
+Example (a stage run):
+
+````markdown
+**The pain is a guess until five owners describe a real dead plant.**
+No interview has happened yet, so nobody has confirmed the problem.
+
+1. **Two of your questions would give a false yes.**
+   - "Would you pay $8 a month?" names your product and price, so people say yes to be polite.
+   - "Don't you hate forgetting to water plants?" leads: nearly everyone agrees, and it shows no cost.
+
+2. **Ask about the last time instead.**
+   - "Tell me about the last plant in your office that died. What happened?"
+   - "What did you do the last time you noticed a dry plant?"
+   - "What did it cost, in time or money, when it died?"
+   - "What have you tried so far to keep them alive?"
+   - "When did you last ask someone else to water them?"
+
+3. **The problem is real if 3 of 5 owners name a dead plant from the last 30 days.**
+   That threshold is my proposal; change it if you have a better one.
+
+Verdict: Revise
+
+**Next:**
+1. Replace the two questions with the five above before any call.
+2. Book 5 calls with office managers this week; ask colleagues for introductions.
+3. Reply `next` after the 5 calls to run the Competition stage.
+````

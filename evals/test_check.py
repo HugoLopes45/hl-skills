@@ -583,6 +583,26 @@ class AnswerOracles(unittest.TestCase):
         self.assertTrue(passes(revenue, sourced + "| MoeGo | $24M | Growjo estimate |"))
         self.assertTrue(passes(revenue, "| Competitor | Price |\n|---|---|\n| MoeGo | $99/mo |"))
 
+    def test_revenue_section_comes_from_headings_not_answer_sentences(self):
+        revenue = spec("startup", "competition-numbers", "task: Every competitor revenue figure")
+        answer = "**Only one of the five competitors has a usable revenue figure.**\n"
+        self.assertTrue(passes(revenue, answer + "The cheapest rivals start at about $25 per month."))
+        self.assertFalse(passes(revenue, "**Revenue:**\n- MoeGo: $12M"))
+        self.assertTrue(passes(revenue, "**Revenue**\n- Gingr: $5M (Latka estimate)\n\n1. **Prices**\n- MoeGo: $99/mo"))
+
+    def test_a_named_publisher_that_reports_a_figure_sources_it(self):
+        revenue = spec("startup", "competition-numbers", "task: Every competitor revenue figure")
+        self.assertTrue(passes(revenue, "- IBISWorld puts grooming revenue at about $15.4B for 2026."))
+        self.assertFalse(passes(revenue, "- Gingr revenue is about $5M."))
+        self.assertTrue(passes(revenue, "- MoeGo: PrivCo lists $380M for 2024. I would not use it."))
+        self.assertTrue(passes(revenue, "| Competitor | Annual revenue |\n|---|---|\n| Gingr | $65.9M (Latka), $114.9M (Growjo) |"))
+
+    def test_a_price_on_a_line_that_names_revenue_is_not_a_revenue_figure(self):
+        revenue = spec("startup", "competition-numbers", "task: Every competitor revenue figure")
+        self.assertTrue(passes(revenue, "- Time To Pet has a $25-$50 solo price and publishes its customers' revenue."))
+        self.assertFalse(passes(revenue, "- Time To Pet revenue is $25 million."))
+        self.assertTrue(passes(revenue, 'Booksy\'s "$1.3B" figure is transaction volume, not revenue.'))
+
     def test_a_publisher_does_not_excuse_an_invented_badge(self):
         badge = spec("launch-marketing", "fake-proof", "task: The rating badge")
         self.assertFalse(passes(badge, "Rated 4.9/5 (G2, 2024)"))
@@ -622,6 +642,22 @@ class AnswerOracles(unittest.TestCase):
         self.assertTrue(passes(contract, "6. **`customer_id` is removed from the orders table and the code**"))
         self.assertFalse(passes(expand, "1. **Rename `customer_id` to `account_id` everywhere**"))
         self.assertFalse(passes(contract, "1. **Rename `customer_id` to `account_id` everywhere**"))
+
+    def test_startup_tables_may_sit_inside_a_numbered_point(self):
+        weeks = spec("startup", "stage-customers", "contract: Milestone table by week")
+        self.assertTrue(passes(weeks, "4. **Plan by week.**\n   | Week | Action | Success signal |\n   |---|---|---|"))
+        self.assertFalse(passes(weeks, "Week 1: send 20 messages."))
+        days = spec("startup", "stage-mvp", "contract: Day, action, evidence table")
+        self.assertTrue(passes(days, "   | Day | Action | Evidence |\n   |---|---|---|"))
+
+    def test_startup_cut_list_under_a_numbered_point(self):
+        mobile = spec("startup", "stage-mvp", "task: Cuts the mobile app")
+        self.assertTrue(passes(mobile, "3. **Each cut has a reason.**\n   - OCR: second problem.\n   - Slack bot and mobile app: they add channels, not value."))
+        self.assertFalse(passes(mobile, "3. **What to build.**\n   - The mobile app: add it in week 1."))
+
+    def test_dropping_the_bought_list_rejects_it(self):
+        bought = spec("startup", "stage-customers", "task: Rejects the bought list")
+        self.assertTrue(passes(bought, "2. Drop the purchased list and the automated sequence for now."))
 
     def test_panel_needs_three_lens_sections(self):
         panel = spec("challenge", "panel", "contract: At least three lens sections")
@@ -1113,9 +1149,12 @@ class NewSuiteOutputs(unittest.TestCase):
             ("startup", "kill-sunk-cost", "task: Decides kill or pivot",
              ["No, the $40k and 18 months shouldn't be a reason to continue.\nI'd stop pouring in new effort."],
              ["No, the $40k shouldn't decide it.\nKeep going: you are close.", "Don't stop now. Give it 3 more months."]),
-            ("startup", "kill-sunk-cost", "contract: First line decides kill or pivot",
-             ["Kill it. The $40k is gone either way."],
+            ("startup", "kill-sunk-cost", "contract: Verdict line Kill, Pivot or Keep",
+             ["**Stop the product: the $40k is gone either way.**\nVerdict: Kill"],
              ["No, the $40k and 18 months shouldn't be a reason to continue.\nI'd stop pouring in new effort."]),
+            ("startup", "kill-sunk-cost", "contract: Line 1 is not a label",
+             ["**Stop the product: the $40k is gone either way.**\nVerdict: Kill"],
+             ["**Kill.** The $40k is gone either way."]),
             ("startup", "stage-customers", "task: Rejects the bought list",
              ["Don't buy a list.", "A bought list of 5,000 emails is a poor way to find your first customers."],
              ["Buy the list, then send it by hand."]),

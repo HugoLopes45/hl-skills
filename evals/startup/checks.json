@@ -8,7 +8,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -31,9 +31,14 @@
         "pattern": "(?im)^(?![^\\n]*(\\b(don.t|do not|not|never|shouldn.t|no reason to)\\W+(\\w+\\W+){0,2}?(kill|stop|pivot|shut|walk away|wind)\\b|keep going|continue (building|it|working)))[^\\n]*\\b(kill( it)?|stop\\w*|shut (it )?down|pivot\\w*|wind (it )?down|walk away)\\b"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(kill|pivot|keep)",
+        "text": "contract: Verdict line Kill, Pivot or Keep"
+      },
+      {
         "type": "first_line",
-        "pattern": "(?i)^(?![^\\n]*(keep going|continue (building|it|working)|don.t (stop|kill|pivot|shut)))[^\\n]*\\b(kill|pivot|stop|shut)",
-        "text": "contract: First line decides kill or pivot"
+        "pattern": "^(?!\\W*(verdict|status|stopped|kill|pivot|keep)\\b)",
+        "text": "contract: Line 1 is not a label"
       },
       {
         "type": "output_matches",
@@ -67,7 +72,7 @@
       {
         "type": "command",
         "command": "python3 \"$EVALS/oracle.py\" max-words '150'",
-        "text": "contract: Stops instead of answering at length"
+        "text": "contract: Answers briefly, not at length"
       }
     ]
   },
@@ -93,9 +98,14 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(Pick:[^\\n]*\\d+\\s*/\\s*10|NO SHIPPABLE BET)",
+        "text": "contract: Verdict line Pick with score or NO SHIPPABLE BET"
+      },
+      {
         "type": "first_line",
-        "pattern": "\\b\\d+\\s*/\\s*10\\b|NO SHIPPABLE BET",
-        "text": "contract: First line is the pick with its score"
+        "pattern": "^(?!\\W*(verdict|status|stopped|pick|no shippable bet)\\b)",
+        "text": "contract: Line 1 is not a label"
       },
       {
         "type": "command",
@@ -128,9 +138,14 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(proceed|revise|stop|insufficient evidence)",
+        "text": "contract: Verdict line proceed, revise, stop or insufficient evidence"
+      },
+      {
         "type": "first_line",
-        "pattern": "(?i)\\b(proceed|revise|stop|insufficient evidence)\\b",
-        "text": "contract: Leads with a stage verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|proceed|revise|stop|insufficient)\\b)",
+        "text": "contract: Line 1 is not a label"
       },
       {
         "type": "output_matches",
@@ -188,7 +203,7 @@
       {
         "type": "output_matches",
         "text": "task: Rejects the bought list",
-        "pattern": "(?i)(don.t|do not|skip|avoid|never|instead of|\\bno\\b(?!-)|\\bnot\\b)[^\\w\\n]+(\\w+[^\\w\\n]+){0,3}?(bought|purchased|buy(ing)?\\b|\\blists?\\b)|(bought|purchased|buy(ing)?( a)? list|buying [^\\n.;]{0,20}emails)[^\\n.;]{0,100}\\b(is|are|counts as|gets? you|gives? you|will|would|can|could|may|you.ll|it.ll|=)\\b[^\\n.;]{0,30}(spam|illegal|GDPR|CAN-SPAM|burn|hurt|kill|tank|wrong|damage|unlikely|poor\\w*|bad(ly)?|weak|risky)|(bought|purchased) lists? [^\\n.;]{0,10}\\b(have|perform)\\b[^\\n.;]{0,30}(bounce|spam|complaint|bad|poor)"
+        "pattern": "(?i)(don.t|do not|skip|drop|avoid|never|instead of|\\bno\\b(?!-)|\\bnot\\b)[^\\w\\n]+(\\w+[^\\w\\n]+){0,3}?(bought|purchased|buy(ing)?\\b|\\blists?\\b)|(bought|purchased|buy(ing)?( a)? list|buying [^\\n.;]{0,20}emails)[^\\n.;]{0,100}\\b(is|are|counts as|gets? you|gives? you|will|would|can|could|may|you.ll|it.ll|=)\\b[^\\n.;]{0,30}(spam|illegal|GDPR|CAN-SPAM|burn|hurt|kill|tank|wrong|damage|unlikely|poor\\w*|bad(ly)?|weak|risky)|(bought|purchased) lists? [^\\n.;]{0,10}\\b(have|perform)\\b[^\\n.;]{0,30}(bounce|spam|complaint|bad|poor)"
       },
       {
         "type": "output_matches",
@@ -202,7 +217,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^\\|[^\\n]*week[^\\n]*\\|[^\\n]*action",
+        "pattern": "(?im)^\\s*\\|[^\\n]*week[^\\n]*\\|[^\\n]*action",
         "text": "contract: Milestone table by week"
       }
     ]
@@ -221,12 +236,12 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*mobile|^[^\\n]*mobile(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*mobile",
+        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*mobile|^[^\\n]*mobile(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\s*(\\d+\\.\\s+)?\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*mobile",
         "text": "task: Cuts the mobile app"
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*slack|^[^\\n]*slack(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*slack",
+        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*slack|^[^\\n]*slack(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\s*(\\d+\\.\\s+)?\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*slack",
         "text": "task: Cuts the Slack bot"
       },
       {
@@ -236,7 +251,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^\\|[^\\n]*day[^\\n]*\\|[^\\n]*action[^\\n]*\\|[^\\n]*evidence",
+        "pattern": "(?im)^\\s*\\|[^\\n]*day[^\\n]*\\|[^\\n]*action[^\\n]*\\|[^\\n]*evidence",
         "text": "contract: Day, action, evidence table"
       }
     ]

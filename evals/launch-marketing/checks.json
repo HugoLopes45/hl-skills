@@ -8,13 +8,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
         "pattern": "(?i)^#+\\s*hero\\b",
         "text": "task: No copy invented"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line Stopped"
       }
     ]
   },
@@ -54,6 +59,11 @@
         "type": "command",
         "command": "python3 \"$EVALS/oracle.py\" claims-labeled '\\d+\\s?%|\\$\\s?\\d'",
         "text": "contract: Every number is labeled"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(sharp|rewritten)",
+        "text": "contract: Verdict line Sharp or Rewritten"
       }
     ]
   },
@@ -71,7 +81,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^\\|[^\\n]*\\bday\\b[^\\n]*\\|[^\\n]*action[^\\n]*\\|[^\\n]*done",
+        "pattern": "(?im)^\\s*\\|[^\\n]*\\bday\\b[^\\n]*\\|[^\\n]*action[^\\n]*\\|[^\\n]*done",
         "text": "contract: Day, action, done-when table"
       },
       {
@@ -105,13 +115,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^\\|[^\\n]*channel[^\\n]*\\|[^\\n]*(hours|h/w|hrs)[^\\n]*\\|[^\\n]*kill",
+        "pattern": "(?im)^\\s*\\|[^\\n]*channel[^\\n]*\\|[^\\n]*(hours|h/w|hrs)[^\\n]*\\|[^\\n]*kill",
         "text": "contract: Ranked table with hours per week and kill signal"
       },
       {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(commit)",
+        "text": "contract: Verdict line Commit"
+      },
+      {
         "type": "first_line",
-        "pattern": "(?i)primary|commit|focus|main channel",
-        "text": "contract: Leads with the commitment"
+        "pattern": "^(?!\\W*(verdict|status|stopped|commit)\\b)",
+        "text": "contract: Line 1 is not a label"
       },
       {
         "type": "output_not_matches",
@@ -148,6 +163,11 @@
         "text": "contract: Repurposing chain"
       },
       {
+        "type": "output_matches",
+        "pattern": "(?i)\\b(i assumed|assumed|default|i picked|i chose)\\b",
+        "text": "task: States each assumed detail"
+      },
+      {
         "type": "output_not_matches",
         "pattern": "(?im)^(?![^\\n]*\\b(skip|avoid|don.t|drop|cut|instead of|not worth|over (your|the) budget|more than you have)\\b)[^\\n]*(?<![\\d.])([4-9]|[1-9]\\d)(\\.\\d+)?\\s*(h|hrs?|hours)\\s*(/|per|a)\\s*(wk|week)",
         "text": "task: Stays within the 3 hours a week"
@@ -167,6 +187,16 @@
         "text": "task: Recommends charging well above $5"
       },
       {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\b(6|six)\\b[^\\n]{0,60}(?<!not )\\bmeasured\\b",
+        "text": "task: Does not label the user's hours as measured"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)friction line|\\banchor\\b",
+        "text": "task: No method jargon in the reply"
+      },
+      {
         "type": "output_matches",
         "pattern": "(?is)((?<![\\d.])6\\s*(hours?|hrs?|h)\\b|hours?[^\\n]{0,40}(?<![\\d.])6\\s*/\\s*(week|wk)).{0,200}[$\u20ac]\\s?\\d|[$\u20ac]\\s?\\d.{0,200}((?<![\\d.])6\\s*(hours?|hrs?|h)\\b|hours?[^\\n]{0,40}(?<![\\d.])6\\s*/\\s*(week|wk))",
         "text": "task: Prices from the replaced hours"
@@ -175,6 +205,11 @@
         "type": "output_matches",
         "pattern": "(?i)(alternative|junior|staff|labou?r|loaded|salary|wage)[^\\n]*[$\u20ac]\\s?\\d[^\\n]*(estimat|measured|assum)|(estimat|measured|assum)[^\\n]*(alternative|junior|staff|labou?r|loaded|salary|wage)[^\\n]*[$\u20ac]\\s?\\d",
         "text": "contract: Labels the buyer's alternative cost as an estimate or measurement"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(charge)",
+        "text": "contract: Verdict line Charge"
       }
     ]
   },
@@ -196,9 +231,19 @@
         "text": "task: Does not call the offer strong"
       },
       {
+        "type": "output_not_matches",
+        "pattern": "(?i)dream outcome|\\bstack\\b|perceived likelihood",
+        "text": "task: No method jargon in the reply"
+      },
+      {
         "type": "output_matches",
         "pattern": "(?i)not yet|wrong buyer",
         "text": "contract: Uses an offer verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(not yet|wrong buyer|strong)",
+        "text": "contract: Verdict line Strong, Not yet or Wrong buyer"
       }
     ]
   },
@@ -226,8 +271,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?im)^\\|[^\\n]*(CAC|LTV|payback)",
+        "pattern": "(?im)^\\s*\\|[^\\n]*(CAC|LTV|payback)",
         "text": "contract: Economics table"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(hold|scale)",
+        "text": "contract: Verdict line Hold or Scale"
       }
     ]
   }
