@@ -8,13 +8,23 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
-        "pattern": "^\\W*(?-i:PROCEED|PIVOT|INCONCLUSIVE)\\b",
+        "pattern": "^\\W*(verdict:\\W*)?(proceed|pivot|inconclusive)\\b",
         "text": "contract: No verdict before a hypothesis"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|proceed|pivot|inconclusive)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   },
@@ -32,14 +42,19 @@
         "text": "task: Reports a measured time"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(proceed|pivot|inconclusive)\\b",
+        "text": "contract: Verdict line is the verdict"
+      },
+      {
         "type": "first_line",
-        "pattern": "^(?-i:PROCEED|PIVOT|INCONCLUSIVE)\\b",
-        "text": "contract: First line is the verdict"
+        "pattern": "^(?!\\W*(verdict|status|stopped|proceed|pivot|inconclusive)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\|[^\\n]*experiment",
-        "text": "contract: Experiments table"
+        "pattern": "^\\s*\\d+\\.\\s[^\\n]*(\\n(?!\\s*\\d+\\.\\s)[^\\n]*)?\\b(ran|did not run|blocked|human-run|must run)\\b",
+        "text": "contract: Experiments as a numbered list with status"
       },
       {
         "type": "workspace_untouched",
@@ -66,8 +81,13 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "^\\W*(?-i:PROCEED|PIVOT)\\b",
+        "pattern": "^\\W*(verdict:\\W*(proceed|pivot)\\b|(?-i:PROCEED|PIVOT)\\b)",
         "text": "task: No PROCEED or PIVOT without a measured result"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*inconclusive",
+        "text": "contract: Verdict line is inconclusive"
       }
     ]
   }

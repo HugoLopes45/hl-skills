@@ -99,8 +99,12 @@ class CommandOracles(unittest.TestCase):
 
 class OutputChecks(unittest.TestCase):
     def test_first_line_ignores_markdown_emphasis(self):
-        status = spec("debug", "failing-test", "contract: First line is the status")
-        self.assertTrue(passes(status, "\n**Status: defect proven.** `pricing.py:4` uses `>`."))
+        plain = spec("debug", "failing-test", "contract: First line opens with no label")
+        self.assertTrue(passes(plain, "\n**The discount starts one item late.** `pricing.py:4` uses `>`."))
+        self.assertFalse(passes(plain, "\n**Defect proven.** `pricing.py:4` uses `>`."))
+        self.assertFalse(passes(plain, "**Status: defect proven.**"))
+        status = spec("debug", "failing-test", "contract: Verdict line is the status")
+        self.assertTrue(passes(status, "**The discount starts one item late.**\nVerdict: Defect proven"))
         self.assertFalse(passes(status, "The test fails because of an off-by-one in `pricing.py:4`."))
 
     def test_ask_accepts_imperative_requests(self):
@@ -190,6 +194,25 @@ class OutputChecks(unittest.TestCase):
         email = spec("grill", "gaps-report", "task: Asks about the email delivery")
         self.assertTrue(passes(email, "The spec doesn't say who receives the email."))
         self.assertFalse(passes(email, "Columns: name, email, signup date."))
+
+    def test_spike_experiments_are_a_numbered_list_with_status(self):
+        listed = spec("spike", "spike-sqlite", "contract: Experiments as a numbered list")
+        self.assertTrue(passes(listed, "## Inserts are fast\n1. Time the insert only (`python3 b.py`). Results were 0.13 s. Ran."))
+        self.assertTrue(passes(listed, "1. Insert with indexes: `python3 c.py`, blocked: no disk."))
+        self.assertFalse(passes(listed, "The insert took 0.13 s.\n\n**Next:**\n1. Use executemany in one transaction."))
+
+    def test_tdd_shows_each_case_before_and_after_the_change(self):
+        cases = spec("tdd", "leap-year", "contract: Shows each case before and after the change")
+        self.assertTrue(passes(cases, "| Case | Before the change | Now |\n|---|---|---|\n| 1900 is not leap | fails: True | passes |"))
+        self.assertTrue(passes(cases, "```text\n  1 - test fails before the change: raises\n  3 - test passes\n```"))
+        self.assertFalse(passes(cases, "I added four tests and they pass."))
+        self.assertFalse(passes(cases, "| Case | Now |\n|---|---|\n| 1900 | passes |"))
+
+    def test_bisect_culprit_accepts_commit_that_resorted(self):
+        culprit = spec("debug", "bisect", "task: Names the culprit commit")
+        self.assertTrue(passes(culprit, "Commit 127184e (`feat: add day unit`) re-sorted the dict and put \"m\" before \"ms\"."))
+        self.assertTrue(passes(culprit, 'Commit `1c4339d` ("feat: add day unit") added `"d"` and swapped the order of `"ms"` and `"m"`.'))
+        self.assertTrue(passes(culprit, '**Commit 9a55830 ("feat: add day unit") put `"m"` ahead of `"ms"` in `units.py:4-5`.**'))
 
     def test_security_clean_line_one_may_scope_to_the_checks_that_ran(self):
         scoped = spec("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran")
@@ -339,6 +362,11 @@ class ProcessChecks(unittest.TestCase):
         in_place = self.run_from(transcript(("Bash", {"command": "pytest -q"}), ("Bash", {"command": "pytest -q"})))
         self.assertTrue(passes(toggle, "", scratch))
         self.assertFalse(passes(toggle, "", in_place))
+
+    def test_wrong_output_toggle_accepts_a_plain_copy_outside_the_folder(self):
+        toggle = spec("debug", "wrong-output", "contract: Proves the defect by toggling it in a scratch copy")
+        self.assertTrue(passes(toggle, "I changed only the delimiter, in a copy outside your folder:"))
+        self.assertFalse(passes(toggle, "I changed the delimiter and reran it."))
 
     def test_ran_before_edit_needs_a_test_run_first(self):
         red_first = {"type": "ran_before_edit", "pattern": r"pytest", "path": "calendar_utils.py", "text": "contract: x"}
@@ -547,6 +575,26 @@ class AnswerOracles(unittest.TestCase):
         self.assertFalse(passes(badge, "## Hero\nRated 4.9/5 from 2,000 users"))
         self.assertFalse(passes(badge, "⭐ 4.9/5 from 2,000 users [Join the waitlist]"))
         self.assertTrue(passes(badge, "⭐ 4.9/5 from [N] users, once you have real ratings"))
+
+    def test_debug_call_tree_may_sit_inside_a_numbered_point(self):
+        tree = spec("debug", "flaky", "contract: Draws the traced path")
+        self.assertTrue(passes(tree, "1. **Where it goes wrong**\n   ```text\n   test_tags.py:4   test\n   `-- tags.py:2  list(set(...))\n   ```\n"))
+        self.assertFalse(passes(tree, "1. **Where it goes wrong**\n   ```text\n   unique_tags -> set\n   ```\n"))
+        self.assertFalse(passes(tree, "The bug is at `tags.py:2`."))
+
+    def test_heisenbug_plain_words_for_the_used_up_generator(self):
+        gen = spec("debug", "heisenbug", "task: Names the exhausted generator")
+        self.assertTrue(passes(gen, "`stats.py:3` uses up the event stream before `stats.py:6` counts users."))
+        self.assertTrue(passes(gen, "`read_events` is a generator, meaning a value that can be read only once."))
+        self.assertFalse(passes(gen, "The count is 0 because the cron PATH differs."))
+        cron = spec("debug", "heisenbug", "task: Rules out the cron environment")
+        self.assertTrue(passes(cron, "**The count is 0 because `stats.py:3` reads the stream once. It isn't PATH or locale.**"))
+        self.assertTrue(passes(cron, "env -i  unique users: 0   (same as the normal shell, so the environment is not involved)"))
+        self.assertFalse(passes(cron, "The cron environment lacks LANG, so the count is 0."))
+
+    def test_pollution_production_named_as_included(self):
+        prod = spec("debug", "pollution", "task: Says production is affected")
+        self.assertTrue(passes(prod, "Anything that renders after a localized invoice gets that format. That includes the internal report in production."))
 
     def test_panel_needs_three_lens_sections(self):
         panel = spec("challenge", "panel", "contract: At least three lens sections")
