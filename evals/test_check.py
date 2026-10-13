@@ -503,10 +503,10 @@ class AnswerOracles(unittest.TestCase):
         self.assertFalse(passes(ask, "Here is the PRD.\n\n## Problem\nInvoices are late."))
 
     def test_stuck_accepts_missing_context_cause(self):
-        cause = spec("checkpoint", "stuck", "contract: First line names the cause and the next action")
-        self.assertTrue(passes(cause, "**Cause: missing context. Next action: read the input the test passes to `parse_date`.**"))
-        self.assertTrue(passes(cause, "Unchecked hypothesis. Next: debug."))
-        self.assertFalse(passes(cause, "Try %Y-%m-%dT%H:%M:%SZ instead."))
+        cause = spec("checkpoint", "stuck", "contract: Verdict line names the cause")
+        self.assertTrue(passes(cause, "**The fix keeps failing.**\nVerdict: Stuck, missing context"))
+        self.assertTrue(passes(cause, "**Plain answer.**\nVerdict: Stuck, unchecked hypothesis. Next: debug."))
+        self.assertFalse(passes(cause, "Try %Y-%m-%dT%H:%M:%SZ instead.\nMissing context."))
 
     def test_ask_accepts_reply_with(self):
         ask = spec("launch-marketing", "landing-nothing", "task: Asks for the missing input")

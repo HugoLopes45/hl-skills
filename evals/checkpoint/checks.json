@@ -26,6 +26,41 @@
         "type": "command",
         "command": "grep -q 'a=b=c' docs/handoff.md && grep -Eiq 'first' docs/handoff.md",
         "text": "task: Handoff saved where the rule says, with decision and next action"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(saved)",
+        "text": "contract: Verdict line says Saved"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|saved|stopped|stuck)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -61,6 +96,41 @@
         "type": "output_matches",
         "pattern": "(path|where)[^\\n]*\\?",
         "text": "contract: Asks the user for a path"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|saved|stopped|stuck)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -73,13 +143,48 @@
         "text": "task: Names the real input shape"
       },
       {
-        "type": "first_line",
-        "pattern": "hypothes|\\bdebug\\b|missing context",
-        "text": "contract: First line names the cause and the next action"
+        "type": "output_matches",
+        "pattern": "(?mi)^\\W*Verdict:[^\\n]*(hypothes|\\bdebug\\b|missing context)",
+        "text": "contract: Verdict line names the cause"
       },
       {
         "type": "workspace_untouched",
         "text": "contract: Edits nothing"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stuck)",
+        "text": "contract: Verdict line says Stuck"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stuck|saved|stopped|unchecked hypothesis|no reliable check|missing context|task too large|unclear goal|context saturated)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   }
