@@ -420,6 +420,7 @@ class AnswerOracles(unittest.TestCase):
             self.assertTrue(passes(video, f"`missing.mp4` has both streams. The video is at `{matched}`."))
             self.assertFalse(passes(video, f"`missing.mp4` and `{drifted}`"))
 
+    @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "needs ffmpeg and ffprobe")
     def test_video_oracle_judges_every_stream(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "two-tracks.mp4"

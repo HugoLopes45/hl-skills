@@ -44,10 +44,11 @@ if [ -f "$root/evals/$suite/repo.sh" ]; then
   sh "$root/evals/$suite/repo.sh" "$repo" "$skills"
   set -- --source-repo "$repo" "$@"
 fi
-PATH="$shim:$PATH" uvx --from agent-skill-eval==0.7.0 agent-skill-eval run \
+caller_path=$PATH
+PATH="$shim:$caller_path" uvx --from agent-skill-eval==0.7.0 agent-skill-eval run \
   --skill "$skills/${EVAL_SKILL:-hl-$suite}" --evals "$root/evals/$suite/evals.json" \
   --agent claude-code --agent-model "claude-code=${EVAL_MODEL:-sonnet}" \
   --workspace "${EVAL_WORKSPACE:-/tmp/hl-evals}" \
-  --post-grade-command "PATH='$PATH' python3 '$root/evals/check.py'" \
+  --post-grade-command "PATH='$caller_path' python3 '$root/evals/check.py'" \
   --max-cost-per-case "${EVAL_MAX_COST:-1.5}" --budget-action stop-suite \
   "$@"
