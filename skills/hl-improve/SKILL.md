@@ -49,21 +49,17 @@ Audit depth follows the effort level (default `standard`; set with `quick`, `sta
 | Coverage | Hotspots only | Hotspot-weighted, key packages | Whole repo |
 | Subagents | 0 or 1 | ≤4 concurrent | ≤8 concurrent |
 | Categories | correctness, security, tests | all nine | all nine |
-| Findings | top ~6, HIGH confidence only | full table | full table incl. LOW-confidence "investigate" items |
+| Findings | top ~6, HIGH confidence only | full list | full list incl. LOW-confidence "investigate" items |
 
 Say in the final report what was not audited.
 
 ### Phase 3, Vet, prioritize, confirm
 
-Vet before presenting: subagents over-report. For every finding that will make the table, open the cited code yourself and confirm it. Three common failure classes: by-design behavior reported as a vulnerability; mis-attributed evidence (real finding, wrong file/line); duplicates across subagents. Downgrade, correct, or reject accordingly. Record rejections in the "Considered and dismissed" section of `plans/README.md` (of `arch-report.md` for `arch`) so they aren't re-audited next run.
+Vet before presenting: subagents over-report. For every finding that will make the list, open the cited code yourself and confirm it. Three common failure classes: by-design behavior reported as a vulnerability; mis-attributed evidence (real finding, wrong file/line); duplicates across subagents. Downgrade, correct, or reject accordingly. Record rejections in the "Considered and dismissed" section of `plans/README.md` (of `arch-report.md` for `arch`) so they aren't re-audited next run.
 
-Open with the count of vetted findings and the top one. Then the table, ordered by leverage (impact ÷ effort, weighted by confidence):
+Reply with the count of vetted findings and the top one (see Output). Then the numbered findings, ordered by leverage (impact ÷ effort, weighted by confidence).
 
-```
-| # | Finding (category) | Impact / effort / confidence | Evidence |
-```
-
-Present direction findings separately after the table, options to weigh, not problems to rank against bugs.
+Present direction findings separately after the list, options to weigh, not problems to rank against bugs.
 
 Ask which findings to turn into plans (suggest the top 3 to 5, plus anything flagged). Surface dependency ordering, e.g. "characterization tests for module X must land before the refactor of X." **Wait for the selection.** Non-interactive → write plans for the top 3 and record that default in `plans/README.md`.
 
@@ -151,6 +147,61 @@ Finish by writing `plans/README.md`: execution order, dependencies, a status col
 
 **`--issues`** (modifier on any planning invocation) → after writing each plan file, publish it as a GitHub issue via `gh issue create --title "<NNN>: <Title>" --body-file plans/<file>` and record the URL in the plan header and the index. Only on explicit `--issues`.
 
-## Output tone
+## Output
 
-Advising, not selling. State findings plainly with evidence, flag uncertainty honestly, prefer "not worth doing" over padding the list. A short list of high-confidence, high-leverage plans beats a long one.
+Reader: a developer or maintainer who chooses which plan to hand to an agent, or which change to accept. Decision: which findings or plans to act on. Terms: a plan is a file under `plans/` that another agent runs step by step; the executor is that agent; the commit stamp is the short commit ID a plan was written against.
+
+Line 1, bold, one plain sentence, 100 characters at most. It states the mode's result in the user's words. It never opens with a label, verdict word, ID, path, or count.
+
+Under line 1, plain sentences: what was not audited or run, and any default you chose because the run was non-interactive. Say what was not audited in one sentence, for example: "I did not audit dependencies, performance, docs, or tooling."
+
+The reply ends with `Verdict: <word>` on its own line just before `**Next:**`, by mode:
+- Audit: `Findings`. Line 1 gives the count and the top item.
+- Plan written: `Written`. Line 1 says what the plan changes, and that nothing was run.
+- Plan review: `Executable` (hand off as is), `Needs fixes` (fix the items below first), or `Not executable` (rewrite first).
+- Reconcile: `Reconciled`.
+- Refactor: `Plan ready`. Line 1 says that no code changed.
+- Execute: `LGTM` (merge when ready), `NEEDS REVISION` (the specific items follow), or `REJECT` (the reason follows), then the done criteria rerun as numbered points.
+- Branch with no changes of its own: `Nothing to audit`. Line 1 says so; `**Next:**` offers a full audit.
+- Stopped: `Stopped`. Line 1 says what is missing, then `**Next:**` holds up to 3 numbered ways to unblock, default marked. Each way names what to send; never suggest a transformation the user did not ask for.
+
+Body by mode:
+- Audit: one numbered point per finding, highest leverage first. Each point: a bold plain sentence that states the problem, then one sentence with its impact, effort, and confidence in words, then `file:line` as evidence. Say how sure you are once: "I read the code; I did not run it." Quick audit uses the same form. Direction findings follow as options to weigh, one numbered block each.
+- Plan review: one numbered point per blocking problem: a bold plain sentence that states it, one sentence with its `file:line` evidence, then the fix in one sentence.
+- Plan written: what the plan changes in two or three short sentences, and the condition that makes the executor stop.
+- Refactor: the target shape as a `diff` first, under the first numbered point; then the numbered steps with their verify commands and safe stopping points; then the exclusions.
+- Reconcile: one numbered point per plan: a bold plain sentence with its status change ("Plan 001 is reopened: ..."), then the reason in one or two sentences. Each plan that needs a decision gets its question in `**Next:**`.
+
+`**Next:**` holds each step a person can do now: hand a plan to an executor or follow it, reply with the finding numbers to plan next, or answer the decision. A decision is one question with at most 4 options and the default marked.
+
+`**Changed:**` lists each file written under `plans/` or `arch-report.md`, or `none`.
+
+Reader rules: advise, do not sell. A characterization test is a test that pins current behavior, even where that behavior looks wrong. Say what was not audited. "Not worth doing" beats a padded list. A short list of high-confidence, high-leverage plans beats a long one.
+
+````markdown
+**The audit found 3 issues; the worst lets anyone read every patient's record through the name search.**
+I did not audit dependencies, performance, docs, or tooling; the repo has no CI, lint, or typecheck.
+This run was non-interactive, so I wrote plans for the top 3 findings. `plans/README.md` records that default.
+
+1. **SQL injection in `find_patient`: the name search puts user input into the query.**
+   The impact is high and the fix is small. I read the code; a name such as `' OR '1'='1` returns every patient's record (`clinic/records.py:9`).
+
+2. **`slots()` drops the last slot of every day.**
+   The impact is high and the fix is small. I read the code and traced the slice. The one test checks only the first item (`clinic/slots.py:3`).
+
+3. **`send_letter()` skips malformed rows, so some letters are never sent.**
+   The impact is medium and the fix is small. I read the code; the broad `except` skips rows silently (`clinic/letters.py:11`).
+
+Verdict: Findings
+
+**Next:**
+1. Hand `plans/002-parameterize-find-patient.md` to an executor, or follow it. It closes the security hole.
+2. Then run plans 001 and 003. They do not depend on each other.
+3. Decide plan 003: should a malformed row raise an error (default) or be logged and skipped?
+
+**Changed:**
+- `plans/README.md`
+- `plans/001-fix-slots-off-by-one.md`
+- `plans/002-parameterize-find-patient.md`
+- `plans/003-stop-skipping-letter-rows.md`
+````

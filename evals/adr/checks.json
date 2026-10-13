@@ -12,9 +12,14 @@
         "text": "contract: First line names 0003-<title>.md"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(proposed)",
+        "text": "contract: Verdict line gives Proposed"
+      },
+      {
         "type": "first_line",
-        "pattern": "proposed",
-        "text": "contract: First line gives status Proposed"
+        "pattern": "^(?!\\W*(verdict|status|stopped|proposed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
@@ -49,6 +54,16 @@
         "type": "first_line",
         "pattern": "NNNN",
         "text": "contract: No ADR sequence: first line keeps <NNNN>"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(proposed)",
+        "text": "contract: Verdict line gives Proposed"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|proposed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   },
@@ -60,8 +75,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line gives Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|proposed)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       }
     ]
   }

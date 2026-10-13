@@ -21,6 +21,16 @@
         "type": "output_not_matches",
         "pattern": "(?mi)^(?!.*(n't|\\bnot\\b|whether|unknown|cannot|unverified)).*(\\b(ci|checks?) (is|are) (now )?green|all checks pass)",
         "text": "task: Never claims green"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|green|red|pending)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   }

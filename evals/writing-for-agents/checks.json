@@ -3,18 +3,23 @@
     "fixtures": "prompt-bloated",
     "checks": [
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(rewritten)",
+        "text": "contract: Verdict line says Rewritten"
+      },
+      {
         "type": "first_line",
-        "pattern": "^optimized prompt$",
-        "text": "contract: First line is the optimized prompt heading"
+        "pattern": "^(?!\\W*(verdict|status|stopped|rewritten|written|covered|optimized prompt)\\b)",
+        "text": "contract: Line 1 is not a label or heading"
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^settings:",
-        "text": "contract: settings line after the block"
+        "pattern": "(?m)^\\W*(Use|Set|Run)\\b[^\\n]*\\b(reasoning|effort)\\b",
+        "text": "contract: reasoning setting stated in a plain sentence after the block"
       },
       {
         "type": "output_not_matches",
-        "pattern": "(?m)^\\W*(cut|kept|added):",
+        "pattern": "(?m)^\\s*\\d+\\.\\s+\\*\\*(Cut|Kept|Added|Moved|Fixed)\\b",
         "text": "contract: No changelog without the flag"
       },
       {
@@ -51,6 +56,11 @@
         "type": "command",
         "command": "python3 \"$EVALS/oracle.py\" block-lacks '100% sure|only report issues you are|do not report minor'",
         "text": "task: The rewrite removes the recall-killing filter"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*rewritten\\b[^\\n]*\\n(\\s*\\n)*\\s*\\W*Next:",
+        "text": "contract: Verdict line comes just before Next"
       }
     ]
   },
@@ -58,18 +68,23 @@
     "fixtures": "prompt-bloated",
     "checks": [
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(rewritten)",
+        "text": "contract: Verdict line says Rewritten"
+      },
+      {
         "type": "first_line",
-        "pattern": "^optimized prompt$",
-        "text": "contract: First line is the optimized prompt heading"
+        "pattern": "^(?!\\W*(verdict|status|stopped|rewritten|written|covered|optimized prompt)\\b)",
+        "text": "contract: Line 1 is not a label or heading"
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\W*cut:",
-        "text": "contract: Changelog has cut lines"
+        "pattern": "(?m)^\\s*\\d+\\.\\s+\\*\\*Cut\\b",
+        "text": "contract: Changelog has a numbered Cut point"
       },
       {
         "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?m)^\\W*(cut|kept|added):'",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?m)^\\s*\\d+\\.\\s+\\*\\*(Cut|Kept|Added|Moved|Fixed)\\b'",
         "text": "contract: The changelog stays outside the block"
       }
     ]
@@ -88,8 +103,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|\\bno (prompt|text|input)\\b|\\b(didn.t|did not) (include|give|send|paste|provide)\\b|nothing to",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|\\bno (prompt|text|input)\\b|\\b(didn.t|did not) (include|give|send|paste|provide)\\b|nothing to",
         "text": "task: Says there is no prompt or asks for it"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
       }
     ]
   },
@@ -104,6 +129,16 @@
         "type": "first_line",
         "pattern": "skills/commit|\\bcommit\\b",
         "text": "contract: First line names the existing skill"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(covered)",
+        "text": "contract: Verdict line says Covered"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|covered|written)\\b)",
+        "text": "contract: Line 1 opens with no label"
       }
     ]
   },
@@ -126,14 +161,34 @@
         "text": "task: The existing skill is unchanged"
       },
       {
-        "type": "first_line",
-        "pattern": "skills/[\\w-]+/SKILL\\.md",
-        "text": "contract: First line is the skill path"
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Changed:\\W*skills/[\\w-]+/SKILL\\.md",
+        "text": "contract: Changed line names the skill file"
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\|[^\\n]*\\b(passed|expected|failed)\\b",
-        "text": "contract: Check table with results"
+        "pattern": "^\\W*Verdict:\\W*(written)",
+        "text": "contract: Verdict line says Written"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|written)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\s*(\\|[^\\n]*\\b(passed|expected|failed)\\b|\\d+\\.[^\\n]*\\b(passed|expected|failed)\\b)",
+        "text": "contract: Check table or numbered list with results"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^(?!\\s*(\\||\\d+\\.))[^\\n]*\\b(not run|did not run|haven't run|have not run|not observed)\\b",
+        "text": "contract: A plain sentence says what was not run"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*written\\b[^\\n]*\\n(\\s*\\n)*\\s*\\W*Next:",
+        "text": "contract: Verdict line comes just before Next"
       }
     ]
   }

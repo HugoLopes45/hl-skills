@@ -19,17 +19,17 @@ Tier structure and segment pricing belong to `pricing.md`.
 
 ### `offer` (default)
 
-1. **Dream outcome**: the state change the buyer wants, not a feature. Vague means stop and make it specific.
-2. **Perceived likelihood**: proof that it works for this buyer (case study, demo, guarantee, niche testimonial).
-3. **Time to result**: how long until the outcome, and what the first win in 7 days is.
-4. **Effort**: what the buyer must do. Done for them beats done with them beats do it yourself.
-5. **Stack**: bonuses, each tied to a named objection and the term it moves.
-6. **Anchor and price**: something comparable the buyer already accepts as expensive, then the price.
-7. **Verdict**: `strong` / `not yet, fix <term>` / `wrong buyer`.
+1. **The outcome the buyer wants**: the state change the buyer wants, not a feature. Vague means stop and make it specific.
+2. **Proof it works**: proof that it works for this buyer (case study, demo, guarantee, niche testimonial).
+3. **Time to first win**: how long until the outcome, and what the first win in 7 days is.
+4. **Effort for the buyer**: what the buyer must do. Done for them beats done with them beats do it yourself.
+5. **Bonuses**: each tied to a named objection and the part of the offer it moves.
+6. **Price and what it is compared with**: something comparable the buyer already accepts as expensive, then the price.
+7. **Verdict**: at the end of the reply, `Strong`, `Not yet, fix <term>` (the term in plain words), or `Wrong buyer`; line 1 says the decision in plain words.
 
 ### `acquire`
 
-Match the channel to the price point and to where the buyer already is. Check whether the user ran at least 100 attempts on the chosen channel. Define a lead magnet that shows the outcome in five minutes. Funnel math: leads, conversations, close rate, CAC, each measured or labeled estimate. Verdict: one channel, an attempt target, and the next move this week.
+Match the channel to the price point and to where the buyer already is. Check whether the user ran at least 100 attempts on the chosen channel. Define a lead magnet that shows the outcome in five minutes. Funnel math: leads, conversations, close rate, CAC, each measured or labeled estimate. The verdict names one channel, an attempt target, and the next move this week.
 
 ### `economics`
 
@@ -37,7 +37,7 @@ Table: CAC, LTV, gross margin, payback period, monthly burn and runway, each mar
 
 ### `constraint`
 
-List what limits growth (sales capacity, support, product limits, delivery, hiring), then pick the single constraint. If acquisition is the constraint, state 10× volume in attempts and money. If the next step needs a hire: who, doing what, paid how, freeing which task. Verdict: optimize or push volume.
+List what limits growth (sales capacity, support, product limits, delivery, hiring), then pick the single constraint. If acquisition is the constraint, state 10× volume in attempts and money. If the next step needs a hire: who, doing what, paid how, freeing which task. The verdict is optimize or push volume.
 
 ## Stand down
 

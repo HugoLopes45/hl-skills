@@ -22,9 +22,11 @@ The input is the intent or the skill to review. No input: take the intent from t
 
 ## Output contract
 
-Write into the skill what the user receives: its first line, its sections in order, and the view for each part.
+Write into the skill what the user receives: who reads it and when, the decision it serves, its line 1 and `Verdict:` line with the fixed verdict words, its sections in order, the view for each part, and one rendered example.
 
-- First line: the answer, verdict, or blocker. Then evidence and implications; the next action last, when there is one. Blockers and risks stay above the details.
+- The reader is smart but new to the domain. Line 1 and the next steps alone must tell them what happened, whether to worry, and what to do. Effect in everyday words first, then the technical name; define each term or acronym at first use; every number with its unit and meaning; each next step something a person can do now.
+
+- Line 1: bold, one plain sentence with the answer, never a label. Then blockers and risks as plain sentences, then numbered points, then `Verdict: <word>` with the skill's fixed verdict words on its own line, and the next action last in `**Next:**`.
 - Pick the view by content: a table for items with the same fields (at most 5 columns, short cells), a call tree for a flow (only nodes read or run), a file tree for layout, a timeline for events, pseudocode for logic, types and signatures for a contract, a `diff` for a change to an existing structure. Mermaid only where it renders. A view only where it beats a sentence.
 - Prose in loose ASD-STE100: short sentences, one meaning per word, active voice. Verified facts, inferences, and unknowns visibly apart. Omit empty sections. No preamble or recap.
 - Deliver the artifact, not instructions to make it.
@@ -56,7 +58,7 @@ Inside a repository with its own style guide (for example `STYLE.md`), that guid
 - Frontmatter parses as YAML; `name` equals the directory name; the description contains the exact words `Use when`.
 - Every `references/` link resolves.
 - The repository's validator passes when it has one (in this collection: `python3 scripts/validate.py`).
-- Output check: follow the draft on two or three representative inputs, one of them an edge case. A run that is unsafe or impossible here: write the expected output and label it expected. Each human-facing output passes only when the first line answers the request, each view beats the prose it replaces, facts and assumptions are apart, nothing can be cut without losing meaning, and the user can act on it without rework. An agent-facing output passes when it matches its format exactly. A failure means fixing the skill, not the sample.
+- Output check: follow the draft on two or three representative inputs, one of them an edge case. A run that is unsafe or impossible here: write the expected output and label it expected. Each human-facing output passes only when line 1 answers the request in words a newcomer understands, the `Verdict:` line sits just before `**Next:**`, no code needs a legend, each view beats the prose it replaces, facts and assumptions are apart, nothing can be cut without losing meaning, and the user can act on it without rework. An agent-facing output passes when it matches its format exactly. A failure means fixing the skill, not the sample.
 - A host may need a new session to load a new skill. You cannot observe that in this turn, so do not claim it.
 
-Return, first line, with no preamble before it: the skill's path, or the existing skill that already covers the job. Then a table: check, input (output checks only), result: passed, expected (written, not run), or failed with the checks it failed. Suggest a `hl-code-review` of the new file before it ships.
+Return, with no preamble: line 1, bold, one plain sentence. For a written skill: what it does, in plain words. For a covered job: the existing skill and what it already does. Then one plain sentence for each caveat that limits the verdict, such as a skill not run in a live session; say which rows are expected, not observed. Then the checks: a table of up to 5 checks with the fields check, input (the sample used, output checks only), and result: `passed`, `expected: written, not run`, or `failed: <reason>`. More than 5 checks: a numbered list, one check per point, with its result. Then `Verdict: Written`, or `Verdict: Covered, use <skill>`, just before `**Next:**`. `**Next:**`: start a new session so your agent app loads the skill, and run `hl-code-review` on the new file before it ships. For a covered job, `**Next:**` names the existing skill to use. Then `**Changed:** <path>` for a written skill, or `**Changed:** none`.

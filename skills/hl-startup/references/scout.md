@@ -62,10 +62,20 @@ Survivors only. Integers, unknown=0, total /10: pain frequency+urgency 0-2 · ev
 
 ## Output
 
-1. First line: the pick and its score, or `NO SHIPPABLE BET`. Then the scope line: inputs, depth, date.
-2. Signal digest (`deep` only): clusters, signal count each, dead lanes.
-3. Bet table: buyer · promise · gates (solo-ops / AI-build) · score · status.
-4. Top 3: full bet block + build sketch assuming boilerplate start (auth/billing/email solved, sketch only the product's own 5%): assumed stack labeled assumption, surfaces/endpoints, entities, external services, fixture, smoke test (setup/input/action/expected output), human-only steps. One economics line each: customers needed for €500/€1k/€3k MRR at hypothesized price, net of variable costs. `quick`: the pick's block only, no build sketch.
-5. The pick: one bet, why it beat the runner-up, this-week validation plan with kill-by date. Honest paid CTA (pre-order or paid pilot; waitlist is secondary evidence), one problem post where the buyer hangs out (describe the pain, don't pitch), concierge fulfilment for the first five with money upfront. Each step names its kill signal. `quick`: nothing after the steps but the closing line. Name the pick as input for the `evaluate` mode; nothing gets built before it survives the assumption and problem stages.
+Reader: a founder choosing one product to test this month. The decision served: which bet to validate this week.
 
-Every candidate gated out → print `NO SHIPPABLE BET` with failed conditions, never force a winner. Don't write files unless asked.
+Line 1, bold: one plain sentence with the bet and why it wins, or the failed gate when no bet passes. End with `Verdict: Pick: <bet>, <score>/10`, or `Verdict: No shippable bet`, just before `**Next:**`. Say what you searched and when in one plain sentence under line 1.
+
+Body, in this order, one heading per point:
+1. Signal digest (`deep` only): table of cluster, signals found, dead lanes.
+2. Bet table: buyer, promise, gates (solo-ops / AI-build), score, status. Legend once above the table: `PASS` holds, `BORDERLINE` has one non-core unknown, `KILL` fails.
+3. Top 3 (`deep`): one block per bet, one field per line: buyer, pain, current workaround, promise, why now, price and channel, evidence. Economics as one line: customers needed for €500, €1k, and €3k a month at the hypothesized price, net of variable costs, marked `derived`.
+4. The pick: one bet, why it beat the runner-up, then a numbered validation list. Each step names its kill-by date and kill signal. The honest paid offer comes first (pre-order or paid pilot; a waitlist is weaker evidence).
+
+`quick`: step 3 shows the pick's block only, with no build sketch. Market claims tagged `[unverified]`. At most 400 words. Last line names `evaluate` as the next step.
+
+Reader rules:
+- Define once: solo-ops (one person can run it), AI-buildable (a coding agent can build it from a written spec), fixture (sample data that tests the core outcome), pilot (a paid trial with a few users).
+- Search results are not market size. A trend shows why now, not demand.
+- Every candidate gated out: say `No shippable bet` with the failed conditions. Never force a winner.
+- Write no files unless asked.

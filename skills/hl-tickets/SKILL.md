@@ -40,14 +40,54 @@ Planning does not authorize implementation. Do not invent baseline failures or e
 
 ## Delivery
 
-Before writing to `--write <dir>` or GitHub, show the breakdown as a numbered list in dependency order: title, type, blocked by, what it makes work. Ask whether the granularity and edges are right; revise until the user approves.
+Before writing to `--write <dir>` or GitHub, show the breakdown in dependency order, in the view the Output section gives. Ask whether the granularity and edges are right; revise until the user approves.
 
 `--write <dir>` saves `SL-NN-<slug>.md`; default target is md. Without a destination, save one draft under `${TMPDIR:-/tmp}` and ask before final delivery. Do not overwrite differing files without approval.
 
 An explicit `--target github` authorizes issue creation, not implementation. Check repository access, existing matching issues, and available labels. Create only missing issues, blockers first so each "Blocked by" line cites real issue numbers, with acceptance checkboxes; apply `slice` and `HITL` labels only where they already exist. Missing tools or access: report the blocker. Never edit or close existing issues.
 
-First line: the slice count, the HITL count, and the directory or repository they went to. Then a table in dependency order: id, title, type, blocked by, path or issue URL. Then unresolved dependencies, and each source `AC-N` that no slice covers.
+Line 1, bold, one plain sentence: the slice count, how many need a person, and the directory or repository they go to. Then the breakdown in dependency order, one numbered slice per item, with its title, who does it, blocked-by, and path or issue URL. Then unresolved dependencies, and each source `AC-N` that no slice covers. End with `Verdict: <word>`, then `**Next:**`.
 
 ## Tracker
 
 With `--tracker`, follow [references/tracker.md](references/tracker.md) for the delivery and the output. `--target github` writes the slice format above; `--tracker github` follows the conventions of the target repository's existing issues.
+
+## Output
+
+Reader: a person who turns the plan into tickets or agent tasks. They approve the breakdown before anything is written, then take one slice.
+
+Line 1, bold, one plain sentence. The reply ends with `Verdict: <word>` on its own line just before `**Next:**`:
+- `Ready for approval`: N slices, M need a person; nothing written yet.
+- `Written`: after approval, the slices and the directory or repository.
+- `Ready, nothing created`: `--target github` without access. Line 1 says in plain words that no issue was created, and why.
+- `Stopped`: no readable source. Line 1 says what is missing. Then `Send one of these:` and up to 3 numbered ways, default marked: a path to the plan or spec (default); a directory of Markdown notes; the feature in one sentence.
+
+Breakdown view: a numbered list in dependency order, one slice per item. Each: the title in bold, then one line with who does it (`an agent alone` or `needs a person`), what it waits for (`blocked by: none` or `blocked by: 1`), and the plan's acceptance criteria it covers, by the numbers or ids the plan uses. Then one sentence on what the slice makes work, when the title does not say it. In the reply, never show slice ids such as `SL-01` or the codes `AFK` and `HITL`; the written files keep them.
+
+Then, in plain sentences: the open decisions, each with who decides it, and each acceptance criterion of the plan that no slice covers.
+
+`**Changed:** <paths>` after a write; `**Changed:** none` before approval.
+
+Reader rules:
+- Spell out at first use: acceptance criterion (a check from the plan that proves a part is done).
+- Name a slice by what a user can do after it: "Admin invites a teammate by email", not "invites table".
+- An unresolved decision stays a question with its owner. Never fill it with a default.
+
+````markdown
+**Three slices, one needs a person; nothing is written until you approve.**
+
+1. **Decide who may post a donation**
+   Needs a person. Blocked by: none. Covers AC-1.
+2. **Post a donation with a photo**
+   An agent alone. Blocked by: 1. Covers AC-2. Neighbours can now see the donation.
+3. **Reserve a donation for a neighbour**
+   An agent alone. Blocked by: 2. Covers AC-3. One neighbour can claim it.
+
+No slice covers AC-4 (donors see pickup times).
+
+Verdict: Ready for approval
+
+**Next:**
+1. Approve this breakdown, or name the slice to split or merge.
+2. Decide slice 1: who may post a donation? Recommended: any signed-in resident.
+````

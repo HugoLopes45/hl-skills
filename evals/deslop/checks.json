@@ -41,6 +41,11 @@
         "type": "not_ran",
         "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
         "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -59,8 +64,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "POSSIBLE BUG:[^\\n]*(parse_port|app\\.py:2[3-6]\\b)",
-        "text": "contract: Prefixes the parse_port line with POSSIBLE BUG:"
+        "pattern": "(?i)possible bug[^\\n]*(parse_port|app\\.py:2[3-6]\\b)",
+        "text": "contract: Flags the parse_port line as a possible bug"
       },
       {
         "type": "output_matches",
@@ -69,13 +74,18 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "(?mi)^(?!.*(outside|pre-existing|out of scope|not touched|alone|already|existing|committed|not (in|part of) (your|this|the) (change|diff))).*(increment the counter|app\\.py:8\\b)",
+        "pattern": "(?mi)^(?!.*(outside|pre-existing|out of scope|not touched|(did not|didn't|never) touch|alone|already|existing|committed|not (in|part of) (your|this|the) (change|diff))).*(increment the counter|app\\.py:8\\b)",
         "text": "task: Leaves the line outside the diff alone"
       },
       {
         "type": "not_ran",
         "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
         "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Reported\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -106,6 +116,11 @@
         "type": "not_ran",
         "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore)\\b",
         "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -131,6 +146,16 @@
         "type": "not_ran",
         "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore)\\b",
         "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)unstaged[^\\n]*(not reviewed|did not review|were not reviewed)",
+        "text": "contract: Says unstaged changes exist and were not reviewed"
       }
     ]
   }

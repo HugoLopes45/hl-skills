@@ -22,9 +22,19 @@
         "text": "task: Cites the swallowed exception at calc.py:4-5"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Standards\\b[^|\\n]*\\|\\s*Spec\\b",
+        "text": "contract: Verdict line gives one verdict per axis"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
         "type": "first_line",
-        "pattern": "Standards:.*\\|\\s*Spec:",
-        "text": "contract: First line gives one verdict per axis"
+        "pattern": "^(?!\\W*(verdict|stopped|status|fix|clear)\\b)",
+        "text": "contract: Line 1 does not open with a label"
       },
       {
         "type": "output_matches",
@@ -47,13 +57,33 @@
       },
       {
         "type": "output_matches",
+        "pattern": "ValueError",
+        "text": "task: Reports the missing ValueError from the repository spec"
+      },
+      {
+        "type": "output_matches",
         "pattern": "calc\\.py:([45]|[1-5]\\s*[-\u2013]\\s*[4-9])\\b",
         "text": "task: Cites the swallowed exception at calc.py:4-5"
       },
       {
         "type": "output_matches",
-        "pattern": "^\\s*\\|[^\\n]*calc\\.py:\\d+",
-        "text": "contract: Findings table with file:line"
+        "pattern": "(?m)^\\s*\\d+\\.\\s+\\*\\*(?:(?!^\\s*\\d+\\.\\s|^\\W*Verdict:)[\\s\\S]){0,600}?calc\\.py:\\d+",
+        "text": "contract: Numbered finding with file:line"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)origin/\\w+\\W{0,4}(has\\s+not|hasn.t|still)\\s+(moved|changed|advanced)|origin/\\w+\\W{0,4}is\\s+up\\s+to\\s+date",
+        "text": "task: Does not assert unfetched remote state"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Fix\\b",
+        "text": "contract: Verdict line is present"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
       }
     ]
   },
@@ -63,6 +93,11 @@
         "type": "command",
         "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
         "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "ValueError",
+        "text": "task: Reports the missing ValueError from the repository spec"
       },
       {
         "type": "output_matches",
@@ -79,6 +114,16 @@
         "type": "output_matches",
         "pattern": "(?i)subagent|cold review|independent review",
         "text": "contract: Labels the findings as the subagent's"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Fix\\b",
+        "text": "contract: Verdict line is present"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
       }
     ]
   },
@@ -88,6 +133,11 @@
         "type": "command",
         "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
         "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "ValueError",
+        "text": "task: Reports the missing ValueError from the repository spec"
       },
       {
         "type": "output_matches",
@@ -107,8 +157,23 @@
       },
       {
         "type": "output_matches",
+        "pattern": "(?i)\\b(security|architecture|simplicity|slop|tests?|silent[- ]failure)\\s+specialist\\b",
+        "text": "contract: Names the specialist that found a finding, in plain words"
+      },
+      {
+        "type": "output_not_matches",
         "pattern": "\\b[A-Z]{2,8}-\\d{3}\\b",
-        "text": "contract: Findings carry specialist IDs"
+        "text": "contract: No internal finding IDs"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Fix\\b",
+        "text": "contract: Verdict line is present"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
       }
     ]
   },
@@ -121,8 +186,18 @@
       },
       {
         "type": "first_line",
-        "pattern": "(?i)blocked|cannot|can.t|unable|not available|no access",
-        "text": "contract: Verdict line says blocked"
+        "pattern": "(?i)^(?!\\W*(verdict|stopped|status)\\b)[^\\n]*(blocked|cannot|can.t|unable|not available|no access)",
+        "text": "contract: Line 1 says why the review cannot run, without a label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\b",
+        "text": "contract: Stopped verdict is present"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\b[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Stopped verdict sits just before Next"
       },
       {
         "type": "output_not_matches",

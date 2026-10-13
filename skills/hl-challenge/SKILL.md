@@ -24,28 +24,70 @@ A blocker is a contradicted claim that defeats the goal or a requirement of the 
 
 ## Report
 
-First line of the answer, with no preamble before it, limited to what you tested. Settle the verdict before you write it; never revise it later in the answer:
-- `stop`: only a blocker that needs a different approach or major rework, named. A missing requirement that a small change adds is always `fix first`, even when the work is marked done.
-- `fix first`: blockers fixable within the target, even in work already marked done, user decisions that can change the verdict, or an untested claim that decides the goal; name each change, decision, or the cheapest check that settles it.
-- `proceed`: no blocker, and the claim that the target meets its goal end to end is supported.
+Reader: the person who wrote the plan or finished the work, deciding whether to keep going. They read line 1 and `**Next:**`.
 
-Second line: `Judged against: <goal> (<source, or inferred>); reference: <path or none>; independent: yes|no`.
+Settle the verdict before you write it; never revise it later in the answer. Line 1, bold, one plain sentence within 100 characters, limited to what you tested: the answer in everyday words, effect first. Line 1 never opens with the verdict word.
 
-Then `Blockers: none` or the blockers table; then non-blocking risks (contradicted, goal survives); then untested assumptions, marking those that decide the goal. Columns: claim, result (omitted for untested), evidence, consequence. Report each material claim once. Then decisions for the user, one per line with a recommended answer and its reason. Then `Supported:` with each supported claim and its citation, one line each.
+Under line 1, one plain sentence each, no labels: every blocker (a claim that breaks the goal), and every untested claim or arithmetic on the target's own numbers that alone defeats the goal. Then:
+- A numbered list of the blockers, worst first. Each: a bold plain sentence that states the contradiction, one sentence on its consequence for the goal, the evidence (a short call path, a calculation, or a quoted line) and the change that fixes it.
+- `Risks:` a numbered list of contradicted claims the goal survives and untested assumptions, each one plain sentence with its evidence and how sure you are; say which ones decide the goal. Report each material claim once.
+- `Smaller version:` knowing what you know now, the simplest target that still meets the goal, as a `diff` of the target's parts (`-` delete or do not build, `~` change). Omit it when the target is already minimal.
+- `What holds:` the supported claims, one line each with its citation.
+- `Verdict: <word>` on its own line just before `**Next:**`, one of:
+  - `Stop`: the target cannot reach the goal as designed. Only a blocker that needs a different approach or major rework, named. A missing requirement that a small change adds is always `Fix first`, even when the work is marked done.
+  - `Fix first`: the goal is reachable after the named changes. Blockers fixable within the target, even in work already marked done; user decisions that can change the verdict; or an untested claim that decides the goal.
+  - `Proceed`: go ahead. No blocker, and the claim that the target meets its goal end to end is supported.
+- `**Next:**` every change needed, in order, including steps stated earlier; then each decision for the user as one question with a recommended answer and its reason. Never assume the user accepts a risk.
+- Plain words: no codes, ranks, or tags. Define a technical term at first use in a few words (`p95`: the time 95 % of requests beat). Code, paths, and quoted errors stay exact. Name the cause, never the author. Under line 1, say in one plain sentence what you checked against: the goal and where it is written.
+- No target or no goal: line 1 says in plain words what is missing and why it blocks, e.g. `**I need the plan or work to challenge: send its text or a file path.**`, then up to 3 numbered ways to unblock, default marked, then `Verdict: Stopped`.
 
-Then the smaller version: knowing what you know now, the simplest target that still meets the goal, with what to delete or not build. Omit it when the target is already minimal. Never assume the user accepts a risk.
+````markdown
+**The leaderboard can be up to an hour old, and a rebuild can overlap the next one.**
+The plan promises scores fresh within one minute, but the table is rebuilt once an hour.
+One rebuild takes 70 minutes on 2 million rows, so two rebuilds can run at the same time.
+
+1. **New scores never reach the precomputed table until the next rebuild.**
+   A player who beats a record sees the old leaderboard for up to an hour. I read this code; I did not run it.
+   ```text
+   api.py:31        POST /scores --> record_score()   # writes live
+   jobs/rank.py:12  rebuild_leaderboard()             # reads once an hour
+   api.py:52        GET /leaderboard                  # reads the rebuilt table only
+   ```
+   Fix: drop the hourly job and read the live scores with an index.
+
+Smaller version:
+```diff
+- hourly rebuild job and leaderboard table
+~ add an index on scores(game_id, points DESC); the query now reads every row (900 ms)
+```
+
+What holds: `record_score` writes to `scores` (`scores.py:44`).
+
+Verdict: Fix first
+
+**Next:**
+1. Add the index. Then run `bench/leaderboard.sh`: 95 % of requests must finish under 200 ms.
+2. Decide: is one-minute freshness required? Recommended: yes, `spec.md:12` promises it.
+````
 
 ## Premortem
 
 With `--premortem`, assume the goal failed at a horizon that fits it: 12 months by default; for a one-off change, just after it runs. Missing goal, actor, or mechanism: ask.
 
-Scenarios to examine, where they apply: insufficient demand, a stronger alternative, a reliability failure, a security failure. Label each hypothetical. Never invent releases, customer quotes, revenue, fines, or probabilities.
+Scenarios to examine, where they apply: insufficient demand, a stronger alternative, a reliability failure, a security failure. Say which events are imagined. Never invent releases, customer quotes, revenue, fines, or probabilities.
 
 For each scenario, trace a present weakness, supported by the input, through a plausible event to the failed goal. Separate demonstrated weaknesses from assumed conditions. No causal evidence: record an open question, not a fatal flaw.
 
-Rank causes: S0 defeats the goal alone, S1 materially threatens it, S2 limited impact. Two S1 causes are not automatically an S0.
+Rank causes by effect: fatal (defeats the goal alone), serious (materially threatens it), minor (limited impact). Two serious causes are not automatically fatal.
 
-First line: the worst rank and its cause (`S0: <cause>`), or `No supported failure cause`. Then the frame (goal, actor, mechanism, horizon) on one line; each supported scenario with its rank, as an indented causal chain: the weakness with its citation, then the event, then the failed goal; then up to three prioritized mitigations or discriminating tests.
+Line 1, bold, one plain sentence within 100 characters, written as if the failure already happened ("Three months after launch, admins still file tickets because a stalled invite has no fix."): the worst cause and its effect, never opening with a rank. Under it, one plain sentence: what you read, and that the events after the present weakness are imagined. Then a numbered list of supported scenarios, worst first. Each: a bold plain sentence with the cause and its rank in words, then the chain from the present weakness to the failed goal, one link per line; mark only the first link as the fact you found:
+```text
+plan.md:14  backups run on the same disk as the database   # in the plan today
+--> the disk fails
+--> the database and every backup are lost together
+--> goal failed: restore any day of the last 30
+```
+Then `Open questions:` the gaps with no causal evidence yet, one line each. Then `Verdict: <worst rank>` on its own line: `Fatal`, `Serious`, `Minor`, or `No supported failure cause`. Then `**Next:**` up to three prioritized mitigations or discriminating tests.
 
 ## Lenses
 

@@ -36,6 +36,41 @@
         "type": "output_matches",
         "pattern": "\\b(?=[0-9a-f]*[0-9])[0-9a-f]{7,40}\\b",
         "text": "contract: Reports the new commit hash"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(committed)",
+        "text": "contract: Verdict line says Committed"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|committed|preview|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -61,6 +96,41 @@
         "type": "output_matches",
         "pattern": "nothing (is )?staged|no staged|not staged|nothing to commit|nothing.{0,20}(in the )?(index|staging)",
         "text": "contract: Says nothing is staged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|committed|preview|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -86,6 +156,41 @@
         "type": "output_matches",
         "pattern": "(?m)^\\W*(fix|refactor)(\\([^)]+\\))?: \\S",
         "text": "contract: Prints a conventional message"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(preview)",
+        "text": "contract: Verdict line says Preview"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|committed|preview|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -111,6 +216,41 @@
         "type": "output_matches",
         "pattern": "split|separate|two commits|unrelated",
         "text": "contract: Proposes a split"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|committed|preview|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   },
@@ -141,6 +281,41 @@
         "type": "output_matches",
         "pattern": "ticket|issue (id|key|number|reference)",
         "text": "task: Asks for the ticket reference"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(stopped)",
+        "text": "contract: Verdict line says Stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|committed|preview|stopped)\\b)",
+        "text": "contract: Line 1 opens with no label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
+        "text": "contract: Verdict line sits just before Next"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
+        "text": "contract: No label lines such as Left out or Scope"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(S[0-3]|P[0-3]|AC-\\d+|SL-\\d+|Q\\d)\\b|\\[[A-Z]{2,}\\]",
+        "text": "contract: No rank, internal ID, or bracket tag"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\*\\*Changed:\\*\\*",
+        "text": "contract: Changed line present, after Next"
       }
     ]
   }

@@ -26,4 +26,46 @@ Test rules:
 - Never skip a failing check, weaken an expectation to match a bug, or make production code return only the tested answer.
 - Fix a wrong test only with evidence, then repeat step 2.
 
-First line: the behavior, and whether every case ended green. Then a table: case, step (red, already green, green, refactor), command, observed result. Passing tests prove only the behavior they cover.
+## Report
+
+Reader: the developer who asked for the behavior and decides whether to keep the change. They know the code but may not know this cycle. Define each term once at first use: red (a test that fails because the behavior is missing), green (it passes), refactor (tidy the code without changing behavior), seam (the public entry point the test calls), `AC-N` (the acceptance criterion from the plan). In the output, say "fails before the change" and "passes" rather than red and green, except in the verdict word. Say "fails before the change" only for a run you saw; a case you did not run is unverified. Name a criterion by its words; give its id only where the reader must find it.
+
+- Line 1, bold: one plain sentence that says what now works, in the behavior's own words, within 100 characters. It never starts with a label or the verdict word.
+- Under line 1, plain sentences: what the passing tests do not cover, when that limits the verdict; each case that is already passing before the change, with the reason.
+- One table, one row per case, in the order written: `Case` (the behavior in plain words, with its expected value), `Source` (a worked example, `spec.md:3`, never the code under test), `Before the change` (the failure you saw, or `already passed`), `Now` (`passes`, or the failure). Under it, one sentence with the test command and its final result.
+- Shortest complete report: cut every sentence the reader would not miss.
+- `Verdict: <word>` on its own line just before `**Next:**`, one of:
+  - `Green`: every case ended green. Each case failed before the change, or is marked already passing: the code already did it, and the test stays as regression coverage.
+  - `Red`: a case still fails. Name it.
+  - `Stopped`: the behavior or the seam is missing. Use the Stopped form below.
+- `**Next:**` and `**Changed:** <paths>`.
+
+````markdown
+**A rental costs 3 euros per hour after the first free hour; both cases pass now.**
+The tests do not cover rentals longer than 24 hours.
+
+| Case | Source | Before the change | Now |
+|---|---|---|---|
+| The first hour is free | `spec.md:3` | fails: 3 euros, not 0 | passes |
+| Three hours cost 6 euros | `spec.md:5` | fails: 9 euros, not 6 | passes |
+
+`pytest -q`: 2 passed.
+
+Verdict: Green
+
+**Next:**
+1. Review the diff in `rental.py`, then commit when ready.
+
+**Changed:** `rental.py`, `test_rental.py`
+````
+
+Stopped, when no behavior is named: line 1 says what is missing in plain words (for example `**I can't write a test yet: no behavior is named.**`). Then a question that asks for it, then up to 3 numbered ways to unblock, the default marked:
+1. Name the behavior in one sentence, with one input and its expected output. (default)
+2. Point to the slice or plan that holds the acceptance criteria.
+3. Name the file and function to test.
+
+Then `Verdict: Stopped`.
+
+Stopped, when the seam is not fixed before the first test: line 1 says the seam must be agreed first and why, in plain words. Then a `text` block with `seam`, `catches`, and `misses`, then one question with at most 4 options and the default marked. Then `Verdict: Stopped`.
+
+Reader rules: cite each expected value by its source (a worked example, `spec.md:3`), never by the code under test. Gloss mock on first use: a stand-in for something outside the project, such as a payment service.
