@@ -19,7 +19,7 @@ Target:
 
 No PR tool or access: blocked. Never replace a failed PR lookup with another target.
 
-Record the base and head SHAs. Read the diff and needed source at those revisions (for example `git show <sha>:<path>`). For a PR, recheck the head SHA after reading; changed: start again at the new head. Local files count as target source only when the checkout is clean and at the head SHA.
+Record the base and head SHAs. Read the diff and needed source at those revisions (for example `git show <sha>:<path>`). For a PR, recheck the head SHA after reading; changed: start again at the new head. Local files count as target source only when the checkout is clean and at the head SHA. Say a remote ref is current or unmoved only if you fetched it in this session; otherwise say it is unchecked.
 
 Report stale remote-tracking refs, an unreachable base, and shallow-history limits. Missing diff or revision evidence blocks the review; missing optional context is a stated limitation.
 
@@ -30,6 +30,8 @@ Exclude generated, vendored, build output, and binary files from line review; na
 ## Review
 
 Apply the project's rules. Trace reachable behavior that touches authorization, money, data integrity, migrations, or sensitive data; filenames are hints, not proof.
+
+Before judging the diff, list each requirement from the task's stated intent (request, commit message, PR body) and from the spec when `--spec` names one or the repository holds one for this change (see Spec). Without `--spec`, still list the repository's files first and read any spec, plan, or requirements file that covers the changed code. Check each requirement against the diff, one by one. A requirement the diff misses is a finding even when nothing else is wrong.
 
 Check logic, security boundaries, test coverage of changed behavior, scope fit, API changes, unnecessary code or prose, scaling cost, and structural complexity. A diff without test changes does not prove a gap, and a coverage percentage does not prove adequacy. A performance finding names the scaling dimension. A structural finding names a feasible behavior-preserving change. Style is a finding only when it breaks a project rule or misleads.
 
@@ -61,15 +63,67 @@ Send blocking and high candidates, without their severity, to a fresh skeptic su
 
 ## Report
 
-1. Verdict, one line: the supported S0 and S1 findings to fix, no blocking findings within scope, or blocked with the reason. With `--spec`: one verdict per axis on that line, `Standards: ... | Spec: ...`; no spec reviewed: `Spec: not reviewed`.
-2. Header, compact: target, base and head SHAs, checkout match, scope read, exclusions, checks not run. With `--deep`: specialists run and skipped.
-3. A diff that spans several modules: a file tree of the changed files, one line per file on what changed.
-4. Supported findings: first a table, highest severity first: severity, `file:line` (with `--deep`, plus the specialist's `PREFIX-NNN` ID), problem in one line. Then one block per finding, headed by its `file:line` (and ID with `--deep`), one field per line: trigger, consequence, evidence, fix direction, and its label when one applies (the `--cold` subagent's, or advisory not independently checked); add a short `diff` when code shows the fix better than words.
-5. Unresolved candidates, with what would settle each.
-6. With `--deep`: refuted candidates, with reasons.
+Reader: the person deciding whether this change can merge. They read line 1 and `**Next:**`. A merge base is the commit where the branch split from its base. A specialist is one subagent with one lens.
 
-With `--spec`, items 4 to 6 appear twice, under `## Standards` and `## Spec`, each closed by its finding count and its worst finding.
+Line 1, bold, one plain sentence, 100 characters at most: the effect of the main problem, or why the review cannot run. Never open with a label or a verdict word.
 
-Severity: the project's scale if it defines one; otherwise S0 critical data or security failure, S1 material bug, S2 limited issue, S3 cosmetic. Assign it from the supported consequence; a specialist's blocking, high, or advisory label is input, not the result.
+Under line 1, plain sentences without labels, only for what limits the answer: a stale or unreachable base, a file not read in full, excluded untracked files, checks not run, skipped specialists with the reason. Omit what does not limit the answer.
 
-A static review is not test execution or merge approval. No invented praise, confidence scores, or quota of risks.
+Findings: a numbered list, worst first. Each point:
+- A bold plain sentence that states the problem.
+- One or two sentences: the trigger, the consequence, the evidence (the cited line or command output), and how sure you are.
+- At most one view, only when the sentence cannot show it: a `text` view of the code (at most 8 lines of at most 80 characters, `file:line` on each line) or a `diff` of the fix, never both.
+- The severity in words, inside the sentence: `data or security failure`, `material bug`, `limited issue`, or `cosmetic`. Use the project's scale when it defines one; otherwise rank from the supported consequence.
+- The source once for the whole review, under line 1, not per point: "A fresh subagent found these, and I checked each citation." Per point only when it differs: "I did not check this one independently."
+- With `--deep`, the specialist that found it, in plain words: "The security specialist found this."
+
+Then, in plain sentences: candidates the review could not support, each with what would settle it. With `--deep`, candidates an independent check disproved, each with the reason.
+
+A diff spanning several modules: a shallow file tree of the changed files, one line per file.
+
+With `--spec`, the sections above go under `## Standards` and `## Spec`, each closed by a plain sentence with its count and worst finding: "Standards has 1 problem; the worst is a material bug."
+
+Count the findings before you write a count. Copy each number from the input again before you repeat it.
+
+`Verdict: <word>` on its own line just before `**Next:**`, one of:
+- `Fix`: one or more supported data or security failures or material bugs. Add the count of those: `Verdict: Fix (1 problem)`.
+- `Clear`: no blocking finding in scope. Add the count of limited issues, if any.
+- `Stopped`: the review cannot run. Line 1 names what is missing.
+
+With `--spec`, one verdict per axis: `Verdict: Standards Fix | Spec Clear`. No spec found: `Verdict: Standards Fix | Spec not reviewed`.
+
+`**Next:**` holds each step needed to act, in order. A fix step names the file and the change; the points state the problem, not the fix again.
+
+Shortest complete review: cut every sentence the reader would not miss. No refs, hashes, or merge bases unless they limit the answer. A decision is one question with at most 4 options and the default marked.
+
+Reader rules: no praise, confidence scores, or finding quotas. Never blame the author. This review reads code and runs no tests; never write that it approves the merge.
+
+````markdown
+**A late return skips the late fee because one comparison is inverted.**
+
+1. **Bikes returned after the cutoff pay no late fee, a material bug.**
+   The test at `fees.py:12` is backwards, so a return at 18:30 never reaches the fee.
+   ```text
+   fees.py:12   if returned_at > cutoff:   # inverted
+   fees.py:13       return day_rate        # late returns stop here
+   ```
+
+Verdict: Fix (1 problem)
+
+**Next:**
+1. Change `fees.py:12` to `if returned_at < cutoff:`.
+2. Add a test: a bike returned at 18:30 pays the late fee. Then run `pytest tests/test_fees.py`.
+````
+
+Stopped, when the pull request or review input cannot be read:
+
+````markdown
+**I cannot read PR #12 without host access, so the review cannot run.**
+I did not review the local branch in its place.
+
+Verdict: Stopped
+
+**Next:**
+1. Grant the host CLI access to the pull request, then rerun. (default)
+2. Paste the diff here, with its base and head refs.
+````

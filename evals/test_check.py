@@ -191,6 +191,16 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(email, "The spec doesn't say who receives the email."))
         self.assertFalse(passes(email, "Columns: name, email, signup date."))
 
+    def test_security_clean_line_one_may_scope_to_the_checks_that_ran(self):
+        scoped = spec("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran")
+        self.assertTrue(passes(scoped, "**The checks that ran found no vulnerabilities in this small shop API.**\nVerdict: No vulnerabilities surfaced by the checks that ran"))
+        self.assertFalse(passes(scoped, "**I found no vulnerabilities in this shop API.**"))
+
+    def test_receive_review_csv_may_be_fixed_later(self):
+        csv = spec("receive-review", "mixed", "task: Does not accept the CSV export as a fix")
+        self.assertTrue(passes(csv, "| 4 | Add CSV export | Agree, fix later | out of scope | Your call |"))
+        self.assertFalse(passes(csv, "| 4 | Add CSV export | Agree, fix it | none | Add it |"))
+
     def test_deslop_report_may_explain_why_it_left_the_old_comment(self):
         scope = spec("deslop", "report", "task: Leaves the line outside the diff alone")
         self.assertTrue(passes(scope, "I left the `# increment the counter` comment alone because it's in a commit you've already made."))
@@ -476,7 +486,7 @@ class AnswerOracles(unittest.TestCase):
         self.assertFalse(passes(empty, "## optimized prompt\n```\nDo the task.\n```"))
 
     def test_text_counts_accept_label_first(self):
-        counts = spec("verify", "text-claims", "contract: First line has the counts")
+        counts = spec("verify", "text-claims", "contract: Counts line has the supported and corrected counts")
         self.assertTrue(passes(counts, "**Supported: 2, corrected: 1, conflicting: 0, unverified: 0** (line 4 is opinion)"))
         self.assertTrue(passes(counts, "2 supported, 1 corrected, 0 conflicting, 0 unverified"))
         self.assertFalse(passes(counts, "I checked the text and fixed the timeout."))
@@ -609,9 +619,11 @@ class NewSuiteOutputs(unittest.TestCase):
         self.assertFalse(passes(table, "| `pytest` | run tests | stack default |"))
 
     def test_verify_text_counts_on_the_first_line(self):
-        counts = spec("verify", "text-claims", "contract: First line has the counts")
-        self.assertTrue(passes(counts, "2 supported, 1 corrected, 0 conflicting, 0 unverified\n"))
-        self.assertFalse(passes(counts, "Here is the checked text.\n2 supported, 1 corrected"))
+        counts = spec("verify", "text-claims", "contract: Counts line has the supported and corrected counts")
+        self.assertTrue(passes(counts, "**One claim was wrong.**\nVerdict: Corrected, 2 supported, 1 corrected\n"))
+        self.assertFalse(passes(counts, "2 supported.\n1 corrected"))
+        plain = spec("verify", "text-claims", "contract: First line opens with no label")
+        self.assertFalse(passes(plain, "Corrected: 2 supported, 1 corrected"))
 
     def test_tracker_rejects_invented_estimates_only(self):
         invented = spec("tickets", "tracker-jira", "task: Invents no estimate or assignee")
@@ -662,8 +674,9 @@ class NewSuiteOutputs(unittest.TestCase):
              "| 4 | Same as 1 | ignore |", "| 1 | `total()` ignores qty | agree+fix |"),
             ("receive-review", "all-valid", "task: Accepts the quantity bug",
              "| 1 | total() ignores qty | agree+fix |", "| 1 | total() | disagree |"),
-            ("receive-review", "all-valid", "contract: First line counts verdicts",
-             "3 agree+fix, 1 ignore", "Here is my assessment.\n3 agree"),
+            ("receive-review", "mixed", "contract: Verdict line gives the verdict word and counts",
+             "**Fix two, push back on one.**\nVerdict: Mixed (2 to fix, 1 to push back)",
+             "**Fix two, push back on one.**\nVerdict: Mixed"),
         ]
         for skill, case, text, good, bad in cases:
             check_spec = spec(skill, case, text)

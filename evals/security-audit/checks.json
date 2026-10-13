@@ -34,13 +34,33 @@
       },
       {
         "type": "command",
-        "command": "grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
-        "text": "contract: Writes security-audit.md with Verdict and Assurance lines"
+        "command": "head -1 security-audit.md | grep -qE '^\\*\\*[^*].*\\*\\*$' && grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
+        "text": "contract: Writes security-audit.md with a bold line 1, a Verdict line and an Assurance line"
       },
       {
         "type": "ran",
         "pattern": "semgrep|bandit|gitleaks",
         "text": "contract: Runs real scanners"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
+        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
+        "text": "contract: States the assurance level in a plain sentence"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*assurance:",
+        "text": "contract: No Assurance: label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -71,6 +91,26 @@
         "type": "ran",
         "pattern": "semgrep|bandit|gitleaks",
         "text": "contract: Runs real scanners"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
+        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
+        "text": "contract: States the assurance level in a plain sentence"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*assurance:",
+        "text": "contract: No Assurance: label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(No (high-confidence exploitable|vulnerabilities surfaced))",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -101,6 +141,26 @@
         "type": "output_not_matches",
         "pattern": "(?im)^\\s*\\|([^\\n]*\\|)?\\s*\\**MEDIUM\\**\\s*\\||^#+[^\\n]*\\bMEDIUM\\b|^\\s*([-*]|\\d+[.)])\\s*\\**MEDIUM\\b|^\\s*[*_]*severity[^a-z\\n]*MEDIUM\\b",
         "text": "contract: Quick reports only CRITICAL and HIGH"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
+        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
+        "text": "contract: States the assurance level in a plain sentence"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*assurance:",
+        "text": "contract: No Assurance: label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -124,8 +184,28 @@
       },
       {
         "type": "command",
-        "command": "grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
-        "text": "contract: Writes security-audit.md with Verdict and Assurance lines"
+        "command": "head -1 security-audit.md | grep -qE '^\\*\\*[^*].*\\*\\*$' && grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
+        "text": "contract: Writes security-audit.md with a bold line 1, a Verdict line and an Assurance line"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
+        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
+        "text": "contract: States the assurance level in a plain sentence"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*assurance:",
+        "text": "contract: No Assurance: label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -161,6 +241,26 @@
         "type": "ran",
         "pattern": "semgrep|bandit|gitleaks",
         "text": "contract: Runs real scanners"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
+        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
+        "text": "contract: States the assurance level in a plain sentence"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*assurance:",
+        "text": "contract: No Assurance: label line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   }
