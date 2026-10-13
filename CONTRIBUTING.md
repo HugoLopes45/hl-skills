@@ -28,6 +28,8 @@ Releases follow semantic versioning. The commit type sets the next version:
 | Wrong or unclear behavior fixed | `fix:` | patch |
 | `docs:`, `refactor:`, `test:`, `ci:`, `chore:` | | no release on their own |
 
+A skill whose description ends with "Experimental: behavior and inputs may change in any release." is outside this table. Its changes are `feat:` or `fix:`, never major. Removing the marker makes it stable.
+
 [release-please](https://github.com/googleapis/release-please) keeps a release pull request open on `main`. It collects the version bump and the `CHANGELOG.md` entries. Merging it tags `vX.Y.Z` and publishes the GitHub release. To force a version, add a `Release-As: X.Y.Z` footer to a commit.
 
 ## Layout

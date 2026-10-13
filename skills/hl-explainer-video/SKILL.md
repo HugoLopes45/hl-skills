@@ -1,6 +1,6 @@
 ---
 name: hl-explainer-video
-description: "Make a short narrated explainer video on one topic, in the style of animated math explainers: a beat-by-beat script, animated scenes, narration from a local voice or a provider the user supplies, captions, and one MP4. Use only when the user explicitly asks for a video explainer."
+description: "Make a short narrated explainer video on one topic, in the style of animated math explainers: a beat-by-beat script, animated scenes, narration from a local voice or a provider the user supplies, captions, and one MP4. Use only when the user explicitly asks for a video explainer. Experimental: behavior and inputs may change in any release."
 ---
 # Explainer Video
 
