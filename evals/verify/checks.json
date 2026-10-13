@@ -1,0 +1,132 @@
+{
+  "partial": {
+    "fixtures": "partial",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^not done",
+        "text": "contract: First line is `not done`"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\b(failed|unverified)\\b",
+        "text": "task: Marks accent stripping failed or unverified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has the requirement table"
+      },
+      {
+        "type": "ran",
+        "pattern": "pytest",
+        "text": "contract: Actually ran the tests"
+      }
+    ]
+  },
+  "complete": {
+    "fixtures": "complete",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^done\\b",
+        "text": "contract: First line is `done`"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\d+ passed",
+        "text": "contract: Shows the real test output as evidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has the requirement table"
+      },
+      {
+        "type": "ran",
+        "pattern": "pytest",
+        "text": "contract: Actually ran the tests"
+      }
+    ]
+  },
+  "claim-no-threshold": {
+    "fixtures": "complete",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "^\\W*(?-i:(NOT )?VERIFIED|INCONCLUSIVE)\\b",
+        "text": "contract: Gives no verdict line before the threshold is set"
+      }
+    ]
+  },
+  "text-claims": {
+    "fixtures": "text-claims",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^[^\\n]*(timeout)[^\\n]*(\\b30\\b)|^[^\\n]*(\\b30\\b)[^\\n]*(timeout)",
+        "text": "task: Corrects the timeout to 30 seconds"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)(?<!\\bnot )\\ball (\\d+ )?(claims )?(are )?supported\\b|\\b4 supported\\b|\\b0 corrected\\b",
+        "text": "task: Does not mark every claim supported"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "config\\.py:\\d",
+        "text": "contract: Cites config.py with a line"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(\\d+\\s*supported|supported:?\\s*\\d+).*(\\d+\\s*corrected|corrected:?\\s*\\d+)|(\\d+\\s*corrected|corrected:?\\s*\\d+).*(\\d+\\s*supported|supported:?\\s*\\d+)",
+        "text": "contract: First line has the counts"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*sources\\b",
+        "text": "contract: Sources section"
+      }
+    ]
+  },
+  "text-none": {
+    "fixtures": "text-none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\b[1-9]\\d*\\s+(supported|corrected|conflicting)\\b|\\b(supported|corrected|conflicting):?\\s*[1-9]",
+        "text": "contract: Invents no verdicts"
+      }
+    ]
+  }
+}

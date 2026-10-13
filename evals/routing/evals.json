@@ -1,0 +1,318 @@
+{
+  "skill_name": "hl-debug",
+  "evals": [
+    {
+      "id": "debug-failing-test",
+      "prompt": "test_three_items_get_discount fails. Find out why.",
+      "expected_output": "Invokes hl-debug.",
+      "files": [
+        "files/discount/pricing.py",
+        "files/discount/test_pricing.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "grill-before-build",
+      "prompt": "Before we build note export, grill me on it.",
+      "expected_output": "Invokes hl-grill.",
+      "files": [
+        "files/notes/README.md",
+        "files/notes/app.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "brainstorm-options",
+      "prompt": "Give me three different ways to add retries to client.py, with trade-offs.",
+      "expected_output": "Invokes hl-grill.",
+      "files": [
+        "files/retry/client.py",
+        "files/retry/utils/__init__.py",
+        "files/retry/utils/retry.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "verify-done",
+      "prompt": "Is the task in TASK.md really done?",
+      "expected_output": "Invokes hl-verify.",
+      "files": [
+        "files/partial/TASK.md",
+        "files/partial/slugify.py",
+        "files/partial/test_slugify.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "slice-tickets",
+      "prompt": "Turn plan.md into tickets an agent can pick up one by one.",
+      "expected_output": "Invokes hl-tickets.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "lessons-retro",
+      "prompt": "Let's do a retro on the session in session.md.",
+      "expected_output": "Invokes hl-lessons.",
+      "files": [
+        "files/mechanical/AGENTS.md",
+        "files/mechanical/eslint.config.js",
+        "files/mechanical/package.json",
+        "files/mechanical/session.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "tdd-test-first",
+      "prompt": "Implement is_leap in calendar_utils.py test-first.",
+      "expected_output": "Invokes hl-tdd.",
+      "files": [
+        "files/leap/calendar_utils.py",
+        "files/leap/test_calendar_utils.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-skill-explain",
+      "prompt": "What does report.py do? One sentence.",
+      "expected_output": "Answers directly; invokes no skill.",
+      "files": [
+        "files/csv/report.py",
+        "files/csv/users.csv"
+      ],
+      "force_skill_invocation": false,
+      "should_trigger": false,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "challenge-plan",
+      "prompt": "Poke holes in plan.md before I start building it.",
+      "expected_output": "Invokes hl-challenge.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "gaps-spec",
+      "prompt": "What decisions and edge cases is plan.md missing?",
+      "expected_output": "Invokes hl-grill.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "spec-plan",
+      "prompt": "Plan the invite feature in plan.md before I implement it: scope, acceptance criteria, failure cases.",
+      "expected_output": "Invokes hl-spec.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "security-input",
+      "prompt": "Can an attacker abuse the search endpoint in app.py?",
+      "expected_output": "Invokes hl-security-audit.",
+      "files": [
+        "files/search/app.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "stuck-loop",
+      "prompt": "I've changed pricing.py three times and test_three_items_get_discount still fails with the same assertion. We're going in circles. Why am I stuck?",
+      "expected_output": "Invokes hl-checkpoint.",
+      "files": [
+        "files/discount/pricing.py",
+        "files/discount/test_pricing.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "spike-timebox",
+      "prompt": "Before we pick a queue, find out whether SQLite can sustain 500 inserts per second on this laptop. Time-box it to 15 minutes.",
+      "expected_output": "Invokes hl-spike.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "prompt-misbehaves",
+      "prompt": "This review prompt keeps missing issues and shouts in ALL-CAPS. Make it better: prompt.txt",
+      "expected_output": "Invokes hl-writing-for-agents.",
+      "files": [
+        "files/prompt/prompt.txt"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "onboard-repo",
+      "prompt": "I just cloned this repo. Give me the lay of the land before I change anything.",
+      "expected_output": "Invokes hl-discover.",
+      "files": [
+        "files/shop/app.py",
+        "files/shop/orders.py",
+        "files/shop/pricing.py",
+        "files/shop/store.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "shut-down",
+      "prompt": "My SaaS has been flat at $300 MRR for 8 months and I have no new idea to test. Should I shut it down?",
+      "expected_output": "Invokes hl-startup.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "landing-copy",
+      "prompt": "Write the landing page copy for Tallyo, a time-tracking app for freelance translators. We are pre-launch.",
+      "expected_output": "Invokes hl-launch-marketing.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "refactor-steps",
+      "prompt": "Plan a behavior-preserving refactor that merges the duplicated tax code in invoice.py and quote.py, as small safe steps. Don't change code yet.",
+      "expected_output": "Invokes hl-improve.",
+      "files": [
+        "files/billing/invoice.py",
+        "files/billing/quote.py",
+        "files/billing/test_billing.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "factcheck-doc",
+      "prompt": "Fact-check the claims in claims.md against the code.",
+      "expected_output": "Invokes hl-verify.",
+      "files": [
+        "files/claims/README.md",
+        "files/claims/claims.md",
+        "files/claims/config.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "diagram-flow",
+      "prompt": "Show me, as a diagram, how a POST /orders request flows through this code.",
+      "expected_output": "Invokes hl-show-me.",
+      "files": [
+        "files/shop/app.py",
+        "files/shop/orders.py",
+        "files/shop/pricing.py",
+        "files/shop/store.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "adr-record",
+      "prompt": "We chose Postgres over DynamoDB for the orders service because we need multi-row transactions. Write this up as a decision record.",
+      "expected_output": "Invokes hl-adr.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "review-branch",
+      "prompt": "Review the changes on my branch before I open a PR.",
+      "expected_output": "Invokes hl-code-review.",
+      "files": [
+        "files/reviewbranch/.eval-setup.sh",
+        "files/reviewbranch/calc.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "respond-review",
+      "prompt": "My reviewer left the comments in review.md. Which ones should I accept?",
+      "expected_output": "Invokes hl-receive-review.",
+      "files": [
+        "files/reviewreply/cli.py",
+        "files/reviewreply/review.md",
+        "files/reviewreply/stats.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "video-hashmap",
+      "prompt": "Make a short animated explainer video on how a hash map handles collisions.",
+      "expected_output": "Invokes hl-explainer-video.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "slop-cleanup",
+      "prompt": "An AI assistant wrote this change to calc.py and I accepted it. Strip the generated cruft before I commit.",
+      "expected_output": "Invokes hl-deslop.",
+      "files": [
+        "files/sloppy/.eval-setup.sh",
+        "files/sloppy/calc.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

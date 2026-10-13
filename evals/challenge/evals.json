@@ -1,0 +1,117 @@
+{
+  "skill_name": "hl-challenge",
+  "evals": [
+    {
+      "id": "finished-work",
+      "prompt": "I just finished the task in TASK.md. Challenge it.",
+      "expected_output": "fix first; accent stripping missing at slugify.py; Judged against line; no percentage; no edit.",
+      "files": [
+        "files/partial/slugify.py",
+        "files/partial/test_slugify.py",
+        "files/partial/TASK.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "premortem",
+      "prompt": "Run a premortem on plan.md with --premortem. Goal: admins onboard teammates without filing support tickets.",
+      "expected_output": "First line worst rank and cause; hypothetical scenarios traced to plan text; no invented figures.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "smaller-version",
+      "prompt": "Poke holes in this plan before I start: add tenacity to requirements and wrap each HTTP call in client.py with @tenacity.retry.",
+      "expected_output": "fix first or stop; client.py already uses utils/retry.py; smaller version keeps it and drops tenacity; no percentage.",
+      "files": [
+        "files/retry/client.py",
+        "files/retry/utils/__init__.py",
+        "files/retry/utils/retry.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "lens-pick",
+      "prompt": "challenge --lens plan.md",
+      "expected_output": "First line names the picked lens, mode, depth, target and the reason; read-only.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "panel",
+      "prompt": "challenge --panel --depth quick plan.md",
+      "expected_output": "Panel line, lens and verdict table, a section per lens, 'Where they disagree', no merged recommendation.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "lens-no-target",
+      "prompt": "challenge --lens minimalist",
+      "expected_output": "No target: asks and stops.",
+      "files": [
+        "files/lens-no-target/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "pricecache",
+      "prompt": "Poke holes in plan.md before I build it.",
+      "expected_output": "fix first or stop: 'prices never change' is contradicted by admin.py set_sale_price (nightly promotions job); an unbounded-lifetime cache serves stale prices.",
+      "files": [
+        "files/pricecache/admin.py",
+        "files/pricecache/db.py",
+        "files/pricecache/plan.md",
+        "files/pricecache/prices.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "soundplan",
+      "prompt": "Challenge plan.md. Can I start?",
+      "expected_output": "proceed: require_text raises on blank titles, app.py maps ValidationError to 400; no blocker.",
+      "files": [
+        "files/soundplan/app.py",
+        "files/soundplan/notes.py",
+        "files/soundplan/plan.md",
+        "files/soundplan/test_notes.py",
+        "files/soundplan/validators.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "export",
+      "prompt": "I finished TASK.md and the tests pass. Challenge it.",
+      "expected_output": "fix first: export_csv joins fields with commas and never quotes; a comma, quote, or line break in a note breaks the row; csv.writer fixes it.",
+      "files": [
+        "files/export/TASK.md",
+        "files/export/export.py",
+        "files/export/test_export.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

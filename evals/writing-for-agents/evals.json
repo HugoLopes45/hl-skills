@@ -1,0 +1,60 @@
+{
+  "skill_name": "hl-writing-for-agents",
+  "evals": [
+    {
+      "id": "prompt-bloated",
+      "prompt": "Tighten this prompt: prompt.txt",
+      "expected_output": "Starts with '## optimized prompt', one fenced prompt with no ALL-CAPS emphasis or anti-hallucination boilerplate, keeps the JSON keys and the empty-case [], settings line, no changelog.",
+      "files": [
+        "files/prompt-bloated/prompt.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "prompt-changelog",
+      "prompt": "Tighten this prompt with --changelog: prompt.txt",
+      "expected_output": "Optimized prompt then cut/kept/added lines.",
+      "files": [
+        "files/prompt-bloated/prompt.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "prompt-empty",
+      "prompt": "Tune my prompt.",
+      "expected_output": "Nothing to tune: says so and stops.",
+      "files": [
+        "files/prompt-empty/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "skill-overlap",
+      "prompt": "Write a skill with --skill: a skill that writes a conventional commit message for staged changes and commits them. Skills live in skills/.",
+      "expected_output": "Finds skills/commit already covers the job and stops; writes no new skill.",
+      "files": [
+        "files/skill-overlap/skills/commit/SKILL.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "skill-new",
+      "prompt": "Write a skill with --skill: a skill that reviews a SQL migration for lock risk, missing indexes, and unsafe defaults before it runs in production. Skills live in skills/.",
+      "expected_output": "Writes skills/<name>/SKILL.md with name equal to the directory, a 'Use when' description under 1024 characters, no host argument variables; first line is the path; a check table.",
+      "files": [
+        "files/skill-new/skills/commit/SKILL.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

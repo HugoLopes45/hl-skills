@@ -1,0 +1,140 @@
+{
+  "prompt-bloated": {
+    "fixtures": "prompt-bloated",
+    "checks": [
+      {
+        "type": "first_line",
+        "pattern": "^optimized prompt$",
+        "text": "contract: First line is the optimized prompt heading"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^settings:",
+        "text": "contract: settings line after the block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?m)^\\W*(cut|kept|added):",
+        "text": "contract: No changelog without the flag"
+      },
+      {
+        "type": "file_unchanged",
+        "path": "prompt.txt",
+        "text": "contract: prompt.txt unchanged"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?-i:YOU MUST|CRITICAL|IMPORTANT|REMEMBER)|!!!'",
+        "text": "task: The rewrite drops the ALL-CAPS emphasis"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks 'hallucinat|make things up'",
+        "text": "task: The rewrite drops the anti-hallucination boilerplate"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has 'severity'",
+        "text": "task: The rewrite keeps the severity key"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?s)\\bline\\b.*\\bissue\\b|\\bissue\\b.*\\bline\\b'",
+        "text": "task: The rewrite keeps the line and issue keys"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\[\\]'",
+        "text": "task: The rewrite keeps the empty result"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '100% sure|only report issues you are|do not report minor'",
+        "text": "task: The rewrite removes the recall-killing filter"
+      }
+    ]
+  },
+  "prompt-changelog": {
+    "fixtures": "prompt-bloated",
+    "checks": [
+      {
+        "type": "first_line",
+        "pattern": "^optimized prompt$",
+        "text": "contract: First line is the optimized prompt heading"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*cut:",
+        "text": "contract: Changelog has cut lines"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?m)^\\W*(cut|kept|added):'",
+        "text": "contract: The changelog stays outside the block"
+      }
+    ]
+  },
+  "prompt-empty": {
+    "fixtures": "prompt-empty",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "optimized prompt",
+        "text": "task: No prompt invented"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|\\bno (prompt|text|input)\\b|\\b(didn.t|did not) (include|give|send|paste|provide)\\b|nothing to",
+        "text": "task: Says there is no prompt or asks for it"
+      }
+    ]
+  },
+  "skill-overlap": {
+    "fixtures": "skill-overlap",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "contract: Writes no new skill"
+      },
+      {
+        "type": "first_line",
+        "pattern": "skills/commit|\\bcommit\\b",
+        "text": "contract: First line names the existing skill"
+      }
+    ]
+  },
+  "skill-new": {
+    "fixtures": "skill-new",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 - <<'X'\nimport pathlib, re, sys\nnew = [p for p in pathlib.Path('skills').glob('*/SKILL.md') if p.parent.name != 'commit']\nassert len(new) == 1, new\nt = new[0].read_text()\nm = re.match(r'---\\n(.*?)\\n---\\n', t, re.S)\nassert m, 'no frontmatter'\nfm = m.group(1)\nname = re.search(r'^name:\\s*(\\S+)', fm, re.M).group(1)\nassert name == new[0].parent.name, (name, new[0].parent.name)\nd = re.search(r'^description:\\s*(.+)$', fm, re.M).group(1)\nassert 'use when' in d.lower() and len(d) <= 1024, d\nX",
+        "text": "task: Writes one skill with matching name and a Use when description"
+      },
+      {
+        "type": "command",
+        "command": "! grep -rEq '\\$ARGUMENTS|allowed-tools|\\bBash\\(|AskUserQuestion|TodoWrite' skills --include=SKILL.md",
+        "text": "contract: The new skill is host-neutral"
+      },
+      {
+        "type": "file_unchanged",
+        "path": "skills/commit/SKILL.md",
+        "text": "task: The existing skill is unchanged"
+      },
+      {
+        "type": "first_line",
+        "pattern": "skills/[\\w-]+/SKILL\\.md",
+        "text": "contract: First line is the skill path"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\|[^\\n]*\\b(passed|expected|failed)\\b",
+        "text": "contract: Check table with results"
+      }
+    ]
+  }
+}

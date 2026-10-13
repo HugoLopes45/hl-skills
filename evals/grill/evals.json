@@ -1,0 +1,120 @@
+{
+  "skill_name": "hl-grill",
+  "evals": [
+    {
+      "id": "already-met",
+      "prompt": "I want retries with exponential backoff on our HTTP calls. What are my options?",
+      "expected_output": "First line: already met at utils/retry.py; asks only whether it meets the need; no options table.",
+      "files": [
+        "files/retry/client.py",
+        "files/retry/utils/__init__.py",
+        "files/retry/utils/retry.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "options",
+      "prompt": "Users of this Flask app want to download their orders as a spreadsheet. What are the options?",
+      "expected_output": "First line: recommended option and why; then a table of up to five distinct mechanisms; no code written.",
+      "files": [
+        "files/export/app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-idea",
+      "prompt": "Brainstorm.",
+      "expected_output": "Asks for the idea.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "export-idea",
+      "prompt": "Idea: users can export their notes.",
+      "expected_output": "Round 1 of numbered questions, each with a recommended answer; facts such as the storage are looked up, not asked; no file written.",
+      "files": [
+        "files/notes/README.md",
+        "files/notes/app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "contradiction",
+      "prompt": "Idea: export the notes straight from our Postgres database.",
+      "expected_output": "Points out that the code uses SQLite, not Postgres, and asks which is right; no file written.",
+      "files": [
+        "files/notes/README.md",
+        "files/notes/app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "solution-shaped",
+      "prompt": "Listing a user's notes in app.py takes 2 s once they have 50k notes; the goal is under 200 ms. I measured: the query is the whole 2 s. The page shows 50 titles at a time, and we run one process with no other services. Someone suggested putting Redis in front of it. What are my options?",
+      "expected_output": "Fast path: first line is the recommended option; options table with Redis, an index on user_id, and pagination; writes nothing.",
+      "files": [
+        "files/slow-notes/README.md",
+        "files/slow-notes/app.py",
+        "files/slow-notes/schema.sql"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "docs-glossary",
+      "prompt": "Grill me on note export, with --docs. Already settled: \"export\" means a CSV download of the requesting user's own notes, never other users' notes.",
+      "expected_output": "Writes a GLOSSARY.md entry for export without implementation details; does not reask format or ownership.",
+      "files": [
+        "files/notes/README.md",
+        "files/notes/app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "gaps-report",
+      "prompt": "What is this spec missing? spec.md --gaps",
+      "expected_output": "Totals by severity on the first line; blockers first; 'fast' flagged as an ambiguous term; missing acceptance criteria; no file written.",
+      "files": [
+        "files/gaps-report/spec.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "write",
+      "prompt": "Write the gaps of spec.md with --gaps --write.",
+      "expected_output": "Saves spec-gaps.md beside spec.md; spec.md unchanged; reports the path.",
+      "files": [
+        "files/write/spec.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "nothing",
+      "prompt": "Find the gaps in the spec with --gaps.",
+      "expected_output": "No plan, brief, or spec to read; says so and stops; no gaps invented.",
+      "files": [
+        "files/nothing/backup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

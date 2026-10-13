@@ -1,0 +1,75 @@
+{
+  "skill_name": "hl-commit",
+  "evals": [
+    {
+      "id": "staged-only",
+      "prompt": "Commit.",
+      "expected_output": "One commit with only calc.py, a conventional fix subject, README change left unstaged; hash reported.",
+      "files": [
+        "files/staged-only/calc.py",
+        "files/staged-only/test_calc.py",
+        "files/staged-only/README.md",
+        "files/staged-only/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "nothing-staged",
+      "prompt": "Commit.",
+      "expected_output": "Stops: nothing staged; no commit; index untouched.",
+      "files": [
+        "files/nothing-staged/calc.py",
+        "files/nothing-staged/test_calc.py",
+        "files/nothing-staged/README.md",
+        "files/nothing-staged/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "dry-run",
+      "prompt": "Commit with --dry-run.",
+      "expected_output": "Prints a fix message for the clamp bug; no commit; index unchanged.",
+      "files": [
+        "files/dry-run/calc.py",
+        "files/dry-run/test_calc.py",
+        "files/dry-run/README.md",
+        "files/dry-run/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "mixed-concerns",
+      "prompt": "Commit.",
+      "expected_output": "Proposes splitting the calc fix and the Dockerfile; no commit; index unchanged.",
+      "files": [
+        "files/mixed-concerns/calc.py",
+        "files/mixed-concerns/test_calc.py",
+        "files/mixed-concerns/README.md",
+        "files/mixed-concerns/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "ticket-hook",
+      "prompt": "Commit.",
+      "expected_output": "Hook rejects the message; reports it and asks for the ticket; no invented ticket, no bypass.",
+      "files": [
+        "files/ticket-hook/calc.py",
+        "files/ticket-hook/test_calc.py",
+        "files/ticket-hook/README.md",
+        "files/ticket-hook/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

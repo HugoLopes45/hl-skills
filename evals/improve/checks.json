@@ -1,0 +1,235 @@
+{
+  "refactor-dup": {
+    "fixtures": "refactor-dup",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)(\\bround\\b|\\bint\\b|truncat).{0,400}(differ|not (identical|the same|equivalent)|mismatch|diverg|inconsisten)|(differ|not (identical|the same|equivalent)|mismatch|diverg|inconsisten).{0,400}(\\bround\\b|\\bint\\b|truncat)",
+        "text": "task: Flags that round and int differ"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "test_billing\\.py|pytest",
+        "text": "task: Names the check that proves preservation"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "```diff",
+        "text": "contract: Target shape as a diff"
+      }
+    ]
+  },
+  "refactor-none": {
+    "fixtures": "refactor-none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^```diff|^(#+\\s*|\\*\\*)(target shape|steps|sequence|plan)\\b|^\\s*(step \\d|\\d+[.)])[^\\n]*\\b(rename|extract|inline|move)\\b",
+        "text": "contract: Invents no refactor plan"
+      }
+    ]
+  },
+  "quick-audit": {
+    "fixtures": "quick-audit",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff --quiet HEAD -- . ':!plans' && test -z \"$(git status --porcelain --untracked-files=all | grep -v -e ' plans/' -e ' .claude/')\"",
+        "text": "task: Source untouched; only plans/ written"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)(db\\.py|find_user)[^\\n]{0,200}inject|inject[^\\n]{0,200}(db\\.py|find_user)",
+        "text": "task: Finds the SQL injection in find_user"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)off[- ]by[- ]one|size\\s*-\\s*1|drops? the last|last item",
+        "text": "task: Finds the pagination off-by-one"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\b\\d+\\b[^\\n]*(finding|issue)",
+        "text": "contract: Opens with the vetted-findings count"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\s*\\|\\s*#\\s*\\|\\s*Finding",
+        "text": "contract: Findings table with the template columns"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(ls plans/[0-9][0-9][0-9]-*.md 2>/dev/null | wc -l)\" -ge 3",
+        "text": "contract: Writes plans for the top 3"
+      },
+      {
+        "type": "command",
+        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && sha=$(git rev-parse HEAD | cut -c1-7) && for f in plans/[0-9][0-9][0-9]-*.md; do grep -q \"Commit:\\*\\*[^0-9a-f]*$sha\" \"$f\" || exit 1; done",
+        "text": "contract: Every plan stamps the current commit"
+      },
+      {
+        "type": "command",
+        "command": "grep -Eiq 'top 3|top three|default' plans/README.md",
+        "text": "contract: plans/README.md records the non-interactive default"
+      }
+    ]
+  },
+  "arch-audit": {
+    "fixtures": "arch-audit",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff --quiet HEAD && test -z \"$(git status --porcelain --untracked-files=all | grep -v -e ' arch-report.md$' -e ' .claude/')\"",
+        "text": "task: Source untouched; only arch-report.md written"
+      },
+      {
+        "type": "command",
+        "command": "{ cat arch-report.md 2>/dev/null; cat; } | grep -Ei 'circular|\\bcycles?\\b|cyclic' | grep -Ei '\\bdb\\b' | grep -Ei 'report' | grep -Eiv '\\bno (circular|import cycles?|cycles?)\\b|\\bnot (a )?(circular|cycl)' | grep -q .",
+        "text": "task: Reports the db/report import cycle"
+      },
+      {
+        "type": "command",
+        "command": "{ cat arch-report.md 2>/dev/null; cat; } | grep -Eiq 'legacy|export_xml'",
+        "text": "task: Reports the unused legacy module"
+      },
+      {
+        "type": "command",
+        "command": "grep -q '^## Findings' arch-report.md && grep -q '^## Considered and dismissed' arch-report.md && grep -q '^## Not audited' arch-report.md",
+        "text": "contract: Follows the arch-report template"
+      },
+      {
+        "type": "command",
+        "command": "grep -q \"$(git rev-parse HEAD | cut -c1-7)\" arch-report.md",
+        "text": "contract: Stamps the commit"
+      }
+    ]
+  },
+  "branch-default": {
+    "fixtures": "branch-default",
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\"",
+        "text": "task: Writes nothing"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)default branch|\\b(no|zero|0) commits? ahead|nothing (to audit|ahead)|no (branch )?(changes|commits) (to audit|ahead|relative)|same commit|identical to (origin/)?main|on main",
+        "text": "task: Says the branch has no changes of its own"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)full (audit|survey)",
+        "text": "contract: Offers a full audit"
+      }
+    ]
+  },
+  "plan-desc": {
+    "fixtures": "plan-desc",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff --quiet HEAD -- . ':!plans' && test -z \"$(git status --porcelain --untracked-files=all | grep -v -e ' plans/' -e ' .claude/')\"",
+        "text": "task: Source untouched; only plans/ written"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(ls plans/[0-9][0-9][0-9]-*.md 2>/dev/null | wc -l)\" -eq 1",
+        "text": "contract: Writes exactly one plan"
+      },
+      {
+        "type": "command",
+        "command": "{ cat plans/[0-9][0-9][0-9]-*.md 2>/dev/null; cat; } | grep -q 'pytest'",
+        "text": "task: The plan names the repository's test command"
+      },
+      {
+        "type": "command",
+        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && sha=$(git rev-parse HEAD | cut -c1-7) && for f in plans/[0-9][0-9][0-9]-*.md; do grep -q \"Commit:\\*\\*[^0-9a-f]*$sha\" \"$f\" || exit 1; done",
+        "text": "contract: The plan stamps the current commit"
+      },
+      {
+        "type": "command",
+        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && for s in '## Steps' '## Done criteria' '## Escape hatches' '## Current state'; do grep -q \"^$s\" plans/[0-9][0-9][0-9]-*.md || exit 1; done",
+        "text": "contract: Follows the plan template"
+      },
+      {
+        "type": "command",
+        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && grep -qF 'def main(argv):' plans/[0-9][0-9][0-9]-*.md",
+        "text": "contract: Quotes the current code verbatim"
+      },
+      {
+        "type": "command",
+        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && ! grep -Eiq 'discussed above|as discussed|this conversation|earlier in (this|the) (chat|session)' plans/[0-9][0-9][0-9]-*.md",
+        "text": "contract: The plan is self-contained"
+      }
+    ]
+  },
+  "review-plan": {
+    "fixtures": "review-plan",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff --quiet HEAD -- . ':!plans' && test -z \"$(git status --porcelain --untracked-files=all | grep -v -e ' plans/' -e ' .claude/')\"",
+        "text": "task: Source untouched"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)discussed above|self[- ]contained|zero context|no context|undefined pattern|which pattern|pattern (is|was) never|not defined",
+        "text": "task: Flags the reference to missing context"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)not (verifiable|measurable|checkable|testable|observable)|unverifiable|unmeasurable|no (command|benchmark|threshold|baseline)|how (much )?faster|faster than what|vague",
+        "text": "task: Flags the unverifiable done criteria"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)(:40|line 40).{0,300}(not exist|doesn.t exist|only (has )?\\d+ lines|no line|out of range|beyond|past the end|\\d+[- ]line|wrong|incorrect|stale)|(only (has )?\\d+ lines|\\d+[- ]line file).{0,300}(:40|line 40)|(wrong|incorrect|stale|not)\\b[^\\n]{0,80}(:40\\b|line 40\\b)",
+        "text": "task: Flags the line reference past the end of db.py"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bcommit\\b[^\\n]{0,40}(stamp|sha|hash|missing|absent|\\bno\\b)|(\\bno\\b|missing|without|lacks?)[^\\n]{0,30}\\bcommit\\b",
+        "text": "contract: Names the missing commit stamp"
+      }
+    ]
+  },
+  "reconcile": {
+    "fixtures": "reconcile",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff --quiet HEAD -- . ':!plans' && test -z \"$(git status --porcelain --untracked-files=all | grep -v -e ' plans/' -e ' .claude/')\"",
+        "text": "task: Source untouched"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^[^\\n]*\\b001\\b[^\\n]*(not (actually )?(done|fixed|met|satisfied)|fail|still (has|buggy|present|returns|drops|there)|reopen|regress|missing|does(n.t| not) exist|no such test|back to todo)|^#+[^\\n]*\\b001\\b[^\\n]*\\n(?:[^\\n#|]*\\n){0,4}?[^\\n#|]*(not (actually )?(done|fixed|met|satisfied)|fail|still (has|buggy|present|returns|drops|there)|reopen|regress|missing|does(n.t| not) exist|no such test|back to todo)",
+        "text": "task: Finds that plan 001 is not done"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "lookup_user",
+        "text": "task: Finds that plan 002 cites renamed code"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)003.{0,500}(unblock|propos|recommend|suggest|option [a-z1-9]|next step)",
+        "text": "contract: Proposes an unblock path for 003"
+      }
+    ]
+  }
+}

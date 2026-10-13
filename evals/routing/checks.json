@@ -1,0 +1,426 @@
+{
+  "debug-failing-test": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-debug",
+        "text": "trigger: Invokes hl-debug"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-tdd",
+        "text": "trigger: Does not invoke hl-tdd"
+      }
+    ]
+  },
+  "grill-before-build": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Invokes hl-grill"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-challenge",
+        "text": "trigger: Does not invoke hl-challenge"
+      }
+    ]
+  },
+  "brainstorm-options": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Invokes hl-grill"
+      }
+    ]
+  },
+  "verify-done": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-verify",
+        "text": "trigger: Invokes hl-verify"
+      }
+    ]
+  },
+  "slice-tickets": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-tickets",
+        "text": "trigger: Invokes hl-tickets"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-split-pr",
+        "text": "trigger: Does not invoke hl-split-pr"
+      }
+    ]
+  },
+  "lessons-retro": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-lessons",
+        "text": "trigger: Invokes hl-lessons"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-adr",
+        "text": "trigger: Does not invoke hl-adr"
+      }
+    ]
+  },
+  "tdd-test-first": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-tdd",
+        "text": "trigger: Invokes hl-tdd"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-debug",
+        "text": "trigger: Does not invoke hl-debug"
+      }
+    ]
+  },
+  "no-skill-explain": {
+    "checks": [
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-debug",
+        "text": "trigger: Does not invoke hl-debug"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-discover",
+        "text": "trigger: Does not invoke hl-discover"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-show-me",
+        "text": "trigger: Does not invoke hl-show-me"
+      }
+    ]
+  },
+  "challenge-plan": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-challenge",
+        "text": "trigger: Invokes hl-challenge"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Does not invoke hl-grill"
+      }
+    ]
+  },
+  "gaps-spec": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Invokes hl-grill"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-spec",
+        "text": "trigger: Does not invoke hl-spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-challenge",
+        "text": "trigger: Does not invoke hl-challenge"
+      }
+    ]
+  },
+  "spec-plan": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-spec",
+        "text": "trigger: Invokes hl-spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-tickets",
+        "text": "trigger: Does not invoke hl-tickets"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Does not invoke hl-grill"
+      }
+    ]
+  },
+  "security-input": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-security-audit",
+        "text": "trigger: Invokes hl-security-audit"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-improve",
+        "text": "trigger: Does not invoke hl-improve"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      }
+    ]
+  },
+  "stuck-loop": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-checkpoint",
+        "text": "trigger: Invokes hl-checkpoint"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-tdd",
+        "text": "trigger: Does not invoke hl-tdd"
+      }
+    ]
+  },
+  "spike-timebox": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-spike",
+        "text": "trigger: Invokes hl-spike"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-verify",
+        "text": "trigger: Does not invoke hl-verify"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-debug",
+        "text": "trigger: Does not invoke hl-debug"
+      }
+    ]
+  },
+  "prompt-misbehaves": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-writing-for-agents",
+        "text": "trigger: Invokes hl-writing-for-agents"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-deslop",
+        "text": "trigger: Does not invoke hl-deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      }
+    ]
+  },
+  "onboard-repo": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-discover",
+        "text": "trigger: Invokes hl-discover"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-show-me",
+        "text": "trigger: Does not invoke hl-show-me"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-improve",
+        "text": "trigger: Does not invoke hl-improve"
+      }
+    ]
+  },
+  "shut-down": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-startup",
+        "text": "trigger: Invokes hl-startup"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-launch-marketing",
+        "text": "trigger: Does not invoke hl-launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-challenge",
+        "text": "trigger: Does not invoke hl-challenge"
+      }
+    ]
+  },
+  "landing-copy": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-launch-marketing",
+        "text": "trigger: Invokes hl-launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-startup",
+        "text": "trigger: Does not invoke hl-startup"
+      }
+    ]
+  },
+  "refactor-steps": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-improve",
+        "text": "trigger: Invokes hl-improve"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-tdd",
+        "text": "trigger: Does not invoke hl-tdd"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-deslop",
+        "text": "trigger: Does not invoke hl-deslop"
+      }
+    ]
+  },
+  "factcheck-doc": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-verify",
+        "text": "trigger: Invokes hl-verify"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-challenge",
+        "text": "trigger: Does not invoke hl-challenge"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      }
+    ]
+  },
+  "diagram-flow": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-show-me",
+        "text": "trigger: Invokes hl-show-me"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-discover",
+        "text": "trigger: Does not invoke hl-discover"
+      }
+    ]
+  },
+  "adr-record": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-adr",
+        "text": "trigger: Invokes hl-adr"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-spec",
+        "text": "trigger: Does not invoke hl-spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-grill",
+        "text": "trigger: Does not invoke hl-grill"
+      }
+    ]
+  },
+  "review-branch": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Invokes hl-code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-deslop",
+        "text": "trigger: Does not invoke hl-deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-open-pr",
+        "text": "trigger: Does not invoke hl-open-pr"
+      }
+    ]
+  },
+  "respond-review": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-receive-review",
+        "text": "trigger: Invokes hl-receive-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      }
+    ]
+  },
+  "video-hashmap": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-explainer-video",
+        "text": "trigger: Invokes hl-explainer-video"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-show-me",
+        "text": "trigger: Does not invoke hl-show-me"
+      }
+    ]
+  },
+  "slop-cleanup": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-deslop",
+        "text": "trigger: Invokes hl-deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-commit",
+        "text": "trigger: Does not invoke hl-commit"
+      }
+    ]
+  }
+}

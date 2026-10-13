@@ -1,0 +1,71 @@
+{
+  "skill_name": "hl-tickets",
+  "evals": [
+    {
+      "id": "invites",
+      "prompt": "Split plan.md into slices with --write slices/.",
+      "expected_output": "Numbered tracer-bullet breakdown with blocking edges, shown for approval; nothing written yet.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "wide-rename",
+      "prompt": "Split plan.md into slices.",
+      "expected_output": "Expand, migrate in batches, contract; each batch blocked by expand.",
+      "files": [
+        "files/rename/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "ac-trace",
+      "prompt": "Split plan.md into slices.",
+      "expected_output": "Slices cite AC-1 and AC-2; AC-3 has no check a person can run, so its slice is HITL or AC-3 is reported as a decision.",
+      "files": [
+        "files/export/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "tracker-jira",
+      "prompt": "Turn plan.md into Jira tickets with --tracker jira --project ORD.",
+      "expected_output": "Grounding line marks markup and required fields unobserved (no API); AC-3 stays TBD; no story points or assignee invented; nothing created.",
+      "files": [
+        "files/export/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "tracker-none",
+      "prompt": "Make tracker tickets with --tracker.",
+      "expected_output": "No source: 'No source: pass a spec, an issue URL, or describe the work.' and stops.",
+      "files": [
+        "files/tracker-none/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "target-github",
+      "prompt": "Split plan.md into slices with --target github.",
+      "expected_output": "GitHub is unavailable: shows the breakdown, reports the access blocker, creates nothing, and never claims an issue URL.",
+      "files": [
+        "files/invites/plan.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

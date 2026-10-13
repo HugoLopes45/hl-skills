@@ -1,0 +1,18 @@
+name: Skill proposal
+description: Propose a new skill or a change to an existing one.
+labels: [skill-proposal]
+body:
+  - type: textarea
+    id: job
+    attributes:
+      label: Job
+      description: The one job the skill does, and when it should load.
+    validations:
+      required: true
+  - type: textarea
+    id: overlap
+    attributes:
+      label: Existing skills
+      description: Which existing skills come closest, and why they are not enough.
+    validations:
+      required: true

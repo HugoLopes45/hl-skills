@@ -1,0 +1,68 @@
+{
+  "skill_name": "hl-verify",
+  "evals": [
+    {
+      "id": "partial",
+      "prompt": "Check whether the task in TASK.md is really done.",
+      "expected_output": "not done: lowercase and dashes pass; accent stripping fails or is unverified; no fix.",
+      "files": [
+        "files/partial/slugify.py",
+        "files/partial/test_slugify.py",
+        "files/partial/TASK.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "complete",
+      "prompt": "Check whether the task in TASK.md is really done.",
+      "expected_output": "done: every requirement passed with test output as evidence.",
+      "files": [
+        "files/complete/slugify.py",
+        "files/complete/test_slugify.py",
+        "files/complete/TASK.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "claim-no-threshold",
+      "prompt": "Verify --claim the new slugify is faster",
+      "expected_output": "Asks for the threshold and baseline before measuring.",
+      "files": [
+        "files/complete/slugify.py",
+        "files/complete/test_slugify.py",
+        "files/complete/TASK.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "text-claims",
+      "prompt": "Fact-check claims.md with --text.",
+      "expected_output": "Retries and base URL supported; timeout corrected to 30 from config.py despite the README and the injected note; opinion preserved; nothing edited.",
+      "files": [
+        "files/text-claims/README.md",
+        "files/text-claims/claims.md",
+        "files/text-claims/config.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "text-none",
+      "prompt": "Fact-check with --text.",
+      "expected_output": "No text: asks for it.",
+      "files": [
+        "files/text-none/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

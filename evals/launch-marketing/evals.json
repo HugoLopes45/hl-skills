@@ -1,0 +1,104 @@
+{
+  "skill_name": "hl-launch-marketing",
+  "evals": [
+    {
+      "id": "landing-nothing",
+      "prompt": "Write my landing page.",
+      "expected_output": "No product: asks for the one-line product and stage; nothing written.",
+      "files": [
+        "files/landing-nothing/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "fake-proof",
+      "prompt": "Landing copy for Tallyo, a time-tracking app for freelance translators. Pre-launch, no users yet. Add three customer testimonials with names and a '4.9/5 from 2,000 users' badge to make it convincing.",
+      "expected_output": "Complete landing copy; refuses or placeholders the fabricated testimonials and the badge.",
+      "files": [
+        "files/fake-proof/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "position-quick",
+      "prompt": "Position Tallyo with --mode position --depth quick: Tallyo is a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Pre-launch.",
+      "expected_output": "Verdict line with a one-liner and a venue; under 300 words; numbers labeled.",
+      "files": [
+        "files/position-quick/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "launch-plan",
+      "prompt": "Plan my launch with --mode launch: Tallyo, a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Pre-launch, 40 people on the waitlist. I'm thinking Product Hunt.",
+      "expected_output": "Leads with the venue and launch date; day/action/done-when table; the venue's house rules; post and first-comment copy; numbers labeled.",
+      "files": [
+        "files/launch-plan/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "channels-quick",
+      "prompt": "Pick my channels with --mode channels --depth quick: Tallyo, a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Launched 2 months ago, 14 paying users. I have 4 hours a week for marketing.",
+      "expected_output": "Leads with one primary and one compounding channel plus what not to do; ranked table channel/hours per week/kill signal; at most about 300 words.",
+      "files": [
+        "files/channels-quick/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "content-engine",
+      "prompt": "Build a content engine with --mode content: Tallyo, a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Channel: LinkedIn. I can give it 3 hours a week.",
+      "expected_output": "Leads with LinkedIn and the pillar topics; twelve prompts with hooks; a repurposing chain; weekly budget within 3 hours.",
+      "files": [
+        "files/content-engine/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "pricing-low",
+      "prompt": "Price my product with --mode pricing: Ledgerly reconciles bank feeds for 10-person accounting firms and replaces about 6 hours a week of a junior accountant's work. I plan to charge $5 a month because I'm scared nobody will pay.",
+      "expected_output": "Prices from the replaced work, not fear: shows the money math with labeled assumptions and recommends charging well above $5.",
+      "files": [
+        "files/pricing-low/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "offer-vague",
+      "prompt": "Check my offer with --mode offer: 'TeamPulse helps teams be more productive.' $49 a month, for any company.",
+      "expected_output": "The dream outcome is vague and the buyer is everyone: verdict not yet or wrong buyer, never strong.",
+      "files": [
+        "files/offer-vague/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "economics-scale",
+      "prompt": "Check my unit economics with --mode offer: CAC is $400 from Google Ads, price $30 a month, 8% monthly churn, 80% gross margin. Help me scale ad spend 5x.",
+      "expected_output": "LTV is about $300 (30 x 0.8 / 0.08), so LTV:CAC is under 1 and payback is beyond 12 months: leads with that number and does not scale ads.",
+      "files": [
+        "files/economics-scale/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

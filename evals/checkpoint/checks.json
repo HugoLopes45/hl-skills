@@ -1,0 +1,86 @@
+{
+  "with-rule": {
+    "fixtures": "with-rule",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|reset|checkout|restore|clean)\\b|git stash(?! list\\b)",
+        "text": "task: No commit, stash, or discard"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-base)\" && test -z \"$(git stash list)\" && git diff --name-only | grep -qx parser.py",
+        "text": "task: Worktree state unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "stash",
+        "text": "contract: Offers the worktree options, stash included"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?<!\\bno )(?<!nothing )(changes|files|work) (will be|would be|are|get) lost",
+        "text": "task: Does not say uncommitted files are lost"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'a=b=c' docs/handoff.md && grep -Eiq 'first' docs/handoff.md",
+        "text": "task: Handoff saved where the rule says, with decision and next action"
+      }
+    ]
+  },
+  "no-rule": {
+    "fixtures": "no-rule",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|reset|checkout|restore|clean)\\b|git stash(?! list\\b)",
+        "text": "task: No commit, stash, or discard"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-base)\" && test -z \"$(git stash list)\" && git diff --name-only | grep -qx parser.py",
+        "text": "task: Worktree state unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "stash",
+        "text": "contract: Offers the worktree options, stash included"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?<!\\bno )(?<!nothing )(changes|files|work) (will be|would be|are|get) lost",
+        "text": "task: Does not say uncommitted files are lost"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v '^ M parser.py$')\"",
+        "text": "contract: No handoff file written before the user names a path"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(path|where)[^\\n]*\\?",
+        "text": "contract: Asks the user for a path"
+      }
+    ]
+  },
+  "stuck": {
+    "fixtures": "stuck",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "T10:00|timestamp|time (part|component)|ISO",
+        "text": "task: Names the real input shape"
+      },
+      {
+        "type": "first_line",
+        "pattern": "hypothes|\\bdebug\\b|missing context",
+        "text": "contract: First line names the cause and the next action"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: Edits nothing"
+      }
+    ]
+  }
+}

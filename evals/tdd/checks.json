@@ -1,0 +1,85 @@
+{
+  "leap-year": {
+    "fixtures": "leap",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Test suite passes"
+      },
+      {
+        "type": "command",
+        "command": "grep -rqE '1900' --include='test_*.py' .",
+        "text": "task: Tests cover the 1900 boundary"
+      },
+      {
+        "type": "command",
+        "command": "grep -rqE '2000' --include='test_*.py' .",
+        "text": "task: Tests cover the 2000 boundary"
+      },
+      {
+        "type": "ran_before_edit",
+        "pattern": "pytest",
+        "path": "calendar_utils.py",
+        "text": "contract: Ran the tests before editing calendar_utils.py"
+      },
+      {
+        "type": "first_line",
+        "pattern": "green",
+        "text": "contract: First line states the behavior ended green"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has the red-green table"
+      }
+    ]
+  },
+  "already-green": {
+    "fixtures": "clamp",
+    "checks": [
+      {
+        "type": "file_unchanged",
+        "path": "mathx.py",
+        "text": "task: mathx.py unchanged"
+      },
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Test suite passes"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "already[ -]green|already (passes|passing|implemented)",
+        "text": "contract: Reports already green"
+      }
+    ]
+  },
+  "no-behavior": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      }
+    ]
+  },
+  "seam-missing": {
+    "fixtures": "shop",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "Cart\\.total|checkout",
+        "text": "task: Names a concrete seam"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: Waits for seam agreement before the first test"
+      }
+    ]
+  }
+}

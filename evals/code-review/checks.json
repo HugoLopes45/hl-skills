@@ -1,0 +1,134 @@
+{
+  "spec-axes": {
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
+        "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "ValueError",
+        "text": "task: Reports the missing ValueError"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "shout",
+        "text": "task: Reports the unrequested shout()"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "calc\\.py:([45]|[1-5]\\s*[-\u2013]\\s*[4-9])\\b",
+        "text": "task: Cites the swallowed exception at calc.py:4-5"
+      },
+      {
+        "type": "first_line",
+        "pattern": "Standards:.*\\|\\s*Spec:",
+        "text": "contract: First line gives one verdict per axis"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^#+\\s*Standards",
+        "text": "contract: Has a Standards section"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^#+\\s*Spec\\b",
+        "text": "contract: Has a Spec section"
+      }
+    ]
+  },
+  "plain": {
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
+        "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "calc\\.py:([45]|[1-5]\\s*[-\u2013]\\s*[4-9])\\b",
+        "text": "task: Cites the swallowed exception at calc.py:4-5"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[^\\n]*calc\\.py:\\d+",
+        "text": "contract: Findings table with file:line"
+      }
+    ]
+  },
+  "cold": {
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
+        "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "calc\\.py:([45]|[1-5]\\s*[-\\u2013]\\s*[4-9])\\b",
+        "text": "task: Cites the swallowed exception at calc.py:4-5"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Agent|Task)$",
+        "min": 1,
+        "text": "contract: Dispatches a fresh subagent"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)subagent|cold review|independent review",
+        "text": "contract: Labels the findings as the subagent's"
+      }
+    ]
+  },
+  "deep": {
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
+        "text": "task: Repository unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "calc\\.py:([45]|[1-5]\\s*[-\\u2013]\\s*[4-9])\\b",
+        "text": "task: Cites the swallowed exception at calc.py:4-5"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Agent|Task)$",
+        "min": 6,
+        "text": "contract: Runs the six specialists this diff requires as subagents"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)skipped",
+        "text": "contract: Header lists skipped specialists"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\b[A-Z]{2,8}-\\d{3}\\b",
+        "text": "contract: Findings carry specialist IDs"
+      }
+    ]
+  },
+  "pr-blocked": {
+    "checks": [
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain --untracked-files=all | grep -v ' .claude/')\" && test \"$(git rev-parse HEAD)\" = \"$(git rev-parse origin/feature)\"",
+        "text": "task: Repository unchanged"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(?i)blocked|cannot|can.t|unable|not available|no access",
+        "text": "contract: Verdict line says blocked"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "calc\\.py:\\d|shout",
+        "text": "task: Does not review another target instead"
+      }
+    ]
+  }
+}

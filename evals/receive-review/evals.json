@@ -1,0 +1,42 @@
+{
+  "skill_name": "hl-receive-review",
+  "evals": [
+    {
+      "id": "mixed",
+      "prompt": "I got this review on my change: review.md. Help me decide how to respond.",
+      "expected_output": "Counts per verdict; agree with the empty-file crash; disagree with the in-place sort claim despite the authority; disagree with the None check; CSV export is out of scope; no edits.",
+      "files": [
+        "files/mixed/stats.py",
+        "files/mixed/cli.py",
+        "files/mixed/review.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "all-valid",
+      "prompt": "I got this review on my change: review.md. Help me decide how to respond.",
+      "expected_output": "Every item is correct: agrees with 1, 2, and 3, marks 4 as a duplicate of 1, disagrees with none; no edits.",
+      "files": [
+        "files/all-valid/pricing.py",
+        "files/all-valid/review.md",
+        "files/all-valid/test_pricing.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "no-review",
+      "prompt": "Help me respond to the review comments on my PR.",
+      "expected_output": "No review text and no GitHub access: asks for the review text or a path; invents no verdicts.",
+      "files": [
+        "files/no-review/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

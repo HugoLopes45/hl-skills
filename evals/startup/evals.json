@@ -1,0 +1,104 @@
+{
+  "skill_name": "hl-startup",
+  "evals": [
+    {
+      "id": "evaluate-nothing",
+      "prompt": "Evaluate my startup idea.",
+      "expected_output": "No idea given: asks for it; no verdict.",
+      "files": [
+        "files/evaluate-nothing/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "kill-sunk-cost",
+      "prompt": "startup kill: I've spent 18 months and $40k on my invoicing SaaS. MRR has been flat at $310 for 7 months; 2 of the 9 customers who signed up 90 days ago are still active. I have no new lever to test. Should I keep going because I've already invested so much?",
+      "expected_output": "Kill or pivot; sunk cost is not a reason; names what to keep; one action this week; flips-to condition; under 200 words.",
+      "files": [
+        "files/kill-sunk-cost/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ship-pricing",
+      "prompt": "startup ship: should I charge $9 or $29 per month for my product?",
+      "expected_output": "Pricing is outside ship or kill: names launch-marketing and stops.",
+      "files": [
+        "files/ship-pricing/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "competition-numbers",
+      "prompt": "startup evaluate --stage competition: a booking tool for independent dog groomers. Give me the market size and name 5 competitors with their annual revenue.",
+      "expected_output": "Competitors and numbers only with sources, or labeled unknown or estimate; no fabricated revenue.",
+      "files": [
+        "files/competition-numbers/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "scout-quick",
+      "prompt": "startup scout --depth quick: tools for freelance translators. I'm a developer with no translation background.",
+      "expected_output": "Quick scout: first line is the pick with its score or NO SHIPPABLE BET; at most 5 bets; market claims marked [unverified]; no live research; founder edge zero; under about 400 words.",
+      "files": [
+        "files/scout-quick/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "stage-assumption",
+      "prompt": "startup evaluate --stage assumption: an app that writes performance reviews for managers at 50-person companies. I have never worked in HR and have not talked to any manager yet.",
+      "expected_output": "Only the assumption stage: leads with proceed, revise, stop, or insufficient evidence; missing customer and founder evidence stays unknown; cheapest test; no invented numbers.",
+      "files": [
+        "files/stage-assumption/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "stage-problem",
+      "prompt": "startup evaluate --stage problem: a scheduling app for independent dog walkers. My interview questions: 1) Would you pay $10/month for an app that schedules your walks? 2) Don't you hate juggling texts to schedule walks?",
+      "expected_output": "Flags both questions as leading or hypothetical; writes five non-leading questions about past behavior; validation criteria labeled as proposals.",
+      "files": [
+        "files/stage-problem/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "stage-customers",
+      "prompt": "startup evaluate --stage customers: a no-show reminder tool for independent dental clinics. My plan: buy a list of 5,000 dentist emails and run an automated cold sequence so I have my first 10 paying customers within 7 days.",
+      "expected_output": "Rejects the bought list and the automation; manual, personal outreach with placeholders; week/action/success-signal milestones; no guaranteed timeline.",
+      "files": [
+        "files/stage-customers/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "stage-mvp",
+      "prompt": "startup evaluate --stage mvp: invoice reconciliation for 10-person accounting firms. My MVP plan: bank sync for 12 banks, OCR for receipts, multi-currency, user roles, an audit log, a Slack bot, and a mobile app. I'll build it in 3 months.",
+      "expected_output": "Assumption first; a two-week test with the smallest feature set; most of the list excluded; pass and fail criteria; day/action/evidence table.",
+      "files": [
+        "files/stage-mvp/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

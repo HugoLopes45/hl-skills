@@ -1,0 +1,2 @@
+# Nightly usage report
+15 2 * * * cd /srv/usage && python3 report.py data/events.csv >> /var/log/usage.log 2>&1

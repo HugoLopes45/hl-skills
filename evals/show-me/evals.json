@@ -1,0 +1,30 @@
+{
+  "skill_name": "hl-show-me",
+  "evals": [
+    {
+      "id": "show-flow",
+      "prompt": "Show me how a POST /orders request flows through this code.",
+      "expected_output": "One or two answer sentences, then a call tree post_order > create_order > total_cents, save_order; no preamble; nothing written.",
+      "files": [
+        "files/show-flow/app.py",
+        "files/show-flow/orders.py",
+        "files/show-flow/pricing.py",
+        "files/show-flow/store.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "show-nothing",
+      "prompt": "Show me.",
+      "expected_output": "Nothing to show: says so or asks; nothing written.",
+      "files": [
+        "files/show-nothing/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

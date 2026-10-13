@@ -1,0 +1,137 @@
+{
+  "edit": {
+    "fixtures": "edit",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "grep -q '# increment the counter' app.py",
+        "text": "task: Line outside the diff untouched"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q '^import os' app.py",
+        "text": "task: Unused added import removed"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'Get the port from the payload' app.py",
+        "text": "task: Narrating comment removed"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'isinstance(payload, dict)' app.py",
+        "text": "task: Guard on parsed JSON kept"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'Returns None when the value is not a number' app.py && grep -q 'return int(value)' app.py",
+        "text": "task: Newer comment that contradicts the code: neither side edited"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "possible bug[\\s\\S]{0,400}parse_port|parse_port[\\s\\S]{0,400}possible bug",
+        "text": "contract: Flags parse_port as a possible bug"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      }
+    ]
+  },
+  "report": {
+    "fixtures": "report",
+    "checks": [
+      {
+        "type": "command",
+        "command": "git diff | cmp -s - .git/eval-diff && test -z \"$(git status --porcelain | grep -v '^ M app.py$')\"",
+        "text": "task: No file edited"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "import os",
+        "text": "task: Finds the unused import"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "POSSIBLE BUG:[^\\n]*(parse_port|app\\.py:2[3-6]\\b)",
+        "text": "contract: Prefixes the parse_port line with POSSIBLE BUG:"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "app\\.py:\\d+",
+        "text": "contract: Cites file:line"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?mi)^(?!.*(outside|pre-existing|out of scope|not touched|alone|already|existing|committed|not (in|part of) (your|this|the) (change|diff))).*(increment the counter|app\\.py:8\\b)",
+        "text": "task: Leaves the line outside the diff alone"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      }
+    ]
+  },
+  "base-ref": {
+    "fixtures": "base-ref",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'Convert the title to lowercase' app.py",
+        "text": "task: Narrating comment in the range removed"
+      },
+      {
+        "type": "command",
+        "command": "grep -q '# increment the counter' app.py",
+        "text": "task: Line before the base untouched"
+      },
+      {
+        "type": "command",
+        "command": "grep -q '^import json' app.py",
+        "text": "task: Import before the base untouched"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore)\\b",
+        "text": "task: No git state change"
+      }
+    ]
+  },
+  "deslop-staged": {
+    "fixtures": "deslop-staged",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'Make the text uppercase' app.py",
+        "text": "task: Staged narrating comment removed"
+      },
+      {
+        "type": "command",
+        "command": "cmp -s notes.py .git/eval-notes.py",
+        "text": "task: Unstaged change untouched"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore)\\b",
+        "text": "task: No git state change"
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Validate and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install ffmpeg and pytest for the eval check tests
+        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg python3-pytest
+      - name: Validate skills
+        run: python3 scripts/validate.py
+      - name: Test the validator
+        run: python3 -m unittest discover scripts
+      - name: Test the eval checks
+        run: python3 -m unittest discover evals
+      - name: Install with the skills CLI
+        run: |
+          HOME=$(mktemp -d)
+          export HOME
+          npx --yes skills@1.7.2 add "$PWD" --global --agent claude-code --skill '*' --copy --yes
+          test "$(find "$HOME/.claude/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq "$(find skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
+
+  lint:
+    name: Lint workflows and scripts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Lint workflows with actionlint and shellcheck
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 -color
+      - name: Check the eval scripts with shellcheck
+        run: shellcheck evals/run.sh evals/*/repo.sh
+      - name: Audit workflows with zizmor
+        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
+        with:
+          version: 1.30.1
+          inputs: .github
+          advanced-security: false

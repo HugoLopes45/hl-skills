@@ -1,0 +1,75 @@
+{
+  "skill_name": "hl-security-audit",
+  "evals": [
+    {
+      "id": "vuln",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "SQL injection at app.py:5 (CWE-89) and a hardcoded API key at config.py:1, value never shown; the parameterized query is not a finding; report in security-audit.md with scanners and assurance; source untouched.",
+      "files": [
+        "files/vuln/app.py",
+        "files/vuln/README.md",
+        "files/vuln/.eval-setup.sh",
+        "files/vuln/config.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "clean",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "No CRITICAL or HIGH finding; the found-nothing line matches the assurance; source untouched.",
+      "files": [
+        "files/clean/app.py",
+        "files/clean/README.md",
+        "files/clean/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-quick",
+      "prompt": "Run a quick security audit: security-audit quick.",
+      "expected_output": "Quick level: prints the report instead of writing it; CRITICAL and HIGH only; finds the SQL injection and the hardcoded key without printing it.",
+      "files": [
+        "files/audit-quick/.eval-setup.sh",
+        "files/audit-quick/README.md",
+        "files/audit-quick/app.py",
+        "files/audit-quick/config.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-scoped",
+      "prompt": "Audit only api/ with security-audit api/ --report.",
+      "expected_output": "Writes security-audit.md scoped to api/: the SQL injection in api/users.py; nothing reported from admin/.",
+      "files": [
+        "files/audit-scoped/.eval-setup.sh",
+        "files/audit-scoped/README.md",
+        "files/audit-scoped/admin",
+        "files/audit-scoped/api"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-deep",
+      "prompt": "Run a deep security audit: security-audit deep.",
+      "expected_output": "Writes security-audit.md with an Investigate section; finds the SQL injection; the pickle load is a finding or an investigate item, not ignored.",
+      "files": [
+        "files/audit-deep/.eval-setup.sh",
+        "files/audit-deep/README.md",
+        "files/audit-deep/app.py",
+        "files/audit-deep/cache.py",
+        "files/audit-deep/config.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

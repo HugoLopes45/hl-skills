@@ -1,0 +1,32 @@
+{
+  "skill_name": "hl-split-pr",
+  "evals": [
+    {
+      "id": "three",
+      "prompt": "This branch is too big to review. How should I split it against main?",
+      "expected_output": "Merge-order table: rename refactor first, then the endpoint with its test depending on it; CI pin separate; every file once; nothing changed.",
+      "files": [
+        "files/three/utils.py",
+        "files/three/report.py",
+        "files/three/.github/workflows/ci.yml",
+        "files/three/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "single",
+      "prompt": "This branch is too big to review. How should I split it against main?",
+      "expected_output": "One coherent change: reports no clean split; nothing changed.",
+      "files": [
+        "files/single/utils.py",
+        "files/single/report.py",
+        "files/single/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}
