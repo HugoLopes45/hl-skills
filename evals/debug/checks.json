@@ -267,7 +267,7 @@
       },
       {
         "type": "command",
-        "command": "d=$(mktemp -d) && cp -R . \"$d/w\" && cd \"$d/w\" && cp \"$EVALS/debug/files/envprec/config.py\" config.py && ! python3 -m pytest -q -p no:cacheprovider >/dev/null 2>&1",
+        "command": "python3 -m pytest --version >/dev/null 2>&1 && d=$(mktemp -d) && cp -R . \"$d/w\" && cd \"$d/w\" && cp \"$EVALS/debug/files/envprec/config.py\" config.py && ! python3 -m pytest -q -p no:cacheprovider >/dev/null 2>&1",
         "text": "contract: A regression test fails on the old config.py"
       },
       {
