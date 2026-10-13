@@ -63,7 +63,7 @@ The verdict line sits just before `**Next:**`, per mode:
 - economics: `Hold` (a number is under its threshold) or `Scale`. Line 1 names the number that hurts most, for example `**Each customer costs $120 and returns $80, so do not scale ads yet.**`
 - constraint: `Optimize` or `Push volume`.
 
-Under line 1, plain sentences, one each, only when they apply: the input that blocks the first action, a venue rule that gets posts removed, a placeholder that must be replaced before posting, and each detail you did not get, with the default you chose (for example "I assumed you post from your personal profile, not a company page."). For a minor gap, pick a safe default and say so; ask only when the gap blocks the work.
+Under line 1, plain sentences, one each, only when they apply: the input that blocks the first action, and each detail you did not get, with the default you chose (for example "I assumed you post from your personal profile, not a company page."). For a minor gap, pick a safe default and say so; ask only when the gap blocks the work.
 
 Body by mode, numbered points unless the view says otherwise:
 - position: the for-statement in a fence with `[PLACEHOLDER]` slots, then the one-liner as a bold sentence, then up to three proof points, one sentence each, numbered.
@@ -75,7 +75,7 @@ Body by mode, numbered points unless the view says otherwise:
 - economics: table of metric, value, basis, up to 5 rows: cost to win a customer (CAC), lifetime profit per customer (LTV), payback, gross margin, runway. Warning lines under it, as plain sentences.
 - landing, launch, and content are artifacts: they ship complete. `quick` depth (position and channels only) is at most 300 words in total, gate lines and `**Next:**` included; cut prose before table rows; `deep` is the full artifact with no padding.
 
-End with `**Next:**`, one step per line: the post to publish, the message to send, the number to measure.
+End with `**Next:**`, one step per line: the post to publish, the message to send, the number to measure. A check or fix needed before a step goes in that step, not above the verdict: a venue rule that gets posts removed, a placeholder to replace before posting.
 
 Stopped: line 1 says in plain words what is missing and why it blocks. Then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, default marked, listed nowhere else. Example Next:
 1. Which product, in one line, and at what stage: pre-launch, launched, or flat revenue? (default)

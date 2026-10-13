@@ -140,6 +140,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|mapped|partly mapped)\\b)",
         "text": "contract: Line 1 is not a label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\*\\*Next:\\*\\*\\s*\\n\\s*1\\.[^\\n]*(rotat|revok)",
+        "text": "contract: Next step 1 rotates the live token"
       }
     ]
   },

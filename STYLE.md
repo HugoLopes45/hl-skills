@@ -31,6 +31,7 @@ Write for a smart reader who is new to the domain and to this codebase. The bar:
 - Define each technical term or acronym at its first use in a few words, or replace it. Paths, commands, identifiers, and quoted errors stay exact: the reader needs them to act.
 - Every number has its unit and its meaning: "3 of 12 tests fail", not "3 failures".
 - Each Next step is something a person can do now: a command to paste, a file to open, a question to answer, a person to ask. Say what the step achieves when that is not obvious.
+- Whatever the reader must do is a Next step: a blank to fill, a risk to act on, and a check that must come before a step, written in that step. A live secret or a risk of data loss goes first.
 - A decision for the reader: one question, at most 4 options, each with what happens if chosen, the default marked.
 - Calm and direct. Never blame the reader or the author of the code; no hype, no alarm words beyond the stated severity.
 

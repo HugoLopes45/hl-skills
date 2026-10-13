@@ -69,6 +69,11 @@
         "type": "output_matches",
         "pattern": "(?m)^\\W*Verdict:\\W*(sharp|rewritten)",
         "text": "contract: Verdict line Sharp or Rewritten"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\brules?\\b(?=.*\\*\\*Next:\\*\\*)(?!.*\\*\\*Next:\\*\\*.*\\brules?\\b)",
+        "text": "contract: A venue rule check sits in Next, not only above it"
       }
     ]
   },
