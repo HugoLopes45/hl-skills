@@ -203,6 +203,11 @@
         "type": "output_not_matches",
         "pattern": "calc\\.py:\\d|shout",
         "text": "task: Does not review another target instead"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

@@ -49,6 +49,11 @@
         "type": "output_matches",
         "pattern": "(?m)^\\W*Verdict:\\W*(Stopped\\b)",
         "text": "contract: Verdict line is the verdict"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },

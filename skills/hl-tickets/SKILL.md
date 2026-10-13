@@ -60,7 +60,7 @@ Line 1, bold, one plain sentence. The reply ends with `Verdict: <word>` on its o
 - `Ready for approval`: N slices, M need a person; nothing written yet.
 - `Written`: after approval, the slices and the directory or repository.
 - `Ready, nothing created`: `--target github` without access. Line 1 says in plain words that no issue was created, and why.
-- `Stopped`: no readable source. Line 1 says what is missing. Then `Send one of these:` and up to 3 numbered ways, default marked: a path to the plan or spec (default); a directory of Markdown notes; the feature in one sentence.
+- `Stopped`: no readable source. Line 1 says what is missing. `**Next:**` holds up to 3 numbered ways to send it, default marked, listed nowhere else: a path to the plan or spec (default); a directory of Markdown notes; the feature in one sentence.
 
 Breakdown view: a numbered list in dependency order, one slice per item. Each: the title in bold, then one line with who does it (`an agent alone` or `needs a person`), what it waits for (`blocked by: none` or `blocked by: 1`), and the plan's acceptance criteria it covers, by the numbers or ids the plan uses. Then one sentence on what the slice makes work, when the title does not say it. In the reply, never show slice ids such as `SL-01` or the codes `AFK` and `HITL`; the written files keep them.
 

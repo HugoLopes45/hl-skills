@@ -59,13 +59,11 @@ Verdict: Green
 **Changed:** `rental.py`, `test_rental.py`
 ````
 
-Stopped, when no behavior is named: line 1 says what is missing in plain words (for example `**I can't write a test yet: no behavior is named.**`). Then a question that asks for it, then up to 3 numbered ways to unblock, the default marked:
+Stopped, when no behavior is named: line 1 says what is missing in plain words (for example `**I can't write a test yet: no behavior is named.**`). Then a question that asks for it, then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, the default marked; they appear nowhere else:
 1. Name the behavior in one sentence, with one input and its expected output. (default)
 2. Point to the slice or plan that holds the acceptance criteria.
 3. Name the file and function to test.
 
-Then `Verdict: Stopped`.
-
-Stopped, when the seam is not fixed before the first test: line 1 says the seam must be agreed first and why, in plain words. Then a `text` block with `seam`, `catches`, and `misses`, then one question with at most 4 options and the default marked. Then `Verdict: Stopped`.
+Stopped, when the seam is not fixed before the first test: line 1 says the seam must be agreed first and why, in plain words. Then a `text` block with `seam`, `catches`, and `misses`, then one question. Then `Verdict: Stopped`. `**Next:**` holds its at most 4 options as the only numbered list, the default marked.
 
 Reader rules: cite each expected value by its source (a worked example, `spec.md:3`), never by the code under test. Gloss mock on first use: a stand-in for something outside the project, such as a payment service.

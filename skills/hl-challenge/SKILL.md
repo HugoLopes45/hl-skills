@@ -39,7 +39,7 @@ Under line 1, one plain sentence each, no labels: every blocker (a claim that br
   - `Proceed`: go ahead. No blocker, and the claim that the target meets its goal end to end is supported.
 - `**Next:**` every change needed, in order, including steps stated earlier; then each decision for the user as one question with a recommended answer and its reason. Never assume the user accepts a risk.
 - Plain words: no codes, ranks, or tags. Define a technical term at first use in a few words (`p95`: the time 95 % of requests beat). Code, paths, and quoted errors stay exact. Name the cause, never the author. Under line 1, say in one plain sentence what you checked against: the goal and where it is written.
-- No target or no goal: line 1 says in plain words what is missing and why it blocks, e.g. `**I need the plan or work to challenge: send its text or a file path.**`, then up to 3 numbered ways to unblock, default marked, then `Verdict: Stopped`.
+- No target or no goal: line 1 says in plain words what is missing and why it blocks, e.g. `**I need the plan or work to challenge: send its text or a file path.**`, then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, default marked; they appear nowhere else.
 
 ````markdown
 **The leaderboard can be up to an hour old, and a rebuild can overlap the next one.**

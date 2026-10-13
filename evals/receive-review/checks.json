@@ -118,6 +118,11 @@
         "type": "output_matches",
         "pattern": "(?i)\\bI (checked|looked|tried|ran|searched|could(n't| not) (fetch|find|reach))\\b",
         "text": "contract: Says what it checked"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

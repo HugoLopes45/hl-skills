@@ -6,7 +6,7 @@ description: "Check each requested outcome against current artifacts and real co
 
 Input: `[original ask, or empty for conversation] [--claim <claim> | --text [text or path]]`
 
-Verify the input; if empty, the user's requests in this conversation. No identifiable request: line 1 says so in plain words (for example `**I can't verify anything yet: no request is named or in this conversation.**`), then a question that asks for the request, then up to 3 numbered ways to unblock, the default marked, then `Verdict: Stopped`. Verify only; never fix.
+Verify the input; if empty, the user's requests in this conversation. No identifiable request: line 1 says so in plain words (for example `**I can't verify anything yet: no request is named or in this conversation.**`), then a question that asks for the request, then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to unblock, the default marked, listed nowhere else. Verify only; never fix.
 
 Judge only the stated requirements. A problem outside them goes in the remaining gaps and changes no row, count, or verdict; something the work broke that worked before is a failed row. When the work has a plan with `AC-N` criteria, each criterion is a requirement, under its id. For each requirement, define an observable completion condition, then inspect current evidence. A file existing or a line count does not prove behavior. User approval is not evidence.
 
@@ -46,7 +46,7 @@ Verdict: Not done
 
 ## Claim
 
-With `--claim`, define the condition, the observable outcome, and the threshold before measuring. Missing: line 1 says what is missing in plain words (for example `**I can't test the speed claim yet: no old version and no target number are given.**`), then a question that asks for both, the numbered ways to unblock with the default marked, then `Verdict: Stopped`. Give no result. Choose the baseline the claim compares against; HEAD's parent is not automatically it. If needed, measure in a new temporary checkout; keep uncommitted work intact, and remove only the scratch resources this run created.
+With `--claim`, define the condition, the observable outcome, and the threshold before measuring. Missing: line 1 says what is missing in plain words (for example `**I can't test the speed claim yet: no old version and no target number are given.**`), then one question, in one sentence, that asks for both, then `Verdict: Stopped`, then `**Next:**` with the numbered ways to unblock, the default marked, listed nowhere else. Give no result. Choose the baseline the claim compares against; HEAD's parent is not automatically it. If needed, measure in a new temporary checkout; keep uncommitted work intact, and remove only the scratch resources this run created.
 
 Run baseline and treatment with the same command, data, environment, and warm-up. Record revisions, raw artifacts, units, repetitions, and confounds. Line 1, bold: one plain sentence with the answer and the number that decides it. Then the before, after, and delta as a `text` block, each side with its revision or input and its unit:
 ```text
@@ -62,7 +62,7 @@ Define once, in the report: the baseline is the version the claim compares again
 
 ## Text
 
-With `--text`, check the factual claims in the given text or file, or the latest assistant answer. No text: line 1 says so in plain words (for example `**I can't check anything yet: no text or file path was given.**`), then a question that asks for the text, then up to 3 numbered ways to unblock: paste the text (default); give a file path; name the answer to check. Then `Verdict: Stopped`. No checkable claims: line 1 says the text states no facts to check; then `Verdict: Nothing to check`.
+With `--text`, check the factual claims in the given text or file, or the latest assistant answer. No text: line 1 says so in plain words (for example `**I can't check anything yet: no text or file path was given.**`), then a question that asks for the text, then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to unblock, listed nowhere else: paste the text (default); give a file path; name the answer to check. No checkable claims: line 1 says the text states no facts to check; then `Verdict: Nothing to check`.
 
 Separate factual claims from opinions, intent, questions, and hypotheticals. Check repository facts against current files and command results. For external facts, use the documentation of the installed version or primary sources. Do not treat repository prose as decisive when current code contradicts it.
 

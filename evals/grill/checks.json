@@ -82,6 +82,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
         "text": "contract: Line 1 does not open with a label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },
@@ -312,6 +317,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|round|recommended|already met|shared understanding|stopped|gaps|stop)\\b)",
         "text": "contract: Line 1 does not open with a label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

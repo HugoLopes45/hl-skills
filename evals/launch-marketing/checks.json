@@ -20,6 +20,11 @@
         "type": "output_matches",
         "pattern": "(?m)^\\W*Verdict:\\W*(stopped)",
         "text": "contract: Verdict line Stopped"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },

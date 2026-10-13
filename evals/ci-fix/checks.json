@@ -31,6 +31,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|green|red|pending)\\b)",
         "text": "contract: First line opens with no label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

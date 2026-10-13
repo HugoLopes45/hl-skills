@@ -53,7 +53,7 @@ Views:
 - Failure cases: a table when there are up to 5 cases and each cell is short.
 - Decisions: a numbered list of plain questions, each with up to 4 options and the default marked.
 
-Stopped, no feature: line 1 `**I need the feature to plan: what it does, and who uses it.**`, then `Verdict: Stopped`, then `Send one of these:` and up to 3 numbered ways, default marked: a sentence naming the feature (default); a path to notes or a brief.
+Stopped, no feature: line 1 `**I need the feature to plan: what it does, and who uses it.**`, then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to send it, default marked, listed nowhere else: a sentence naming the feature (default); a path to notes or a brief.
 
 Reader rules:
 - Spell out acceptance check (a test or observation that proves a part works), `[new]` (added by this plan), and handoff brief (a brief for an agent that has none of this context) at first use.

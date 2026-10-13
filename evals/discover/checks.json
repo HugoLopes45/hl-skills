@@ -75,6 +75,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|mapped|partly mapped)\\b)",
         "text": "contract: Line 1 is not a label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   },
@@ -210,6 +215,11 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|mapped|partly mapped)\\b)",
         "text": "contract: Line 1 is not a label"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?ms)^[ \\t]*\\d+[.)][ \\t][^\\n]*\\n(?:(?!^\\W*Verdict:).)*^\\W*Verdict:",
+        "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
   }

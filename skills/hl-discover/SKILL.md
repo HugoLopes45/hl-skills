@@ -61,9 +61,9 @@ Then the body as numbered points, each a bold plain sentence with one or two sen
 
 Indent each view under its point.
 
-Stopped: line 1 says what is missing and why it blocks. Then `Verdict: Stopped`, then up to 3 numbered ways to unblock, default marked:
+Stopped: line 1 says what is missing and why it blocks. Then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to unblock, default marked, listed nowhere else:
 - Not a Git repository: `**This folder is not a Git project (Git is the version-history tool), so I cannot map it.**`, then 1. Run discover from the clone's root (default). 2. Give the path of a Git clone.
-- Scope matches several places: `**Scope "<name>" matches several places, so I need you to pick one.**`, the matches as numbered options, one per line, default marked, then "Which one do you mean?"
+- Scope matches several places: `**Scope "<name>" matches several places, so I need you to pick one.**`, then "Which one do you mean?", then in Next the matches as numbered options, one per line, default marked.
 
 Reader rules:
 - Define each term once: "CI (automated checks on each push)", "cycle (modules that import each other)", "Git (the version-history tool)". Avoid HEAD, upstream, worktree, LOC unless defined.
