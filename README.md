@@ -7,6 +7,8 @@
 26 agent skills for Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and any agent that reads `SKILL.md`.
 
 [![skills.sh](https://skills.sh/b/HugoLopes45/hl-skills)](https://skills.sh/HugoLopes45/hl-skills)
+[![ci](https://github.com/HugoLopes45/hl-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/HugoLopes45/hl-skills/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/HugoLopes45/hl-skills)](./CHANGELOG.md)
 [![license](https://img.shields.io/badge/license-MIT-lightgrey)](./LICENSE)
 
 ```bash
@@ -234,6 +236,17 @@ npx skills remove --all             # remove every skill
 ```
 
 `npx skills update` without names updates every skill in that scope, from every source, not only this repo.
+
+### Pin a version
+
+Releases follow semantic versioning. A major version renames or removes a skill, or changes how one is invoked. See [CHANGELOG.md](./CHANGELOG.md).
+
+```bash
+npx skills add HugoLopes45/hl-skills#v1.0.0              # every skill at v1.0.0
+npx skills add HugoLopes45/hl-skills#v1.0.0@hl-tdd       # one skill at v1.0.0
+```
+
+`npx skills update` keeps a pinned skill at its tag. To move to another version, run `add` again with the new tag.
 
 ### Project or global
 

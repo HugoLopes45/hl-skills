@@ -9,12 +9,26 @@ git checkout -b feature/<short-name>
 # add or edit skills
 python3 scripts/validate.py
 python3 -m unittest discover scripts
+python3 -m unittest discover evals
 npx skills add . --list            # check that the CLI finds the skill
 git commit -m "feat: add <skill>"
 gh pr create
 ```
 
-Changes go through pull requests against `main`. Commits follow Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`).
+Changes go through pull requests against `main`. Pull requests are squash-merged, so the pull request title becomes the commit on `main`. The title must follow Conventional Commits, for example `feat(hl-tdd): add --watch`. CI checks it.
+
+## Versioning and releases
+
+Releases follow semantic versioning. The commit type sets the next version:
+
+| Change | Commit | Version |
+|---|---|---|
+| Rename or remove a skill, or change how one is invoked | `feat!:` or a `BREAKING CHANGE:` footer | major |
+| New skill, mode, or flag | `feat:` | minor |
+| Wrong or unclear behavior fixed | `fix:` | patch |
+| `docs:`, `refactor:`, `test:`, `ci:`, `chore:` | | no release on their own |
+
+[release-please](https://github.com/googleapis/release-please) keeps a release pull request open on `main`. It collects the version bump and the `CHANGELOG.md` entries. Merging it tags `vX.Y.Z` and publishes the GitHub release. To force a version, add a `Release-As: X.Y.Z` footer to a commit.
 
 ## Layout
 
@@ -23,6 +37,7 @@ skills/<name>/SKILL.md          one skill
 skills/<name>/references/       long material the skill loads on demand
 scripts/validate.py             format and link checks, run by CI
 scripts/test_validate.py        tests for validate.py
+evals/                          behavior evals and their checks, see evals/README.md
 STYLE.md                        how a skill is written
 ```
 
@@ -52,7 +67,7 @@ The `hl-writing-for-agents --skill` mode walks through these steps.
 - No named people. Encode the method, not the person.
 - The description is the trigger. A vague description means the skill never loads, or loads at the wrong time.
 - Skills with side effects (commit, push, create issues) say "Use only when the user explicitly asks".
-- A removed or renamed skill breaks existing installs. Say so in the pull request description.
+- A removed or renamed skill breaks existing installs. Mark it as a breaking change and say so in the pull request description.
 
 ## Reviewing
 
