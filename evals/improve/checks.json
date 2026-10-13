@@ -20,6 +20,11 @@
         "type": "output_matches",
         "pattern": "```diff",
         "text": "contract: Target shape as a diff"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Plan ready\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -32,13 +37,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
         "pattern": "(?im)^```diff|^(#+\\s*|\\*\\*)(target shape|steps|sequence|plan)\\b|^\\s*(step \\d|\\d+[.)])[^\\n]*\\b(rename|extract|inline|move)\\b",
         "text": "contract: Invents no refactor plan"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Stopped\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -63,12 +73,12 @@
       {
         "type": "first_line",
         "pattern": "\\b\\d+\\b[^\\n]*(finding|issue)",
-        "text": "contract: Opens with the vetted-findings count"
+        "text": "contract: Line 1 gives the vetted-findings count"
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\s*\\|\\s*#\\s*\\|\\s*Finding",
-        "text": "contract: Findings table with the template columns"
+        "pattern": "(?m)^\\s*1\\.\\s",
+        "text": "contract: Numbered findings with impact, effort, confidence"
       },
       {
         "type": "command",
@@ -84,6 +94,11 @@
         "type": "command",
         "command": "grep -Eiq 'top 3|top three|default' plans/README.md",
         "text": "contract: plans/README.md records the non-interactive default"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Findings\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -114,6 +129,11 @@
         "type": "command",
         "command": "grep -q \"$(git rev-parse HEAD | cut -c1-7)\" arch-report.md",
         "text": "contract: Stamps the commit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Findings\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -134,6 +154,11 @@
         "type": "output_matches",
         "pattern": "(?i)full (audit|survey)",
         "text": "contract: Offers a full audit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Nothing to audit\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -174,6 +199,11 @@
         "type": "command",
         "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && ! grep -Eiq 'discussed above|as discussed|this conversation|earlier in (this|the) (chat|session)' plans/[0-9][0-9][0-9]-*.md",
         "text": "contract: The plan is self-contained"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Written\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -204,6 +234,11 @@
         "type": "output_matches",
         "pattern": "(?i)\\bcommit\\b[^\\n]{0,40}(stamp|sha|hash|missing|absent|\\bno\\b)|(\\bno\\b|missing|without|lacks?)[^\\n]{0,30}\\bcommit\\b",
         "text": "contract: Names the missing commit stamp"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*((Executable|Needs fixes|Not executable)\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   },
@@ -227,8 +262,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?is)003.{0,500}(unblock|propos|recommend|suggest|option [a-z1-9]|next step)",
+        "pattern": "(?is)003.{0,500}(unblock|propos|recommend|suggest|option [a-z1-9]|next step)|\\b(decide|decision)\\b[^\\n]{0,40}\\b003\\b[^\\n]*\\(default\\)",
         "text": "contract: Proposes an unblock path for 003"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Reconciled\\b)",
+        "text": "contract: Verdict line is the verdict"
       }
     ]
   }
