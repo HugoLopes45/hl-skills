@@ -7,14 +7,24 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*not done",
+        "text": "contract: Verdict line is not done"
+      },
+      {
         "type": "first_line",
-        "pattern": "^not done",
-        "text": "contract: First line is `not done`"
+        "pattern": "^(?!\\W*(verdict|status|stopped|done|not done|verified|not verified|inconclusive|supported|partly supported|corrected|nothing to check)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
         "pattern": "\\b(failed|unverified)\\b",
         "text": "task: Marks accent stripping failed or unverified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)untracked|not committed|uncommitted",
+        "text": "task: Reports the untracked files the outcome depends on"
       },
       {
         "type": "output_matches",
@@ -36,14 +46,24 @@
         "text": "task: No file added, removed, or modified"
       },
       {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*done\\b",
+        "text": "contract: Verdict line is done"
+      },
+      {
         "type": "first_line",
-        "pattern": "^done\\b",
-        "text": "contract: First line is `done`"
+        "pattern": "^(?!\\W*(verdict|status|stopped|done|not done|verified|not verified|inconclusive|supported|partly supported|corrected|nothing to check)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
         "pattern": "\\d+ passed",
         "text": "contract: Shows the real test output as evidence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)untracked|not committed|uncommitted",
+        "text": "task: Reports the untracked files the outcome depends on"
       },
       {
         "type": "output_matches",
@@ -66,13 +86,18 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
-        "pattern": "^\\W*(?-i:(NOT )?VERIFIED|INCONCLUSIVE)\\b",
+        "pattern": "^\\W*(?-i:(NOT )?VERIFIED|INCONCLUSIVE)\\b|^\\W*verdict:\\W*((not )?verified|inconclusive)\\b",
         "text": "contract: Gives no verdict line before the threshold is set"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
       }
     ]
   },
@@ -99,9 +124,19 @@
         "text": "contract: Cites config.py with a line"
       },
       {
+        "type": "output_matches",
+        "pattern": "^[^\\n]*(\\d+\\s*supported|supported:?\\s*\\d+)[^\\n]*(\\d+\\s*corrected|corrected:?\\s*\\d+)|^[^\\n]*(\\d+\\s*corrected|corrected:?\\s*\\d+)[^\\n]*(\\d+\\s*supported|supported:?\\s*\\d+)",
+        "text": "contract: Counts line has the supported and corrected counts"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*corrected",
+        "text": "contract: Verdict line is corrected"
+      },
+      {
         "type": "first_line",
-        "pattern": "(\\d+\\s*supported|supported:?\\s*\\d+).*(\\d+\\s*corrected|corrected:?\\s*\\d+)|(\\d+\\s*corrected|corrected:?\\s*\\d+).*(\\d+\\s*supported|supported:?\\s*\\d+)",
-        "text": "contract: First line has the counts"
+        "pattern": "^(?!\\W*(verdict|status|stopped|done|not done|verified|not verified|inconclusive|supported|partly supported|corrected|nothing to check)\\b)",
+        "text": "contract: First line opens with no label"
       },
       {
         "type": "output_matches",
@@ -119,13 +154,23 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
         "type": "output_not_matches",
         "pattern": "(?i)\\b[1-9]\\d*\\s+(supported|corrected|conflicting)\\b|\\b(supported|corrected|conflicting):?\\s*[1-9]",
         "text": "contract: Invents no verdicts"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*stopped",
+        "text": "contract: Verdict line is stopped"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|status|stopped|done|not done|verified|not verified|inconclusive|supported|partly supported|corrected|nothing to check)\\b)",
+        "text": "contract: First line opens with no label"
       }
     ]
   }
