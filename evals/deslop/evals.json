@@ -1,0 +1,58 @@
+{
+  "skill_name": "deslop",
+  "evals": [
+    {
+      "id": "edit",
+      "prompt": "Deslop my change.",
+      "expected_output": "Removes import os, narrating comments, the temp variable; keeps the JSON guard and the old comment; flags parse_port as a possible bug; tests pass.",
+      "files": [
+        "files/edit/app.py",
+        "files/edit/test_app.py",
+        "files/edit/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "report",
+      "prompt": "Deslop my change with --report.",
+      "expected_output": "No edits; lists the tells with app.py:line; POSSIBLE BUG: parse_port; ignores the pre-existing comment.",
+      "files": [
+        "files/report/app.py",
+        "files/report/test_app.py",
+        "files/report/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "base-ref",
+      "prompt": "Deslop my change with --base v1.0.",
+      "expected_output": "Scope is v1.0..working tree: removes the narrating comment in slugify; leaves the pre-v1.0 comment and import alone; tests pass.",
+      "files": [
+        "files/base-ref/.eval-setup.sh",
+        "files/base-ref/app.py",
+        "files/base-ref/test_app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "deslop-staged",
+      "prompt": "Deslop my change with --staged.",
+      "expected_output": "Scope is the staged change: removes the narrating comment in shout(); the unstaged change in notes.py stays byte-identical.",
+      "files": [
+        "files/deslop-staged/.eval-setup.sh",
+        "files/deslop-staged/app.py",
+        "files/deslop-staged/notes.py",
+        "files/deslop-staged/test_app.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate skills
+        run: python3 scripts/validate.py
+      - name: Test the validator
+        run: python3 -m unittest discover scripts
+      - name: Install with the skills CLI
+        run: |
+          export HOME="$(mktemp -d)"
+          npx --yes skills@1.7.1 add "$PWD" --global --agent claude-code --skill '*' --copy --yes
+          test "$(find "$HOME/.claude/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq "$(find skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"

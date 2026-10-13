@@ -1,0 +1,44 @@
+{
+  "skill_name": "open-pr",
+  "evals": [
+    {
+      "id": "pr-dry-run",
+      "prompt": "Open a pull request against main with --dry-run.",
+      "expected_output": "Prints a title and a body with why, changed behavior, verification, and risks; reports README.md as uncommitted; nothing pushed.",
+      "files": [
+        "files/pr-dry-run/greet.py",
+        "files/pr-dry-run/README.md",
+        "files/pr-dry-run/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-gh",
+      "prompt": "Open a pull request against main.",
+      "expected_output": "Cannot reach GitHub: reports the blocker; no fake URL; no commit of README.",
+      "files": [
+        "files/no-gh/greet.py",
+        "files/no-gh/README.md",
+        "files/no-gh/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "on-base",
+      "prompt": "Open a pull request against main with --dry-run.",
+      "expected_output": "The current branch is the base: stops without a PR body.",
+      "files": [
+        "files/on-base/greet.py",
+        "files/on-base/README.md",
+        "files/on-base/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

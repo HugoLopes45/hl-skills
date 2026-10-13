@@ -1,0 +1,358 @@
+{
+  "failing-test": {
+    "fixtures": "discount",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "pricing\\.py:4\\b",
+        "text": "task: Cites the exact defect line pricing.py:4"
+      },
+      {
+        "type": "output_matches",
+        "pattern": ">=|off-by-one|boundary",
+        "text": "task: Names the boundary defect"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "ran",
+        "text": "contract: Proves the defect by toggling it in a scratch copy",
+        "pattern": "^(?=[\\s\\S]*(mktemp|/tmp/))(?=[\\s\\S]*\\bcp\\b)(?=[\\s\\S]*\\b(sed|perl|python3? -c)\\b)(?=[\\s\\S]*pytest)"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "`[^`\\n]*(pytest|python3?)\\b[^`\\n]*`",
+        "text": "contract: Reports the reproduction command"
+      }
+    ]
+  },
+  "wrong-output": {
+    "fixtures": "csv",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "report\\.py:6\\b|line 6\\b",
+        "text": "task: Cites the exact defect line report.py:6"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "delimiter",
+        "text": "task: Names the delimiter"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "scratch|toggl|temporary (copy|dir)",
+        "text": "contract: Proves the defect by toggling it in a scratch copy"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "`[^`\\n]*(pytest|python3?)\\b[^`\\n]*`",
+        "text": "contract: Reports the reproduction command"
+      }
+    ]
+  },
+  "no-symptom": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      }
+    ]
+  },
+  "no-loop": {
+    "fixtures": "crash",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\b(logs?|stack ?trace|crash report|steps to reproduce|reproduc\\w+ steps|device|os version|app version)\\b",
+        "text": "task: Asks for the evidence a reproduction needs"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the )?root cause (is|was)\\b|\\bis caused by\\b",
+        "text": "task: Names no cause"
+      },
+      {
+        "type": "first_line",
+        "pattern": "insufficient",
+        "text": "contract: First line is insufficient evidence"
+      }
+    ]
+  },
+  "wrong-expectation": {
+    "fixtures": "rounding",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "(test|expectation|assertion)[^\\n]{0,120}\\b(wrong|incorrect|outdated|is the (bug|defect|problem|cause))\\b|(test|expectation|assertion)[^\\n]{0,80}\\b(contradicts|disagrees with|conflicts with|violates)\\b[^\\n]{0,60}(spec|billing rules|banker|half[- ](to[- ])?even)|billing\\.py[^\\n]{0,40}\\bis (correct|right)\\b|\\bcode is (correct|right)\\b",
+        "text": "task: Blames the test's expectation, not billing.py"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\bnot\\b[^\\n]{0,40}\\bfloat|\\bfloat[^\\n]{0,60}\\b(is not|isn't|ruled out|not the cause|not involved)|\\bno float\\b|Decimal\\([^\\n]{0,30}\\)[^\\n]{0,30}\\bis exact|Decimal[^\\n]{0,60}\\b(exact|no (float|binary))",
+        "text": "task: Rules out float precision"
+      },
+      {
+        "type": "command",
+        "command": "grep -q ROUND_HALF_EVEN billing.py",
+        "text": "task: Leaves the correct rounding in billing.py"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "spec\\.md",
+        "text": "contract: Cites spec.md as the source of the expectation"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      }
+    ]
+  },
+  "trigger": {
+    "fixtures": "trigger",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "csv\\.(reader|DictReader)|\\bcsv module\\b|\\bquot(ed|ing|es)\\b|RFC ?4180",
+        "text": "task: Names CSV quoting as the defect"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "report\\.py:6\\b|\\bline 6\\b",
+        "text": "task: Cites the defect line report.py:6"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\btrigger",
+        "text": "contract: Separates the trigger from the defect"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain)\"",
+        "text": "contract: No file changed since the last commit"
+      }
+    ]
+  },
+  "flaky": {
+    "fixtures": "flaky",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "\\bset\\b[^\\n]{0,80}\\b(order|unordered)|hash (randomi[sz]ation|seed)|PYTHONHASHSEED|\\bunordered\\b",
+        "text": "task: Names set ordering as the cause"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "tags\\.py:2\\b|\\bline 2\\b",
+        "text": "task: Cites the defect line tags.py:2"
+      },
+      {
+        "type": "ran",
+        "pattern": "PYTHONHASHSEED=|\\bfor \\w+ in\\b|\\bwhile\\b|--count|\\bseq\\b",
+        "text": "contract: Measures the failure rate over repeated runs"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      }
+    ]
+  },
+  "bisect": {
+    "fixtures": "bisect",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "(culprit|first bad|bad commit|broke|breaking|introduc\\w*|caus\\w*|lands on|regress\\w*)[^\\n]{0,80}add day unit|add day unit[`\\\"'*)\\s]*(is the (culprit|first bad)|broke|introduced|caused)",
+        "text": "task: Names the culprit commit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\balternation\\b|[`\\\"']m[`\\\"'][^\\n]{0,40}(before|ahead of|first)[^\\n]{0,20}[`\\\"']ms|500m[`\\\"']?[^\\n]{0,60}(minute|drop|leav|left)|500ms[^\\n]{0,60}(minutes|as 500 ?m\\b)",
+        "text": "task: Explains the alternation order"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && test \"$(git symbolic-ref -q HEAD)\" = refs/heads/main && test ! -e .git/BISECT_LOG && test -z \"$(git status --porcelain)\"",
+        "text": "contract: Leaves the user's checkout as it was"
+      },
+      {
+        "type": "ran",
+        "pattern": "revert|apply\\s+(-R|--reverse)|(checkout|restore)\\b[^\\n]*units\\.py|(sed|perl)\\b[^\\n]*units\\.py|show\\s+\\S+:units\\.py\\s*>|(cat|printf|tee)\\b[^\\n]*>\\s*\\S*units\\.py|units\\.py[\\s\\S]{0,400}?(\\.replace\\(|\\.write\\(|write_text\\()",
+        "text": "contract: Confirms the culprit by toggling it"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      }
+    ]
+  },
+  "envprec": {
+    "fixtures": "envprec",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?=.*config\\.py)(?=.*((env\\w*|APP_RETRIES)[^\\n]{0,80}(overr(i|o)d|overwr|replac|clobber|wins|precedence|priority|after the (cli|command)|over the (cli|command)|last)|(overrid|overwr|replac|clobber)\\w*[^\\n]{0,40}(by )?(the )?(env\\w*|APP_RETRIES)))",
+        "text": "task: Names the precedence defect in config.py"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "run\\.sh[^\\n]{0,80}(export|sets?\\b|APP_RETRIES)|APP_RETRIES=3",
+        "text": "task: Names run.sh as the trigger"
+      },
+      {
+        "type": "command",
+        "command": "sh run.sh --retries 5 2>&1 | grep -c 'failed:' | grep -qx 6",
+        "text": "task: run.sh --retries 5 makes 6 attempts"
+      },
+      {
+        "type": "command",
+        "command": "APP_RETRIES=2 python3 app.py 2>&1 | grep -c 'failed:' | grep -qx 3",
+        "text": "task: The environment still applies without --retries"
+      },
+      {
+        "type": "file_unchanged",
+        "path": "client.py",
+        "text": "task: Leaves the correct retry loop alone"
+      },
+      {
+        "type": "file_unchanged",
+        "path": "run.sh",
+        "text": "task: Fixes the defect, not the launcher"
+      },
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q -p no:cacheprovider",
+        "text": "contract: The test suite passes"
+      },
+      {
+        "type": "command",
+        "command": "d=$(mktemp -d) && cp -R . \"$d/w\" && cd \"$d/w\" && cp \"$EVALS/debug/files/envprec/config.py\" config.py && ! python3 -m pytest -q -p no:cacheprovider >/dev/null 2>&1",
+        "text": "contract: A regression test fails on the old config.py"
+      },
+      {
+        "type": "command",
+        "command": "! grep -rn 'DEBUG-' --include=*.py .",
+        "text": "contract: No debug instrumentation left"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      }
+    ]
+  },
+  "pollution": {
+    "fixtures": "pollution",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?=.*invoice\\.(py|render))(?=.*((mutat\\w*|updat\\w*|modif\\w*|chang\\w*)[^\\n]{0,60}(cach\\w*|shared|global|singleton|lru_cache)|(cached|shared|global)[^\\n]{0,30}(dict|settings)[^\\n]{0,40}(mutat|modif|updat|chang)))",
+        "text": "task: Names the shared settings mutation in invoice.py"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "invoice\\.py`?(:|,? line |\\)? ?\\(line )15\\b",
+        "text": "task: Cites the defect line invoice.py:15"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "test_customer_locale|test_invoice",
+        "text": "task: Names the polluting test"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?!.*(only (affects |in )?(the )?tests|not (in |affect\\w* )?production|production (is |would be )?(not|un)affected))(?=.*((affect\\w*|reach\\w*|hit\\w*|break\\w*|happen\\w*|show\\w*|also)[^\\n]{0,40}production|production[^\\n]{0,60}(too|also|as well|is affected|same bug|would|will)|same process|rest of the process|long[- ]running|every later|later (report|call|request)s?|real (bug|defect)|not (only|just) (a )?test))",
+        "text": "task: Says production is affected"
+      },
+      {
+        "type": "ran",
+        "pattern": "(pytest|\\$\\{?\\w+\\}?)[^\\n;&|]*(test_invoice\\S*\\s+(\\S+\\s+)*test_report|test_report\\S*\\s+(\\S+\\s+)*test_invoice|::test_customer_locale|-k\\s+\\S*customer_locale)",
+        "text": "contract: Isolates the polluter with a targeted run"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      }
+    ]
+  },
+  "heisenbug": {
+    "fixtures": "heisenbug",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "exhaust\\w*|consum\\w*|(generator|iterator)[^\\n]{0,80}(twice|second|again|empty|only (be )?(read|iterated|consumed) once)|iterat\\w*[^\\n]{0,30}twice|(twice|second pass)[^\\n]{0,60}(generator|iterator)",
+        "text": "task: Names the exhausted generator"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(not|n't) (a |the )?cron|cron[^\\n]{0,60}(is not|isn't|not)[^\\n]{0,20}(the )?(cause|problem|issue|culprit)|cron[^\\n]{0,40}\\b(unrelated|irrelevant|innocent|ruled out)\\b|nothing to do with cron|rul\\w* out cron|cron[^\\n]{0,40}(?<!not )\\bcleared\\b",
+        "text": "task: Rules out the cron environment"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "stats\\.py`?(:|,? line |\\)? ?\\(line )[36]\\b",
+        "text": "task: Cites the defect line in stats.py"
+      },
+      {
+        "type": "ran",
+        "pattern": "report\\.py\\s+\\S*events\\.csv(?![^\\n;&|]*--verbose)",
+        "text": "contract: Reproduces without the verbose flag"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(status|proven|defect proven|leading|insufficient)",
+        "text": "contract: First line is the status"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      }
+    ]
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "evaluate-nothing": {
+    "fixtures": "evaluate-nothing",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "^\\W*(go|pivot|stop|insufficient evidence)\\b",
+        "text": "task: No verdict without an idea"
+      }
+    ]
+  },
+  "kill-sunk-cost": {
+    "fixtures": "kill-sunk-cost",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "text": "task: Decides kill or pivot",
+        "pattern": "(?im)^(?![^\\n]*(\\b(don.t|do not|not|never|shouldn.t|no reason to)\\W+(\\w+\\W+){0,2}?(kill|stop|pivot|shut|walk away|wind)\\b|keep going|continue (building|it|working)))[^\\n]*\\b(kill( it)?|stop\\w*|shut (it )?down|pivot\\w*|wind (it )?down|walk away)\\b"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(?i)^(?![^\\n]*(keep going|continue (building|it|working)|don.t (stop|kill|pivot|shut)))[^\\n]*\\b(kill|pivot|stop|shut)",
+        "text": "contract: First line decides kill or pivot"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)sunk[- ]costs?\\b[^\\n]{0,60}(fallacy|irrelevant|trap|not|ignore|shouldn.t|don.t|doesn.t)|(already (spent|invested)|spent so far|past (effort|investment))[^\\n]{0,60}(not a reason|isn.t a reason|irrelevant|doesn.t|don.t|shouldn.t|can.t|won.t come back)|(not|n.t) a reason|(gone|spent) (either way|whether)|(shouldn.t|don.t|doesn.t|should not|do not|does not) (count|factor|change (that|this|the (answer|decision)))|(money|\\$[\\d,.]+k?|months?|weeks?|years?|time|hours|spend|spent|investment|it)\\W+(won.t|don.t|doesn.t|will not|never) come back",
+        "text": "task: Rejects the sunk-cost argument"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "flips? to",
+        "text": "contract: States what flips the decision"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" max-words '230'",
+        "text": "contract: Quick answer stays near 200 words (at most 230)"
+      }
+    ]
+  },
+  "ship-pricing": {
+    "fixtures": "ship-pricing",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "launch-marketing",
+        "text": "contract: Suggests launch-marketing"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" max-words '150'",
+        "text": "contract: Stops instead of answering at length"
+      }
+    ]
+  },
+  "competition-numbers": {
+    "fixtures": "competition-numbers",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" column-qualified 'revenue|\\bARR\\b'",
+        "text": "task: Every competitor revenue figure is sourced or labeled"
+      }
+    ]
+  },
+  "scout-quick": {
+    "fixtures": "scout-quick",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\b\\d+\\s*/\\s*10\\b|NO SHIPPABLE BET",
+        "text": "contract: First line is the pick with its score"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" max-words '440'",
+        "text": "contract: Quick scout stays near 400 words (at most 440)"
+      },
+      {
+        "type": "tools",
+        "pattern": "^Web(Search|Fetch)$",
+        "max": 0,
+        "text": "contract: Quick runs no live research"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\[unverified\\]",
+        "text": "contract: Market claims marked [unverified]"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bkill[- ]by\\b|(deadline|stop if|kill (it )?if|\\bby)\\b[^\\n]{0,60}(?:\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)|\\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\w*\\.?\\s+\\d{1,2}\\b|\\bday\\s+\\d+\\b|\\b\\d{4}-\\d\\d-\\d\\d\\b|\\b(?:mon|tue|wed|thu|fri|sat|sun)(?:day)?\\b)",
+        "text": "contract: Ends the pick with a kill-by date"
+      }
+    ]
+  },
+  "stage-assumption": {
+    "fixtures": "stage-assumption",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(?i)\\b(proceed|revise|stop|insufficient evidence)\\b",
+        "text": "contract: Leads with a stage verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)insufficient evidence|unknown|untested|no evidence|unvalidated|not (yet )?validated",
+        "text": "task: Treats the missing evidence as unknown"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)cheapest",
+        "text": "contract: Proposes the cheapest test"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^#+[^\\n]*(competit|first (10 )?customers|MVP|two-week)",
+        "text": "contract: Runs only the assumption stage"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" claims-labeled '\\d+\\s?%|[$\u20ac]\\s?\\d'",
+        "text": "task: No invented numbers"
+      }
+    ]
+  },
+  "stage-problem": {
+    "fixtures": "stage-problem",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)leading|hypothetical|future (behavio|intent)|pitch|yes[- ]bias|compliment|would you",
+        "text": "task: Flags the leading questions"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)last (time|week|month)|tell me about|walk me through|when did you|how did you|how do you currently|what did you",
+        "text": "task: Asks about past behavior"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)propos",
+        "text": "contract: Labels thresholds as proposals"
+      }
+    ]
+  },
+  "stage-customers": {
+    "fixtures": "stage-customers",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "text": "task: Rejects the bought list",
+        "pattern": "(?i)(don.t|do not|skip|avoid|never|instead of|\\bno\\b(?!-)|\\bnot\\b)[^\\w\\n]+(\\w+[^\\w\\n]+){0,3}?(bought|purchased|buy(ing)?\\b|\\blists?\\b)|(bought|purchased|buy(ing)?( a)? list|buying [^\\n.;]{0,20}emails)[^\\n.;]{0,100}\\b(is|are|counts as|gets? you|gives? you|will|would|can|could|may|you.ll|it.ll|=)\\b[^\\n.;]{0,30}(spam|illegal|GDPR|CAN-SPAM|burn|hurt|kill|tank|wrong|damage|unlikely|poor\\w*|bad(ly)?|weak|risky)|(bought|purchased) lists? [^\\n.;]{0,10}\\b(have|perform)\\b[^\\n.;]{0,30}(bounce|spam|complaint|bad|poor)"
+      },
+      {
+        "type": "output_matches",
+        "text": "task: Rejects the automation",
+        "pattern": "(?i)(don.t|do not|skip|avoid|never|instead of|\\bno\\b(?!-)|\\bnot\\b)[^\\w\\n]+(\\w+[^\\w\\n]+){0,3}?(automat\\w*|cold sequences?|sequences?|blast|mass)|(automat\\w*|mass (email|outreach)|sequences?|blast)[^\\n.;]{0,100}\\b(is|are|counts as|gets? you|gives? you|will|would|can|could|may|you.ll|it.ll|=)\\b[^\\n.;]{0,30}(spam|illegal|GDPR|CAN-SPAM|burn|hurt|kill|tank|wrong|damage|unlikely|poor\\w*|bad(ly)?|weak|risky)|\\b(send|write|reach out|email|contact|message|outreach)\\w*\\b[^\\n.;]{0,40}\\b(by hand|manually|one by one)\\b(?![^\\n]*\\bautomat)|\\b(by hand|manual|personal|one-to-one)\\b[^\\n.;]{0,20}\\b(outreach|emails?|messages?)\\b(?![^\\n]*\\bautomat)"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\[[A-Z][^\\]\\n]{1,40}\\]|\\{[a-z_ ]+\\}|<[A-Za-z ]+>",
+        "text": "contract: Draft message uses visible placeholders"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^\\|[^\\n]*week[^\\n]*\\|[^\\n]*action",
+        "text": "contract: Milestone table by week"
+      }
+    ]
+  },
+  "stage-mvp": {
+    "fixtures": "stage-mvp",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\A\\s*(# [^\\n]*\\n\\s*)?[^\\n]*?(?:assum)",
+        "text": "contract: Leads with the assumption"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*mobile|^[^\\n]*mobile(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*mobile",
+        "text": "task: Cuts the mobile app"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^[^\\n]*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*slack|^[^\\n]*slack(?:(?!\\b(build|add|keep|ship|include)\\b)[^\\n])*(exclu|cut\\b|out of scope|not (in|build|yet|now|needed)|drop|defer|skip|remove|nobody|no evidence|don.t build|wait)|^(#+|\\*\\*)[^\\n]*(cut\\b|out of scope|not in|exclu|later|defer|wait|don.t build|not build|skip)[^\\n]*\\n(?:(?!\\*\\*)[^\\n#]*\\n){0,15}?(?!\\*\\*)[^\\n#]*slack",
+        "text": "task: Cuts the Slack bot"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\b(14|two|2)[- ]?(days?|weeks?)\\b",
+        "text": "contract: Fits the test into two weeks"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)^\\|[^\\n]*day[^\\n]*\\|[^\\n]*action[^\\n]*\\|[^\\n]*evidence",
+        "text": "contract: Day, action, evidence table"
+      }
+    ]
+  }
+}

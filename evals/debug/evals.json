@@ -1,0 +1,152 @@
+{
+  "skill_name": "debug",
+  "evals": [
+    {
+      "id": "failing-test",
+      "prompt": "test_three_items_get_discount in test_pricing.py fails. Find out why.",
+      "expected_output": "Root cause: pricing.py uses > instead of >= at the discount boundary, proven by toggling; no code changed.",
+      "files": [
+        "files/discount/pricing.py",
+        "files/discount/test_pricing.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "wrong-output",
+      "prompt": "`python report.py` prints `0 users`, but users.csv has 3 users with an email. Why?",
+      "expected_output": "Root cause: csv.DictReader uses delimiter ';' but the file is comma-separated; no code changed.",
+      "files": [
+        "files/csv/report.py",
+        "files/csv/users.csv"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-symptom",
+      "prompt": "Debug it.",
+      "expected_output": "Asks which failure to investigate; does nothing else.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "no-loop",
+      "prompt": "Find the cause of the crash reported in notes.md.",
+      "expected_output": "Cannot build a reproduction; asks for logs, device or version, and steps; names no cause.",
+      "files": [
+        "files/crash/notes.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "wrong-expectation",
+      "prompt": "test_round_total_half_cent in test_billing.py fails. Probably a float precision bug in billing.py. Find out why.",
+      "expected_output": "The test expectation is wrong: spec.md requires round-half-to-even, so 2.345 gives 2.34; billing.py is correct; Decimal from a string rules out float error.",
+      "files": [
+        "files/rounding/billing.py",
+        "files/rounding/spec.md",
+        "files/rounding/test_billing.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "trigger",
+      "prompt": "`python report.py` crashes since yesterday's commit that added a user to users.csv. What is wrong?",
+      "expected_output": "Trigger: the new quoted row with a comma. Defect: report.py:6 splits on commas instead of parsing CSV; the data is valid CSV.",
+      "files": [
+        "files/trigger/.eval-setup.sh",
+        "files/trigger/report.py",
+        "files/trigger/users.csv"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "flaky",
+      "prompt": "test_unique_tags_keeps_first_seen_order in test_tags.py passes on some CI runs and fails on others. Why?",
+      "expected_output": "tags.py:2 returns list(set(...)); set order depends on string hash randomization per process; measured failure rate over repeated runs.",
+      "files": [
+        "files/flaky/tags.py",
+        "files/flaky/test_tags.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "bisect",
+      "prompt": "test_mixed_ms in test_parser.py passed at tag v1.0 and fails on main now. Which commit broke it, and why?",
+      "expected_output": "Culprit: 'feat: add day unit', which reordered UNITS so the regex alternation tries 'm' before 'ms'; '500ms' parses as 500 minutes. The decoy parser commits (lru_cache, lowercase) are innocent. Confirmed by toggling units.py order in a scratch clone; the user's checkout stays on main.",
+      "files": [
+        "files/bisect/.eval-setup.sh",
+        "files/bisect/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "envprec",
+      "prompt": "`./run.sh --retries 5` gives up after 4 attempts instead of 6. The retry loop in client.py must be off by one. Find the cause and fix it.",
+      "expected_output": "client.py is correct. Defect: config.py applies APP_RETRIES after the command line, against the README precedence; trigger: run.sh exports APP_RETRIES=3. Fix config.py so the command line wins, with a regression test that fails on the old config.py.",
+      "files": [
+        "files/envprec/.eval-setup.sh",
+        "files/envprec/README.md",
+        "files/envprec/app.py",
+        "files/envprec/client.py",
+        "files/envprec/config.py",
+        "files/envprec/run.sh",
+        "files/envprec/service.py",
+        "files/envprec/test_client.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "pollution",
+      "prompt": "test_report.py passes when I run it alone but fails in the full suite (`python3 -m pytest`), and CI is red. Something in test_report must be wrong. Find out what.",
+      "expected_output": "test_report is correct. Defect: invoice.py:15 updates the dict returned by the lru_cached get_settings, so test_invoice::test_customer_locale leaves German separators for later callers. Production is affected too: one German invoice changes every later report in the process.",
+      "files": [
+        "files/pollution/.eval-setup.sh",
+        "files/pollution/invoice.py",
+        "files/pollution/money.py",
+        "files/pollution/report.py",
+        "files/pollution/settings.py",
+        "files/pollution/test_invoice.py",
+        "files/pollution/test_money.py",
+        "files/pollution/test_report.py",
+        "files/pollution/test_settings.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "heisenbug",
+      "prompt": "The nightly cron job (crontab.txt) reports 'unique users: 0'. When I run report.py by hand with --verbose to see what happens, I get 4. I think the cron environment is the problem, PATH or locale. Investigate.",
+      "expected_output": "Not cron: `python3 report.py data/events.csv` prints 0 by hand too. Defect: stats.py:3 consumes the generator from read_events, so the set at stats.py:6 sees nothing; --verbose turns events into a list. Side risk: loader returns no events silently when the file is missing.",
+      "files": [
+        "files/heisenbug/.eval-setup.sh",
+        "files/heisenbug/crontab.txt",
+        "files/heisenbug/data/events.csv",
+        "files/heisenbug/loader.py",
+        "files/heisenbug/report.py",
+        "files/heisenbug/stats.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "next-number": {
+    "fixtures": "seq",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "0003-[a-z0-9-]+\\.md",
+        "text": "contract: First line names 0003-<title>.md"
+      },
+      {
+        "type": "first_line",
+        "pattern": "proposed",
+        "text": "contract: First line gives status Proposed"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "revers",
+        "text": "contract: States reversal cost"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "cassandra|cockroach|mysql|redis|sqlite",
+        "text": "task: Invents no extra option"
+      }
+    ]
+  },
+  "several-decisions": {
+    "fixtures": "noseq",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "pnpm",
+        "text": "task: Mentions the second decision"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?s)(^#+[^\\n]*context.*){2}",
+        "text": "contract: Drafts only one ADR (one Context section)"
+      },
+      {
+        "type": "first_line",
+        "pattern": "NNNN",
+        "text": "contract: No ADR sequence: first line keeps <NNNN>"
+      }
+    ]
+  },
+  "no-decision": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      }
+    ]
+  }
+}

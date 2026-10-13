@@ -1,0 +1,426 @@
+{
+  "debug-failing-test": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "debug",
+        "text": "trigger: Invokes debug"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "tdd",
+        "text": "trigger: Does not invoke tdd"
+      }
+    ]
+  },
+  "grill-before-build": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "grill",
+        "text": "trigger: Invokes grill"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "challenge",
+        "text": "trigger: Does not invoke challenge"
+      }
+    ]
+  },
+  "brainstorm-options": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "grill",
+        "text": "trigger: Invokes grill"
+      }
+    ]
+  },
+  "verify-done": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "verify",
+        "text": "trigger: Invokes verify"
+      }
+    ]
+  },
+  "slice-tickets": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "tickets",
+        "text": "trigger: Invokes tickets"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "split-pr",
+        "text": "trigger: Does not invoke split-pr"
+      }
+    ]
+  },
+  "lessons-retro": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "lessons",
+        "text": "trigger: Invokes lessons"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "adr",
+        "text": "trigger: Does not invoke adr"
+      }
+    ]
+  },
+  "tdd-test-first": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "tdd",
+        "text": "trigger: Invokes tdd"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "debug",
+        "text": "trigger: Does not invoke debug"
+      }
+    ]
+  },
+  "no-skill-explain": {
+    "checks": [
+      {
+        "type": "skill_not_invoked",
+        "skill": "debug",
+        "text": "trigger: Does not invoke debug"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "discover",
+        "text": "trigger: Does not invoke discover"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "show-me",
+        "text": "trigger: Does not invoke show-me"
+      }
+    ]
+  },
+  "challenge-plan": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "challenge",
+        "text": "trigger: Invokes challenge"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "grill",
+        "text": "trigger: Does not invoke grill"
+      }
+    ]
+  },
+  "gaps-spec": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "grill",
+        "text": "trigger: Invokes grill"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "spec",
+        "text": "trigger: Does not invoke spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "challenge",
+        "text": "trigger: Does not invoke challenge"
+      }
+    ]
+  },
+  "spec-plan": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "spec",
+        "text": "trigger: Invokes spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "tickets",
+        "text": "trigger: Does not invoke tickets"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "grill",
+        "text": "trigger: Does not invoke grill"
+      }
+    ]
+  },
+  "security-input": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "security-audit",
+        "text": "trigger: Invokes security-audit"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "improve",
+        "text": "trigger: Does not invoke improve"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      }
+    ]
+  },
+  "stuck-loop": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "checkpoint",
+        "text": "trigger: Invokes checkpoint"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "tdd",
+        "text": "trigger: Does not invoke tdd"
+      }
+    ]
+  },
+  "spike-timebox": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "spike",
+        "text": "trigger: Invokes spike"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "verify",
+        "text": "trigger: Does not invoke verify"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "debug",
+        "text": "trigger: Does not invoke debug"
+      }
+    ]
+  },
+  "prompt-misbehaves": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "writing-for-agents",
+        "text": "trigger: Invokes writing-for-agents"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "deslop",
+        "text": "trigger: Does not invoke deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      }
+    ]
+  },
+  "onboard-repo": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "discover",
+        "text": "trigger: Invokes discover"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "show-me",
+        "text": "trigger: Does not invoke show-me"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "improve",
+        "text": "trigger: Does not invoke improve"
+      }
+    ]
+  },
+  "shut-down": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "startup",
+        "text": "trigger: Invokes startup"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "launch-marketing",
+        "text": "trigger: Does not invoke launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "challenge",
+        "text": "trigger: Does not invoke challenge"
+      }
+    ]
+  },
+  "landing-copy": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "launch-marketing",
+        "text": "trigger: Invokes launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "startup",
+        "text": "trigger: Does not invoke startup"
+      }
+    ]
+  },
+  "refactor-steps": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "improve",
+        "text": "trigger: Invokes improve"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "tdd",
+        "text": "trigger: Does not invoke tdd"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "deslop",
+        "text": "trigger: Does not invoke deslop"
+      }
+    ]
+  },
+  "factcheck-doc": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "verify",
+        "text": "trigger: Invokes verify"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "challenge",
+        "text": "trigger: Does not invoke challenge"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      }
+    ]
+  },
+  "diagram-flow": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "show-me",
+        "text": "trigger: Invokes show-me"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "discover",
+        "text": "trigger: Does not invoke discover"
+      }
+    ]
+  },
+  "adr-record": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "adr",
+        "text": "trigger: Invokes adr"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "spec",
+        "text": "trigger: Does not invoke spec"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "grill",
+        "text": "trigger: Does not invoke grill"
+      }
+    ]
+  },
+  "review-branch": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "code-review",
+        "text": "trigger: Invokes code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "deslop",
+        "text": "trigger: Does not invoke deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "open-pr",
+        "text": "trigger: Does not invoke open-pr"
+      }
+    ]
+  },
+  "respond-review": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "receive-review",
+        "text": "trigger: Invokes receive-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      }
+    ]
+  },
+  "video-hashmap": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "explainer-video",
+        "text": "trigger: Invokes explainer-video"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "show-me",
+        "text": "trigger: Does not invoke show-me"
+      }
+    ]
+  },
+  "slop-cleanup": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "deslop",
+        "text": "trigger: Invokes deslop"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "code-review",
+        "text": "trigger: Does not invoke code-review"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "commit",
+        "text": "trigger: Does not invoke commit"
+      }
+    ]
+  }
+}

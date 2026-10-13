@@ -1,0 +1,33 @@
+{
+  "skill_name": "lessons",
+  "evals": [
+    {
+      "id": "mechanical",
+      "prompt": "Review the session in session.md and capture what we should learn from it.",
+      "expected_output": "Proposes an eslint no-restricted-imports rule for lodash, not an instructions line; writes nothing.",
+      "files": [
+        "files/mechanical/session.md",
+        "files/mechanical/package.json",
+        "files/mechanical/eslint.config.js",
+        "files/mechanical/AGENTS.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "covered",
+      "prompt": "Review the session in session.md and capture what we should learn from it.",
+      "expected_output": "Reports the cross-package import lesson as already covered by AGENTS.md and the lint rule; points at why it did not prevent the repeat.",
+      "files": [
+        "files/covered/session.md",
+        "files/covered/eslint.config.js",
+        "files/covered/package.json",
+        "files/covered/AGENTS.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

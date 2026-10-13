@@ -1,0 +1,51 @@
+{
+  "skill_name": "tdd",
+  "evals": [
+    {
+      "id": "leap-year",
+      "prompt": "Implement is_leap(year) in calendar_utils.py with the Gregorian rules.",
+      "expected_output": "Red then green per case, including 1900 (not leap) and 2000 (leap); suite passes.",
+      "files": [
+        "files/leap/calendar_utils.py",
+        "files/leap/test_calendar_utils.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "already-green",
+      "prompt": "clamp(x, lo, hi) in mathx.py must return lo when x is below lo.",
+      "expected_output": "Test passes at once: reported as already green, kept as regression coverage, mathx.py unchanged.",
+      "files": [
+        "files/clamp/mathx.py",
+        "files/clamp/test_mathx.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-behavior",
+      "prompt": "Do TDD.",
+      "expected_output": "Asks which behavior to implement; changes nothing.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "seam-missing",
+      "prompt": "Add this behavior: orders above 100 euros get a 10% discount.",
+      "expected_output": "Proposes a seam (Cart.total or checkout) with what it catches and misses, and waits before the first test.",
+      "files": [
+        "files/shop/shop/cart.py",
+        "files/shop/shop/api.py",
+        "files/shop/shop/__init__.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

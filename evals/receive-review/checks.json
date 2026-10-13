@@ -1,0 +1,89 @@
+{
+  "mixed": {
+    "fixtures": "mixed",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^[^\\n]*(ZeroDivision|empty|cli\\.py:12)[^\\n]*((?<!dis)agree|valid|correct|real bug|fix it|accept)|^[^\\n]*((?<!dis)agree|valid|correct|real bug|fix it|accept)[^\\n]*(ZeroDivision|empty|cli\\.py:12)",
+        "text": "task: Accepts the empty-file crash"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^[^\\n]*(sorted|in[- ]place|stats\\.py:6)[^\\n]*(disagree|decline|mistaken|push back|reject|not a bug|incorrect|wrong)|^[^\\n]*(disagree|decline|mistaken|push back|reject|not a bug|incorrect|wrong)[^\\n]*(sorted|in[- ]place|stats\\.py:6)",
+        "text": "task: Rejects the in-place sort claim"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^[^\\n]*(\\bNone\\b|stats\\.py:2\\b)[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask)|^[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask)[^\\n]*(\\bNone\\b|stats\\.py:2\\b)",
+        "text": "task: Does not accept the None check"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "^[^\\n]*(CSV)[^\\n]*(agree\\W*fix)|^[^\\n]*(agree\\W*fix)[^\\n]*(CSV)",
+        "text": "task: Does not accept the CSV export as a fix"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\d+\\s*\\W*\\s*(agree|disagree|defer|clarify)",
+        "text": "contract: First line counts verdicts"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has the item table"
+      }
+    ]
+  },
+  "all-valid": {
+    "fixtures": "all-valid",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^(?![^\\n]*(\\b0\\s+disagree|disagree\\W*0\\b|\\b(nothing|no reason|no item|none) to (disagree|push back|decline)|(n.t|not|never) (disagree|push back|decline)|duplicate|already (covered|fixed|raised)))[^\\n]*\\b(disagree|declined?|push(ed)? back|not a (real )?bug|reviewer is (wrong|mistaken)|won.t fix)\\b",
+        "text": "task: Disagrees with no correct item"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?im)duplicat\\w*[^\\n]{0,60}(#?1\\b|item 1|first)|(#?1\\b|item 1)[^\\n]{0,60}duplicat|^[^\\n]*\\b4\\b[^\\n]*\\b(ignore|duplicat\\w*)\\b",
+        "text": "task: Marks item 4 as a duplicate"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?is)(qty|quantit)(?:(?!\\|[ \\t]*\\n[ \\t]*\\||\\n[ \\t]*(\\d+[.)]\\s|#)).){0,300}((?<!dis)agree|\\bvalid|(?<!in)correct|real bug|accept)|((?<!dis)agree|\\bvalid|(?<!in)correct|real bug|accept)(?:(?!\\|[ \\t]*\\n[ \\t]*\\||\\n[ \\t]*(\\d+[.)]\\s|#)).){0,300}(qty|quantit)",
+        "text": "task: Accepts the quantity bug"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(?i)\\d+\\W*(agree|disagree|defer|clarify|ignore)|(agree|disagree|defer|clarify|ignore)\\w*\\W*\\d",
+        "text": "contract: First line counts verdicts"
+      }
+    ]
+  },
+  "no-review": {
+    "fixtures": "no-review",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\|[^\\n]*\\b(agree|disagree)\\b[^\\n]*\\|",
+        "text": "task: Invents no verdicts"
+      }
+    ]
+  }
+}

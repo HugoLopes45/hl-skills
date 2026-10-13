@@ -1,0 +1,42 @@
+{
+  "skill_name": "checkpoint",
+  "evals": [
+    {
+      "id": "with-rule",
+      "prompt": "We just finished the parser phase. Decision: values may contain '=', so parse_line splits on the first '=' only. Evidence: I checked it by hand on 'a=b=c'. Pending: no test covers this yet. Next action: write a test for 'a=b=c'. Checkpoint before I clear the context.",
+      "expected_output": "Handoff saved to docs/handoff.md; commit/stash/leave/abort offered; nothing committed or stashed.",
+      "files": [
+        "files/with-rule/parser.py",
+        "files/with-rule/.eval-setup.sh",
+        "files/with-rule/CLAUDE.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-rule",
+      "prompt": "We just finished the parser phase. Decision: values may contain '=', so parse_line splits on the first '=' only. Evidence: I checked it by hand on 'a=b=c'. Pending: no test covers this yet. Next action: write a test for 'a=b=c'. Checkpoint before I clear the context.",
+      "expected_output": "Asks where to save the handoff; offers commit/stash/leave/abort; no file written; nothing committed or stashed.",
+      "files": [
+        "files/no-rule/parser.py",
+        "files/no-rule/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "stuck",
+      "prompt": "I'm stuck on parse_date in dates.py. Try 1: format %Y-%m-%d. Try 2: %m/%d/%Y. Try 3: %d/%m/%Y plus .strip(). After each one, pytest test_dates.py failed with the same ValueError. I keep going in circles. Use --stuck.",
+      "expected_output": "First line: unchecked hypothesis (fixes guess the format without confirming what input arrives), next action debug or confirm the input; attempts table; no file edited.",
+      "files": [
+        "files/stuck/dates.py",
+        "files/stuck/test_dates.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

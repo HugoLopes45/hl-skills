@@ -1,0 +1,82 @@
+{
+  "pr-dry-run": {
+    "fixtures": "pr-dry-run",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (push|commit|add|stash(?! list\\b)|reset)\\b|--force|gh pr create(?![^|;&\\n]*--help)",
+        "text": "task: No push, PR creation, commit, or staging"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && git diff --cached --quiet && git diff --name-only | grep -qx README.md",
+        "text": "task: Branch and index unchanged; README still uncommitted"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)verification",
+        "text": "contract: Body has a verification section"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)risk|rollback",
+        "text": "contract: Body has risks"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^[^\\n]*(README)[^\\n]*(uncommitted|not (part|included|committed)|unstaged|working tree)|^[^\\n]*(uncommitted|not (part|included|committed)|unstaged|working tree)[^\\n]*(README)",
+        "text": "contract: Reports the uncommitted README change"
+      }
+    ]
+  },
+  "no-gh": {
+    "fixtures": "no-gh",
+    "checks": [
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && git diff --cached --quiet && git diff --name-only | grep -qx README.md",
+        "text": "task: Branch and index unchanged; README still uncommitted"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "--force|--no-verify|git (commit|add|stash)\\b",
+        "text": "task: No force, bypass, commit, or staging"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "github\\.com/[^\\s]+/pull/\\d+",
+        "text": "task: No invented PR URL"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bgh\\b|github cli|remote|not available|unavailable|could ?n.t|cannot|can.t",
+        "text": "contract: Reports the blocker"
+      }
+    ]
+  },
+  "on-base": {
+    "fixtures": "on-base",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (push|commit|add|stash(?! list\\b)|reset)\\b|--force|gh pr create(?![^|;&\\n]*--help)",
+        "text": "task: No push, PR creation, commit, or staging"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && git for-each-ref | cmp -s - .git/eval-refs",
+        "text": "task: No branch created"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^[^\\n]*(\\bmain\\b)[^\\n]*(same|base|already|current branch|itself)|^[^\\n]*(same|base|already|current branch|itself)[^\\n]*(\\bmain\\b)",
+        "text": "contract: Says the current branch is the base"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^#+\\s*verification",
+        "text": "contract: No PR body printed"
+      }
+    ]
+  }
+}

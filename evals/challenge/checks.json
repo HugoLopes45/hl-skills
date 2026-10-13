@@ -1,0 +1,260 @@
+{
+  "finished-work": {
+    "fixtures": "partial",
+    "checks": [
+      {
+        "type": "file_unchanged",
+        "path": "slugify.py",
+        "text": "task: Does not edit the code"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "accent|caf[e\u00e9]",
+        "text": "task: Finds the missing accent stripping"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*((verdict|recommendation)\\W*)?fix first\\b",
+        "text": "contract: First line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*judged against:",
+        "text": "contract: States the goal and reference"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b\\d{1,3}\\s?%",
+        "text": "contract: No numerical confidence"
+      }
+    ]
+  },
+  "premortem": {
+    "fixtures": "invites",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "expir|7 days|revok|email",
+        "text": "task: Traces a weakness to the plan text"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*(S[012]\\b|no supported failure cause)",
+        "text": "contract: First line is the worst cause"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "hypothetical",
+        "text": "contract: Labels scenarios hypothetical"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\$\\s?\\d|\\b\\d+(\\.\\d+)?\\s?%|probabilit",
+        "text": "contract: Invents no figures or probabilities"
+      }
+    ]
+  },
+  "smaller-version": {
+    "fixtures": "retry",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "utils/retry\\.py|utils\\.retry",
+        "text": "task: Finds the existing retry helper"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "duplicat|already",
+        "text": "task: Names the duplication"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*((verdict|recommendation)\\W*)?(fix first|stop)\\b(?!-)",
+        "text": "contract: First line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "smaller version|do not add|don't add|no need (to|for) tenacity|drop tenacity",
+        "text": "contract: Gives the smaller version"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b\\d{1,3}\\s?%",
+        "text": "contract: No numerical confidence"
+      }
+    ]
+  },
+  "lens-pick": {
+    "fixtures": "invites",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery)",
+        "text": "contract: First line names the lens"
+      },
+      {
+        "type": "first_line",
+        "pattern": "plan\\.md",
+        "text": "contract: First line names the target"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" max-words '360'",
+        "text": "contract: Quick depth stays near 300 words (at most 360)"
+      }
+    ]
+  },
+  "panel": {
+    "fixtures": "invites",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*panel:",
+        "text": "contract: Panel line"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^#+\\s*where they disagree",
+        "text": "contract: Where they disagree section"
+      },
+      {
+        "type": "command",
+        "command": "test $(grep -cE '^#+ *(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery)' ) -ge 3",
+        "text": "contract: At least three lens sections"
+      }
+    ]
+  },
+  "lens-no-target": {
+    "fixtures": "lens-no-target",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*(verdict|proceed|fix first|smaller version)\\b",
+        "text": "contract: Invents no verdict"
+      }
+    ]
+  },
+  "pricecache": {
+    "fixtures": "pricecache",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "admin\\.py|set_sale_price|promotions? job",
+        "text": "task: Finds the price writer that contradicts the plan"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\bstale\\b|\\boutdated\\b|\\bold price|\\bwrong price|out[- ]of[- ]date",
+        "text": "task: Names stale prices"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*((verdict|recommendation)\\W*)?(fix first|stop)\\b(?!-)",
+        "text": "contract: First line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*judged against:",
+        "text": "contract: States the goal and reference"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b\\d{1,3}\\s?%",
+        "text": "contract: No numerical confidence"
+      }
+    ]
+  },
+  "soundplan": {
+    "fixtures": "soundplan",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "\\b(proceed|go ahead|good to go|ready to (start|build|implement)|you can start|yes[,.]? (start|you can)|safe to start|start building)\\b",
+        "text": "task: Says to go ahead"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(fix first|do not start|don't start|not ready|hold off)\\b|^\\W*stop\\b",
+        "text": "task: Raises no blocker"
+      },
+      {
+        "type": "workspace_untouched",
+        "text": "contract: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*((verdict|recommendation)\\W*)?proceed\\b",
+        "text": "contract: First line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*judged against:",
+        "text": "contract: States the goal and reference"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b\\d{1,3}\\s?%",
+        "text": "contract: No numerical confidence"
+      }
+    ]
+  },
+  "export": {
+    "fixtures": "export",
+    "checks": [
+      {
+        "type": "output_matches",
+        "pattern": "\\bquot|\\bescap|csv\\.writer|\\bcsv module\\b|\\bcomma[^\\n]{0,60}\\b(break|split|extra|column|field)",
+        "text": "task: Finds the missing CSV quoting"
+      },
+      {
+        "type": "file_unchanged",
+        "path": "export.py",
+        "text": "task: Does not edit the code"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*((verdict|recommendation)\\W*)?fix first\\b",
+        "text": "contract: First line is the verdict"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*judged against:",
+        "text": "contract: States the goal and reference"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b\\d{1,3}\\s?%",
+        "text": "contract: No numerical confidence"
+      }
+    ]
+  }
+}

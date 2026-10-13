@@ -1,0 +1,40 @@
+{
+  "mechanical": {
+    "fixtures": "mechanical",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "no-restricted-imports",
+        "text": "task: Proposes a lint rule that bans lodash"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\b(\\d+|one|two|three|four|five) lessons?\\b",
+        "text": "contract: First line gives the lesson count"
+      }
+    ]
+  },
+  "covered": {
+    "fixtures": "covered",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "already (covered|exists|enforced|in place|there)|is covered",
+        "text": "task: Reports the lesson as already covered"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(lint|rule|check|hook|ci)\\b[^.\\n]{0,40}\\b(did ?n.t|is ?n.t|not|never) (run|ran|wired|enforced|executed|catch|caught)|\\bnothing (runs|enforces|wires)\\b|\\bno (hook|ci|pre-commit)\\b",
+        "text": "task: Names why the existing check did not stop the repeat"
+      }
+    ]
+  }
+}

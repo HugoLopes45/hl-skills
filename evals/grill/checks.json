@@ -1,0 +1,268 @@
+{
+  "already-met": {
+    "fixtures": "retry",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "utils/retry\\.py",
+        "text": "task: Points to utils/retry.py"
+      },
+      {
+        "type": "first_line",
+        "pattern": "utils/retry",
+        "text": "contract: First line says where the need is already met"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Asks only whether it meets the need: no options table"
+      }
+    ]
+  },
+  "options": {
+    "fixtures": "export",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has an options table"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!options\\b|here\\b|#)",
+        "text": "contract: First line is not a heading or preamble"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "csv",
+        "text": "task: Considers CSV"
+      }
+    ]
+  },
+  "no-idea": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks for the missing input"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\W*round \\d|recommended( answer)?\\s*:",
+        "text": "task: Invents no idea"
+      }
+    ]
+  },
+  "export-idea": {
+    "fixtures": "notes",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^\\W*Round 1: \\d+ questions?\\b",
+        "text": "contract: First line is `Round 1: K questions`"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Recommended:",
+        "text": "contract: Questions carry a recommended answer"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\bQ6\\b",
+        "text": "contract: At most five questions in a round"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(which|what) (database|storage)|where (are|do) (the )?notes (get )?(stored|live|kept)|how (are|do) (the )?notes (get )?stored",
+        "text": "task: Does not ask a fact the code answers"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "sqlite|notes\\.db|app\\.py:[6-8]\\b",
+        "text": "task: Cites the storage it looked up"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "reply \\W?ok\\W?",
+        "text": "contract: Offers ok to accept every recommendation"
+      }
+    ]
+  },
+  "contradiction": {
+    "fixtures": "notes",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "sqlite",
+        "text": "task: Points out the code uses SQLite"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$",
+        "text": "task: Asks the user to resolve it"
+      }
+    ]
+  },
+  "solution-shaped": {
+    "fixtures": "slow-notes",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Has an options table"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\bindex\\b",
+        "text": "task: Considers an index"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "redis",
+        "text": "task: Keeps the stated solution as an option"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "paginat|limit",
+        "text": "task: Considers pagination"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(round|here|options)\\b).*\\b(index|paginat|limit|cache|redis)",
+        "text": "contract: First line is the recommended option"
+      }
+    ]
+  },
+  "docs-glossary": {
+    "fixtures": "notes",
+    "checks": [
+      {
+        "type": "command",
+        "command": "grep -qiE '^\\W*export\\b' GLOSSARY.md",
+        "text": "task: GLOSSARY.md defines export"
+      },
+      {
+        "type": "command",
+        "command": "grep -qi csv GLOSSARY.md",
+        "text": "task: The entry records CSV"
+      },
+      {
+        "type": "command",
+        "command": "! grep -qiE 'sqlite|notes\\.db|select |def ' GLOSSARY.md",
+        "text": "contract: No implementation details in the glossary"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(ls -A | grep -vxE 'GLOSSARY\\.md|README\\.md|app\\.py|\\.claude|\\.git')\"",
+        "text": "contract: Writes no other file"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "^\\W*\\**Q\\d+[^\\n]*((which|what) (export |file |output )format|\\bcsv or\\b|\\bor (csv|json|xlsx|pdf)\\b|whose notes|\\b(include|export|see|access)\\b[^\\n?]*\\bother users[^\\n.?]*\\?)",
+        "text": "contract: Does not reask a settled decision"
+      }
+    ]
+  },
+  "gaps-report": {
+    "fixtures": "gaps-report",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\d+\\s*blockers?\\b",
+        "text": "contract: First line has totals by severity"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?si)blocker.*\\bmajor\\b",
+        "text": "contract: Blockers come before majors"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?si)^#+[^\\n]*\\bmajor\\b.*^#+[^\\n]*\\bblocker",
+        "text": "contract: No major section before the blocker section"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^[^\\n]*\\bfast\\b[^\\n]*(\\?|target|number|measurable|p9\\d|seconds|minutes|threshold|metric)|^[^\\n]*\\?[^\\n]*\\bfast\\b",
+        "text": "task: Asks for a measurable meaning of 'fast'"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^[^\\n]*email[^\\n]*(\\?|who (receives|gets)|recipient|which address|sent to)|^[^\\n]*(\\?|who (receives|gets)|recipient)[^\\n]*email",
+        "text": "task: Asks about the email delivery"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)spec is complete|is now complete",
+        "text": "task: Never calls the spec complete"
+      }
+    ]
+  },
+  "write": {
+    "fixtures": "write",
+    "checks": [
+      {
+        "type": "file_unchanged",
+        "path": "spec.md",
+        "text": "task: Source spec unchanged"
+      },
+      {
+        "type": "command",
+        "command": "head -5 spec-gaps.md | grep -Eiq '[0-9]+ *blockers?|blockers?:? *[0-9]+'",
+        "text": "contract: spec-gaps.md saved with totals"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "spec-gaps\\.md",
+        "text": "contract: Reports the saved path"
+      }
+    ]
+  },
+  "nothing": {
+    "fixtures": "nothing",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)(\\bno\\b|couldn.t find|did not find|didn.t find|cannot find|can.t find|not find)[^\\n]{0,60}(spec|plan|brief)",
+        "text": "contract: Says there is nothing to read"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\d+\\s*blockers?\\b|\\bblockers?:?\\s*\\d",
+        "text": "task: No invented gaps"
+      }
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "three": {
+    "fixtures": "three",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|rebase|reset|cherry-pick|push|stash(?! list\\b)|merge(?![-\\w])|checkout -b|switch -c|branch (-[dDmMcCf]\\b|--(delete|move|copy|force)\\b|[^-\\s]))|git checkout (?!-- )",
+        "text": "task: No history or branch change"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && git for-each-ref | cmp -s - .git/eval-refs && test -z \"$(git status --porcelain)\"",
+        "text": "task: Refs and worktree unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\s*\\|[\\s:-]*-{3}",
+        "text": "contract: Leads with a table"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)utils\\.py.*report\\.py|report\\.py.*utils\\.py",
+        "text": "task: Accounts for the refactor files"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)api\\.py.*test_api\\.py",
+        "text": "task: Accounts for the endpoint and its test"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "ci\\.yml",
+        "text": "task: Accounts for the CI file"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^\\s*\\|[^\\n]*endpoint[^\\n]*\\|\\s*(?!none\\b|n/a\\b|-+\\s*\\||\\u2014)[^|\\s][^|\\n]*\\|\\s*$|^[^\\n]*(endpoint|api\\.py)[^\\n]*(depends on|stack(ed)? on|on top of|requires|needs|after)[^\\n]*(#\\d|refactor|rename|format_money|\\b(PR|group) ?\\d)",
+        "text": "task: Endpoint group depends on an earlier group"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?si)^\\s*(\\||\\d+[.)])[^\\n]*(rename|format_money)[^\\n]*\\n.*?^\\s*(\\||\\d+[.)])[^\\n]*endpoint",
+        "text": "task: Refactor group comes before the endpoint group"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)no clean split",
+        "text": "task: Finds a split"
+      }
+    ]
+  },
+  "single": {
+    "fixtures": "single",
+    "checks": [
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|rebase|reset|cherry-pick|push|stash(?! list\\b)|merge(?![-\\w])|checkout -b|switch -c|branch (-[dDmMcCf]\\b|--(delete|move|copy|force)\\b|[^-\\s]))|git checkout (?!-- )",
+        "text": "task: No history or branch change"
+      },
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && git for-each-ref | cmp -s - .git/eval-refs && test -z \"$(git status --porcelain)\"",
+        "text": "task: Refs and worktree unchanged"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)no clean split",
+        "text": "contract: Reports no clean split"
+      }
+    ]
+  }
+}

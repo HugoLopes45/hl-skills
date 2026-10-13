@@ -1,0 +1,121 @@
+{
+  "skill_name": "improve",
+  "evals": [
+    {
+      "id": "refactor-dup",
+      "prompt": "Plan this refactor as small steps: extract the duplicated tax computation in invoice.py and quote.py into one shared function.",
+      "expected_output": "Plan only; target shape as a diff first; flags that round() and int() differ so the extraction is not behavior-preserving as is; proposes a characterization test; no edits.",
+      "files": [
+        "files/refactor-dup/invoice.py",
+        "files/refactor-dup/quote.py",
+        "files/refactor-dup/test_billing.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "refactor-none",
+      "prompt": "Plan a refactor with refactor mode.",
+      "expected_output": "No target: asks; no plan invented.",
+      "files": [
+        "files/refactor-none/invoice.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "quick-audit",
+      "prompt": "Run a quick improve audit of this codebase.",
+      "expected_output": "Opens with the vetted-findings count and the top finding; findings table; finds the SQL injection and the pagination off-by-one; writes plans for the top 3 under plans/ stamped with the commit; source untouched.",
+      "files": [
+        "files/quick-audit/.eval-setup.sh",
+        "files/quick-audit/README.md",
+        "files/quick-audit/pyproject.toml",
+        "files/quick-audit/shop",
+        "files/quick-audit/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "arch-audit",
+      "prompt": "Run an improve arch audit of this repository.",
+      "expected_output": "Writes arch-report.md only; reports the shop.db/shop.report import cycle and the unused shop/legacy.py; source untouched.",
+      "files": [
+        "files/arch-audit/.eval-setup.sh",
+        "files/arch-audit/README.md",
+        "files/arch-audit/pyproject.toml",
+        "files/arch-audit/shop",
+        "files/arch-audit/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "branch-default",
+      "prompt": "Run improve branch.",
+      "expected_output": "On the default branch with zero commits ahead: says so and offers a full audit; writes nothing.",
+      "files": [
+        "files/branch-default/.eval-setup.sh",
+        "files/branch-default/README.md",
+        "files/branch-default/pyproject.toml",
+        "files/branch-default/shop",
+        "files/branch-default/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "plan-desc",
+      "prompt": "improve plan: add a --limit N option to shop/report.py main() that prints only the first N rendered rows. N must be a positive integer; otherwise print an error to stderr and return exit status 2.",
+      "expected_output": "One self-contained plan under plans/ with the template sections, the commit stamp, a verbatim excerpt of main(), and pytest as the verification gate; no source edits.",
+      "files": [
+        "files/plan-desc/.eval-setup.sh",
+        "files/plan-desc/README.md",
+        "files/plan-desc/pyproject.toml",
+        "files/plan-desc/shop",
+        "files/plan-desc/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "review-plan",
+      "prompt": "improve review-plan plans/001-cache-users.md",
+      "expected_output": "Critiques the plan: broken reference to missing context, unverifiable done criteria, a line reference past the end of db.py, no commit stamp; source untouched.",
+      "files": [
+        "files/review-plan/.eval-setup.sh",
+        "files/review-plan/README.md",
+        "files/review-plan/pyproject.toml",
+        "files/review-plan/plans",
+        "files/review-plan/shop",
+        "files/review-plan/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "reconcile",
+      "prompt": "Run improve reconcile.",
+      "expected_output": "001 is marked DONE but its done criterion fails and the bug is still there: reopen it; 002 cites find_user, now renamed lookup_user: refresh; 003 gets an unblock path; source untouched.",
+      "files": [
+        "files/reconcile/.eval-setup.sh",
+        "files/reconcile/README.md",
+        "files/reconcile/pyproject.toml",
+        "files/reconcile/plans",
+        "files/reconcile/shop",
+        "files/reconcile/tests"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+name: Skill problem
+description: A skill loads at the wrong time, does the wrong thing, or produces a bad result.
+labels: [skill-problem]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      description: Skill name, for example code-review.
+    validations:
+      required: true
+  - type: input
+    id: agent
+    attributes:
+      label: Agent and model
+      description: For example Claude Code 2.1 with Sonnet, Codex with GPT-5, Cursor.
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt
+      description: What you asked. Remove secrets and private code.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true

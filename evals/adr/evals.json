@@ -1,0 +1,37 @@
+{
+  "skill_name": "adr",
+  "evals": [
+    {
+      "id": "next-number",
+      "prompt": "We chose PostgreSQL over MongoDB for the orders store because orders need multi-row transactions. We also looked at DynamoDB but dropped it to avoid AWS lock-in.",
+      "expected_output": "First line 0003-...md and Proposed; options PostgreSQL, MongoDB, DynamoDB only; reversal cost; no file written.",
+      "files": [
+        "files/seq/docs/adr/0001-use-python.md",
+        "files/seq/docs/adr/0002-use-flask.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "several-decisions",
+      "prompt": "Record our decisions: we moved CI from Jenkins to GitHub Actions, and we adopted pnpm instead of npm.",
+      "expected_output": "Lists both decisions, drafts one ADR, offers one ADR for the other; no file written.",
+      "files": [
+        "files/noseq/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "no-decision",
+      "prompt": "Write an ADR.",
+      "expected_output": "Asks for the decision.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

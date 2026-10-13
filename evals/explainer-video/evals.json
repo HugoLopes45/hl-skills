@@ -1,0 +1,38 @@
+{
+  "skill_name": "explainer-video",
+  "evals": [
+    {
+      "id": "video-no-topic",
+      "prompt": "Make an explainer video.",
+      "expected_output": "No topic: asks; renders nothing.",
+      "files": [
+        "files/video-no-topic/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "video-paid-voice",
+      "prompt": "Make a 30-second explainer video on how binary search works, narrated with an ElevenLabs voice.",
+      "expected_output": "No key in the environment and no cost approval: asks or falls back to the local voice and says so; never calls the API; nothing written in the workspace.",
+      "files": [
+        "files/video-paid-voice/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "video-binary-search",
+      "prompt": "Make a 20-second explainer video on how binary search finds 37 in the sorted list [3, 8, 15, 22, 37, 41, 50]. Local voice.",
+      "expected_output": "MP4 path and duration first; video and audio streams within 0.5 s; temp directory, not the workspace.",
+      "files": [
+        "files/video-binary-search/README.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    }
+  ]
+}

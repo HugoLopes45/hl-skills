@@ -1,0 +1,50 @@
+{
+  "skill_name": "code-review",
+  "evals": [
+    {
+      "id": "spec-axes",
+      "prompt": "Review this branch against origin/main with --spec spec.md.",
+      "expected_output": "Separate Standards and Spec axes; Spec reports the missing ValueError and the unrequested shout(); Standards reports the swallowed exception in calc.py.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "plain",
+      "prompt": "Review this branch against origin/main.",
+      "expected_output": "Reports that calc.py:4 swallows every exception and returns 0, hiding division by zero; cites file:line; changes nothing.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "cold",
+      "prompt": "Review this branch against origin/main with --cold.",
+      "expected_output": "A fresh subagent reviews; findings labeled as the subagent's after their citations are checked; reports the swallowed exception in calc.py.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "deep",
+      "prompt": "Review this branch against origin/main with --deep.",
+      "expected_output": "Parallel specialists (at least architecture, simplicity, security, slop) and a skeptic; header lists specialists run and skipped; findings carry specialist IDs; reports calc.py.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "pr-blocked",
+      "prompt": "Review PR #12.",
+      "expected_output": "The PR tool is unavailable: blocked with the reason; never reviews the local branch instead.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}
