@@ -4,11 +4,9 @@
 
 ### Your coding agent says "done". Make it prove it.
 
-Evidence-first agent skills for Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and any agent that reads `SKILL.md`.
+26 agent skills for Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and any agent that reads `SKILL.md`.
 
 [![skills.sh](https://skills.sh/b/HugoLopes45/hl-skills)](https://skills.sh/HugoLopes45/hl-skills)
-[![26 skills](https://img.shields.io/badge/skills-26-blue)](#all-26-skills)
-[![evals](https://img.shields.io/badge/evals-every%20skill-brightgreen)](./evals/README.md)
 [![license](https://img.shields.io/badge/license-MIT-lightgrey)](./LICENSE)
 
 ```bash
@@ -19,181 +17,268 @@ npx skills add HugoLopes45/hl-skills
 
 ---
 
-Coding agents say **"done"** when the tests never ran, **"fixed"** when nobody reproduced the bug, and **"probably"** when nobody checked.
+## Quick start
 
-hl-skills makes the agent show its work: every claim comes with a `file:line`, a command and its output, or a source. When it cannot prove a claim, it says **unknown**.
+1. Install: `npx skills add HugoLopes45/hl-skills`. The CLI finds your agents and asks which skills you want.
+2. Talk to your agent as usual: *"Why does this test fail?"* The matching skill loads by itself.
+3. Or call one by name: *"use code-review on this branch"*, `/code-review` in Claude Code, `$code-review` in Codex. [Each agent](#your-agent) has its own syntax.
 
-## See the difference
+That is all. No config, no server, no API key.
 
-Same request, same branch, same model: *"Review this branch against origin/main."* The diff makes `ratio` return 0 on any exception, and `greet("")` breaks a rule in `spec.md`.
+## Examples
 
-<table>
-<tr><th>Bare agent</th><th>With <code>code-review</code></th></tr>
-<tr><td>
+Real answers from the skills, trimmed with `[...]` and wrapped to fit.
 
-```
-calc.py - ratio (needs a fix):
-  except Exception: return 0
-  is too broad. [...]
+### "Why does this test fail?"
 
-greet.py (looks fine)
-```
+> test_report.py passes when I run it alone but fails in the full suite, and CI is red. Something in test_report must be wrong. Find out what.
 
-</td><td>
+`debug` does not trust the guess. It finds the test that pollutes the other one, proves it, and leaves your files untouched:
 
-```
-Verdict: Fix 1 S1 finding
-| S1 | calc.py:4-5 | except Exception: return 0
-                    hides every error [...]       |
-| S2 | greet.py:2  | greet("") does not raise
-                    ValueError as spec.md item 2
-                    requires                      |
-Trigger: ratio(1, 0), ratio("a", 2), ratio(None, 1)
+<details open>
+<summary>Answer</summary>
+
+````
+Status: defect proven. test_report.py is fine. The bug is in invoice.py,
+and it's a production bug as well as a test problem.
+
+Call path:
+test_invoice.py:9  render(..., locale="de")
+└─ invoice.py:13   settings = get_settings()   -> shared cached dict
+   └─ invoice.py:15  settings.update(LOCALES[locale], ...)   <- DEFECT: mutates shared state
+test_report.py:6   render_total(orders)
+└─ report.py:8     get_settings()  -> returns the mutated dict -> "1.234,50"
+
+| Test order                                  | Result   |
+| test_customer_locale, then test_report      | fails    |
+| test_report, then test_invoice              | 3 passed |
+| [...]                                       |          |
+| Full suite, with only line 13 changed       | 6 passed |
+
+Impact: In production, the first invoice rendered with a customer locale
+switches every later internal report and default-locale invoice in that
+process to that locale. [...]
+
+I haven't edited the repo. Want me to apply the fix with that regression test?
+````
+
+</details>
+
+### "Find it and fix it"
+
+> `./run.sh --retries 5` gives up after 4 attempts instead of 6. The retry loop in client.py must be off by one. Find the cause and fix it.
+
+Ask for the fix and `debug` writes a failing test first, then the smallest change:
+
+<details>
+<summary>Answer</summary>
+
+````
+Status: defect proven and fixed. The retry loop in client.py isn't off by one.
+The bug was in the config precedence.
+
+Cause: config.resolve (config.py:9-15) applied --retries first, then
+APP_RETRIES from the environment, which overwrote it. run.sh exports
+APP_RETRIES=3, so --retries 5 was silently replaced by 3.
+
+Tests:
+- I added test_config.py. Before the fix, test_cli_overrides_env failed with assert 3 == 5.
+- After the fix, all 3 tests pass.
+- ./run.sh --retries 5 now makes 6 attempts.
+
+The same bug affected --timeout and is fixed by the same change.
+````
+
+</details>
+
+### "Poke holes in this plan"
+
+> Poke holes in plan.md before I build it.
+
+`challenge` checks each claim of the plan against your code:
+
+<details>
+<summary>Answer</summary>
+
+````
+fix first. Claim 2 is contradicted by admin.py, so the cache as planned
+would serve stale prices. [...]
+
+Blockers
+- "Prices never change after a product is created, so no invalidation"
+  (plan.md:6): contradicted. admin.py:4-6: set_sale_price runs
+  UPDATE prices SET price_cents = ?. Its docstring says it is called by the
+  nightly promotions job and by the admin UI.
+- lru_cache on get_price is correct across the deployment: contradicted.
+  admin.py runs in a different process from the web workers [...], so no
+  in-process cache_clear can reach the workers' caches.
+
+Decides the goal: that removing the 250 ms gets the page under 100 ms.
+350 - 250 = 100 ms, which is not under 100 ms. [...]
+
+Decisions for you
+- How stale may a price be? I recommend at most 60 seconds, because sale
+  start and end times need to show up quickly, but not instantly. [...]
+````
+
+</details>
+
+### "Review this branch"
+
+> Review this branch against origin/main.
+
+`code-review` gives each finding a location, a trigger, and what it breaks:
+
+<details>
+<summary>Answer</summary>
+
+````
+Verdict: Fix 1 S1 finding (ratio swallows every exception and returns 0).
+| S1 | calc.py:4-5 | except Exception: return 0 hides every error [...] |
+| S2 | greet.py:2  | greet("") does not raise ValueError as spec.md item 2 requires |
+Trigger: ratio(1, 0), ratio("a", 2) or ratio(None, 1). [...]
 Not run: tests, and --deep, --cold and --spec.
-```
+````
 
-</td></tr>
-</table>
-
-The bare agent marked `greet.py` as fine and missed the spec violation. Trimmed excerpts of two real outputs from the same eval iteration.
-
-## What changes
-
-| Your agent without skills | With hl-skills |
-|---|---|
-| "Tests pass" (they never ran) | `Not run: tests`, with the command to run them |
-| "Fixed the bug" | The bug reproduced by a command, then the defect proven by toggling it |
-| "Looks fine" | Each finding with location, trigger, consequence, and evidence |
-| "Probably X" | `file:line`, command output, or a source, else **unknown** |
-| A wall of prose | Verdict first, then a table, call tree, diff, or diagram |
-| Edits your code while "investigating" | Read-only by default; fixes and commits only when you ask |
-
-## Measured, not claimed
-
-Every skill has an eval suite. The same cases run in Claude Code (`sonnet`, 3 repetitions) with the skill and as a bare agent. Runs that pass all checks, main suite plus mode and hard cases:
-
-| Skill | Outcome with | Outcome without | Evidence format with | Evidence format without |
-|---|---|---|---|---|
-| `verify` | 15/15 | 10/15 | **12/12** | 3/12 |
-| `adr` | 9/9 | 3/9 | **6/6** | 0/6 |
-| `grill` | 30/30 | 21/30 | **24/24** | 9/24 |
-| `code-review` | 15/15 | 11/15 | **15/15** | 1/15 |
-| `commit` | 15/15 | 9/15 | **15/15** | 6/15 |
-| `debug` | 21/21 | 16/21 | **18/18** | 0/18 |
-
-**A bare agent often finds the right answer. It almost never shows the proof.** The outcome is what you need, such as the right defect line. The evidence format is the skill's contract, such as a citation per finding. All 26 suites, the routing suite, the iterations behind each count, the limits, and how to rerun them: [evals/README.md](./evals/README.md).
+</details>
 
 ## The loop
 
 ```mermaid
 flowchart LR
-  discover --> grill --> spec --> gaps["grill --gaps"] --> challenge --> tickets --> tdd --> review["code-review"] --> verify --> commit --> pr["open-pr"]
+  discover --> grill --> spec --> challenge --> tickets --> tdd --> review["code-review"] --> verify --> commit --> pr["open-pr"]
   debug -. "something breaks" .-> tdd
 ```
 
-| You say | Skill | You get |
-|---|---|---|
-| "Where do I start in this repo?" | `discover` | Purpose, stack, git state, and the real build and test commands |
-| "Grill me on the export idea" | `grill` | Rounds of questions, each with a recommended answer |
-| "Plan the export feature" | `spec` | Scope, acceptance criteria, assumptions, failure scenarios |
-| "What is this spec missing?" | `grill --gaps` | Each gap with a quote and one question |
-| "Poke holes in this plan" | `challenge` | Each claim checked against code and evidence; proceed, fix first, or stop |
-| "Split the plan into tickets" | `tickets` | End-to-end slices, one pull request each, with what blocks what |
-| "Build it test-first" | `tdd` | A test that fails for the right reason, then the smallest change |
-| "Why does this fail?" | `debug` | A command that shows the bug, tested hypotheses, the defect proven by toggling it |
-| "Review this branch" | `code-review` | Findings with location, trigger, consequence, and evidence |
-| "Are we done?" | `verify` | One row per request: passed, failed, unverified, or blocked |
+Use any skill alone, or chain them:
+
+- **Idea to pull request:** `grill`, `spec`, `challenge`, `tdd` for each behavior, `code-review`, `verify`, `commit`, `open-pr`.
+- **Production bug:** `debug` to prove the cause, then ask it for the fix.
+- **Before a risky merge:** `code-review --deep`, then `deslop`.
+- **Inherited codebase:** `discover --depth full`, then `improve arch`, then `improve`.
+- **Startup idea:** `startup scout` without an idea, `startup` to evaluate one, `startup ship` or `startup kill` after launch.
 
 ## All 26 skills
 
-### Engineering loop
+### Build
 
-| Skill | Does |
-|---|---|
-| `discover` | Orients you in a repository, or maps one area with `--scope` |
-| `grill` | Questions you until the idea is clear, with options where a decision needs them; `--docs` keeps a glossary, `--gaps` reports missing decisions and edge cases |
-| `spec` | Plans a feature; `--handoff` writes a brief for another agent, `--prd` a product and technical specification with sources |
-| `challenge` | Tests the claims of a plan or finished work; `--premortem` traces how it fails; `--lens` and `--panel` apply [fixed review methods](./skills/challenge/references/lenses.md) |
-| `tdd` | Builds one behavior with a verified red, green, refactor cycle at an agreed seam |
-| `debug` | Builds a feedback loop and proves the root cause; on request, fixes it behind a failing regression test |
-| `code-review` | Reviews a diff; `--spec` checks it against the spec, `--deep` adds parallel specialists and an independent skeptic |
-| `deslop` | Removes AI-generated slop and invented APIs from a change |
-| `verify` | Checks each requested outcome; `--claim` measures before and after, `--text` marks each claim in a text as supported, corrected, or unverified |
-| `commit` | Writes a commit message from the staged diff, then commits |
-| `open-pr` | Opens a draft pull request with why, changes, verification, and risks |
-| `checkpoint` | Saves decisions and the next action before a context reset; `--stuck` names why work goes in circles and what breaks the loop |
+| Say | Skill | You get |
+|---|---|---|
+| "Where do I start in this repo?" | `discover` | Purpose, stack, git state, and the real build and test commands; `--scope` maps one area |
+| "Grill me on the export idea" | `grill` | Rounds of questions, each with a recommended answer; `--gaps` lists what a spec leaves unsaid |
+| "Plan the export feature" | `spec` | Scope, acceptance criteria, assumptions, failure scenarios; `--prd` writes a full product spec |
+| "Poke holes in this plan" | `challenge` | Each claim checked against code: proceed, fix first, or stop; `--premortem`, `--lens`, [`--panel`](./skills/challenge/references/lenses.md) |
+| "Build it test-first" | `tdd` | A test that fails for the right reason, then the smallest change |
+| "Why does this fail?" | `debug` | The cause, proven; on request, the fix behind a regression test |
+| "Review this branch" | `code-review` | Findings with location, trigger, and consequence; `--deep` adds parallel reviewers |
+| "Clean up this AI-written diff" | `deslop` | Slop and invented APIs removed from the change |
+| "Are we done?" | `verify` | One row per request: passed, failed, unverified, or blocked |
+| "Commit this" | `commit` | A message written from the staged diff, then the commit |
+| "Open a PR" | `open-pr` | A draft pull request with why, changes, verification, and risks |
+| "Save where we are" | `checkpoint` | Decisions and next action before a context reset; `--stuck` breaks a loop |
 
 ### Decide and explain
 
-| Skill | Does |
-|---|---|
-| `show-me` | Answers with a diagram, a tree, pseudocode, or an interactive HTML page instead of paragraphs |
-| `explainer-video` | A short narrated explainer video on one topic, with a local voice by default |
-| `spike` | A time-boxed experiment that answers one technical question |
-| `adr` | An architecture decision record with the options considered and the cost of reversal |
+| Say | Skill | You get |
+|---|---|---|
+| "Show me how auth works" | `show-me` | A diagram, a tree, pseudocode, or an interactive HTML page |
+| "Make a short video explaining CRDTs" | `explainer-video` | A narrated explainer video, with a local voice by default |
+| "Can SQLite handle our write load?" | `spike` | A time-boxed experiment that answers one question |
+| "Write an ADR for moving to Postgres" | `adr` | A decision record with options and the cost of reversal |
 
-### Codebase audits
+### Audit
 
-| Skill | Does |
-|---|---|
-| `security-audit` | Runs scanners and traces untrusted input to dangerous sinks, scored by CWE and CVSS |
-| `improve` | Finds the highest-value fixes and writes plans that another agent can run; `arch` writes an architecture report, `refactor` a behavior-preserving refactor in small steps |
+| Say | Skill | You get |
+|---|---|---|
+| "Audit this app for security issues" | `security-audit` | Untrusted input traced to dangerous sinks, scored by CWE and CVSS |
+| "What should we fix first?" | `improve` | Ranked fixes as plans another agent can run; `arch` and `refactor` modes |
 
-### Delivery
+### Ship
 
-| Skill | Does |
-|---|---|
-| `tickets` | Splits a feature into end-to-end slices, one pull request each, with blocking edges; `--tracker` writes them for Jira, Linear, GitHub, or GitLab |
-| `split-pr` | Splits a large diff into pull requests in dependency order |
-| `ci-fix` | Fixes failing checks without weakening tests or CI |
-| `receive-review` | Decides agree, defer, disagree, or clarify for each review comment |
-| `lessons` | Turns a session or a finished change into checks, rules, or pointers, cheapest first |
-| `writing-for-agents` | Finds the shortest prompt that gets the behavior; `--skill` writes or reviews a skill |
+| Say | Skill | You get |
+|---|---|---|
+| "Split this into tickets" | `tickets` | End-to-end slices, one pull request each; `--tracker` for Jira, Linear, GitHub, GitLab |
+| "This PR is too big" | `split-pr` | Smaller pull requests in dependency order |
+| "CI is red" | `ci-fix` | Failing checks fixed without weakening tests or CI |
+| "Handle these review comments" | `receive-review` | Agree, defer, disagree, or clarify for each comment |
+| "What did we learn here?" | `lessons` | Checks, rules, or pointers, cheapest first |
+| "Write a skill for our deploy process" | `writing-for-agents` | The shortest prompt or skill that gets the behavior |
 
 ### Product
 
-| Skill | Does |
-|---|---|
-| `startup` | Evaluates an idea: assumption, problem, competition, first customers, MVP test; `scout` finds ideas, `ship` and `kill` decide after launch |
-| `launch-marketing` | Positioning, landing copy, launch plan, channels, pricing, and offer |
+| Say | Skill | You get |
+|---|---|---|
+| "Is this startup idea worth it?" | `startup` | Problem, competition, first customers, MVP test: go, pivot, or stop |
+| "Write our launch page" | `launch-marketing` | Positioning, landing copy, launch plan, channels, pricing |
 
-## Recipes
+## Install, update, remove
 
-- **Idea to pull request:** `grill` → `spec` → `grill --gaps` → `challenge` → `tdd` for each behavior → `code-review` → `verify` → `commit` → `open-pr`.
-- **Production bug:** `debug` to prove the defect, then ask it for the fix.
-- **Before a risky merge:** `code-review --deep`, then `deslop` on the change.
-- **Large feature:** `grill` to settle the decisions, then `tickets` for one pull request per slice.
-- **Inherited codebase:** `discover --depth full`, then `improve arch`, then `improve` to turn findings into plans.
-- **Startup idea:** `startup scout` without an idea, `startup` to evaluate one, or one stage with `--stage`. After launch, `startup ship` or `startup kill`.
-
-## Install
-
-The [`skills`](https://github.com/vercel-labs/skills) CLI detects your agents and installs the skills for each one:
+The installer is the [`skills`](https://github.com/vercel-labs/skills) CLI. Commands below were run with v1.7.2.
 
 ```bash
-npx skills add HugoLopes45/hl-skills                            # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                     # list the skills
-npx skills add HugoLopes45/hl-skills -s code-review -s tdd -g   # some skills, for every project
-npx skills add HugoLopes45/hl-skills -a codex -a cursor         # some agents
+# Install
+npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
+npx skills add HugoLopes45/hl-skills --list                 # see the 26 skills first
+npx skills add HugoLopes45/hl-skills -s debug -s tdd        # only some skills
+npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
+npx skills add HugoLopes45/hl-skills -g                     # for every project (global)
+npx skills use HugoLopes45/hl-skills@tdd                    # print one skill as a prompt, install nothing
+
+# Manage (add -g for global skills)
+npx skills list                    # what is installed, and for which agents
+npx skills update debug tdd        # update these skills
+npx skills remove -s tdd           # remove one skill
+npx skills remove --all            # remove every skill
 ```
 
-Without `-g`, skills install into the current project. To update, run `npx skills update`.
+`npx skills update` without names updates every skill in that scope, from every source, not only this repo.
 
-Your agent loads a skill when your request matches its description. To run one yourself, name it ("use code-review on this branch") or use your agent's syntax, for example `/code-review` in Claude Code.
+### Project or global
 
-## Design rules
+| | Project (default) | Global (`-g`) |
+|---|---|---|
+| Files | `.agents/skills/<name>/` | `~/.agents/skills/<name>/` |
+| Claude Code | symlink in `.claude/skills/` | symlink in `~/.claude/skills/` |
+| Applies to | this repository | every project on this machine |
+| Record | `skills-lock.json` (source and hash) | `~/.agents/.skill-lock.json` |
 
-- **Evidence or "unknown".** A check that did not run is reported as not run, never as a pass.
-- **Answer first.** Reports open with the verdict, then show tables, call trees, file trees, and diffs.
-- **Read-only by default.** Review and audit skills do not edit your code. `debug` edits only when you ask for the fix. `commit`, `open-pr`, and `ci-fix` act only when you ask.
-- **Short.** The average skill is about 53 lines, the longest under 160. Long catalogs live in `references/` and load only when needed.
-- **One job per skill.** Variants are modes (`code-review --deep`, `challenge --premortem`), not near-duplicate skills that compete for the same trigger.
-- **Methods, not personas.** No "act as a senior engineer", no imitations of famous people.
-- **Any agent.** No host-specific tool names. When a step needs subagents or web access your agent lacks, the skill says what to do instead.
+Use `--copy` for real copies instead of symlinks.
+
+### Share with your team
+
+Commit `.agents/skills/`, `.claude/skills/`, and `skills-lock.json`. A fresh clone then has every skill in every agent, with no install step. Run `npx skills update` to pull new versions, then commit.
+
+`npx skills experimental_install` rebuilds `.agents/skills/` from `skills-lock.json`. It does not create the `.claude/skills/` symlinks, so Claude Code sees nothing after it.
+
+### Your agent
+
+Each agent reads skills from its own folders. Links go to the official docs.
+
+| Agent | Project folder | Global folder | Call a skill | Reload | Checked |
+|---|---|---|---|---|---|
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/` | `~/.claude/skills/` | `/debug` | `/reload-skills` | 2.1.295 |
+| [Codex](https://developers.openai.com/codex/skills) | `.agents/skills/` | `~/.agents/skills/` | `$debug` or `/skills` | restart | 0.162.1 |
+| [Cursor](https://cursor.com/docs/skills) | `.agents/skills/` | `~/.agents/skills/` | `/debug` in Agent chat | restart | docs only |
+| [Gemini CLI](https://geminicli.com/docs/cli/skills/) | `.agents/skills/` | `~/.agents/skills/` | by description | `/skills reload` | 0.63.0 |
+| [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills) | `.agents/skills/` | `~/.agents/skills/` | `/debug` | `/skills reload` | 1.0.14 |
+| [OpenCode](https://opencode.ai/docs/skills/) | `.agents/skills/` | `~/.agents/skills/` | by description | restart | 1.19.0 |
+| [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) | `.agents/skills/` | `~/.agents/skills/` | `/skill:debug` | `/reload` | 1.2.0 |
+
+"Checked": the version that loaded skills from both folders in a test on macOS.
+
+### If a skill does not show up
+
+- **Claude Code**: a personal skill or a `~/.claude/commands/<name>.md` file with the same name wins over the project skill. Rename or remove it, then check with `/skills`.
+- **Claude Code**: `debug`, `code-review`, and `verify` replace the bundled commands with the same name. Bundled aliases such as `/review` still run the bundled command.
+- **Gemini CLI and Pi**: project skills load only in a trusted folder. Accept the trust prompt.
+- **Gemini CLI**: needs a recent version. 0.17 has no `gemini skills` command; 0.63.0 works.
+- **Any agent**: start a new session after you install.
+
+Skills run with your agent's full permissions. Read a skill before you install it.
 
 ## Contributing
 
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) and [STYLE.md](./STYLE.md). `python3 scripts/validate.py` checks the format of each skill and its links. Report vulnerabilities as [SECURITY.md](./SECURITY.md) describes.
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) and [STYLE.md](./STYLE.md). `python3 scripts/validate.py` checks each skill; [evals/](./evals/README.md) runs them against a real agent. Report vulnerabilities as [SECURITY.md](./SECURITY.md) describes.
 
 ## License
 
