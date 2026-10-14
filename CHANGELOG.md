@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/HugoLopes45/hl-skills/compare/v1.1.0...v1.2.0) (2026-10-14)
+
+
+### Features
+
+* **hl-code-review:** regenerate the skill and add hard review cases ([867837c](https://github.com/HugoLopes45/hl-skills/commit/867837c270414825dc334e0ff79f297e58ab829a))
+
+
+### Bug Fixes
+
+* list the ways to unblock once, in Next ([5d39ecd](https://github.com/HugoLopes45/hl-skills/commit/5d39ecd277f12ceeddf83926da054d16ace39251))
+* put every action the reader must take in Next ([4ead094](https://github.com/HugoLopes45/hl-skills/commit/4ead0941bf075711b07e4a952b3de88f5a88609c))
+
 ## [1.1.0](https://github.com/HugoLopes45/hl-skills/compare/v1.0.0...v1.1.0) (2026-10-13)
 
 
