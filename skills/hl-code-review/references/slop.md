@@ -8,6 +8,6 @@ Look for unused interfaces, unreachable behavior, repeated validation inside the
 
 Preserve safety checks, public contracts, accessibility, useful examples, and reasons the code does not encode. One caller can justify a function. An external API with no internal references may still be used. Never infer AI authorship or author intent from style.
 
-Each finding: FINDING_ID (SLOP-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (blocking|high|advisory), FIX_COST (trivial|small|structural), FINDING, EVIDENCE (consumer or invariant check), FIX.
+Each finding: FINDING_ID (SLOP-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING, EVIDENCE (consumer or invariant check), FIX.
 
-Most redundancy is advisory; higher severity needs a reachable misleading or harmful consequence. Label unresolved claims instead of guessing confidence. End with TOTAL and checks or limits.
+Most redundancy is cosmetic; higher severity needs a reachable misleading or harmful consequence. Label unresolved claims instead of guessing confidence. End with TOTAL and checks or limits.

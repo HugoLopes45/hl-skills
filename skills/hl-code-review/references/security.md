@@ -11,6 +11,6 @@ Check:
 - Sensitive-data handling against the project's policy and the actual destination.
 - Changed dependency provenance, infrastructure permissions, network exposure, and CI enforcement. A suspicious name alone does not prove a malicious package.
 
-Each finding: FINDING_ID (SEC-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (blocking|high|advisory), FIX_COST (trivial|small|structural), FINDING (input, sink, exposure), EVIDENCE, FIX.
+Each finding: FINDING_ID (SEC-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING (input, sink, exposure), EVIDENCE, FIX.
 
 Severity follows reachability and impact. Label unresolved flows and suspected secrets; claim exploitation or leakage only with verification. End with TOTAL and unchecked boundaries. Zero findings is not a security certification.

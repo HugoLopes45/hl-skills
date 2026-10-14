@@ -157,8 +157,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\b(security|architecture|simplicity|slop|tests?|silent[- ]failure)\\s+specialist\\b",
-        "text": "contract: Names the specialist that found a finding, in plain words"
+        "pattern": "(?i)\\b(security|architecture|simplicity|slop|tests?|silent[- ]failure)(,? (and )?(security|architecture|simplicity|slop|tests?|silent[- ]failure))*\\s+(specialist|review)s?\\b",
+        "text": "contract: Names each review that produced findings, in plain words"
       },
       {
         "type": "output_not_matches",
