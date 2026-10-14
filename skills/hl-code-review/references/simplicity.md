@@ -18,6 +18,6 @@ Prefer deletion, or an existing repository, standard-library, platform, or insta
 
 Inspect callers before proposing deletion or extraction. A single use, a long file, or a wrapper is not wrong by itself; name the concrete cost and the behavior-preserving alternative. Fewer lines alone do not prove simpler or safer behavior.
 
-Each finding: FINDING_ID (SIMP-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (blocking|high|advisory), FIX_COST (trivial|small|structural), FINDING, EVIDENCE, FIX.
+Each finding: FINDING_ID (SIMP-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING, EVIDENCE, FIX.
 
-Rank by demonstrated impact; style preferences are advisory. Label unverified claims and unmeasured metrics. End with TOTAL and scope limits. Never infer test success from reading.
+Rank by demonstrated impact; style preferences are cosmetic. Label unverified claims and unmeasured metrics. End with TOTAL and scope limits. Never infer test success from reading.

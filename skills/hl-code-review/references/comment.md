@@ -8,6 +8,6 @@ Check signatures, guarantees, references, failure behavior, and performance clai
 
 Prefer short why-comments, but impose no length limit on contracts or safety reasoning. Changelog detail follows the project's format. Narration without information belongs to the slop auditor; skip it.
 
-Each finding: FINDING_ID (CMT-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (blocking|high|advisory), FIX_COST (trivial|small|structural), FINDING, EVIDENCE, FIX.
+Each finding: FINDING_ID (CMT-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING, EVIDENCE, FIX.
 
 Severity follows the consequence of trusting the text, not its length. Label unsupported candidates unresolved. End with TOTAL and checks or limits. No invented confidence; claim verification only with evidence.

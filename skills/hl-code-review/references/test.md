@@ -10,6 +10,6 @@ Check boundaries, malformed input, failure paths, retries, partial failure, and 
 
 Read skips, focused tests, deleted assertions, and weakened gates in context; flag them when they hide required verification, not for syntax alone. Never claim mutation resistance without running a mutation check.
 
-Each finding: FINDING_ID (TEST-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (blocking|high|advisory), FIX_COST (trivial|small|structural), FINDING (regression the gap could miss), EVIDENCE, FIX.
+Each finding: FINDING_ID (TEST-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING (regression the gap could miss), EVIDENCE, FIX.
 
-Blocking needs a demonstrated critical verification gap; other gaps follow impact. Label unresolved coverage. End with TOTAL, the scope searched, and a statement that tests were not run.
+A weak or missing test is a limited issue; a test change that hides a reported bug belongs to that bug. Label unresolved coverage. End with TOTAL, the scope searched, and a statement that tests were not run.

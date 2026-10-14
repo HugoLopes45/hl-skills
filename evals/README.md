@@ -186,3 +186,58 @@ Limits:
 - agent-skill-eval runs `git init` in every workspace; a case that needs no repository deletes `.git` in `.eval-setup.sh`.
 - A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `hl-tickets` has fewer baseline runs.
 - A prompt that starts with `--` makes the bare `claude` CLI fail; start prompts with a word.
+
+### Hard cases for code-review
+
+Use the declared skill alias and a dedicated workspace. Both code-review suites declare `hl-code-review`; sharing a workspace can mix their case IDs during reporting. Use a fresh root, then report the iteration printed by the runner:
+
+```bash
+EVAL_SKILL=hl-code-review EVAL_WORKSPACE=/tmp/hl-code-review-hard evals/run.sh code-review-hard --runs 2 --concurrency 2
+python3 evals/report.py /tmp/hl-code-review-hard code-review-hard:1 --failures
+```
+
+The report command assumes the first iteration in this fresh root. Replace `1` with the printed iteration on subsequent runs.
+
+The suite `code-review-hard` holds 23 `hl-code-review` cases built from a real review that inflated severity. Each fixture builds `main`, then a `feature` branch:
+- Severity traps that must not count as a problem: a parameter that types and a schema exclude (`cr-schema`), a branch behind a guard (`cr-unreachable`, also `--deep`), an accepted trade-off in `docs/decisions.md` (`cr-tradeoff`), a migration that `deploy.sh` runs first (`cr-deploy-order`). Each expects `Clear`.
+- Clean changes: an equivalent rewrite (`cr-clean`), a removed duplicate test (`cr-test-only`), a correct `dedupe` with a vacuous test (`cr-vacuous`).
+- Real defects: the unit of the first row labels every series (`cr-units`, French, also `--deep`), an email check, SQL injection, a test weakened to pass, a requirement only in a commit body, a pager off-by-one inside a 240-line generated file (`cr-noise`), a defect in moved code (`cr-moved`), a column drop without backfill, a missing ownership check, a removed lock (French), two independent bugs (`cr-two-bugs`, `Fix (2 problems)`).
+- Scope: uncommitted edits stay out (`cr-uncommitted`); the default branch is `trunk`, not the stale `main` (`cr-trunk`).
+- `cr-revise`: the user pastes an earlier French review that used "bloquant" and disputes one point. The answer must keep one problem, use only the four severity words, name a file in the first Next step, and not narrate a retraction.
+
+Runs passing all checks, with the skill only, graded with the current checks:
+
+| Version | Hard suite | Old `code-review` suite |
+|---|---|---|
+| Before this work | 56/63 (21 cases; `cr-lock` left out, its prompt changed), `cr-revise` 0/3 | 14/15 |
+| Severity calibration, language, line rules | 60/66 | not run |
+| Skeptic gets only the two top severities | 63/66 | 13/15 |
+| One problem per root cause | 65/66 | 13/15 |
+| One severity scale in every reference, revised-review rule | 64/69 (1 run hung) | 14/15 |
+| Review fixes below | 68/69 | 15/15 |
+| Weakened test adds nothing to the count | `cr-noise`, `cr-weakened`, `cr-two-bugs`: 9/9 | not run |
+
+Fixes driven by the runs:
+- The real review called a tooltip display "blocking". Severity now comes from what a user or caller hits, after a trace through callers, guards, types, and schemas, and a comparison with the base. A weak test is a limited issue.
+- `cr-revise` with the old skill answered in English in 2 of 3 runs and kept "bloquant" or "high". The specialist references used a blocking/high/advisory scale. All files now use `data or security failure`, `material bug`, `limited issue`, `cosmetic`. A revised review never names the earlier severity.
+- `--deep` once replaced its report with a late turn after a scheduled wakeup, and once hung in a shell loop that polled background subagents. Subagents now run in the foreground.
+- Line numbers come from a numbered read at the target revision, never from diff hunks.
+
+An independent review found 2 dangerous rules and 7 check defects. A missing line number turned a pasted-diff finding unresolved, so the location now falls back to file and function. An unknown deploy condition made a finding unresolved and a verdict `Clear`; the reviewer now reads deploy, configuration, and docs first, and `Clear` counts unresolved candidates, which the first Next step settles. Check fixes, each with a unit test: French `Verdict :` spacing, a bare `generated/` path that passed the exclusion check, "authorization is unchanged" that passed the IDOR check, "trace" that matched "race", and more retraction and severity wording in French. The `cr-noise` fixture shifted protobuf field numbers, a second possible bug; the regeneration is now additive.
+
+A fresh agent then regenerated the skill from an 830-word brief, and the result was trimmed. Same 84 runs, current checks, runs passing all checks:
+
+| Version | Words | Runs passing | Cost | Output tokens |
+|---|---|---|---|---|
+| Previous skill | 2143 | 79/84 | 11.24 USD | 117k |
+| Regenerated, 2 samples | 1427 | 81/84, 81/84 | 10.61, 10.31 USD | 150k, 147k |
+| Trimmed, no shared preamble | 1367 | 81/84 | 10.23 USD | 123k |
+| Trimmed, second sample | 1367 | 80/84 | 10.16 USD | 135k |
+| Trimmed, shared preamble | 1607 | 80/84 | 10.38 USD | 143k |
+| Current: trimmed, grounding line, 6 fixes from failures, 2 samples | 1500 | 83/84, 82/84 | 10.38, 10.31 USD | 119k, 128k |
+
+The 6 fixes: the reply language follows the request text, not the commit messages; line 1 stays the review after subagents return; caveats name the base branch; a finding is plain sentences with `file:line`, without labels; a hidden-bug test change is never its own point; mixed-version deploy risk is unresolved unless the repository shows such deploys. The race check now accepts French "en même temps" and "simultané".
+
+The brief must tell the writer to copy the rules verbatim: one regeneration dropped the language rule, and 6 runs answered French requests in English. The `--deep` naming check now accepts a list ("The architecture, simplicity and security reviews found").
+
+Cost: 8.39 USD for the 69 hard runs and 2.59 USD for the 15 old runs at the last full pass. Limits: 3 runs per case, one model (sonnet), regular-expression checks, and the tooltip rated limited because its docstring says it shows the unscaled row.
