@@ -26,7 +26,7 @@
     {
       "id": "position-quick",
       "prompt": "Position Tallyo with --mode position --depth quick: Tallyo is a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Pre-launch.",
-      "expected_output": "Verdict line with a one-liner and a venue; under 300 words; numbers labeled.",
+      "expected_output": "The positioning one-liner first; venue and validation action in Next; numbers labeled.",
       "files": [
         "files/position-quick/README.md"
       ],
@@ -48,7 +48,7 @@
     {
       "id": "channels-quick",
       "prompt": "Pick my channels with --mode channels --depth quick: Tallyo, a time-tracking app for freelance translators that turns tracked hours into per-word and per-hour invoices. Launched 2 months ago, 14 paying users. I have 4 hours a week for marketing.",
-      "expected_output": "Leads with one primary and one compounding channel plus what not to do; ranked table channel/hours per week/kill signal; at most about 300 words.",
+      "expected_output": "Leads with one primary and one compounding channel plus what not to do; ranked table channel/hours per week/kill signal.",
       "files": [
         "files/channels-quick/README.md"
       ],

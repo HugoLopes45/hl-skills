@@ -28,8 +28,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "^\\s*\\|[\\s:-]*-{3}",
-        "text": "contract: Has the requirement table"
+        "pattern": "^[ \\t]*\\|[^|\\n]*\\b(?:request|requirement|condition|completion|done[ \\t]+when)\\b[^|\\n]*\\|[^|\\n]*\\b(?:status|result)\\b[^|\\n]*\\|[^|\\n]*\\b(?:evidence|proof)\\b[^|\\n]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\||^[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:condition|completion|done[ \\t]+when)\\b[^|\\n]*\\|[^|\\n]*\\b(?:status|result)\\b[^|\\n]*\\|[^|\\n]*\\b(?:evidence|proof)\\b[^|\\n]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\||^\\s*\\d+[.)]\\s+\\*\\*[^\\n]*\\b(pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^\\n]*\\*\\*[^\\n]*\\n[ \\t]*Condition:[ \\t]*\\S[^\\n]*\\n[ \\t]*Evidence:[ \\t]*\\S|^[ \\t]*\\d+[.)][ \\t]+\\*\\*[^\\n]*\\b(pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^\\n]*\\*\\*[^\\n]*\\n[ \\t]+(?!(?:Condition|Evidence):)(?:`[^`\\n]+`[ \\t]*)*[^`\\n]*[^\\W\\d_][^`\\n]*(?:(?!\\n(?:\\S|[ \\t]*\\d+[.)][ \\t]))[\\s\\S])*?(?:(?<![\\w./-])`?[\\w./-]+:\\d+(?:-\\d+)?`?|\\b[0-9a-f]{7,40}\\b|`[^`\\n]+`(?:(?!\\n(?:\\S|[ \\t]*\\d+[.)][ \\t]))[\\s\\S])*?\\bexit(?:[ \\t]+(?:status|code))?[ \\t]*[:=]?[ \\t]*-?\\d+\\b|\\b(?:no\\b[^\\n.;]*\\brun|not[ \\t]+run)\\b)",
+        "text": "contract: Has the requirement row-format (table or numbered status entry)"
       },
       {
         "type": "ran",
@@ -67,8 +67,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "^\\s*\\|[\\s:-]*-{3}",
-        "text": "contract: Has the requirement table"
+        "pattern": "^[ \\t]*\\|[^|\\n]*\\b(?:request|requirement|condition|completion|done[ \\t]+when)\\b[^|\\n]*\\|[^|\\n]*\\b(?:status|result)\\b[^|\\n]*\\|[^|\\n]*\\b(?:evidence|proof)\\b[^|\\n]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\||^[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:condition|completion|done[ \\t]+when)\\b[^|\\n]*\\|[^|\\n]*\\b(?:status|result)\\b[^|\\n]*\\|[^|\\n]*\\b(?:evidence|proof)\\b[^|\\n]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*:?-{3,}:?[ \\t]*\\|[ \\t]*\\n[ \\t]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\|[^|\\n]*\\b(?:pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^|\\n]*\\|[ \\t]*[^|\\s][^|\\n]*\\||^\\s*\\d+[.)]\\s+\\*\\*[^\\n]*\\b(pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^\\n]*\\*\\*[^\\n]*\\n[ \\t]*Condition:[ \\t]*\\S[^\\n]*\\n[ \\t]*Evidence:[ \\t]*\\S|^[ \\t]*\\d+[.)][ \\t]+\\*\\*[^\\n]*\\b(pass(?:ed|es)?|fail(?:ed|s)?|unverified|blocked)\\b[^\\n]*\\*\\*[^\\n]*\\n[ \\t]+(?!(?:Condition|Evidence):)(?:`[^`\\n]+`[ \\t]*)*[^`\\n]*[^\\W\\d_][^`\\n]*(?:(?!\\n(?:\\S|[ \\t]*\\d+[.)][ \\t]))[\\s\\S])*?(?:(?<![\\w./-])`?[\\w./-]+:\\d+(?:-\\d+)?`?|\\b[0-9a-f]{7,40}\\b|`[^`\\n]+`(?:(?!\\n(?:\\S|[ \\t]*\\d+[.)][ \\t]))[\\s\\S])*?\\bexit(?:[ \\t]+(?:status|code))?[ \\t]*[:=]?[ \\t]*-?\\d+\\b|\\b(?:no\\b[^\\n.;]*\\brun|not[ \\t]+run)\\b)",
+        "text": "contract: Has the requirement row-format (table or numbered status entry)"
       },
       {
         "type": "ran",
@@ -86,7 +86,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -159,7 +159,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {

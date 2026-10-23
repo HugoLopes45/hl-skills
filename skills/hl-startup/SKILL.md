@@ -6,6 +6,20 @@ description: "Take a software product from no idea to keep or kill. scout finds 
 
 Input: `[scout | evaluate | ship | kill] [idea or question] [--stage assumption|problem|competition|customers|mvp]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Answer the business decision with decisive evidence, not a framework inventory. Separate observed traction, hypotheses, and proposed targets; keep interview drafts and experiment plans complete.
+
 The first word picks the mode; without one, pick it from the request: no idea yet is `scout`; what to launch or cut is `ship`; whether to continue a product is `kill`; otherwise `evaluate`.
 
 - `scout`: follow [references/scout.md](references/scout.md).
@@ -32,13 +46,13 @@ After the last stage, give the verdict (go, pivot, stop, or insufficient evidenc
 
 Reader: a founder deciding whether to spend the next two weeks on this idea. The decision served: go, change, or stop.
 
-Line 1, bold: one plain sentence, under 100 characters, that answers the founder's question in their words. It never opens with a label, verdict word, or count.
+Line 1, bold: one plain sentence, that answers the founder's question in their words. It never opens with a label, verdict word, or count.
 
 Under line 1, plain sentences without labels: the missing evidence that decides the verdict, each precondition of the first step, and any risk seen outside the question (say so).
 
-Body, one numbered point per idea, each a bold plain sentence, then one or two sentences or one view:
+Body, one numbered point per idea, each a bold plain sentence, then its decisive evidence, uncertainty, or a view when it helps:
 - Evaluate summary: each stage in one line: the stage, its verdict, the evidence that decides it.
-- Problem: the questions that mislead, each with why, then the questions to ask instead.
+- Problem: the questions that mislead, each with why, then the complete replacement interview draft as an exact artifact. Next owns using the draft and deciding its proposed criteria.
 - Competitors: a table of three short columns: alternative, price (with its source, or "no source"), why a customer would switch or stay.
 - Customers: a table of week, action, success signal.
 - MVP: each cut with its reason; the pass and fail rule; a 14-day table of day, action, evidence collected.
@@ -48,9 +62,9 @@ Body, one numbered point per idea, each a bold plain sentence, then one or two s
 End with `Verdict: <word>` on its own line, one per mode:
 - Evaluate: `Go` (the evidence supports the test), `Pivot` (change the customer or problem first), `Stop` (the evidence is against it), `Insufficient evidence` (the stages cannot judge yet).
 - Stage: `Proceed`, `Revise`, `Stop`, `Insufficient evidence`, with the same meanings for that stage only. The MVP stage names the riskiest assumption on line 1: `**Whether owners pay to stop plants dying is the riskiest assumption to test.**`
-- Kill: `Keep`, `Pivot`, `Kill`. Scout: `Verdict: Pick: <bet>, <score>/10` or `Verdict: No shippable bet`. Ship: `Verdict: Ship`, with the smallest first version on line 1.
+- Kill: `Keep`, `Pivot`, `Kill`. Scout: `Verdict: Pick: <bet>, <score>/10` or `Verdict: No shippable bet`. Ship: `Verdict: Ship`, with the smallest first version on line 1. Questions outside ship/kill use the bounded-answer policy in `references/ship-or-kill.md`: `Quick take` for a supported limited answer, `Stopped` when none is supported.
 
-Then `**Next:**`, one step per line, each something the founder can do now. A stage run ends with "Reply `next` to run the Competition stage."
+Then `**Next:**`, one step per line, each something the founder can do now. Offer the actual next stage by name, or the final summary after MVP. Advance only after confirmation.
 
 Stopped: line 1 says in plain words what is missing and why it blocks; then `Verdict: Stopped`; then `**Next:**` with up to 3 numbered ways to unblock, default marked, listed nowhere else:
 - No idea given: `**I need your product idea before I can evaluate it; the request does not describe one.**`, then in Next: 1. Which idea, in one line, and who pays for it? (default). 2. Run `scout` to find ideas first.
@@ -65,27 +79,29 @@ Reader rules:
 Example (a stage run):
 
 ````markdown
-**The pain is a guess until five owners describe a real dead plant.**
+**Whether office managers lose time or money on dead plants is still untested.**
 No interview has happened yet, so nobody has confirmed the problem.
 
 1. **Two of your questions would give a false yes.**
-   - "Would you pay $8 a month?" names your product and price, so people say yes to be polite.
-   - "Don't you hate forgetting to water plants?" leads: nearly everyone agrees, and it shows no cost.
+   - "Would you pay $8 a month?" suggests the desired answer instead of establishing past behavior.
+   - "Don't you hate forgetting to water plants?" suggests agreement without establishing a cost.
 
-2. **Ask about the last time instead.**
-   - "Tell me about the last plant in your office that died. What happened?"
-   - "What did you do the last time you noticed a dry plant?"
-   - "What did it cost, in time or money, when it died?"
-   - "What have you tried so far to keep them alive?"
-   - "When did you last ask someone else to water them?"
+2. **The interview draft concerns past behavior.**
+   ```text
+   Tell me about the last plant in your office that died. What happened?
+   What did you do the last time you noticed a dry plant?
+   What did it cost, in time or money, when it died?
+   What have you tried so far to keep them alive?
+   When did you last ask someone else to water them?
+   ```
 
-3. **The problem is real if 3 of 5 owners name a dead plant from the last 30 days.**
-   That threshold is my proposal; change it if you have a better one.
+3. **The proposed signal is 3 of 5 owners naming a dead plant from the last 30 days.**
+   That threshold is my proposal, not observed validation.
 
 Verdict: Revise
 
 **Next:**
-1. Replace the two questions with the five above before any call.
+1. Use the five-question interview draft; confirm or revise the proposed threshold before any call.
 2. Book 5 calls with office managers this week; ask colleagues for introductions.
 3. Reply `next` after the 5 calls to run the Competition stage.
 ````

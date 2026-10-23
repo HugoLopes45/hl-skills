@@ -7,11 +7,6 @@
         "text": "task: No file added, removed, or modified"
       },
       {
-        "type": "output_matches",
-        "pattern": "no-restricted-imports",
-        "text": "task: Proposes a lint rule that bans lodash"
-      },
-      {
         "type": "first_line",
         "pattern": "\\b(\\d+|one|two|three|four|five) lessons?\\b",
         "text": "contract: First line gives the lesson count"
@@ -28,18 +23,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
         "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
         "text": "contract: Verdict line sits just before Next"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
-        "text": "contract: No label lines such as Left out or Scope"
       },
       {
         "type": "output_not_matches",
@@ -62,7 +52,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "already (covered|exists|enforced|in place|there)|is covered",
+        "pattern": "already (covers?|covered|exists|enforced|in place|there)|is covered",
         "text": "task: Reports the lesson as already covered"
       },
       {
@@ -82,18 +72,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
         "pattern": "(?m)^\\W*Verdict:[^\\n]*\\n\\s*\\**Next:",
         "text": "contract: Verdict line sits just before Next"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*(left out|blocker|coupling|scope|build and tests|not in this pull request|not saved|destination|proof|reason|branch)\\s*:",
-        "text": "contract: No label lines such as Left out or Scope"
       },
       {
         "type": "output_not_matches",

@@ -6,15 +6,29 @@ description: "Draft a grounded feature plan: problem, scope, observable acceptan
 
 Input: `[feature, selected option, or brief path] [--handoff | --prd]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Build check reports from recorded command/result pairs, copying commands verbatim. Include the directory and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Mark result excerpts and reconcile counts with the records.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Keep the plan complete and separate proposed work from existing behavior. State blocking decisions; the wrapper's Next refers to the plan without repeating its questions or steps.
+
 Plan the input; if empty, the latest selected option, interview summary, or feature the user described. No feature or testable goal: name what is missing and stop. Several independent features: one plan each.
 
 Return, in this order:
 - Problem and requested outcome, with its source.
-- In-scope behavior and exclusions that matter. No padding to a count.
+- In-scope behavior and exclusions that matter. State each accepted input domain. Use explicit contracts for required domains; otherwise propose the narrowest domain covering supplied examples. Keep other inputs unspecified and wider support an open decision. Check every invariant, including consumption and mutation, for the proposed domain and each offered mechanism. Keep known-incompatible mechanisms out of current implementation options. No padding to a count.
 - Shape of the change, limited to what must be agreed before coding: new or changed types and signatures, and the call tree or file tree with new nodes marked `[new]` (added by this plan). For an existing structure, show a `diff` of it.
-- Acceptance checks (one check that proves the feature works), as a numbered list in plan order: a bold sentence with the actor and the observable result, then the input or boundary and the verification method on their own lines. The method is a command or an observation a person can make without reading the code; a check without one keeps an empty method and also goes under Decisions needed.
-- Assumptions with evidence; open questions separately.
-- Failure scenarios that apply (malformed input, dependency failure, retries, races, partial writes), as a table: scenario, detection, response.
+- Acceptance checks for the required observable behaviors, as a numbered list in plan order: a bold sentence with the actor and the observable result, then the input or boundary and the verification method on their own lines. The method is a command or an observation a person can make without reading the code; a check without one keeps an empty method and also goes under Decisions needed.
+- Assumptions with evidence; open questions separately. Reconcile both with accepted domains and forwarded helper contracts before returning the plan.
+- Failure scenarios with a contract-defined response or behavior verified for specific inputs, as a table: scenario, detection, response. Omit unspecified outside-domain inputs from the table. If no failure behavior is established, say so.
 - Decisions needed, with owner when known and the evidence that would settle each.
 
 Evidence rules:
@@ -23,6 +37,20 @@ Evidence rules:
 - Mark proposed files and tests `[new]`.
 - Never invent executed checks, expected log text, metrics, or user requirements.
 
+Domain-check example: valid operations do not establish unchanged input.
+
+```python
+choices = iter(('red', 'blue'))
+print('red' in choices)  # True
+print(tuple(choices))   # ('blue',)
+
+choices = iter(('red', 'blue'))
+print(len(set(choices)))  # 2
+print(tuple(choices))    # ()
+```
+
+Membership and set construction consume their iterators. With no broader contract, built-in set examples and unchanged-input requirements support proposing built-in sets. Iterator support remains an open extension.
+
 Plan only; do not implement. The plan must be usable without running another skill first.
 
 ## Handoff
@@ -30,6 +58,7 @@ Plan only; do not implement. The plan must be usable without running another ski
 With `--handoff`, rewrite the plan as a brief for an agent that has none of this context. Return it in the reply; save it only to a path the user gives.
 - Add what triggers the behavior and the invariants it must keep.
 - Keep contract literals exact (field names, status codes, error strings). Drop line numbers and incidental paths; mark kept paths as "recheck".
+- Preserve a Checks run block with the recorded command/result pairs, directory, execution count, and marked excerpts. Carry this block unchanged through the handoff rewrite.
 - Keep the acceptance check ids: `AC-1`, `AC-2`, ... in plan order. A check without a verification method blocks the handoff: list it and stop.
 - Tell the receiving agent: before implementing, inspect current source, recheck preconditions, and report conflicts; choose the smaller interpretation only when it keeps the stated contract.
 
@@ -41,9 +70,9 @@ With `--prd`, follow [references/prd.md](references/prd.md) instead of the secti
 
 Reader: the person who will build the feature, or the agent that gets the handoff. They decide whether the plan is safe to start, and what to settle first.
 
-Line 1, bold, one plain sentence within 100 characters, in the user's words where possible. When the plan is ready, it names the feature. It never opens with a verdict word such as `Handoff blocked`: write "**I can't write the brief yet: "feels snappy" has no number anyone can check.**"
+Line 1, bold, one plain sentence, in the user's words where possible. When the plan is ready, it names the feature. It never opens with a verdict word such as `Handoff blocked`: write "**I can't write the brief yet: "feels snappy" has no number anyone can check.**"
 
-Under line 1, plain sentences without labels: each decision that blocks the first step, one sentence each, saying what it blocks.
+Under line 1, plain sentences without labels: each decision that blocks the first step, with its evidence and what it blocks.
 
 Then the plan as `##` sections, in this order: Problem, Scope, Shape of the change, Acceptance checks, Assumptions and open questions, Failure cases, Decisions. Omit Shape when the change has no new or changed structure.
 
@@ -51,7 +80,7 @@ Views:
 - Shape: a file tree with `[new]`, or a `diff` of an existing structure.
 - Acceptance checks: a numbered list, one check per item (see Return).
 - Failure cases: a table when there are up to 5 cases and each cell is short.
-- Decisions: a numbered list of plain questions, each with up to 4 options and the default marked.
+- Decisions: a numbered list of plain questions, each with up to 4 options and the default marked. Wider options remain conditional until their invariant checks pass.
 
 Stopped, no feature: line 1 `**I need the feature to plan: what it does, and who uses it.**`, then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to send it, default marked, listed nowhere else: a sentence naming the feature (default); a path to notes or a brief.
 
@@ -68,11 +97,11 @@ End: `Verdict: <word>` on its own line, then `**Next:**`:
 - `Stopped`: no feature or testable goal to plan. Line 1 says what is missing.
 - `PRD draft`: `--prd` only, as [references/prd.md](references/prd.md) says.
 
-`**Next:**` the decisions by number, in order, then `hl-tickets` to split the plan. `**Changed:** none`, unless a brief was saved to a path the user gave.
+`**Next:**` refers to decisions by number without repeating their questions or options, in dependency order, then `hl-tickets` after the blocking decisions are settled. `**Changed:** none`, unless a brief was saved to a path the user gave.
 
 ````markdown
 **I need one decision before step 1 can start: how long a booking code stays valid.**
-The code length sets the database column and the text message, so step 1 waits for it.
+The validity period sets the expiry check and the text message, so step 1 waits for it.
 
 ## Problem
 A gardener books a community plot for a season, then enters a code at the gate.
@@ -110,7 +139,6 @@ gate/
 Verdict: Plan blocked
 
 **Next:**
-1. Answer decision 1: how long may a code stay valid? Default: 15 minutes.
-2. Answer decision 2: how do we check the lock? Default: a fake-clock test.
-3. Run `hl-tickets` on this plan.
+1. Answer decisions 1 and 2 above.
+2. After those decisions are settled, run `hl-tickets` on this plan.
 ````

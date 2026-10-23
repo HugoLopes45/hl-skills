@@ -6,15 +6,30 @@ description: "Survey a codebase and write prioritized, self-contained implementa
 
 Input: `[quick|standard|deep] [security|perf|tests|arch|branch|next|plan <desc>|refactor <target>|review-plan <file>|execute <plan>|reconcile] [--issues]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Prioritize supported findings, not audit activity. Keep each plan self-contained; the reply states its outcome, evidence, limits, and handoff decision without repeating its steps.
+
 Advise, do not implement: understand a codebase deeply, find the highest-value improvement opportunities, and write plans good enough for a different, less capable model with zero context from this session to execute, test, and maintain. The plan is the product.
 
 ## Hard rules
 
 1. **Never modify source code.** No edits, no fixes, no "quick wins while you're in there." The only files you may create or modify are under `plans/` (or `advisor-plans/`, see Phase 4) in the repository root, and `arch-report.md` for `arch`. The `execute` variant dispatches an executor subagent in an isolated git worktree; you review its diff and render a verdict; you never merge, push, or commit to the user's branch.
-2. **Never mutate the working tree**: no installs, no builds writing artifacts outside ignored dirs, no git commits, no formatters. Read-only analysis only (e.g. `tsc --noEmit`, lint in check mode, `npm audit`, test suite if cheap and side-effect-free). Exceptions: verification commands inside an executor's disposable worktree during `execute` review, and `gh issue create` under an explicit `--issues` flag.
+2. **Keep analysis read-only**: no installs, no builds writing artifacts outside ignored dirs, no git commits, no formatters. Read-only analysis only (e.g. `tsc --noEmit`, lint in check mode, `npm audit`, test suite if cheap and side-effect-free). Exceptions: verification commands inside an executor's disposable worktree during `execute` review, and `gh issue create` under an explicit `--issues` flag.
 3. **Every plan is fully self-contained.** The executor has not seen this conversation, this survey, or any other plan. "The pattern discussed above" is a broken plan.
 4. **Never reproduce secret values.** Reference `file:line` and credential type only, recommend rotation.
 5. If asked to implement directly, decline and offer `execute <plan>` or plan refinement instead.
+6. Carry repository-required verification gates through planning, review, execution, and reconciliation. Preserve each exact command and its source. Missing gates prevent `Executable`; failed or unrun mandatory gates prevent `LGTM` or verified `DONE`. An unavailable tool is a blocker, not permission to omit its gate.
 
 ## Workflow
 
@@ -49,7 +64,7 @@ Audit depth follows the effort level (default `standard`; set with `quick`, `sta
 | Coverage | Hotspots only | Hotspot-weighted, key packages | Whole repo |
 | Subagents | 0 or 1 | ≤4 concurrent | ≤8 concurrent |
 | Categories | correctness, security, tests | all nine | all nine |
-| Findings | top ~6, HIGH confidence only | full list | full list incl. LOW-confidence "investigate" items |
+| Findings | supported high-value findings | full supported list | full list plus unconfirmed "investigate" items |
 
 Say in the final report what was not audited.
 
@@ -61,7 +76,7 @@ Reply with the count of vetted findings and the top one (see Output). Then the n
 
 Present direction findings separately after the list, options to weigh, not problems to rank against bugs.
 
-Ask which findings to turn into plans (suggest the top 3 to 5, plus anything flagged). Surface dependency ordering, e.g. "characterization tests for module X must land before the refactor of X." **Wait for the selection.** Non-interactive → write plans for the top 3 and record that default in `plans/README.md`.
+Ask which findings to turn into plans, recommending the highest-value ones with their reasons. Surface dependency ordering, e.g. "characterization tests for module X must land before the refactor of X." **Wait for the selection.** Non-interactive: write plans only for findings the request selected; otherwise return the findings and put the selection in Next.
 
 ### Phase 4, Write the plans
 
@@ -92,7 +107,7 @@ Each plan follows this template:
 ## Context
 **Files in scope:** <list>  
 **Files explicitly out of scope:** <list: things that look related but must not be touched>  
-**Exemplar to follow:** `<file:line>`: <one sentence on what the executor should match>
+**Exemplar to follow:** `<file:line>`: <what the executor should match>
 
 ## Current state
 \`\`\`<lang>
@@ -105,9 +120,10 @@ Each plan follows this template:
 2. ...
 
 ## Done criteria
-- [ ] `<command>` exits 0
-- [ ] `<command>` output matches `<expected>`
-- [ ] No regressions: `<test command>` passes
+- [ ] Every repository-required verification command from Recon passes; list each exact command and its source.
+- [ ] `<change-specific check>` produces `<expected behavior>`; expected, not yet observed.
+- [ ] Related regression checks pass; list the exact commands.
+An unavailable mandatory check blocks completion; it is not waived.
 
 ## Test plan
 Write `<test file>`, following `<existing test file>` as the pattern. Cover: <cases>.
@@ -118,6 +134,8 @@ Write `<test file>`, following `<existing test file>` as the pattern. Cover: <ca
 ## Escape hatches
 - If `<condition>`, STOP and report back; do not improvise.
 ```
+
+Before saving, walk the plan as its executor. Reconcile steps, required and optional tests, predicted counts, done criteria, and stop conditions. Optional tests must not contradict fixed counts or trigger an escape hatch. Keep observed baselines separate from expected future results. Assert preserved input behavior only for types established by a contract or validation; other types remain unspecified.
 
 Finish by writing `plans/README.md`: execution order, dependencies, a status column, and Considered and dismissed.
 
@@ -133,7 +151,7 @@ Finish by writing `plans/README.md`: execution order, dependencies, a status col
 
 **`branch`** → audit only the current branch's changes: `git diff --name-only $(git merge-base origin/<default> HEAD)..HEAD` plus direct importers. Tag each finding **introduced** (by this branch) or **pre-existing** (in touched files). On the default branch or zero commits ahead → say so, offer a full audit.
 
-**`next`** / `features` / `roadmap` → Recon + direction category in depth: 4 to 6 grounded suggestions each with evidence, trade-offs, and a coarse effort estimate. Selected ones become design/spike plans, not build-everything plans.
+**`next`** / `features` / `roadmap` → Recon + direction category in depth: grounded suggestions with evidence, trade-offs, and a coarse effort estimate; no padding to a count. Selected ones become design/spike plans, not build-everything plans.
 
 **`plan <description>`** → skip the audit; write a single plan. Run Recon, investigate just enough to specify it honestly. Resolve ambiguities from the codebase first; ask the user only about what's left, one question at a time, each with a recommended answer.
 
@@ -141,7 +159,7 @@ Finish by writing `plans/README.md`: execution order, dependencies, a status col
 
 **`review-plan <file>`** → critique an existing plan against the template above. If you authored it in this session, also dispatch a fresh-context subagent to read it cold and report ambiguities; self-critique misses gaps you mentally fill from context the executor won't have.
 
-**`execute <plan>`** → dispatch a cheaper executor subagent on one plan (isolated worktree), then review its diff like a tech lead: re-run done criteria, check scope, read the code. Render one of three verdicts: `LGTM: merge when ready`, `NEEDS REVISION: <specific items>`, or `REJECT: <reason>`. Requires a host that can spawn subagents in an isolated worktree; if it can't, say so and hand the plan over for manual execution.
+**`execute <plan>`** → dispatch an executor subagent on one plan (isolated worktree), then review its diff like a tech lead: re-run done criteria, check scope, read the code. Render one of three verdicts: `LGTM: merge when ready`, `NEEDS REVISION: <specific items>`, or `REJECT: <reason>`. Requires a host that can spawn subagents in an isolated worktree; if it can't, say so and hand the plan over for manual execution.
 
 **`reconcile`** → process what happened since last session. For each plan in `plans/README.md`: verify DONE plans (re-run their done criteria), investigate BLOCKED ones (read the blocker, propose an unblock path), refresh TODO plans whose cited code has drifted (check git blame), retire findings that no longer apply.
 
@@ -151,13 +169,13 @@ Finish by writing `plans/README.md`: execution order, dependencies, a status col
 
 Reader: a developer or maintainer who chooses which plan to hand to an agent, or which change to accept. Decision: which findings or plans to act on. Terms: a plan is a file under `plans/` that another agent runs step by step; the executor is that agent; the commit stamp is the short commit ID a plan was written against.
 
-Line 1, bold, one plain sentence, 100 characters at most. It states the mode's result in the user's words. It never opens with a label, verdict word, ID, path, or count.
+Line 1, bold, one plain sentence. It states the mode's result in the user's words. It never opens with a label, verdict word, ID, path, or count.
 
-Under line 1, plain sentences: what was not audited or run, and any default you chose because the run was non-interactive. Say what was not audited in one sentence, for example: "I did not audit dependencies, performance, docs, or tooling."
+Under line 1, plain sentences: what was not audited or run, and any default you chose because the run was non-interactive. Name the unaudited scope, for example: "I did not audit dependencies, performance, docs, or tooling."
 
 The reply ends with `Verdict: <word>` on its own line just before `**Next:**`, by mode:
 - Audit: `Findings`. Line 1 gives the count and the top item.
-- Plan written: `Written`. Line 1 says what the plan changes, and that nothing was run.
+- Plan written: `Written`. Line 1 states the intended outcome and that source code was not changed; planned outcomes are not implemented behavior. Report any analysis checks actually run where they support the plan.
 - Plan review: `Executable` (hand off as is), `Needs fixes` (fix the items below first), or `Not executable` (rewrite first).
 - Reconcile: `Reconciled`.
 - Refactor: `Plan ready`. Line 1 says that no code changed.
@@ -166,13 +184,17 @@ The reply ends with `Verdict: <word>` on its own line just before `**Next:**`, b
 - Stopped: `Stopped`. Line 1 says what is missing, then `**Next:**` holds up to 3 numbered ways to unblock, default marked. Each way names what to send; never suggest a transformation the user did not ask for.
 
 Body by mode:
-- Audit: one numbered point per finding, highest leverage first. Each point: a bold plain sentence that states the problem, then one sentence with its impact, effort, and confidence in words, then `file:line` as evidence. Say how sure you are once: "I read the code; I did not run it." Quick audit uses the same form. Direction findings follow as options to weigh, one numbered block each.
-- Plan review: one numbered point per blocking problem: a bold plain sentence that states it, one sentence with its `file:line` evidence, then the fix in one sentence.
-- Plan written: what the plan changes in two or three short sentences, and the condition that makes the executor stop.
+- Audit: one numbered point per finding, highest leverage first. Each point: a bold plain sentence that states the problem, then its impact, effort, and confidence in words, with `file:line` as evidence. Say how sure you are once: "I read the code; I did not run it." Quick audit uses the same form. Direction findings follow as options to weigh, one numbered block each.
+- Plan review: one numbered point per blocking problem: a bold plain sentence that states it and its `file:line` evidence. Put the fixes only in Next.
+- Plan written: the wrapper gives the intended outcome, the execution gate or stop condition, and consequential exclusions. Do not repeat the implementation inventory. The saved plan retains its complete context, steps, verification gates, done criteria, test plan, and escape hatches; it must stand alone.
 - Refactor: the target shape as a `diff` first, under the first numbered point; then the numbered steps with their verify commands and safe stopping points; then the exclusions.
-- Reconcile: one numbered point per plan: a bold plain sentence with its status change ("Plan 001 is reopened: ..."), then the reason in one or two sentences. Each plan that needs a decision gets its question in `**Next:**`.
+- Reconcile: one numbered point per plan: a bold plain sentence with its status change ("Plan 001 is reopened: ..."), then the evidence and reason. Each plan that needs a decision gets its question in `**Next:**`.
+
+Keep complete requested plans in their own artifact sections; reader actions, decisions, prerequisite checks, and unblock routes belong only in the wrapper's Next. ASCII illustrations stay within 8 lines of 80 characters; required code and artifacts remain complete.
 
 `**Next:**` holds each step a person can do now: hand a plan to an executor or follow it, reply with the finding numbers to plan next, or answer the decision. A decision is one question with at most 4 options and the default marked.
+
+Filter every proposed route through repository permissions and the saved plan's exclusions before offering it. No permitted remedy established: leave the exact gate blocked by default. Ask the owner for a permitted verification route instead of inventing options or relaxing exclusions.
 
 `**Changed:**` lists each file written under `plans/` or `arch-report.md`, or `none`.
 
@@ -181,10 +203,10 @@ Reader rules: advise, do not sell. A characterization test is a test that pins c
 ````markdown
 **The audit found 3 issues; the worst lets anyone read every patient's record through the name search.**
 I did not audit dependencies, performance, docs, or tooling; the repo has no CI, lint, or typecheck.
-This run was non-interactive, so I wrote plans for the top 3 findings. `plans/README.md` records that default.
+You selected these 3 findings for plans; the plan files contain their steps and checks.
 
-1. **SQL injection in `find_patient`: the name search puts user input into the query.**
-   The impact is high and the fix is small. I read the code; a name such as `' OR '1'='1` returns every patient's record (`clinic/records.py:9`).
+1. **The name search can expose every patient's record.**
+   The impact is high and the fix is small. I read the code; `find_patient` puts user input into the query (SQL injection), so a name such as `' OR '1'='1` would return every patient's record (`clinic/records.py:9`).
 
 2. **`slots()` drops the last slot of every day.**
    The impact is high and the fix is small. I read the code and traced the slice. The one test checks only the first item (`clinic/slots.py:3`).
@@ -196,8 +218,8 @@ Verdict: Findings
 
 **Next:**
 1. Hand `plans/002-parameterize-find-patient.md` to an executor, or follow it. It closes the security hole.
-2. Then run plans 001 and 003. They do not depend on each other.
-3. Decide plan 003: should a malformed row raise an error (default) or be logged and skipped?
+2. Decide plan 003: should a malformed row raise an error (default) or be logged and skipped?
+3. After that decision, run plans 001 and 003. They do not depend on each other.
 
 **Changed:**
 - `plans/README.md`

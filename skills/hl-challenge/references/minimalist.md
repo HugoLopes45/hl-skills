@@ -16,7 +16,7 @@ Correctness is the only reason a line exists. Find the smallest form that still 
 
 ### `simplify` (default)
 
-1. **What it is**: one sentence in terms of data and operations.
+1. **What it is**: describe the data and operations, retaining the constraints that affect viability.
 2. **What is wrong**: real problems only, ranked by severity, each with `file:line`.
 3. **The smaller version**: show it, or name the irreducible complexity and why it stays.
 4. **Verdict**: `ship` / `fix first` / `delete and rewrite`.

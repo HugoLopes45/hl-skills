@@ -6,7 +6,21 @@ description: "Orient in an unfamiliar repository or one area of it: purpose, sta
 
 Input: `[--depth quick|full] [--scope <path>]`
 
-Defaults: scope is the repository; depth is quick for the repository, full for a narrower scope. Not a Git repository: report it and stop. No commits: continue and make no history claims.
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Lead with the project's purpose and where to read next. Keep inspected scope and gaps explicit; distinguish configured commands from commands actually run.
+
+Defaults: scope is the repository; depth is quick for the repository, full for a narrower scope. Not a Git repository: continue mapping readable files in the requested scope; mark Git state and history unknown and return `Partly mapped (Git state and history)`. Stop only when the requested mapping itself cannot proceed. No commits: continue and make no history claims.
 
 Read-only: no installs, checkout changes, builds, or tests, and never run discovered scripts or executables. Use a code index only if it is current; otherwise targeted search and bounded reads. Never dump the repository. Skip dependency, generated, and build directories unless the scope targets them. Report the scope covered and anything truncated.
 
@@ -19,19 +33,19 @@ Report:
 - Upstream comparison, if any, labeled as from remote-tracking refs that may be stale.
 - Git operations in progress (merge, rebase, cherry-pick, bisect). In worktrees and submodules `.git` is a file; locate the real directory with `git rev-parse --git-dir`.
 - Build, test, and lint commands found in project config or docs, as a table: command, purpose, source file. Never infer a command from the stack name.
-- Constraints found in docs or config (for example required runtime versions, contribution rules) and the next action.
+- Constraints found in docs or config (for example required runtime versions, contribution rules). Next owns the reading and execution steps.
 
 Never declare the repository safe from metadata alone.
 
 ## Full
 
-`--scope` may name a path, module, or topic. Resolve it to source paths; several matches: list them and ask. For a scoped area, lead with its responsibilities, direct callers and callees, entry points, and a read order; show the flow of each entry point in that order as a call tree with `file:line`, from files you read.
+`--scope` may name a path, module, or topic. Resolve it to source paths; several matches: list them and ask. For a scoped area, lead with its responsibilities, direct callers and callees, and entry points; Next gives the read order. Show each entry point's flow as a call tree with `file:line`, from files you read.
 
 The map, of the scoped area or else the repository, is a shallow file tree, one responsibility per entry. Its size sets its depth: up to 8 nodes, flat; up to 25, grouped by responsibility; more, clusters with drill-down paths. Prefer a compact map with drill-down paths over exhaustive catalogs.
 
 Add only the sections that apply, each with source anchors and its gaps:
 - The map, entry points, public interfaces.
-- Module dependencies as an indented tree, each cycle marked `(cycle -> <module>)`, only from index or parser output. Regex matches alone are candidates.
+- Module dependencies as an indented tree, each cycle marked `(cycle -> <module>)`, only from current index or parser output. Without that evidence, mark graph and cycle analysis unsupported; manual import observations are not a dependency graph. Claim no cycles only for a graph whose coverage you established.
 - Key types, schemas, contracts, migrations. File order is not deployment state; the last applied migration is unknown without state evidence.
 - I/O boundaries: environment variable names, network destinations, persistence, filesystem writes, subprocesses. Never read or print credential values.
 - Declared stack and lockfile-resolved versions. Installed does not mean used.
@@ -47,23 +61,25 @@ With subagents, you may delegate independent bounded questions. Never present in
 
 Reader: a developer or new team member who just opened this repository and must decide where to read first and what to run first.
 
-Line 1, bold: one plain sentence, under 100 characters, that says what the project is in everyday words, then the fact that changes the next step. Effect before name ("Books garden plot bookings by the season; 2 files have edits not committed."). Never opens with a label, verdict word, count, or path.
+Line 1, bold: one plain sentence, that says what the project is in everyday words, then the fact that changes the next step. Effect before name ("Books garden plot bookings by the season; 2 files have edits not committed."). Never opens with a label, verdict word, count, or path.
 
-Under line 1, plain sentences without labels, only when they change the reader's next step: uncommitted or in-progress git operations, failed or truncated sections, and any credential or security risk seen out of scope ("outside what you asked"), its value never printed. Add one sentence on what was read and what was not run, when that limits the answer: "I read the whole repository at quick depth; I did not install, test, or run project code."
+Under line 1, plain sentences without labels, only when they change the reader's next step: uncommitted or in-progress git operations, failed or truncated sections, and any credential or security risk seen out of scope ("outside what you asked"), its value never printed. State what was read and what was not run, when that limits the answer: "I checked the files cited below; I did not install, test, or run project code."
 
-Then the body as numbered points, each a bold plain sentence with one or two sentences and one view:
+Then the body as numbered points, each a bold plain sentence with decisive evidence and a view when it helps:
 - Commands: a table of command, what it does, source file. Absent: "No build target in `Makefile` or `README.md`."
 - Layout (full): shallow file tree, one responsibility per entry.
 - Entry points (full): call tree in a `text` fence, `file:line` per node.
-- Module cycles: indented tree with `(cycle -> <module>)`.
-- Read order (scoped): numbered list.
+- Module cycles: an indented tree with `(cycle -> <module>)` only when supported as Full requires. Otherwise retain useful source-backed import observations and use `Partly mapped (module dependencies)` when that analysis was requested.
+- Read order (scoped): numbered steps in Next; also retain it inside a requested context pack so the artifact is complete.
 - Context pack: YAML, unchanged, placed before the verdict line.
 
 Indent each view under its point.
 
 Stopped: line 1 says what is missing and why it blocks. Then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to unblock, default marked, listed nowhere else:
-- Not a Git repository: `**This folder is not a Git project (Git is the version-history tool), so I cannot map it.**`, then 1. Run discover from the clone's root (default). 2. Give the path of a Git clone.
-- Scope matches several places: `**Scope "<name>" matches several places, so I need you to pick one.**`, then "Which one do you mean?", then in Next the matches as numbered options, one per line, default marked.
+- Requested scope cannot be read: line 1 names the inaccessible scope; Next asks for a readable path or supplied files.
+- Scope matches several places: `**Scope "<name>" matches several places, so I need you to pick one.**`, then in Next one question with the matches as options, default marked.
+
+Without Git, continue with the same source-backed report shape: `**This folder books garden plots by the season; Git state and history are unknown.**`, then the readable file evidence, `Verdict: Partly mapped (Git state and history)`, and the read order in Next. Do not infer the project's purpose without reading its files.
 
 Reader rules:
 - Define each term once: "CI (automated checks on each push)", "cycle (modules that import each other)", "Git (the version-history tool)". Avoid HEAD, upstream, worktree, LOC unless defined.
@@ -77,7 +93,7 @@ Reader rules:
 
 End: `Verdict: <word>` on its own line, then `**Next:**`:
 - `Mapped`: every requested section ran.
-- `Partly mapped (<section>)`: a section failed or was truncated; name it.
+- `Partly mapped (<section>)`: a requested section is unavailable, failed, or was truncated; name it.
 - `Stopped`: the map cannot start yet; see Stopped.
 
 `**Next:**` has one step per line, each something the reader can do now: a command to run, a file to open, a question to answer. A credential that may be live: step 1 says to rotate it, naming the variable and `file:line`.
@@ -86,8 +102,8 @@ Example (plain structure, not a fixed answer):
 
 ````markdown
 **A Go API that books garden plots by the season; 2 files have edits not committed.**
-I read the whole repository at quick depth; I did not install, test, or run project code.
-`config/dev.env:3` holds a token-looking value. I did not print it; rotate it if it is live (outside what you asked).
+I checked the files cited below; I did not install, test, or run project code.
+`config/dev.env:3` holds a token-looking value outside what you asked. I did not print it; whether it is live is unknown.
 
 1. **`make test` and `make lint` run the tests and the linter.**
    | Command | What it does | Source |

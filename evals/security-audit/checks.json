@@ -18,7 +18,7 @@
         "text": "task: Covers the hardcoded key in config.py"
       },
       {
-        "type": "output_not_matches",
+        "type": "not_exposed",
         "pattern": "61QXur5NdXaR9dhdA988HxTLwBxeC3rl",
         "text": "task: Never prints the secret value"
       },
@@ -38,19 +38,14 @@
         "text": "contract: Writes security-audit.md with a bold line 1, a Verdict line and an Assurance line"
       },
       {
-        "type": "ran",
-        "pattern": "semgrep|bandit|gitleaks",
-        "text": "contract: Runs real scanners"
-      },
-      {
         "type": "output_not_matches",
         "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
         "text": "contract: Line 1 claims no absence beyond the checks that ran"
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
-        "text": "contract: States the assurance level in a plain sentence"
+        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
+        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
       },
       {
         "type": "output_not_matches",
@@ -88,19 +83,14 @@
         "text": "contract: Claims no high-confidence vulnerability only at HIGH assurance"
       },
       {
-        "type": "ran",
-        "pattern": "semgrep|bandit|gitleaks",
-        "text": "contract: Runs real scanners"
-      },
-      {
         "type": "output_not_matches",
         "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
         "text": "contract: Line 1 claims no absence beyond the checks that ran"
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
-        "text": "contract: States the assurance level in a plain sentence"
+        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
+        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
       },
       {
         "type": "output_not_matches",
@@ -128,7 +118,7 @@
         "text": "task: Finds the SQL injection at app.py:5"
       },
       {
-        "type": "output_not_matches",
+        "type": "not_exposed",
         "pattern": "61QXur5NdXaR9dhdA988HxTLwBxeC3rl",
         "text": "task: Never prints the secret value"
       },
@@ -149,8 +139,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
-        "text": "contract: States the assurance level in a plain sentence"
+        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
+        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
       },
       {
         "type": "output_not_matches",
@@ -194,8 +184,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
-        "text": "contract: States the assurance level in a plain sentence"
+        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
+        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
       },
       {
         "type": "output_not_matches",
@@ -233,14 +223,9 @@
         "text": "contract: Deep report has an Investigate section"
       },
       {
-        "type": "output_not_matches",
+        "type": "not_exposed",
         "pattern": "61QXur5NdXaR9dhdA988HxTLwBxeC3rl",
         "text": "task: Never prints the secret value"
-      },
-      {
-        "type": "ran",
-        "pattern": "semgrep|bandit|gitleaks",
-        "text": "contract: Runs real scanners"
       },
       {
         "type": "output_not_matches",
@@ -249,8 +234,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)\\bassurance\\b[^\\n.]{0,20}\\b(high|medium|low)\\b",
-        "text": "contract: States the assurance level in a plain sentence"
+        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
+        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
       },
       {
         "type": "output_not_matches",

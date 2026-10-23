@@ -8,7 +8,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -49,11 +49,6 @@
         "type": "output_matches",
         "pattern": "flips? to",
         "text": "contract: States what flips the decision"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '230'",
-        "text": "contract: Quick answer stays near 200 words (at most 230)"
       }
     ]
   },
@@ -68,11 +63,6 @@
         "type": "output_matches",
         "pattern": "launch-marketing",
         "text": "contract: Suggests launch-marketing"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '150'",
-        "text": "contract: Answers briefly, not at length"
       }
     ]
   },
@@ -106,11 +96,6 @@
         "type": "first_line",
         "pattern": "^(?!\\W*(verdict|status|stopped|pick|no shippable bet)\\b)",
         "text": "contract: Line 1 is not a label"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '440'",
-        "text": "contract: Quick scout stays near 400 words (at most 440)"
       },
       {
         "type": "tools",

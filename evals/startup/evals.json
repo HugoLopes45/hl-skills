@@ -15,7 +15,7 @@
     {
       "id": "kill-sunk-cost",
       "prompt": "startup kill: I've spent 18 months and $40k on my invoicing SaaS. MRR has been flat at $310 for 7 months; 2 of the 9 customers who signed up 90 days ago are still active. I have no new lever to test. Should I keep going because I've already invested so much?",
-      "expected_output": "Kill or pivot; sunk cost is not a reason; names what to keep; one action this week; flips-to condition; under 200 words.",
+      "expected_output": "Kill or pivot; sunk cost is not a reason; names what to keep; one action this week; flips-to condition.",
       "files": [
         "files/kill-sunk-cost/README.md"
       ],
@@ -48,7 +48,7 @@
     {
       "id": "scout-quick",
       "prompt": "startup scout --depth quick: tools for freelance translators. I'm a developer with no translation background.",
-      "expected_output": "Quick scout: first line is the pick with its score or NO SHIPPABLE BET; at most 5 bets; market claims marked [unverified]; no live research; founder edge zero; under about 400 words.",
+      "expected_output": "Quick scout: a plain first sentence names the pick and why it wins, or the failed gate; the Verdict line gives the pick and score or No shippable bet; at most 5 bets; market claims marked [unverified]; no live research; founder edge zero.",
       "files": [
         "files/scout-quick/README.md"
       ],

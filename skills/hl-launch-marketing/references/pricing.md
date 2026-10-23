@@ -1,17 +1,13 @@
 # Pricing
 
-Price from the buyer's alternative and segment, not from cost or fear. Show the money math, and label each number as measured or estimated.
+Price from the buyer's alternative and segment, not from cost or fear. Show the money math. Label figures as supplied, measured with a method, checked source, unverified, or estimated from stated assumptions.
 
 ## Principles
 
-- Engineers under-price by default. A higher price often loses fewer customers than expected and selects better ones.
-- Business buyers optimize for return on their workflow, not for the lowest price. Do not price business software like consumer retail.
-- "Boring" features unlock budget: single sign-on, audit logs, role-based access, support response times, compliance.
-- Know whether the business is default alive: at the current trajectory, does revenue cover costs before cash runs out?
-- Segment first, price second. One price for small, mid-size, and enterprise buyers leaves money in two segments and prices out the third.
-- A pricing change touches every unit of revenue; a feature touches one workflow.
-- Hourly billing punishes efficiency. Prefer value-based pricing or fixed scopes.
-- An annual-plan discount buys cash flow and lower churn; it is not a giveaway.
+- Compare the buyer's current alternative, expected outcome, and ability to pay; do not infer willingness to pay from a segment name.
+- Check which purchasing requirements actually apply, such as single sign-on, audit logs, or support.
+- Model whether revenue can cover costs before cash runs out, using explicit assumptions.
+- Consider segments, payment terms, and pricing models as hypotheses. Do not promise higher conversion, lower churn, or better customers.
 
 ## Modes
 
@@ -19,14 +15,14 @@ Price from the buyer's alternative and segment, not from cost or fear. Show the 
 
 1. **Buyer**: the segment (solo, small business, mid-market, enterprise).
 2. **Current alternative**: what the buyer pays today (tool, staff hours, workaround), with an estimated amount.
-3. **Price comparison**: a price near one tenth of the alternative signals a toy; near the alternative signals a real product. Choose on purpose.
+3. **Price comparison**: compare the proposed price with the current alternative and explain the difference in outcomes, costs, and switching effort.
 4. **Free or paid**: does a free plan drive acquisition or network effects, or does it cannibalize paid plans? Unclear means paid.
-5. **Highest price without pause**: the highest price the buyer accepts without pausing to deliberate.
+5. **Price hypothesis**: propose a price and the buyer test that could support or reject it; acceptance is unknown until observed.
 6. **Verdict**: at the end of the reply, `Charge X` (or `Charge X, annual discount Y`, `Wrong segment`, `Do not build`); line 1 gives the price in plain words.
 
 ### `tiers`
 
-Table: tier, segment, anchor, gated features or metered usage, monthly price. Gate only what the higher segment needs (single sign-on, audit, SLA), not what everyone needs. A top tier also makes the middle tier look reasonable. Meter what the buyer uses to measure their own return. Enterprise is "contact us" with a starting price. End with the underserved segment and what would capture it.
+Table: tier, segment, anchor, gated features or metered usage, monthly price. Gate only what the higher segment needs (single sign-on, audit, SLA), not what everyone needs. Do not assume a top tier changes purchases of the middle tier. Meter what the buyer uses to measure their own return. Enterprise is "contact us" with a starting price. End with the underserved segment and what would capture it.
 
 ### `monetize`
 
@@ -35,7 +31,7 @@ Turn a feature into revenue: model (subscription, usage, one-time, outcome-based
 ## Rules
 
 - Show amounts with their assumption: "$50 per seat per month, assuming 20 seats, replacing two hours of manual work per week."
-- Never invent market data. Use "estimate" or cite the source.
+- Never invent market data or relabel an unchecked outside fact as an estimate. Cite a checked source or mark it unverified.
 
 ## Stand down
 

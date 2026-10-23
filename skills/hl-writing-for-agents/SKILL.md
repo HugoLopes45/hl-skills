@@ -6,13 +6,27 @@ description: "Write text an agent executes. By default, rewrite a raw intent, a 
 
 Input: `[text, intent, or path] [--skill] [mode options]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Deliver the complete prompt or skill. Distinguish static checks, expected examples, and observed runs; keep host capabilities and limits explicit.
+
 With `--skill`, or when the input is a skill or a request to create one, follow [references/skill-file.md](references/skill-file.md). Otherwise follow [references/prompt.md](references/prompt.md).
 
 ## Output
 
 Reader: someone who asked for a prompt or a skill, and will paste or save the result. The decision: use the result, or supply what is missing.
 
-- Line 1, bold: one plain sentence that answers the request, in the user's words. Under 100 characters.
+- Line 1, bold: one plain sentence that answers the request, in the user's words.
 - Under line 1: plain sentences for anything that limits the result, such as a prompt you did not run.
 - Prompt mode: the rest follows the Output section of [references/prompt.md](references/prompt.md). The prompt in its fence is the artifact, shown whole.
 - Skill mode: the check table in [references/skill-file.md](references/skill-file.md).
@@ -23,8 +37,8 @@ Reader: someone who asked for a prompt or a skill, and will paste or save the re
   - `Stopped`: input is missing. See below.
 - `**Next:**` holds the steps a person takes now, in order.
 - `**Changed:** <path>` in skill mode: the saved file, or `none`.
-- Missing input: line 1 says what is missing and why it blocks; then `Verdict: Stopped`; then `**Next:**` with up to 2 numbered ways out, the default first, listed nowhere else. Prompt mode: `**I need the prompt before I can tune it. Send its text or its file path.**`, then in Next: 1. Paste the prompt or give its path (default). 2. Describe the task in one sentence.
-- Human-facing prose: define `verifier` once as the check that proves the task is done.
+- Missing input: line 1 says what is missing and why it blocks; then `Verdict: Stopped`; then `**Next:**` with up to 2 numbered ways out, the default first, listed nowhere else. Prompt mode: `**I need the prompt before I can tune it.**`, then in Next: 1. Paste the prompt or give its path (default). 2. Describe the task in one sentence.
+- Human-facing prose: when `verifier` is used, define it once as the check that proves the task is done. Do not introduce it in missing-input replies.
 
 The example below fixes the shape of a skill-mode reply, not its content.
 

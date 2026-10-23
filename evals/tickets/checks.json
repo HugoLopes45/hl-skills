@@ -23,7 +23,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|^\\s*\\d+\\.\\s+(\\*\\*)?approve\\b",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)|^\\s*\\d+\\.\\s+(\\*\\*)?approve\\b",
         "text": "contract: Asks for approval of the breakdown"
       },
       {
@@ -97,18 +97,13 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^[^\\n]*(AC-3|professional)[^\\n]*(TBD|\\?|unverifiable|not (measurable|verifiable|testable)|no verification|vague|subjective|open question)|^[^\\n]*(TBD|\\?|unverifiable|not (measurable|verifiable|testable)|no verification|vague|subjective|open question)[^\\n]*(AC-3|professional)",
+        "pattern": "(?m)^[^\\n]*(AC-3|professional)[^\\n]*(TBD|\\?|unverifiable|not (measurable|verifiable|testable)|no verification|vague|subjective|open question|can.t come out false)|^[^\\n]*(TBD|\\?|unverifiable|not (measurable|verifiable|testable)|no verification|vague|subjective|open question|can.t come out false)[^\\n]*(AC-3|professional)",
         "text": "task: Leaves the unverifiable AC-3 open"
       },
       {
-        "type": "output_matches",
-        "pattern": "unobserved|not observed|unknown|could not (read|access|observe|reach)|no (api|access)",
-        "text": "contract: Names the unobserved conventions"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*open questions",
-        "text": "contract: Open questions section"
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" questions-next",
+        "text": "contract: Questions and validation belong in Next"
       },
       {
         "type": "output_matches",
@@ -126,7 +121,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|no source",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)|no source",
         "text": "task: Asks for the source"
       },
       {
@@ -144,13 +139,13 @@
   "target-github": {
     "checks": [
       {
-        "type": "workspace_untouched",
-        "text": "task: No file added, removed, or modified"
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Ready, nothing created\\b",
+        "text": "contract: Reports the unavailable-GitHub verdict"
       },
       {
-        "type": "output_matches",
-        "pattern": "(?i)(gh|github)[^\\n]{0,120}(not available|unavailable|no access|blocked|block|cannot|can.t|unable|not (signed|logged) in|unauthenticated|not authenticated|fail)|(not available|unavailable|no access|blocked|blocker|cannot|can.t|unable|not (signed|logged) in|unauthenticated|not authenticated)[^\\n]{0,120}(gh|github)",
-        "text": "task: Reports the GitHub access blocker"
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
       },
       {
         "type": "output_not_matches",

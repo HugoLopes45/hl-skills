@@ -6,11 +6,25 @@ description: "Before clearing or compacting the conversation context, check that
 
 Input: `[--stuck]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Keep the saved handoff sufficient to resume without this conversation. Report what is saved, what remains unsaved, and what the next session needs.
+
 Inspect the worktree state and any existing handoff file. A clean tree or a non-Git directory does not prove the context is saved.
 
-Save objective, decisions, evidence, pending work, and next action where the project's handoff rules say. No rule: ask the user for a path. Do this before recommending a context reset.
+Save objective, decisions, evidence, pending work, and next action where the project's handoff rules say. Exclude secrets. Read the complete saved file, continuing truncated reads, and verify every required handoff item before reporting it saved. A preview or successful write is not readback. Compare the saved claims and completion report with the observed files and tool results. Attribute carried history to its originating notes and mark it unverified unless current evidence confirms it. Record file dates as timestamps, not proof of unchanged content or session continuity. Preserve unresolved work; absence of an edit does not prove work never started. No rule: ask the user for a path. Do this before recommending a context reset.
 
-Changes remain: offer commit, stash, leave files in place, or abort, and wait for the user's choice. Never commit or stash on your own. A requested stash uses `git stash push --include-untracked`, never `--all`, so ignored files such as credentials stay out; then check `git stash list` and `git status` before continuing.
+Pre-existing project changes need disposition: honor an explicit instruction to keep them; otherwise ask and wait. In a Git repository, offer commit, stash, leave in place, or abort. Outside Git, offer leave in place or abort; commit and stash are unavailable. The requested handoff update alone needs no separate disposition. Never commit or stash on your own. A requested stash uses `git stash push --include-untracked`, never `--all`, so ignored files such as credentials stay out; then check `git stash list` and `git status` before continuing.
 
 Never clear the context yourself. Uncommitted files are not lost; do not say they are.
 
@@ -34,28 +48,28 @@ Do not start the next attempt until the user agrees.
 
 Reader: a person about to clear or compact the conversation. They need to know whether the work is saved, what happens to changed files, and whether clearing is safe now.
 
-Line 1: one bold plain sentence, under 100 characters, that answers "is it safe to clear now?" or, with `--stuck`, "why am I going in circles?". Never start it with a label, a verdict word, a path, or a cause name.
+Line 1: one bold plain sentence, that answers "is it safe to clear now?" or, with `--stuck`, "why am I going in circles?". Never start it with a label, a verdict word, a path, or a cause name.
 
 Under line 1, plain sentences with no labels: whether the handoff is saved, what happens to the changed files, and anything not checked when that limits the answer.
 
 Before `**Next:**`, one line: `Verdict: <word>`, one of:
-- `Saved`: the handoff file is written. Line 1 names its path.
-- `Stopped`: the project rules name no handoff location; ask for one.
+- `Saved`: the handoff is written and verified by complete readback. Line 1 names its path.
+- `Stopped`: the location is unknown, or writing or complete readback could not be verified.
 - `Stuck, <cause>` (`--stuck` only): the cause from the list above, in plain words, e.g. `Verdict: Stuck, missing context`.
 
 Saved:
 - `## Changed files`: a tree in a `text` fence, one state per entry (`# modified`, `# new, not committed`).
-- When changes remain, a sentence asks what happens to them, then numbered options, default marked, before the verdict: commit them; leave them in place; stash them with `git stash push --include-untracked` (set aside, kept, restored with `git stash pop`); abort.
-- When something is left out of the handoff, one sentence says so and names it.
+- When pre-existing changes need a decision, Next holds one disposition question, with the applicable options above and leave in place as default. Define stash as changes set aside and kept, restored with `git stash pop`. The body reports their state without repeating the choice.
+- When something is left out of the handoff, name it and explain any effect on resuming the work.
 
 `--stuck`:
 - `## Attempts`: a table with columns attempt, what changed, observed result. Short cells. A result never observed is "not run".
 - `## Leftover changes`: a file tree of changes from failed attempts.
 - One sentence names the input the attempts got wrong, from the files you read.
 
-Stopped: line 1 says what is missing and why it blocks. Then the question as one sentence, then the verdict. `**Next:**` holds at most 3 numbered options, default marked; they appear nowhere else.
+Stopped: line 1 names the missing location or failed write or readback. Say what remains unverified; do not recommend clearing. Next gives at most 3 ways to resolve that blocker, default marked. Clearing loses unsaved conversation notes, not files on disk.
 
-`**Next:**` holds the steps, in order. Then `**Changed:**` names the handoff file, or `none`.
+`**Next:**` holds every reader action, decision, prerequisite, and unblock route once, in order. A reset follows a saved handoff and the agreed handling of changed files, never a missing location or an abort. Then `**Changed:**` names the handoff file, or `none`.
 
 Reader rules:
 - Define at first use: "handoff" (notes the next session reads), "stash" (changes set aside and kept), "working copy" (your files on disk).
@@ -65,7 +79,7 @@ Reader rules:
 Example:
 
 ````markdown
-**Your handoff is saved in `docs/handoff.md`. You can clear the context; your files stay on disk.**
+**Your handoff is saved in `docs/handoff.md`; your changed files remain on disk.**
 
 ## Changed files
 ```text
@@ -73,17 +87,11 @@ invoice/tax.py      # modified
 tests/test_tax.py   # new, not committed
 ```
 
-Choose what happens to these files (default: 2):
-1. Commit them first; the handoff then needs no file list.
-2. Leave them in place. Nothing moves; the next session finds them.
-3. Stash them: `git stash push --include-untracked`. Restore with `git stash pop`.
-4. Abort. Nothing more is done; the handoff stays.
-
 Verdict: Saved
 
 **Next:**
-1. Reply with an option number (default: 2).
-2. Clear the context when ready. The handoff keeps the next step.
+1. What should happen to the changed files: commit them; leave them in place (default); stash them with `git stash push --include-untracked` (set aside and kept, restored with `git stash pop`); or abort and keep this conversation?
+2. After the chosen handling is complete, clear the context unless you chose abort. The handoff keeps the next step.
 
 **Changed:** `docs/handoff.md` (new).
 ````

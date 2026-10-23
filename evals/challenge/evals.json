@@ -112,6 +112,18 @@
       "force_skill_invocation": true,
       "side_effect_level": "static",
       "assertions": []
+    },
+    {
+      "id": "lens-ambition",
+      "prompt": "challenge --lens ambition --depth deep TASK.md",
+      "expected_output": "Goal beyond the task: sellers paid exactly once; outside judge such as reconciliation against the bank or ledger; rewritten prompt in a fence; Verdict Raised; no edit.",
+      "files": [
+        "files/payouts/TASK.md",
+        "files/payouts/payouts.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
     }
   ]
 }
