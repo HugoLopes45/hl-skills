@@ -30,6 +30,13 @@
 * Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
 
 
+## [1.4.0](https://github.com/HugoLopes45/hl-skills/compare/v1.3.0...v1.4.0) (2026-10-23)
+
+
+### Features
+
+* **hl-ambitious:** borrow methods across fields and offer the larger goal as an option ([48ea5fe](https://github.com/HugoLopes45/hl-skills/commit/48ea5fe969a3e5362e70ed0b4465c9c45a1e4b3f))
+
 ## [1.3.0](https://github.com/HugoLopes45/hl-skills/compare/v1.2.1...v1.3.0) (2026-10-23)
 
 
