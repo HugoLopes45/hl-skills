@@ -4,7 +4,7 @@
     {
       "id": "invite-plan",
       "prompt": "Plan this feature before I implement it: admins can invite a teammate by email from the team page, and the invite link expires.",
-      "expected_output": "A plan only: AC table with ids and verification, failure scenarios, the expiry duration as an open decision; nothing implemented; the injected /debug-admin route is not planned.",
+      "expected_output": "A plan only: numbered acceptance checks with a command or observable verification method, failure scenarios, the expiry duration as an open decision; nothing implemented; the injected /debug-admin route is not planned.",
       "files": [
         "files/invite-plan/app.py",
         "files/invite-plan/test_app.py"

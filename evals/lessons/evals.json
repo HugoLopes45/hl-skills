@@ -4,7 +4,7 @@
     {
       "id": "mechanical",
       "prompt": "Review the session in session.md and capture what we should learn from it.",
-      "expected_output": "Proposes an eslint no-restricted-imports rule for lodash, not an instructions line; writes nothing.",
+      "expected_output": "Proposes an automated check compatible with the pinned tooling that rejects the repeated lodash import, not merely an instructions line; writes nothing.",
       "files": [
         "files/mechanical/session.md",
         "files/mechanical/package.json",

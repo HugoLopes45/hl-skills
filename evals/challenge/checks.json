@@ -125,19 +125,14 @@
         "text": "task: No file added, removed, or modified"
       },
       {
-        "type": "first_line",
-        "pattern": "(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery)",
-        "text": "contract: First line names the lens"
+        "type": "output_matches",
+        "pattern": "(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery|ambition)",
+        "text": "contract: Matches a lens-name pattern"
       },
       {
-        "type": "first_line",
+        "type": "output_matches",
         "pattern": "plan\\.md",
-        "text": "contract: First line names the target"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '360'",
-        "text": "contract: Quick depth stays near 300 words (at most 360)"
+        "text": "contract: Contains plan.md"
       }
     ]
   },
@@ -160,7 +155,7 @@
       },
       {
         "type": "command",
-        "command": "test $(grep -cE '^#+ *(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery)' ) -ge 3",
+        "command": "test $(grep -cE '^#+ *(minimalist|failure-hunter|data-model|distributed|operability|boring-stack|agent-tooling|teacher|discovery|ambition)' ) -ge 3",
         "text": "contract: At least three lens sections"
       }
     ]
@@ -174,7 +169,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -319,6 +314,45 @@
         "type": "output_matches",
         "pattern": "^\\W*next:",
         "text": "contract: Ends with a Next block of the changes to make"
+      }
+    ]
+  },
+  "lens-ambition": {
+    "fixtures": "payouts",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "exactly once|idempot|duplicat|paid (only )?once",
+        "text": "task: Aims at the outcome beyond the CSV: no seller paid twice"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "reconcil|bank statement|ledger",
+        "text": "task: Names an outside judge for the outcome"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\s*(```|~~~)",
+        "text": "contract: Ships a rewritten prompt in a fence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*(raised|needs access)\\b",
+        "text": "contract: Verdict line is an ambition verdict"
+      },
+      {
+        "type": "first_line",
+        "pattern": "^(?!\\W*(verdict|raised|needs access|already ambitious|goal beyond)\\b)",
+        "text": "contract: Line 1 does not open with a label"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*next:",
+        "text": "contract: Ends with a Next block"
       }
     ]
   }

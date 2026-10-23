@@ -28,7 +28,7 @@
     {
       "id": "quick-audit",
       "prompt": "Run a quick improve audit of this codebase.",
-      "expected_output": "Opens with the vetted-findings count and the top finding; findings table; finds the SQL injection and the pagination off-by-one; writes plans for the top 3 under plans/ stamped with the commit; source untouched.",
+      "expected_output": "Opens with the vetted-findings count and the top finding; numbered findings; finds the SQL injection and the pagination off-by-one; requests a selection before writing plans; source untouched.",
       "files": [
         "files/quick-audit/.eval-setup.sh",
         "files/quick-audit/README.md",

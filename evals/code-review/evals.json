@@ -31,7 +31,7 @@
     {
       "id": "deep",
       "prompt": "Review this branch against origin/main with --deep.",
-      "expected_output": "Parallel specialists (at least architecture, simplicity, security, slop) and a skeptic; header lists specialists run and skipped; findings carry specialist IDs; reports calc.py.",
+      "expected_output": "Independent specialists (at least architecture, simplicity, security, slop) and a skeptic; skipped specialists and coverage limits explained; findings attribute their supporting reviews in plain words; reports calc.py.",
       "files": [],
       "force_skill_invocation": true,
       "side_effect_level": "static",

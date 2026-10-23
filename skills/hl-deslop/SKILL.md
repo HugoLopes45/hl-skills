@@ -6,6 +6,20 @@ description: "Remove AI-generated slop and hallucinations from a change: style t
 
 Input: `[path] [--base <ref>] [--staged] [--report]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Report meaningful removals and how behavior was checked. Keep public contracts, safety checks, accessibility, and unrelated edits intact; omit routine cleanup narration.
+
 Remove the tells of AI-written content from a change, then make the rest read like the file it lives in. Three kinds:
 - Noise: true but worthless (narration, ceremony, padding). Delete.
 - Dead weight: code or prose that serves nothing (unused, unreachable, speculative, leftover). Delete.
@@ -34,7 +48,7 @@ On prose, gate 1 means meaning unchanged, except that false meaning has no prote
 
 ## Scope
 
-The input sets what to scan. Default: every change between the merge base and the working tree (committed, staged, unstaged). Base: the merge base with `main`, else `master`, else the target of `origin/HEAD`. None resolves: stop and ask for `--base <ref>`; never widen to the whole repository.
+The input sets what to scan. Default: every change between the merge base and the working tree (committed, staged, unstaged). Base: the merge base with the configured default branch or the verified target of `refs/remotes/origin/HEAD`; never assume `main` or `master`. None resolves: stop and ask for `--base <ref>`; never widen to the whole repository.
 - `--base <ref>`: the diff base.
 - `--staged`: staged changes only. The reply says in one line whether unstaged changes exist and that they were not reviewed.
 - A path: only that file's or directory's changed lines. A named path with no changes is scanned whole; this is the only case that edits unchanged code.
@@ -115,7 +129,7 @@ Backstop: prose written to impress rather than inform, which loses nothing when 
 
 Reader: the developer about to commit the change. Decision: commit the cleaned change, or first settle the possible bugs and flagged items. Terms: a leftover is a sign that text or code was written without care (for example, a comment that restates the line below it); a baseline is the test result before any edit; a phantom reference is a name that points at nothing.
 
-Line 1, bold, one plain sentence, 100 characters at most: what changed, and whether a possible bug is left. Never open with a verdict word.
+Line 1, bold, one plain sentence: what changed, and whether a possible bug was identified in the reviewed changes. Scope any absence claim to those changes; it is not a claim about all possible bugs. Never open with a verdict word.
 
 Under line 1, plain sentences:
 - The test result before and after, as a sentence: "I ran the tests before and after: 6 pass both times." Give the reason when a check did not run or did not pass. A failure in both runs is pre-existing: name it, and do not block on it. A new failure: revert the edit that caused it, since that edit was not slop removal. Compare failure sets, not raw counts.
@@ -123,13 +137,13 @@ Under line 1, plain sentences:
 - The typecheck, only when the repository has none: "The repository has no typecheck."
 - Staged mode only: one line saying whether unstaged changes exist and that they were not reviewed.
 
-Then the body, as one numbered list, in this order:
+Then the body, as one numbered list for multiple points, or plain sentences for one simple edit, in this order:
 - Possible bugs first: a comment that may record unimplemented intent, a stub presented as done, an import or call to a phantom symbol, an exemplar literal on a live path, doc drift that may be a regression, error-message drift. Each is a bold plain sentence that starts "This is a possible bug in <name>", then what it does, then that neither side was edited.
-- Each edit: a bold plain sentence that names the removed item and its `file:line`, then why it was safe in one sentence. Show a `diff` view of the removed lines when it helps. Line numbers are post-edit positions.
+- Each edit: a bold plain sentence that names the removed item and its `file:line`, then the evidence for why it was safe, including any uncertainty. Show a `diff` view of the removed lines when it helps. Line numbers are post-edit positions.
 - Each truth fix, when a comment or name was corrected to match the code: say what it said and what the code does.
-- Each leftover not touched: a bold plain sentence that names it and says why it was not touched, for example that it is outside the diff, possibly an external export, or program output.
+- Untouched items only when they carry meaningful risk or explain the review boundary: name the item and why it was not touched, for example a possibly external export or program output. Omit unrelated old-slop inventories.
 
-Report mode (`--report`): the same list, with each point's suggested fix in its last sentence, and no edits.
+Report mode (`--report`): the same evidence and scope, with suggested fixes in Next and no edits.
 
 The reply ends with `Verdict: <word>` on its own line just before `**Next:**`:
 - `Cleaned`: edits made.
@@ -143,31 +157,27 @@ With nothing in scope, print exactly: `Nothing to deslop: clean tree or no chang
 Reader rules: no blame of the author; "the comment restates the code" is enough. Name each leftover once. No hype, and no claim that the cleanup proves quality.
 
 ````markdown
-**Removed 3 leftovers from 2 files; one possible bug is left for you.**
+**Removed 3 leftovers from 2 files; possible bugs remain in the reviewed changes.**
 I ran the tests before and after: 6 pass both times. The repository has no typecheck.
 
 1. **This is a possible bug in `scale_servings()` (scale.py:21): it returns 1 for 0 servings, but its comment says 0.**
-   I changed neither side. Decide what `scale_servings(0)` should return, then fix the code or the comment.
+   I changed neither side.
 
-2. **Removed `import math` from scale.py (line 4): nothing in the file reads it.**
-   ```diff
-   - import math
-   ```
+2. **This is a possible bug in `units.py:30`: the example name may be a live fallback, not test data.**
+   I did not touch it.
 
-3. **Removed a comment that restated the next line (scale.py, line 9).**
-   ```diff
-   - # multiply the amount by the factor
-   ```
+3. **Removed `import math` from scale.py (line 4): nothing in the file reads it.**
 
-4. **Removed a debug print from units.py (line 7): no caller reads stdout.**
+4. **Removed `# multiply the amount by the factor` from scale.py (line 9): it restated the next line.**
 
-5. **I did not touch `units.py:30`: `"Jane Doe"` may be a live fallback, not test data.**
+5. **Removed a debug print from units.py (line 7): no caller reads stdout.**
 
 Verdict: Cleaned
 
 **Next:**
 1. Decide what `scale_servings(0)` should return, then fix the code or the comment.
-2. Run `git add scale.py units.py` after step 1; the cleanup is unstaged until then.
+2. Decide whether the fallback at `units.py:30` is intended; it was not changed.
+3. Run `git add scale.py units.py` after resolving those decisions; the cleanup is unstaged until then.
 
 **Changed:** `scale.py`, `units.py`
 ````

@@ -74,7 +74,7 @@
       },
       {
         "type": "output_not_matches",
-        "pattern": "(?mi)^(?!.*(outside|pre-existing|out of scope|not touched|(did not|didn't|never) touch|alone|already|existing|committed|not (in|part of) (your|this|the) (change|diff))).*(increment the counter|app\\.py:8\\b)",
+        "pattern": "(?mi)^(?!.*(outside|pre-existing|out of scope|not touched|(did not|didn't|never|would not|wouldn't|will not|won't) touch|alone|already|existing|committed|not (in|part of) (your|this|the) (change|diff))).*(increment the counter|app\\.py:8\\b)",
         "text": "task: Leaves the line outside the diff alone"
       },
       {

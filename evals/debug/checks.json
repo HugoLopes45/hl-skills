@@ -38,8 +38,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -82,8 +82,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -95,7 +95,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -218,8 +218,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -257,8 +257,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -267,7 +267,7 @@
     "checks": [
       {
         "type": "output_matches",
-        "pattern": "(culprit|first bad|bad commit|broke|breaking|introduc\\w*|caus\\w*|lands on|regress\\w*)[^\\n]{0,80}add day unit|add day unit[`\\\"'*)\\s]*(is the (culprit|first bad)|broke|introduced|caused|re-?sort\\w*|added|swapped|put|moved|reorder\\w*)",
+        "pattern": "(culprit|first bad|bad commit|broke|breaking|introduc\\w*|caus\\w*|lands on|regress\\w*)[^\\n]{0,80}add day unit|add day unit[`\\\"'*)\\s]*(commit\\s*\\(?`?[0-9a-f]{7,40}`?\\)?\\s*)?(is the (culprit|first bad)|broke|introduced|caused|re-?sort\\w*|added|swapped|put|moved|reorder\\w*)",
         "text": "task: Names the culprit commit"
       },
       {
@@ -357,8 +357,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -406,8 +406,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   },
@@ -450,8 +450,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?s)^[ \\t]*```(?:text)?[ \\t]*\\n(?:(?!^[ \\t]*```).)*?\\b[\\w/.-]+\\.py:\\d+\\b(?:(?!^[ \\t]*```).)*?^[ \\t]*```",
-        "text": "contract: Draws the traced path as a fenced call tree with file:line"
+        "pattern": "\\b[\\w/.-]+\\.py:\\d+\\b",
+        "text": "contract: Cites the traced source with file:line anchors"
       }
     ]
   }

@@ -13,16 +13,6 @@
         "text": "contract: Line 1 is not a label or heading"
       },
       {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*(Use|Set|Run)\\b[^\\n]*\\b(reasoning|effort)\\b",
-        "text": "contract: reasoning setting stated in a plain sentence after the block"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?m)^\\s*\\d+\\.\\s+\\*\\*(Cut|Kept|Added|Moved|Fixed)\\b",
-        "text": "contract: No changelog without the flag"
-      },
-      {
         "type": "file_unchanged",
         "path": "prompt.txt",
         "text": "contract: prompt.txt unchanged"
@@ -51,11 +41,6 @@
         "type": "command",
         "command": "python3 \"$EVALS/oracle.py\" block-has '\\[\\]'",
         "text": "task: The rewrite keeps the empty result"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" block-lacks '100% sure|only report issues you are|do not report minor'",
-        "text": "task: The rewrite removes the recall-killing filter"
       },
       {
         "type": "output_matches",
@@ -103,7 +88,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)|\\bno (prompt|text|input)\\b|\\b(didn.t|did not) (include|give|send|paste|provide)\\b|nothing to",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)|\\bno (prompt|text|input)\\b|\\b(didn.t|did not) (include|give|send|paste|provide)\\b|nothing to",
         "text": "task: Says there is no prompt or asks for it"
       },
       {

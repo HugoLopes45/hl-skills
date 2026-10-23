@@ -1,6 +1,6 @@
 # Validate Problem
 
-State the pain, context, frequency, and current workaround using supplied evidence. Describe an identifiable early-adopter profile without inventing a real person.
+State the pain, context, frequency, and current workaround using supplied evidence. Describe an identifiable early-adopter profile without inventing a real person. Label an unvalidated role or responsibility as a recruitment hypothesis, including inside the interview draft.
 
 Draft five non-leading questions about past behavior, costs, and attempted solutions. Propose observable validation and rejection criteria, labeling thresholds as proposals. Distinguish reported interest from actions such as repeated use or payment.
 

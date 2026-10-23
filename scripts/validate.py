@@ -10,6 +10,7 @@ NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 NAME_PREFIX = "hl-"
 LINK_RE = re.compile(r"references/[A-Za-z0-9._/-]+\.md")
 MAX_BODY_LINES = 500
+GROUNDING = "Ground factual claims in supplied evidence or results you observed in this session."
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -36,12 +37,8 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
     return fields, text[end + 5:]
 
 
-def check(skill_md: Path) -> list[str]:
+def metadata_errors(fields: dict[str, str], directory_name: str) -> list[str]:
     errors: list[str] = []
-    try:
-        fields, body = parse_frontmatter(skill_md.read_text(encoding="utf-8"))
-    except ValueError as exc:
-        return [str(exc)]
     for key in sorted(set(fields) - ALLOWED_KEYS):
         errors.append(f"unknown frontmatter key: {key}")
     name = fields.get("name", "")
@@ -49,8 +46,8 @@ def check(skill_md: Path) -> list[str]:
         errors.append(f"invalid name: {name!r}")
     elif not name.startswith(NAME_PREFIX):
         errors.append(f"name {name!r} does not start with {NAME_PREFIX!r}")
-    if name != skill_md.parent.name:
-        errors.append(f"name {name!r} differs from directory {skill_md.parent.name!r}")
+    if name != directory_name:
+        errors.append(f"name {name!r} differs from directory {directory_name!r}")
     description = fields.get("description", "")
     if not description:
         errors.append("empty description")
@@ -58,8 +55,22 @@ def check(skill_md: Path) -> list[str]:
         errors.append(f"description has {len(description)} characters (max 1024)")
     elif "Use " not in description:
         errors.append("description does not say when to use the skill ('Use ...')")
+    return errors
+
+
+def check(skill_md: Path) -> list[str]:
+    try:
+        fields, body = parse_frontmatter(skill_md.read_text(encoding="utf-8"))
+    except ValueError as exc:
+        return [str(exc)]
+    errors = metadata_errors(fields, skill_md.parent.name)
     if len(body.splitlines()) >= MAX_BODY_LINES:
         errors.append(f"body has {len(body.splitlines())} lines (max {MAX_BODY_LINES - 1})")
+    section = re.search(r"^## ", body, re.MULTILINE)
+    if GROUNDING not in body:
+        errors.append("missing the grounding rule")
+    elif section and body.index(GROUNDING) > section.start():
+        errors.append("grounding rule must precede workflow sections")
     links: list[str] = LINK_RE.findall(body)
     for link in sorted(set(links)):
         if not (skill_md.parent / link).is_file():
@@ -73,8 +84,16 @@ def validate(root: Path) -> list[str]:
     if not skills:
         return ["no skills found under skills/<name>/SKILL.md"]
     errors: list[str] = []
+    for directory in sorted(root.glob("skills/*")):
+        if directory.is_dir() and not (directory / "SKILL.md").is_file():
+            errors.append(f"{directory.relative_to(root)}: missing SKILL.md")
     for skill_md in skills:
         errors += [f"{skill_md.relative_to(root)}: {e}" for e in check(skill_md)]
+        for reference in sorted((skill_md.parent / "references").rglob("*.md")):
+            links = re.findall(r"\]\(([\w./-]+\.md)(?:#[^)]*)?\)", reference.read_text(encoding="utf-8"))
+            for link in sorted(set(links)):
+                if not (reference.parent / link).is_file():
+                    errors.append(f"{reference.relative_to(root)}: broken reference: {link}")
     for nested in sorted(root.glob("skills/*/*/**/SKILL.md")):
         errors.append(f"{nested.relative_to(root)}: nested skill; move it to skills/<name>/SKILL.md")
     return errors

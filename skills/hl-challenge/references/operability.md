@@ -31,7 +31,7 @@ Produce a runbook skeleton with sections: Symptom, Impact (who, how badly, how t
 
 ### `oncall-review`
 
-Check: which symptom pages, and is each page actionable? Who is paged (a named rotation, not "the team")? Does every alert link a runbook? Recent incidents: did the runbook work, was it updated? Toil: what wakes someone that a script could handle? Output up to three fixes that matter most before this is on-callable, each with an owner.
+Check: which symptom pages, and is each page actionable? Who is paged (a named rotation, not "the team")? Does every alert link a runbook? Recent incidents: did the runbook work, was it updated? Toil: what wakes someone that a script could handle? Put the fixes needed before this is on-callable in Next, prioritized by consequence, each with an owner and supporting evidence.
 
 ## Stand down
 

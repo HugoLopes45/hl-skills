@@ -4,7 +4,7 @@
     {
       "id": "prompt-bloated",
       "prompt": "Tighten this prompt: prompt.txt",
-      "expected_output": "Starts with '## optimized prompt', one fenced prompt with no ALL-CAPS emphasis or anti-hallucination boilerplate, keeps the JSON keys and the empty-case [], settings line, no changelog.",
+      "expected_output": "One bold plain sentence on line 1, one fenced prompt with no ALL-CAPS emphasis or anti-hallucination boilerplate, preserves operational constraints and the JSON keys and empty-case [], no changelog.",
       "files": [
         "files/prompt-bloated/prompt.txt"
       ],

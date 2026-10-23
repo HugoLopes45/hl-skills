@@ -745,8 +745,8 @@
         "text": "task: Finds the unit read from the first row only"
       },
       {
-        "type": "output_matches",
-        "pattern": "tooltip[^\\n]*(limited|limit[ée]|cosmetic|cosm[ée]tique)|(limited|limit[ée]|cosmetic|cosm[ée]tique)[^\\n]*tooltip",
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" tooltip-severity",
         "text": "task: Rates the tooltip limited or cosmetic"
       },
       {

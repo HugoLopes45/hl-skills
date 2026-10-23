@@ -15,7 +15,7 @@
     {
       "id": "video-paid-voice",
       "prompt": "Make a 30-second explainer video on how binary search works, narrated with an ElevenLabs voice.",
-      "expected_output": "No key in the environment and no cost approval: asks or falls back to the local voice and says so; never calls the API; nothing written in the workspace.",
+      "expected_output": "No key and no cost approval: stops, offers local voice as the default next step, never calls the paid API, and writes nothing in the workspace.",
       "files": [
         "files/video-paid-voice/README.md"
       ],
@@ -26,7 +26,7 @@
     {
       "id": "video-binary-search",
       "prompt": "Make a 20-second explainer video on how binary search finds 37 in the sorted list [3, 8, 15, 22, 37, 41, 50]. Local voice.",
-      "expected_output": "MP4 path and duration first; video and audio streams within 0.5 s; temp directory, not the workspace.",
+      "expected_output": "The viewer's takeaway first; an existing MP4 path and measured duration; video and audio streams within 0.5 s; output in a temporary directory, not the workspace.",
       "files": [
         "files/video-binary-search/README.md"
       ],

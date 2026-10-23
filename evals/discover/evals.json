@@ -22,7 +22,7 @@
     {
       "id": "discover-nogit",
       "prompt": "Give me the lay of the land of this repository.",
-      "expected_output": "Not a Git repository: reports it and stops.",
+      "expected_output": "Discloses unavailable Git state and history, maps README.md as scratch notes and todo.txt as a shopping reminder, stays read-only, and reports Partly mapped.",
       "files": [
         "files/discover-nogit/.eval-setup.sh",
         "files/discover-nogit/README.md",

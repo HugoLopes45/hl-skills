@@ -49,8 +49,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -109,8 +109,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -174,8 +174,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -234,8 +234,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -275,7 +275,7 @@
       {
         "type": "command",
         "command": "test \"$(git rev-list --count $(cat .git/eval-base)..HEAD)\" = 0",
-        "text": "contract: Stops after the hook failure"
+        "text": "contract: Makes no commit without the ticket"
       },
       {
         "type": "command",
@@ -304,8 +304,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",

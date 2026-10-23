@@ -37,7 +37,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -87,18 +87,8 @@
       },
       {
         "type": "command",
-        "command": "test \"$(ls plans/[0-9][0-9][0-9]-*.md 2>/dev/null | wc -l)\" -ge 3",
-        "text": "contract: Writes plans for the top 3"
-      },
-      {
-        "type": "command",
-        "command": "ls plans/[0-9][0-9][0-9]-*.md >/dev/null 2>&1 && sha=$(git rev-parse HEAD | cut -c1-7) && for f in plans/[0-9][0-9][0-9]-*.md; do grep -q \"Commit:\\*\\*[^0-9a-f]*$sha\" \"$f\" || exit 1; done",
-        "text": "contract: Every plan stamps the current commit"
-      },
-      {
-        "type": "command",
-        "command": "grep -Eiq 'top 3|top three|default' plans/README.md",
-        "text": "contract: plans/README.md records the non-interactive default"
+        "command": "test ! -e plans && test ! -e advisor-plans",
+        "text": "contract: Does not write plans before the user selects findings"
       },
       {
         "type": "output_matches",
@@ -227,7 +217,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?i)not (verifiable|measurable|checkable|testable|observable)|unverifiable|unmeasurable|no (command|benchmark|threshold|baseline)|how (much )?faster|faster than what|vague",
+        "pattern": "(?i)not (verifiable|measurable|checkable|testable|observable)|unverifiable|unmeasurable|no (command|benchmark|threshold|baseline)|how (much )?faster|faster than what|vague|(?:can't|cannot) be checked",
         "text": "task: Flags the unverifiable done criteria"
       },
       {

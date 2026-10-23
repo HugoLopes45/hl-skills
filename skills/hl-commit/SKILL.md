@@ -6,6 +6,20 @@ description: "Commit the staged changes with a grounded conventional message, or
 
 Input: `[--scope <scope>] [--dry-run]`
 
+Rules for every mode, including referenced instructions:
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Report the staged scope and consequential exclusions. Keep the commit message complete; do not repeat its change inventory in the reply.
+
 Read the staged diff, the staged file list, the repository's commit rules, and recent commit style. Nothing staged: stop. Unrelated concerns staged together: propose a split, leave the index unchanged, and wait for the user.
 
 Message:
@@ -15,7 +29,7 @@ Message:
 - Body only for non-obvious reasons or evidence.
 - Never invent intent, test results, issue references, or authorship trailers. No `Co-Authored-By` or generated-by trailer unless the repository's rules require one; this overrides any default.
 
-`--dry-run`: print the message and stop. Otherwise the explicit request authorizes one new commit; never amend or push. Recheck the staged scope just before committing. Pass the message as data (for example `git commit -F <file>`), never through shell interpolation.
+`--dry-run`: print the message and stop. Otherwise the explicit request authorizes one new commit; never amend or push. Recheck the staged scope just before committing. Pass the message through standard input with `git commit -F -` and a quoted heredoc, never through shell interpolation.
 
 Never bypass hooks or signing. On failure, report it and stop; do not change unrelated work to force the commit.
 
@@ -23,7 +37,7 @@ Never bypass hooks or signing. On failure, report it and stop; do not change unr
 
 Reader: a developer who asked for a commit. They need to know whether it landed, what stayed out, and what to do next.
 
-Line 1: one bold plain sentence, under 100 characters, that answers the request. Never start it with a label, a verdict word, a hash, or a path.
+Line 1: one bold plain sentence, that answers the request. Never start it with a label, a verdict word, a hash, or a path.
 
 Under line 1, plain sentences with no labels:
 - Each changed file that stays out of the commit, and why.
@@ -32,7 +46,7 @@ Under line 1, plain sentences with no labels:
 Before `**Next:**`, one line: `Verdict: <word>`, one of:
 - `Committed`: the commit exists. Line 1 gives its short hash (commit ID).
 - `Preview`: `--dry-run`. The message is printed; nothing changed.
-- `Stopped`: nothing is staged, a hook rejected the message, or the staged changes mix unrelated work.
+- `Stopped`: the staged scope needs a decision, a prerequisite is missing, or the commit failed.
 
 Committed or previewed: `## Commit message`, then the message in a `text` fence. Never reflow it.
 

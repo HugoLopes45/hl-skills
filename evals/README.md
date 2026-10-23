@@ -1,6 +1,6 @@
 # Evals
 
-These evals measure whether a skill changes what a real agent does. Each case runs in Claude Code with the skill installed and without it. User-level settings, skills, commands, and `CLAUDE.md` are excluded, so the baseline is a bare agent.
+These evals measure whether a skill changes what a real agent does. Each case runs in Claude Code with the skill installed and without it. The baseline omits the tested skill; other host capabilities may remain.
 
 ## Run
 
@@ -9,7 +9,7 @@ evals/run.sh debug --runs 3 --concurrency 3
 python3 evals/report.py /tmp/hl-evals debug:1 --failures
 ```
 
-Requirements: `uvx`, an authenticated `claude` CLI, and `pytest` on `PATH`. A run costs about 0.30 USD per skill and repetition with the default `sonnet` model.
+Requirements: `uvx`, an authenticated `claude` CLI, and `pytest` on `PATH`. Costs vary by case and model. Use a bounded campaign.
 
 | Variable | Default | Effect |
 |---|---|---|
@@ -17,7 +17,13 @@ Requirements: `uvx`, an authenticated `claude` CLI, and `pytest` on `PATH`. A ru
 | `EVAL_WORKSPACE` | `/tmp/hl-evals` | Run output directory |
 | `EVAL_SKILLS` | `skills/` | Skills root, for example an older copy to measure a change |
 | `EVAL_SKILL` | `hl-<suite>` | Skill to install, when it is not `hl-<suite>` |
-| `EVAL_MAX_COST` | `1.5` | Cost cap per case in USD |
+| `EVAL_MAX_COST` | unset | Optional post-run cost threshold in USD; stops later cases, not an in-flight spending cap |
+| `EVAL_CLAUDE_SETTINGS` | unset | Native Claude settings file passed with `--settings`, for explicit permissions and sandbox policy |
+| `EVAL_CHECK_SHELL` | system shell | Executable receiving `-c <command>` for command checks; use an OS-sandboxed shell for untrusted workspaces |
+
+The wrapper removes the harness's permission-bypass flag and defaults to zero retries. Native Claude permissions still apply. Use an isolated `CLAUDE_CONFIG_DIR` and an explicit sandbox policy. Verify skill discovery and command permissions in one fresh pilot before starting a batch.
+
+Claude's sandbox does not cover post-grade commands. Set `EVAL_CHECK_SHELL` to a sandboxed shell that removes private environment variables and blocks outside writes, private reads, and network access. Otherwise, command checks retain the caller's privileges. Transcript archival happens before command execution.
 
 Natural triggering, with every skill installed and no skill named:
 
@@ -45,17 +51,47 @@ Each check is one of three kinds:
 - `contract`: the output contract of the skill, such as the first line or the evidence table.
 - `trigger`: in `routing`, whether the agent picked the right skill.
 
-Output checks read the final answer. Process checks (`ran`, `not_ran`, `ran_before_edit`, `tools`, `skill_invoked`, `skill_not_invoked`) read the session transcript and the transcripts of its subagents, merged in time order, so "ran the tests before editing" is observed, not inferred from wording. `report.py` re-evaluates output and process checks with the current `checks.json`; workspace and command checks keep the result recorded during the run. A command check gets the final answer on standard input, so it can accept a finding from a report file or from the answer.
+Output checks read the final answer. Process checks read the session transcript and its subagent transcripts. The post-grade hook archives these under the run's `outputs/`, using `CLAUDE_CONFIG_DIR` when set. Reporting reads the archive without changing it.
+
+Positive command checks require completed tool results; denied, unfinished, and backgrounded attempts are not execution proof. `ran_before_edit` requires a completion timestamp before an edit request. Negative command and skill checks count attempts, even when rejected. Request snapshots are not additional tool calls.
+
+`not_exposed` searches the supplied pattern in the final answer and serialized assistant items, tool results and native receipts, including subagents. User prompts and API request snapshots are excluded. Reading the raw fixture key into a tool result fails, even when the final answer redacts it. Missing transcripts cannot pass; failure evidence never copies the match. This known-fixture check does not certify encoded, split, partial or uncaptured disclosures, or saved-artifact compliance.
+
+Completed shell requests can include nonzero exits. They do not prove that every matching subcommand ran or passed; qualification must inspect actual output and artifacts.
+
+Tool-count minimums require completed calls. Maximums count all attempts, including refused calls.
+
+`report.py` re-evaluates output and process checks with the current `checks.json`; workspace and command checks keep their recorded results. A command check receives the final answer on standard input.
+
+Workspace comparisons use descriptor-relative POSIX opens and reject symbolic links or non-regular files in checked paths. Single-file checks do not inspect unrelated paths.
+
+Reports accept the harness's single-run and repeated-run layouts. They reconcile scheduled runs with the latest invocation's `summary.json`, `progress.jsonl`, and `run_meta.json`. Missing, skipped, stale, or unfinished runs are reported explicitly. Missing required evidence and CLI errors cannot produce passing runs. Retries with missing earlier-attempt evidence are incomplete; their reported costs are subtotals. Deleted-file and command-timeout checks record failures without losing the remaining grades.
 
 Task checks accept any wording of the right outcome, such as "valid, fix it" for agree. Checks that need the skill's vocabulary or format are contract checks.
 
-`gh`, `jira`, and `acli` are stubs that fail, `GH_TOKEN`, `GITHUB_TOKEN`, and every `JIRA*` and `ATLASSIAN*` variable are unset, and the `gh` config directory is empty, so no run reaches a real GitHub or Jira account. Claude auto memory is off: it is keyed by workspace path, and paths repeat across iterations, so memory from one run could leak into the next. `hl-open-pr` and `hl-ci-fix` cases cover `--dry-run`, refusals, and the stop when GitHub is unreachable.
+`gh`, `jira`, and `acli` are failing stubs; selected forge credentials are removed, and the `gh` config directory is empty. These measures reduce accidental access but do not isolate the filesystem or network. The caller must configure that isolation. Claude auto memory is off because workspace paths can repeat. `hl-open-pr` and `hl-ci-fix` cases cover `--dry-run`, refusals, and the stop when GitHub is unreachable.
 
 Eval ids must be unique across suites: agent-skill-eval names each agent workspace after the eval id only, so two suites with the same id corrupt each other when run in parallel. A unit test enforces it.
 
-A bare agent is not expected to meet a skill's contract. The task checks show whether the contract costs correctness. A run passes a kind when all its checks of that kind pass. `p` is the one-sided Fisher exact test that runs pass more often with the skill.
+A bare agent is not expected to meet a skill's contract. Task checks show whether the contract costs correctness. A run passes a kind only when all required checks pass, its evidence is complete, and the CLI succeeds. `p` is the one-sided Fisher exact test comparing run passes. Incomplete or excluded runs make it `n/a`. Leftover runs from an earlier invocation also suppress significance rather than silently disappearing from the audit.
 
-## Results
+## Production qualification
+
+Production qualification is incomplete. Automatic eval passes do not establish compliance with the full skill contract or safety requirements. Current-source qualification, including permission and missing-evidence boundaries, remains necessary before claiming readiness.
+
+Release criteria:
+
+- Record complete run identity, source revision, model, inputs, tool outcomes, final output, grading, and reported costs; missing evidence is not a pass.
+- Review claims against actual artifacts and outcomes, not only answer shape or regular expressions.
+- Verify supported skills and modes, including permission boundaries; keep unsupported or unexercised behavior explicit.
+- Run the validator and test suites, verify installed skill files match source, and obtain independent review of release changes.
+
+Observed failures include synthetic secret exposure and inaccurate execution reporting. Automatic passes do not certify full-contract compliance, complete safety, or saved artifacts. Isolation probes and successful installations are not substitutes for production qualification.
+
+
+## Historical results
+
+These tables describe earlier generations and checks. They are not a fresh comparison of the revised skills. The older baseline's other host capabilities are unverified here; “bare agent” means without the tested skill.
 
 Claude Code 2.1.295, `sonnet`, agent-skill-eval 0.7.0, 3 repetitions per case and configuration. Iteration 45 for `hl-challenge`; iteration 43 for `hl-grill`, `hl-launch-marketing`, `hl-spike`, `hl-startup`, `hl-tickets`, and `hl-verify`, rerun after their checks changed; iteration 41 for `hl-explainer-video`, after the shell fix below; iteration 40 for the rest. Auto memory was off. Runs passing, with the skill against a bare agent:
 
@@ -167,26 +203,6 @@ Runs passing all checks, graded with the current checks (bare agent and old skil
 
 The bare agent found the cause in most runs. It failed on proof and safety: no toggle of the culprit, `git bisect` in the user's checkout, and an unrequested code change after "Investigate". The old skill refused the requested fix in `envprec` (0/3). The new skill fixed it behind a regression test that fails on the old `config.py` (3/3). The diagnosis ideas did not move the measured score: the old skill already passed the other 3 cases. Two edits came from these runs. Reading files with numbered output restored `failing-test` line citations (old skill 4/5, first new text 4/8, final text 5/5 at iteration 66). Asking who else the defect reaches restored the production impact in `pollution` (iteration 68: 1/3, iteration 69: 5/5). Median cost per run on the 4 cases: 0.066 USD for the bare agent, and 0.094 for the old and the new skill. An independent review of the checks found false passes: "production" matched "not production", and `cat -n test_invoice.py test_report.py` counted as a polluter run. Each fix has a unit test. The harness makes its own first commit, so commit hashes change per run: checks name the commit by its title. Limits: 3 to 5 runs per case, one model, and fixtures written for these checks.
 
-Three independent reviews of the checks found false passes, false fails, and task checks that required the skill's format. Each fix has a unit test. `report.py` reruns output checks and answer-only oracle commands with the current checks; other commands keep the recorded result, also when the check moved to another kind. Checks that read a report file also read the answer, so a correct answer given in chat passes. Compound checks were split, so cutting one feature does not pass the check for the other. Cases with no target have an "Invents no" check against made-up plans, verdicts, or rounds. `run.sh` isolates git from the global git config and hooks. The new no-target checks ran at iteration 52 with the baseline: `hl-verify` text-none, `hl-challenge` lens-no-target, and `hl-grill` no-idea passed 3 of 3 runs in both configurations. The `hl-verify` and `hl-grill` rows above predate them.
-
-Fixes driven by these runs, rerun with the skill only (iterations 51 to 54) or with the baseline (`hl-launch-marketing` 55, `hl-startup` 53, `hl-improve` 51 and 52, `hl-security-audit` 52):
-- `hl-security-audit` quick kept MEDIUM findings. Quick now drops them: 3 of 3 contract runs.
-- `hl-startup` quick scout ran 438 to 531 words against a 440-word cap, and 474 to 508 after a first fix. A per-part budget replaced the word total, and quick drops the build sketch and the risk list: 282 to 328 words in 6 of 6 runs at iterations 52 and 53.
-- `hl-launch-marketing` economics did not lead with a figure. The first line now states the number that hurts most, as a figure; its example no longer uses the case's own figures: 3 of 3 runs at iteration 55. Quick channels put experiments in blocks under the table; they now go in the table rows. Launch plans gave venue rules such as a self-promotion ratio with no label; the rule's number is now labeled public or estimated: 3 of 3 contract runs at iteration 54.
-- Check fixes, each with a unit test: lead checks allow a `# title` line before the lead; the `hl-discover` scoped-run check failed a run that only promised a read order; the `pricing-low` label check now targets the buyer's alternative cost, the one number the answer derives from an estimate; a `100%` done-when target is not a claim. `oracle.py` splits labels (estimate, measured, public), sources, and withheld numbers: a number label contract needs a label or a source, and a fake-claim check accepts a label or a refusal, never a publisher name alone. `hl-code-review --deep` must start at least the six specialists the diff requires.
-
-Limits:
-- Regular expressions and `oracle.py` check the contract. They show the shape of the output, not its quality.
-- Three repetitions detect large differences only.
-- Task checks do not separate the skill from the baseline for `hl-challenge`, also on the hard cases, `hl-checkpoint`, `hl-ci-fix`, `hl-receive-review`, `hl-show-me`, and `hl-spec`, the first cases of `hl-code-review` and `hl-improve`, all `hl-security-audit` cases, and the new `hl-deslop`, `hl-launch-marketing`, `hl-receive-review`, `hl-startup`, and `hl-tickets` cases: a bare agent also reaches the right outcome. Their gain is the contract.
-- The `hl-improve` task gap on the new cases comes from prompts in the skill's command syntax, such as "Run improve branch." A bare agent cannot know what they mean, so the gap overstates the skill's outcome gain.
-- `oracle.py` takes any parenthesized list of capitalized names, such as "(ProZ, Reddit)", as a named source. A list of venues passes as a citation.
-- `hl-ci-fix` and `hl-open-pr` are not tested against a live pull request: no case reads real check logs, pushes, or creates a pull request.
-- An `hl-improve` case that forced asking before a direct "fix it" was removed: the request and the case contradicted each other.
-- agent-skill-eval runs `git init` in every workspace; a case that needs no repository deletes `.git` in `.eval-setup.sh`.
-- A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `hl-tickets` has fewer baseline runs.
-- A prompt that starts with `--` makes the bare `claude` CLI fail; start prompts with a word.
-
 ### Hard cases for code-review
 
 Use the declared skill alias and a dedicated workspace. Both code-review suites declare `hl-code-review`; sharing a workspace can mix their case IDs during reporting. Use a fresh root, then report the iteration printed by the runner:
@@ -232,12 +248,32 @@ A fresh agent then regenerated the skill from an 830-word brief, and the result 
 | Previous skill | 2143 | 79/84 | 11.24 USD | 117k |
 | Regenerated, 2 samples | 1427 | 81/84, 81/84 | 10.61, 10.31 USD | 150k, 147k |
 | Trimmed, no shared preamble | 1367 | 81/84 | 10.23 USD | 123k |
-| Trimmed, second sample | 1367 | 80/84 | 10.16 USD | 135k |
 | Trimmed, shared preamble | 1607 | 80/84 | 10.38 USD | 143k |
-| Current: trimmed, grounding line, 6 fixes from failures, 2 samples | 1500 | 83/84, 82/84 | 10.38, 10.31 USD | 119k, 128k |
+| Trimmed, second sample | 1367 | 80/84 | 10.16 USD | 135k |
+| Latest generation in this comparison: trimmed, grounding line, 6 fixes from failures, 2 samples | 1500 | 83/84, 82/84 | 10.38, 10.31 USD | 119k, 128k |
 
 The 6 fixes: the reply language follows the request text, not the commit messages; line 1 stays the review after subagents return; caveats name the base branch; a finding is plain sentences with `file:line`, without labels; a hidden-bug test change is never its own point; mixed-version deploy risk is unresolved unless the repository shows such deploys. The race check now accepts French "en même temps" and "simultané".
 
 The brief must tell the writer to copy the rules verbatim: one regeneration dropped the language rule, and 6 runs answered French requests in English. The `--deep` naming check now accepts a list ("The architecture, simplicity and security reviews found").
 
 Cost: 8.39 USD for the 69 hard runs and 2.59 USD for the 15 old runs at the last full pass. Limits: 3 runs per case, one model (sonnet), regular-expression checks, and the tooltip rated limited because its docstring says it shows the unscaled row.
+
+Three independent reviews of the checks found false passes, false fails, and task checks that required the skill's format. Each fix has a unit test. `report.py` reruns output checks and answer-only oracle commands with the current checks; other commands keep the recorded result, also when the check moved to another kind. Checks that read a report file also read the answer, so a correct answer given in chat passes. Compound checks were split, so cutting one feature does not pass the check for the other. Cases with no target have an "Invents no" check against made-up plans, verdicts, or rounds. `run.sh` isolates git from the global git config and hooks. The new no-target checks ran at iteration 52 with the baseline: `hl-verify` text-none, `hl-challenge` lens-no-target, and `hl-grill` no-idea passed 3 of 3 runs in both configurations. The `hl-verify` and `hl-grill` rows above predate them.
+
+Fixes driven by these runs, rerun with the skill only (iterations 51 to 54) or with the baseline (`hl-launch-marketing` 55, `hl-startup` 53, `hl-improve` 51 and 52, `hl-security-audit` 52):
+- `hl-security-audit` quick kept MEDIUM findings. Quick now drops them: 3 of 3 contract runs.
+- `hl-startup` quick scout ran 438 to 531 words against a 440-word cap, and 474 to 508 after a first fix. A per-part budget replaced the word total, and quick drops the build sketch and the risk list: 282 to 328 words in 6 of 6 runs at iterations 52 and 53.
+- `hl-launch-marketing` economics did not lead with a figure. The first line now states the number that hurts most, as a figure; its example no longer uses the case's own figures: 3 of 3 runs at iteration 55. Quick channels put experiments in blocks under the table; they now go in the table rows. Launch plans gave venue rules such as a self-promotion ratio with no label; the rule's number is now labeled public or estimated: 3 of 3 contract runs at iteration 54.
+- Check fixes, each with a unit test: lead checks allow a `# title` line before the lead; the `hl-discover` scoped-run check failed a run that only promised a read order; the `pricing-low` label check now targets the buyer's alternative cost, the one number the answer derives from an estimate; a `100%` done-when target is not a claim. `oracle.py` splits labels (estimate, measured, public), sources, and withheld numbers: a number label contract needs a label or a source, and a fake-claim check accepts a label or a refusal, never a publisher name alone. `hl-code-review --deep` must start at least the six specialists the diff requires.
+
+Limits:
+- Regular expressions and `oracle.py` check the contract. They show the shape of the output, not its quality.
+- Three repetitions detect large differences only.
+- Task checks do not separate the skill from the baseline for `hl-challenge`, also on the hard cases, `hl-checkpoint`, `hl-ci-fix`, `hl-receive-review`, `hl-show-me`, and `hl-spec`, the first cases of `hl-code-review` and `hl-improve`, all `hl-security-audit` cases, and the new `hl-deslop`, `hl-launch-marketing`, `hl-receive-review`, `hl-startup`, and `hl-tickets` cases: a bare agent also reaches the right outcome. Their gain is the contract.
+- The `hl-improve` task gap on the new cases comes from prompts in the skill's command syntax, such as "Run improve branch." A bare agent cannot know what they mean, so the gap overstates the skill's outcome gain.
+- `oracle.py` takes any parenthesized list of capitalized names, such as "(ProZ, Reddit)", as a named source. A list of venues passes as a citation.
+- `hl-ci-fix` and `hl-open-pr` are not tested against a live pull request: no case reads real check logs, pushes, or creates a pull request.
+- An `hl-improve` case that forced asking before a direct "fix it" was removed: the request and the case contradicted each other.
+- agent-skill-eval runs `git init` in every workspace; a case that needs no repository deletes `.git` in `.eval-setup.sh`.
+- A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `hl-tickets` has fewer baseline runs.
+- A prompt that starts with `--` makes the bare `claude` CLI fail; start prompts with a word.

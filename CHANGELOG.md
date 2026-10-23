@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+
+* Reject missing skill entrypoints and broken links inside reference files; name code-review specialist paths explicitly.
+* Compare installed skill contents with source files in CI, not only directory counts.
+* Make evaluation reports account for scheduled runs, incomplete or stale evidence, retries, and deleted-file or timed-out checks; distinguish attempted tools from completed execution.
+* Harden eval execution and grading: remove automatic permission bypass and retries, support explicit Claude settings and sandboxed post-grade checks, and reject incomplete command evidence.
+* Secure workspace comparisons against links and special files; isolate forge stubs and keep version probes side-effect free.
+* Run every evaluator test class when invoking its module directly, and enforce a cyclomatic complexity limit of 10 in CI.
+* Pass commit messages through standard input and distinguish missing prerequisites from observed hook failures.
+* Remove unsupported grading rules, wording-only assertions, and checks that treated names or unexecuted criteria as runtime evidence.
+* Require a finding selection before improvement plans, matching the skill instead of an obsolete top-three default.
+* Align marketing output instructions with the economics reference and unsupported-claim placeholders.
+* Align the security audit template with its coverage and CVSS rules.
+* Clarify stopped PR and gap-report delivery, paid-voice prerequisites, and the first-use definition of lint.
+* Keep complete ticket drafts intact without inventing issue types, and check GitHub access before requesting approval.
+* State the numeric contract in the review fixture; retain its intentional bugs.
+* Remove scenario expectations that contradict documented output ordering or impose an unspecified word limit.
+* Reject scaling in the loss-making economics case; remove misleading ticket-convention, lint-name, and PR-heading assertions without regrading historical results.
+* Reject synthetic-key exposure in captured tool traffic and subagent transcripts; keep matched values out of grading evidence.
+* Clarify that the security-audit secret boundary covers tool inputs and outputs, files, and replies.
+* Run the ambition evaluation at the depth required by its full-output contract.
+
+
 ## [1.1.0](https://github.com/HugoLopes45/hl-skills/compare/v1.0.0...v1.1.0) (2026-10-13)
 
 
