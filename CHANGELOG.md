@@ -26,6 +26,13 @@
 * Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
 
 
+## [1.2.1](https://github.com/HugoLopes45/hl-skills/compare/v1.2.0...v1.2.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **ci:** avoid the degraded Azure package mirror ([524b848](https://github.com/HugoLopes45/hl-skills/commit/524b848aff1f85259c51bc86193eb0d82fb90dd3))
+
 ## [1.2.0](https://github.com/HugoLopes45/hl-skills/compare/v1.1.0...v1.2.0) (2026-10-14)
 
 
