@@ -22,7 +22,7 @@
     {
       "id": "ambitious-subjective-work",
       "prompt": "Raise the standard of this prompt without adding deliverables: write a 600-word ghost story for adult readers. It must remain ambiguous whether the ghost exists. I want unease, not gore. Do not write the story yet.",
-      "expected_output": "Give field-specific professional moves, raw material, concrete methods/tools, and an external reader-based check before the rewritten prompt. Preserve exactly one 600-word story, adult readers, ambiguity, and no gore. Use original sensory observations or scene material without pretending autobiographical facts were provided. Name suitable narrative techniques rather than inventing software requirements. Treat independent reader responses as evidence about the intended effect, not objective proof of literary quality or a fabricated numerical benchmark. Do not require an additional critique document, survey report, or production campaign. Do not add unrelated format restrictions such as banning a title. Do not write the story.",
+      "expected_output": "Give field-specific professional moves, raw material, concrete methods/tools, and an external reader-based check before the rewritten prompt. Preserve exactly one 600-word story, adult readers, ambiguity, and no gore. Use original sensory observations or scene material without pretending autobiographical facts were provided. Name suitable narrative techniques rather than inventing software requirements. Treat independent reader responses as evidence about the intended effect, not objective proof of literary quality or a fabricated numerical benchmark. Do not require an additional critique document, survey report, or production campaign. Do not add unrelated format restrictions such as banning a title. Do not write the story. Do not offer a larger business or production goal for this creative task.",
       "files": [],
       "force_skill_invocation": true,
       "side_effect_level": "static",
@@ -68,6 +68,33 @@
       "id": "ambitious-no-auxiliary-tooling",
       "prompt": "Make this task deeper, not bigger: decide in one short note whether firmware B improves battery runtime by at least 20 minutes over A. Available: a local CSV of ten paired bench runs, with pair_id, runtime_A_minutes, runtime_B_minutes, temperature_C, and load_profile; same battery within each pair, randomized order recorded in the bench notes. Use only the installed Python standard library and finish in one hour. No new measurements, packages, or separate report. Rewrite only.",
       "expected_output": "Preserve the pairing and the 20-minute criterion. Distinguish observed improvement from evidence that the mean improvement reaches the criterion. Choose a concrete uncertainty method feasible with existing tools or direct calculations; do not turn the one-hour decision into implementing and validating a numerical distribution library. State assumptions and any proposed confidence convention. Use a feasible independent arithmetic check without adding deliverables. If the inputs or method cannot establish the claim, keep it unverified rather than weakening the criterion.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-range",
+      "prompt": "Make this deeper, not bigger: write a one-page postmortem of yesterday's 40-minute checkout outage for the engineering team. Inputs: the on-call chat export, the load balancer logs, and the deploy history. No new tooling, no action-item tracker, one page only. Rewrite the prompt only.",
+      "expected_output": "Restate what the postmortem must do in plain verbs and borrow at least one concrete method from another field that investigates failures (for example building a timeline from raw records, or separating contributing factors from blame), named by what it does. Do not ask the executor to act as, write like, or role-play a person or profession. Preserve the one-page postmortem, the engineering audience, the three supplied inputs, and the no-tooling and no-tracker limits. The check must compare claims with the raw logs or deploy history, not rely on self-review. Deliver one self-contained prompt without writing the postmortem.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-higher-outcome",
+      "prompt": "Deepen this: fix the crash on launch reported by three users of our desktop app version 2.3.1 on Windows. Deliver the fix and a regression test only. Rewrite the prompt, do not fix anything.",
+      "expected_output": "The rewritten prompt keeps the single crash fix and regression test as the only deliverables, with no monitoring system, crash dashboard, or wider program. Separately from the prompt, under Next, offer an optional larger goal such as keeping the app free of crashes, and name the access it would need (crash reports, mapping of app versions to commits, Windows or other environments to reproduce and verify) without claiming that access exists. Do not execute the fix.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-stretch-target",
+      "prompt": "Raise the standard of this task without adding deliverables: make our product listing page load in under 5 seconds instead of 10 on a mid-range phone over 4G. Deliver the code change only. Rewrite only.",
+      "expected_output": "Keep under 5 seconds on a mid-range phone over 4G as the pass condition. Any more ambitious target must be explicitly marked as proposed or optional and must not replace the user's criterion. Name a concrete measurement method on the raw page load (for example a throttled lab trace or field timing data) and a check the executor can run itself, not self-review. No new deliverables such as a performance dashboard or report. Do not make the change.",
       "files": [],
       "force_skill_invocation": true,
       "side_effect_level": "static",
