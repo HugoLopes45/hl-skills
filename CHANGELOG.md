@@ -30,6 +30,13 @@
 * Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
 
 
+## [1.3.0](https://github.com/HugoLopes45/hl-skills/compare/v1.2.1...v1.3.0) (2026-10-23)
+
+
+### Features
+
+* add hl-ambitious prompt refinement skill ([c6781e0](https://github.com/HugoLopes45/hl-skills/commit/c6781e038a91bf51832908b7ce5177301155addb))
+
 ## [1.2.1](https://github.com/HugoLopes45/hl-skills/compare/v1.2.0...v1.2.1) (2026-10-23)
 
 
