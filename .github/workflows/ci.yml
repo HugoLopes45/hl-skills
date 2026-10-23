@@ -23,7 +23,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Install ffmpeg and pytest for the eval check tests
-        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg python3-pytest
+        run: |
+          sudo sed -i '/azure\.archive\.ubuntu\.com/d' /etc/apt/apt-mirrors.txt
+          sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg python3-pytest
       - name: Validate skills
         run: python3 scripts/validate.py
       - name: Test the validator
