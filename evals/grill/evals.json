@@ -17,7 +17,7 @@
     {
       "id": "options",
       "prompt": "Users of this Flask app want to download their orders as a spreadsheet. What are the options?",
-      "expected_output": "First line: recommended option and why; then a table of up to five distinct mechanisms; no code written.",
+      "expected_output": "Resolve open ranking constraints before a Recommended verdict; put up to five distinct options and supported recommendations only in Next; no code written.",
       "files": [
         "files/export/app.py"
       ],
@@ -86,7 +86,7 @@
     {
       "id": "gaps-report",
       "prompt": "What is this spec missing? spec.md --gaps",
-      "expected_output": "Totals by severity on the first line; blockers first; 'fast' flagged as an ambiguous term; missing acceptance criteria; no file written.",
+      "expected_output": "Plain result sentence first; severity totals in the Verdict line; blockers first; asks for a measurable meaning of 'fast' and missing acceptance criteria; no file written.",
       "files": [
         "files/gaps-report/spec.md"
       ],

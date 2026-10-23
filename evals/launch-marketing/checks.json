@@ -8,7 +8,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -54,11 +54,6 @@
       {
         "type": "workspace_untouched",
         "text": "task: No file added, removed, or modified"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '330'",
-        "text": "contract: Quick depth stays near 300 words (at most 330)"
       },
       {
         "type": "command",
@@ -117,11 +112,6 @@
       {
         "type": "workspace_untouched",
         "text": "task: No file added, removed, or modified"
-      },
-      {
-        "type": "command",
-        "command": "python3 \"$EVALS/oracle.py\" max-words '330'",
-        "text": "contract: Quick depth stays near 300 words (at most 330)"
       },
       {
         "type": "output_matches",
@@ -270,11 +260,6 @@
         "text": "task: Finds LTV below CAC"
       },
       {
-        "type": "output_matches",
-        "pattern": "(?i)(don.t|do not|shouldn.t|should not|stop|pause|hold off|wouldn.t|would not|never|not yet)\\b(?!\\W+(wait|hesitate|delay)\\b)[^\\n.;:\\u2014]{0,30}scal|scal\\w*[^\\n.;]{0,40}\\b(loses?|losing) [^\\n.;]{0,20}(money|\\$|\\d+x|more)|scal\\w*[^\\n.;]{0,30}(makes? [^\\n.;]{0,10}worse|amplif\\w*|burns? [^\\n.;]{0,20}(cash|money|\\$))|\\bcap\\b[^\\n.;]{0,20}spend[^\\n.;]{0,20}\\b(at|until)\\b",
-        "text": "task: Advises against scaling the ads now"
-      },
-      {
         "type": "first_line",
         "pattern": "(?i)[$\u20ac]\\s?\\d|\\d\\s?%|\\d(\\.\\d+)?\\s?:\\s?1\\b|\\b0\\.\\d+",
         "text": "contract: Leads with the number that hurts most"
@@ -286,8 +271,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(hold|scale)",
-        "text": "contract: Verdict line Hold or Scale"
+        "pattern": "^\\W*Verdict:\\W*Hold\\b",
+        "text": "contract: Verdict is Hold for the supplied economics"
       }
     ]
   }

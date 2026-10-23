@@ -15,7 +15,7 @@ Separate concerns that are braided together, and model the domain as plain data 
 
 ### `untangle` (default)
 
-1. **What is it**: one sentence in terms of data, not behavior.
+1. **What is it**: describe the data, not the behavior; retain constraints that affect the model.
 2. **Braided pairs**: one pair per line, with where they meet (`file:line`).
 3. **Cost**: per pair, what becomes hard (testing, replacing, reasoning, retrying, caching).
 4. **Separation plan**: per pair, the smallest separation (a value type, schema at the boundary, a pure function split from its side effect).

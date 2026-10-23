@@ -26,7 +26,7 @@ Before building, push the proposal back to the problem: which outcome, for whom,
 
 ### `validate`
 
-Pressure-test the evidence claimed: sample (how many, which segment, recruited how), method (open interview or leading questions, usability test or demo, experiment or anecdote), falsifiability (which result would have killed the idea), causation (one variable or several at once). Output up to three things the evidence shows, up to three it does not, and `holds` / `weak` / `absent`.
+Pressure-test the evidence claimed: sample (how many, which segment, recruited how), method (open interview or leading questions, usability test or demo, experiment or anecdote), falsifiability (which result would have killed the idea), causation (one variable or several at once). State what the evidence supports and what remains unknown, prioritized by their effect on the decision, then `holds` / `weak` / `absent`.
 
 ### `kill`
 

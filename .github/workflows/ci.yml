@@ -35,7 +35,7 @@ jobs:
           HOME=$(mktemp -d)
           export HOME
           npx --yes skills@1.7.2 add "$PWD" --global --agent claude-code --skill '*' --copy --yes
-          test "$(find "$HOME/.claude/skills" -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq "$(find skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l)"
+          diff -r skills "$HOME/.claude/skills"
 
   lint:
     name: Lint workflows and scripts
@@ -47,6 +47,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Check cyclomatic complexity
+        run: pipx run --spec ruff==0.15.4 ruff check --select C901 .
       - name: Lint workflows with actionlint and shellcheck
         run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 -color
       - name: Check the eval scripts with shellcheck

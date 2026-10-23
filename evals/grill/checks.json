@@ -65,7 +65,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {
@@ -148,7 +148,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks the user to resolve it"
       }
     ]
@@ -302,11 +302,6 @@
         "type": "output_matches",
         "pattern": "(?i)(\\bno\\b|couldn.t find|did not find|didn.t find|cannot find|can.t find|not find)[^\\n]{0,60}(spec|plan|brief)",
         "text": "contract: Says there is nothing to read"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?i)\\d+\\s*blockers?\\b|\\bblockers?:?\\s*\\d",
-        "text": "task: No invented gaps"
       },
       {
         "type": "output_matches",

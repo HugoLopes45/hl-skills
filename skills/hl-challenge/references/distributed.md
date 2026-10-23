@@ -29,7 +29,7 @@ The user claims the system survives failure X. Design the test that would prove 
 
 ### `sources`
 
-For a piece of infrastructure (database, queue, lock service, consensus library), list up to 5 sources: public fault-injection analyses, failure-related issues, papers on the algorithm, production incident reports. One line each on what to take from it. Never invent a source, title, or URL; say when none exist. Without web access, list only sources you are certain exist, marked unverified.
+For a piece of infrastructure (database, queue, lock service, consensus library), list the sources relevant to the failure decision: public fault-injection analyses, failure-related issues, papers on the algorithm, production incident reports. Explain what each establishes and any limitation. Never invent a source, title, or URL; say when none exist. Without web access, list only sources you are certain exist, marked unverified.
 
 ## Stand down
 

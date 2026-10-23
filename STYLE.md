@@ -38,6 +38,7 @@ Write for a smart reader who is new to the domain and to this codebase. The bar:
 ### Contract per skill
 
 The agent running a skill sees only that skill's files, never this guide. Each `SKILL.md` therefore carries its own output section, fitted to its context:
+- The evidence and detail rules below, before mode routing and workflow sections. They apply even when a mode follows a reference. `scripts/validate.py` checks their opening sentence and placement.
 - The reader and the moment: who reads, what they were doing, and the one decision the output serves.
 - The fixed verdict words for the `Verdict:` line, each with its meaning.
 - The views the skill uses, picked from the table below.
@@ -46,16 +47,32 @@ The agent running a skill sees only that skill's files, never this guide. Each `
 
 Keep it as short as the skill allows: state only what differs from a careful default, and repeat the Reader rules that the skill's domain makes easy to break (security jargon, test vocabulary, marketing hype).
 
+### Evidence and detail
+
+Do not retry a permission-denied action through another command, tool, path, or environment. Report the blocker.
+
+Ground factual claims in supplied evidence or results you observed in this session.
+- Take line numbers from numbered reads, not list-item numbers. Copy hashes, quotes, and errors exactly; verify stated counts.
+- Report each check's command, directory, and actual execution count. Count runs, not tool calls or test cases; include failures, exclude denied attempts. Reconcile counts with observed results.
+- Report another agent's findings only after its result returns and you check them.
+- Separate observations, inferences, and estimates. An outside fact without a checked source is unverified, not an estimate.
+- Scope all, only, and none to what you checked. A code-backed prediction is not an observed run.
+- Missing evidence: say what is unknown. Name a file or function instead of inventing a line number.
+
+Match detail to the requested depth and the decision's risk. Keep the evidence and caveats that change the verdict or next action. Cut routine narration, repeated conclusions, and jargon you can replace. Treat report checklists as required information, not separate fields, except for exact formats. Combine each point's consequence, decisive proof, and uncertainty in plain sentences; expand when the reasoning needs it. State shared limits once; place method and reviewer details with the evidence they qualify. Preserve required counts, separate review axes, safety warnings, and complete artifacts.
+
+Do not use a word budget as a quality target. Short is not clear when it hides the cause, proof, or next action.
+
 ### Signature
 
 Every skill renders in one signature, so a user recognizes it at a glance:
 
 ````markdown
 **<the answer to the user's question, in everyday words>**
-<what blocks or limits the answer, one plain sentence each; omit when nothing does>
+<what blocks or limits the answer, with decisive evidence and uncertainty; omit when nothing does>
 
 1. **<one point, as a plain sentence>**
-   <why it matters or what to change, one or two sentences>
+   <consequence, decisive evidence, and uncertainty, as needed>
    <a short view, only when the point has a shape>
 
 Verdict: <verdict word>
@@ -65,14 +82,14 @@ Verdict: <verdict word>
 ````
 
 Answer:
-- Line 1 is the answer in bold, within 100 characters where possible and never over 140: one plain sentence that answers what the user asked, in their words where possible ("test_report is fine; another test changes the settings it reads."). It never opens with a label, verdict word, rank, ID, count, path, hash, or tool name. No title, heading, or metadata above it.
+- Line 1 is the answer in bold: one plain sentence that answers what the user asked, in their words where possible ("test_report is fine; another test changes the settings it reads."). It never opens with a label, verdict word, rank, ID, count, path, hash, or tool name. No title, heading, or metadata above it.
 - Directly under it, in plain sentences without labels: every finding that alone defeats the goal, every blocker, every precondition of the first step, any security, credential, or data-loss risk seen out of scope (say "outside what you asked"), and what you did not read or run when that limits the answer. Nothing else goes there: how you worked (commands, timings, which agent found what, refs compared) appears once, inside the point it proves, or not at all. Never file an open risk as dismissed.
 - A claim of absence names its coverage in the same sentence: "No injection in the 4 handlers I read; I did not review `admin/`", never "nothing found".
 - Stopped, input needed: line 1 says in plain words what is missing and why it blocks ("**I need the error message before I can look for the cause.**"), then `Verdict: Stopped`. `**Next:**` holds at most 3 numbered ways to unblock, the default marked; they appear nowhere else.
 - Several agents or lenses: line 1 states where they agree and where they split; then the disagreements; per-agent detail last, without repeating shared findings.
 
 Body:
-- One numbered item per point, worst or most useful first: a bold plain sentence that states the point ("The cache is shared between requests", never "Analysis"), then one or two sentences on why it matters, then a view only when it helps. A point that needs no explanation is its bold sentence alone. A one-point answer is plain sentences, not a list. Long artifacts and files a reader returns to (reports, context packs) use `##` sections with stable names.
+- One numbered item per point, worst or most useful first: a bold plain sentence that states the point ("The cache is shared between requests", never "Analysis"), then the consequence and decisive evidence, with a view only when it helps. A point that needs no explanation is its bold sentence alone. A one-point answer is plain sentences, not a list. Long artifacts and files a reader returns to (reports, context packs) use `##` sections with stable names.
 - Plain words only. Never show a code the reader must decode: ranks (S1), internal IDs (AC-3, SL-04, Q1), bracket tags, status tags, the skill's own vocabulary, or its rules ("the skill says", "rule 3"). Say the meaning: "serious", "the third acceptance criterion". Names from the user's own files and tools stay exact.
 - Say how sure you are in the sentence, once per point: "I ran this", "I read this, I did not run it", "this is a guess". Never tag every line.
 - Shortest complete answer: cut every sentence the reader would not miss, and every view that repeats a sentence. Most answers need no view.
@@ -83,8 +100,8 @@ Body:
 
 End:
 - `Verdict: <word>` on its own line just before `**Next:**`: the skill's fixed verdict word, plus a short qualifier when the skill defines one. Same state, same word across skills. Verdict words are everyday words, never codes.
-- `**Next:**` holds every step needed to act, in order, one line each. A fix or action is stated here, not also in the body. Or the decisions needed, each one direct question with at most 4 options and the default marked. A follow-up mode goes on a Next line.
-- `**Changed:** <paths>` or `**Changed:** none`, only in skills that can write. No other process narration and no metadata lines (refs read, hashes, scope, checks run): how the work was done appears only when it limits the answer, as a plain sentence under line 1.
+- `**Next:**` holds every reader action, decision, prerequisite check, question, and way to unblock, once, in dependency order. Each decision is one direct question with at most 4 options and the default marked. A follow-up mode goes on a Next line. Complete artifacts keep their operational instructions; do not repeat them as wrapper advice.
+- `**Changed:** <paths>` or `**Changed:** none`, only in skills that can write. No standalone process inventory.
 
 Pick the view by content:
 
@@ -92,7 +109,7 @@ Pick the view by content:
 |---|---|
 | Findings, claims, risks, questions | Numbered list, one bold plain sentence each |
 | Up to 5 options or checks with the same short fields | Table |
-| Items with several long fields | One numbered item each, one field per line |
+| Points with long explanations | One numbered item with plain sentences |
 | Runtime or failure flow, causal chain | Call tree, `file:line` per node; only nodes you read or ran, unknown edges marked unknown |
 | Layout, ownership, scope of a change | Shallow file tree, one responsibility per entry |
 | Events in order | Timeline, one `time or step - event` line each; a schedule whose steps carry two or more fields is a table |
@@ -109,7 +126,7 @@ Pick the view by content:
 
 - Prefer text views: they read the same in a terminal and on a rendered page.
 - Long artifacts (a plan, a launch calendar, copy): the signature wraps the artifact. Answer and gates above, Next below; the artifact keeps its own sections and always ships complete.
-- Prose follows ASD-STE100 loosely: procedure sentences up to 20 words, descriptive up to 25; one meaning per word; active voice; articles kept. Replace jargon, or define it once.
+- Use short, complete sentences, one meaning per word, active voice, and articles. Replace jargon before adding a definition.
 - A long explanation: offer an interactive HTML page; a video only on explicit request (`hl-explainer-video`).
 - Deliver the requested artifact (file, table, diagram, code) within the skill's permissions, not instructions to make it.
 - Quote only the log lines that prove a point; raw logs are never the result.

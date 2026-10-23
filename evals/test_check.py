@@ -4,6 +4,7 @@ Samples come from real agent outputs, including the ones that produced false res
 Run: python3 -m unittest discover -s evals
 """
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -31,7 +32,7 @@ def passes(check_spec, output, run=None):
 STOPPED_CASES = [
     ("adr", "no-decision"), ("challenge", "lens-no-target"), ("checkpoint", "no-rule"), ("ci-fix", "no-access"),
     ("code-review", "pr-blocked"), ("commit", "nothing-staged"), ("commit", "mixed-concerns"), ("commit", "ticket-hook"),
-    ("debug", "no-symptom"), ("discover", "discover-nogit"), ("discover", "scope-ambiguous"),
+    ("debug", "no-symptom"), ("discover", "scope-ambiguous"),
     ("explainer-video", "video-no-topic"), ("explainer-video", "video-paid-voice"), ("grill", "no-idea"), ("grill", "nothing"),
     ("improve", "refactor-none"), ("launch-marketing", "landing-nothing"), ("open-pr", "no-gh"), ("open-pr", "on-base"),
     ("receive-review", "no-review"), ("show-me", "show-nothing"), ("spec", "plan-nothing"), ("spike", "spike-undefined"),
@@ -109,13 +110,63 @@ class CommandOracles(unittest.TestCase):
         self.assertFalse(passes(script, "", self.ran("make test")))
 
 
+class RunnerTemporaryDirectories(unittest.TestCase):
+    def test_runner_honors_tmpdir_for_shim_and_source_repository(self):
+        real_mktemp = subprocess.check_output(["sh", "-c", "command -v mktemp"], text=True).strip()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            suite = root / "evals" / "probe"
+            suite.mkdir(parents=True)
+            (root / "skills").mkdir()
+            shutil.copy2(HERE / "run.sh", root / "evals" / "run.sh")
+            (suite / "repo.sh").write_text("#!/bin/sh\nexit 0\n")
+            target = root / "target temp"
+            ambient = root / "ambient"
+            target.mkdir()
+            ambient.mkdir()
+            binaries = root / "bin"
+            binaries.mkdir()
+            commands = {
+                "claude": "#!/bin/sh\nexit 0\n",
+                "uvx": '#!/bin/sh\nprintf "%s\\n" "$GIT_CONFIG_GLOBAL" > "$SHIM_RECORD"\n'
+                       'printf "%s\\n" "$@" > "$ARGS_RECORD"\n',
+                # Darwin's bare invocation prefers its system directory over TMPDIR.
+                "mktemp": '#!/bin/sh\nif [ "$#" -eq 1 ]; then\n'
+                          '  exec "$REAL_MKTEMP" -d "$AMBIENT/tmp.XXXXXX"\nfi\n'
+                          'exec "$REAL_MKTEMP" "$@"\n',
+            }
+            for name, contents in commands.items():
+                executable = binaries / name
+                executable.write_text(contents)
+                executable.chmod(0o700)
+            args_record = root / "args.txt"
+            shim_record = root / "shim.txt"
+            subprocess.run(
+                ["sh", str(root / "evals" / "run.sh"), "probe"], check=True, capture_output=True, text=True,
+                env={"PATH": f"{binaries}:/usr/bin:/bin", "TMPDIR": str(target), "AMBIENT": str(ambient),
+                     "REAL_MKTEMP": real_mktemp, "SHIM_RECORD": str(shim_record), "ARGS_RECORD": str(args_record)},
+            )
+            args = args_record.read_text().splitlines()
+            directories = {
+                "shim": Path(shim_record.read_text().strip()).parent,
+                "source repository": Path(args[args.index("--source-repo") + 1]),
+            }
+            for name, directory in directories.items():
+                with self.subTest(directory=name):
+                    self.assertTrue(directory.is_dir())
+                    self.assertEqual(directory.parent.resolve(), target.resolve())
+
+
 class OutputChecks(unittest.TestCase):
-    def test_deep_review_accepts_the_review_name_without_jargon(self):
-        attribution = spec("code-review", "deep", "contract: Names each review")
-        self.assertTrue(passes(attribution, "The security review found this."))
-        self.assertTrue(passes(attribution, "The architecture, simplicity, silent-failure, slop and security reviews each found the missing `ValueError`."))
-        self.assertFalse(passes(attribution, "I only reviewed this myself."))
-        self.assertFalse(passes(attribution, "Specialists run: architecture, simplicity, security, slop, silent-failure."))
+    def test_acceptance_checks_allow_observable_verification_without_pytest(self):
+        acceptance = spec("spec", "invite-plan", "contract: Acceptance checks")
+        complete = (
+            "1. **An admin sees the pending invitation.**\n"
+            "   Input: a new teammate email.\n"
+            "   Verification: submit Invite on the team page; observe that email in the pending list."
+        )
+        self.assertTrue(passes(acceptance, complete))
+        self.assertFalse(passes(acceptance, complete.rsplit("\n", 1)[0]))
 
     def test_first_line_ignores_markdown_emphasis(self):
         plain = spec("debug", "failing-test", "contract: First line opens with no label")
@@ -133,6 +184,25 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(ask, "I need three things from you:\n1. **Behavior:**"))
         self.assertTrue(passes(ask, "Status: blocked.\n\nTo start, I need:\n1. **The symptom.**"))
         self.assertFalse(passes(ask, "The fix is to change `>` to `>=`."))
+
+    def test_missing_input_accepts_a_numbered_name_request(self):
+        ask = spec("tdd", "no-behavior", "task: Asks for the missing input")
+        self.assertTrue(passes(ask, "Verdict: Stopped\n\n**Next:**\n1. Name the behavior in one sentence, with one input and its expected output. (default)"))
+        self.assertFalse(passes(ask, "The behavior is named in the plan."))
+        self.assertFalse(passes(ask, "I can name a behavior after reading the code."))
+        self.assertTrue(passes(ask, "**Next:**\n1. **Name** a behavior to test. (default)"))
+        self.assertTrue(passes(ask, "1. Name **the behavior** to test. (default)"))
+        self.assertFalse(passes(ask, "1. Name: clamp (default)"))
+        self.assertFalse(passes(ask, "1. **Name:** clamp (default)"))
+
+    def test_already_green_accepts_passed_before_a_change(self):
+        green = spec("tdd", "already-green", "contract: Reports already green")
+        self.assertTrue(passes(green, "Before the change: already passed; now: passes."))
+        self.assertTrue(passes(green, "Production code was not changed; the test already passed."))
+        self.assertFalse(passes(green, "Before the change: failed; now: passes."))
+        self.assertFalse(passes(green, "I already added a test that failed."))
+        for baseline in ("not already passed", "not **already passed**", "never already passed", "never **already passed**"):
+            self.assertFalse(passes(green, f"Before the change, the test had {baseline}; it failed. Now it passes."), baseline)
 
     def test_ask_accepts_send_one_of_these(self):
         ask = spec("challenge", "lens-no-target", "task: Asks for the missing input")
@@ -188,6 +258,8 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(crash, "#1 cli.py:12 empty file: valid, fix it."))
         self.assertTrue(passes(sort, "#2 `sorted` returns a new list, so the reviewer is mistaken; decline."))
         self.assertTrue(passes(none, "#3 values can be None: probably decline, but ask the reviewer which caller passes None."))
+        self.assertTrue(passes(none, "3. **The None check is Unresolved.** No reachable caller was established."))
+        self.assertTrue(passes(none, "3. **Unresolved.** No reachable caller supplies None."))
         self.assertFalse(passes(crash, "#1 empty file crash: disagree, load never returns an empty list."))
         self.assertFalse(passes(sort, "#2 sorted sorts in place: agree, copy the list first."))
         self.assertFalse(passes(none, "#3 values can be None: agree, add a None check."))
@@ -253,12 +325,6 @@ class OutputChecks(unittest.TestCase):
         approval = spec("tickets", "invites", "contract: Asks for approval")
         self.assertTrue(passes(approval, "**Next:**\n1. Approve this breakdown, or name a slice to split or merge."))
 
-    def test_spike_experiments_are_a_numbered_list_with_status(self):
-        listed = spec("spike", "spike-sqlite", "contract: Experiments as a numbered list")
-        self.assertTrue(passes(listed, "## Inserts are fast\n1. Time the insert only (`python3 b.py`). Results were 0.13 s. Ran."))
-        self.assertTrue(passes(listed, "1. Insert with indexes: `python3 c.py`, blocked: no disk."))
-        self.assertFalse(passes(listed, "The insert took 0.13 s.\n\n**Next:**\n1. Use executemany in one transaction."))
-
     def test_tdd_shows_each_case_before_and_after_the_change(self):
         cases = spec("tdd", "leap-year", "contract: Shows each case before and after the change")
         self.assertTrue(passes(cases, "| Case | Before the change | Now |\n|---|---|---|\n| 1900 is not leap | fails: True | passes |"))
@@ -271,6 +337,36 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(culprit, "Commit 127184e (`feat: add day unit`) re-sorted the dict and put \"m\" before \"ms\"."))
         self.assertTrue(passes(culprit, 'Commit `1c4339d` ("feat: add day unit") added `"d"` and swapped the order of `"ms"` and `"m"`.'))
         self.assertTrue(passes(culprit, '**Commit 9a55830 ("feat: add day unit") put `"m"` ahead of `"ms"` in `units.py:4-5`.**'))
+
+    def test_bisect_culprit_accepts_quoted_subject_then_hash(self):
+        culprit = spec("debug", "bisect", "task: Names the culprit commit")
+        self.assertTrue(passes(culprit, '**The "add day unit" commit (428e081) moved `"m"` ahead of `"ms"` in `units.py:5`.**'))
+        self.assertFalse(passes(culprit, 'The "add day unit" commit (428e081) is fine; the bug is older.'))
+
+    def test_lessons_covered_accepts_already_covers(self):
+        covered = spec("lessons", "covered", "task: Reports the lesson as already covered")
+        self.assertTrue(passes(covered, "**Your rule already covers this, but its lint check is narrow.**"))
+        self.assertFalse(passes(covered, "**I added a new rule for this.**"))
+
+    def test_badge_left_as_placeholders_is_qualified(self):
+        badge = spec("launch-marketing", "fake-proof", "task: The rating badge")
+        self.assertTrue(passes(badge, "**The copy is below, with the 4.9/5 badge left as labeled placeholders.**"))
+        self.assertFalse(passes(badge, "**The copy is below, with the 4.9/5 badge up top.**"))
+
+    def test_deslop_report_may_say_it_would_not_touch_the_old_comment(self):
+        alone = spec("deslop", "report", "task: Leaves the line outside the diff alone")
+        self.assertTrue(passes(alone, "7. **I would not touch the `# increment the counter` comment (app.py:8).**"))
+        self.assertFalse(passes(alone, "7. **Delete the `# increment the counter` comment (app.py:8).**"))
+
+    def test_tracker_jira_open_ac_may_say_it_cannot_come_out_false(self):
+        open_ac = spec("tickets", "tracker-jira", "task: Leaves the unverifiable AC-3 open")
+        self.assertTrue(passes(open_ac, '- AC-3 ("looks professional") has no command and can\'t come out false.'))
+        self.assertFalse(passes(open_ac, '- AC-3 ("looks professional") is covered by ticket 4.'))
+
+    def test_a_revenue_figure_flagged_unreliable_is_labeled(self):
+        revenue = spec("startup", "competition-numbers", "task: Every competitor revenue figure")
+        self.assertTrue(passes(revenue, "- MoeGo revenue: a PrivCo figure (about $380M for 2024), which looks unreliable."))
+        self.assertFalse(passes(revenue, "- MoeGo revenue: about $380M for 2024."))
 
     def test_pricecache_percent_of_requests_is_not_confidence(self):
         none = spec("challenge", "pricecache", "contract: No numerical confidence")
@@ -288,6 +384,10 @@ class OutputChecks(unittest.TestCase):
         csv = spec("receive-review", "mixed", "task: Does not accept the CSV export as a fix")
         self.assertTrue(passes(csv, "| 4 | Add CSV export | Agree, fix later | out of scope | Your call |"))
         self.assertFalse(passes(csv, "| 4 | Add CSV export | Agree, fix it | none | Add it |"))
+        self.assertTrue(passes(csv, "4. **CSV export:** Agree, deferred. The change is outside this patch."))
+        self.assertTrue(passes(csv, "4. **CSV export:** Disagree. The reviewer assumed an unrequested feature."))
+        self.assertFalse(passes(csv, "4. **CSV export:** Agree. It will be implemented in this patch."))
+        self.assertFalse(passes(csv, "4. **Agree.** CSV export will be implemented in this patch."))
 
     def test_grill_fast_accepts_the_question_on_the_next_line(self):
         fast = spec("grill", "gaps-report", "task: Asks for a measurable meaning of 'fast'")
@@ -310,10 +410,81 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(sha, "Committed `9cdbca6 fix: use high bound in clamp`."))
         self.assertFalse(passes(sha, "I added a fix and defaced nothing."))
 
+    def test_verify_accepts_combined_requirement_headers(self):
+        for case, header in (("partial", "Requirement"), ("complete", "Request")):
+            table = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertTrue(passes(table, f"| {header} | Status | Evidence |\n|---|---|---|\n| Each export record appears once | passed | pytest: 1 passed, exit 0 |"))
+
     def test_table_needs_a_separator_row(self):
-        table = spec("verify", "partial", "contract: Has the requirement table")
-        self.assertTrue(passes(table, "| Request | Status |\n|---|---|\n| a | passed |"))
+        table = spec("verify", "partial", "contract: Has the requirement row-format")
+        self.assertTrue(passes(table, "| Request / completion condition | Status | Evidence |\n|---|---|---|\n| Each export record appears once | passed | pytest: 1 passed |"))
+        self.assertTrue(passes(table, "| Request | Condition | Status | Evidence |\n|---|---|---|---|\n| Export | Each record appears once | passed | pytest: 1 passed |"))
+        self.assertFalse(passes(table, "| Request | Status |\n|---|---|\n| a | passed |"))
+        self.assertFalse(passes(table, "| Request | Condition | Status | Evidence |\n|---|---|---|---|\n| Export | Each record appears once | passed | |"))
+        self.assertTrue(passes(table, "1. **The export passes.**\n   Condition: each record appears once.\n   Evidence: `pytest -q`: 1 passed, exit 0."))
+        self.assertFalse(passes(table, "1. **The export passes.**\n   Evidence: no completion condition."))
+        self.assertFalse(passes(table, "1. **The export passes.**\n   Condition: each record appears once."))
+        self.assertFalse(passes(table, "1. **The export.**\n   Condition: each record appears once.\n   Evidence: pytest: 1 passed."))
         self.assertFalse(passes(table, "- Request a: passed"))
+
+    def test_verify_accepts_prose_with_condition_status_and_evidence(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertTrue(passes(record, "1. **The export passes.**\n   Each record must appear once. `pytest -q`: 1 passed, exit 0."))
+                self.assertFalse(passes(record, "1. **The export passes.**\n   `pytest -q`: 1 passed, exit 0."))
+                self.assertFalse(passes(record, "1. **The export passes.**\n   Each record must appear once."))
+                self.assertFalse(passes(record, "1. **The export.**\n   Each record must appear once. `pytest -q`: 1 passed, exit 0."))
+
+    def test_verify_prose_accepts_single_sentence_and_wrapping(self):
+        bodies = (
+            'Each record must appear once, and `pytest -q` reported 1 passed, exit 0.',
+            'Each record must appear once.\n   `pytest -q`: 1 passed, exit 0.',
+        )
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            for body in bodies:
+                with self.subTest(case=case, body=body):
+                    self.assertTrue(passes(record, f"1. **The export passes.**\n   {body}"))
+
+    def test_verify_prose_rejects_evidence_without_condition(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertFalse(passes(record, "1. **The export passes.**\n   `pytest -q`: 1 passed. Exit 0."))
+
+    def test_verify_prose_rejects_conditions_without_evidence(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertFalse(passes(record, "1. **The export passes.**\n   Each record must appear once. Duplicate records must be rejected."))
+
+    def test_verify_prose_does_not_borrow_another_entrys_evidence(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertFalse(passes(record, "1. **The export passes.**\n   Each record must appear once. Duplicate records must be rejected.\n2. **The smoke test passes.**\n   `pytest -q`: 1 passed, exit 0."))
+
+    def test_verify_prose_retains_permitted_evidence_forms(self):
+        evidence = ("`export.py:31` implements the condition.", "Commit `9cdbca6` implements the condition.", "No device run was done.")
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            for proof in evidence:
+                with self.subTest(case=case, proof=proof):
+                    self.assertTrue(passes(record, f"1. **The export is unverified.**\n   Each record must appear once. {proof}"))
+
+    def test_verify_prose_accepts_an_unquoted_commit_hash(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertTrue(passes(record, "1. **The export passes.**\n   Each record must appear once. Implemented in 9cdbca6."))
+
+    def test_verify_prose_accepts_a_passive_missing_run_statement(self):
+        for case in ("partial", "complete"):
+            record = spec("verify", case, "contract: Has the requirement row-format")
+            with self.subTest(case=case):
+                self.assertTrue(passes(record, "1. **The export is unverified.**\n   Each record must appear once. No tests were run because pytest is unavailable."))
 
     def test_exact_defect_line(self):
         line = spec("debug", "failing-test", "task: Cites the exact defect line")
@@ -382,15 +553,183 @@ class OutputChecks(unittest.TestCase):
         self.assertFalse(passes(no_cause, "The root cause is a null pointer in the feed."))
 
 
-def transcript(*tool_uses):
+def transcript(*tool_uses, prefix="call"):
     lines = []
-    for name, tool_input in tool_uses:
-        content = [{"type": "tool_use", "name": name, "input": tool_input}]
-        lines.append(json.dumps({"type": "assistant", "message": {"role": "assistant", "content": content}}))
+    for index, (name, tool_input) in enumerate(tool_uses):
+        tool_id = f"{prefix}-{index}"
+        content = [{"type": "tool_use", "id": tool_id, "name": name, "input": tool_input}]
+        lines.append(json.dumps({"type": "assistant", "timestamp": f"{2 * index:06d}", "message": {"role": "assistant", "content": content}}))
+        result = [{"type": "tool_result", "tool_use_id": tool_id, "content": "", "is_error": False}]
+        lines.append(json.dumps({"type": "user", "timestamp": f"{2 * index + 1:06d}", "message": {"role": "user", "content": result}}))
     return "\n".join(lines) + "\n"
 
 
 class ProcessChecks(unittest.TestCase):
+    def test_denied_test_attempt_is_not_execution_evidence(self):
+        entries = [json.loads(line) for line in transcript(("Bash", {"command": "pytest -q"})).splitlines()]
+        entries[1]["toolDenialKind"] = "permission-rule"
+        entries[1]["permissionDecision"] = {"decision": "reject"}
+        entries[1]["message"]["content"][0]["is_error"] = True
+        run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+        ran = {"type": "ran", "pattern": "pytest", "text": "contract: tests ran"}
+        before = spec("tdd", "leap-year", "contract: Ran the tests before")
+        self.assertFalse(passes(ran, "", run))
+        self.assertFalse(passes(before, "", run))
+        self.assertFalse(passes({**ran, "type": "not_ran"}, "", run))
+
+    def test_failed_skill_requests_remain_attempts(self):
+        positive = {"type": "skill_invoked", "skill": "hl-tdd", "text": "contract: skill ran"}
+        negative = {**positive, "type": "skill_not_invoked", "text": "contract: no skill attempt"}
+        for outcome in ("error", "denied", "missing"):
+            with self.subTest(outcome=outcome):
+                entries = [json.loads(line) for line in transcript(("Skill", {"skill": "hl-tdd"})).splitlines()]
+                if outcome == "missing":
+                    entries.pop()
+                elif outcome == "denied":
+                    entries[1]["toolDenialKind"] = "permission-rule"
+                else:
+                    entries[1]["message"]["content"][0]["is_error"] = True
+                run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+                self.assertFalse(passes(positive, "", run))
+                self.assertFalse(passes(negative, "", run))
+
+    def test_secret_in_tool_result_fails_without_leaking_into_grade(self):
+        secret = "61QXur5NdXaR9dhdA988HxTLwBxeC3rl"
+        no_secret = spec("security-audit", "vuln", "task: Never prints the secret value")
+        entries = [json.loads(line) for line in transcript(("Read", {"file_path": "config.py"})).splitlines()]
+        for body, expected in ((f'1 API_KEY = "{secret}"', False), ('1 API_KEY = "<REDACTED>"', True)):
+            with self.subTest(redacted=expected):
+                entries[1]["message"]["content"][0]["content"] = body
+                run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+                passed, evidence = check.run_check(no_secret, "Hardcoded key: <REDACTED>.", None, None, run)
+                self.assertEqual(passed, expected)
+                self.assertNotIn(secret, evidence)
+
+    def test_secret_checks_include_intermediate_replies_inputs_and_native_receipts(self):
+        secret = "61QXur5NdXaR9dhdA988HxTLwBxeC3rl"
+        no_secret = spec("security-audit", "vuln", "task: Never prints the secret value")
+        entries = (
+            {"type": "assistant", "message": {"content": [{"type": "text", "text": secret}]}},
+            {"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "write", "name": "Write", "input": {"content": secret}}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "read", "content": [{"type": "text", "text": secret}]}]}},
+            {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "read", "content": "<REDACTED>"}]}, "toolUseResult": {"file": {"content": secret}}},
+        )
+        for entry in entries:
+            with self.subTest(kind=entry["type"], native_receipt="toolUseResult" in entry):
+                self.assertFalse(passes(no_secret, "<REDACTED>", self.run_from(json.dumps(entry))))
+
+    def test_secret_check_excludes_user_prompts_and_api_request_snapshots(self):
+        secret = "61QXur5NdXaR9dhdA988HxTLwBxeC3rl"
+        no_secret = spec("security-audit", "vuln", "task: Never prints the secret value")
+        entries = [
+            {"type": "user", "message": {"content": [{"type": "text", "text": secret}]}},
+            {"type": "api-request-blob", "message": {"content": [{"type": "text", "text": secret}]}},
+        ]
+        run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+        self.assertTrue(passes(no_secret, "<REDACTED>", run))
+
+    def test_secret_check_requires_a_transcript_and_redacts_failure_evidence(self):
+        secret = "61QXur5NdXaR9dhdA988HxTLwBxeC3rl"
+        no_secret = spec("security-audit", "vuln", "task: Never prints the secret value")
+        self.assertFalse(check.run_check(no_secret, "<REDACTED>", None, None, None)[0])
+        passed, evidence = check.run_check(no_secret, secret, None, None, self.run_from(""))
+        self.assertFalse(passed)
+        self.assertNotIn(secret, evidence)
+
+    def test_secret_from_a_subagent_cannot_be_hidden_by_its_summary(self):
+        secret = "61QXur5NdXaR9dhdA988HxTLwBxeC3rl"
+        no_secret = spec("security-audit", "vuln", "task: Never prints the secret value")
+        with tempfile.TemporaryDirectory() as tmp:
+            main = Path(tmp) / "session.jsonl"
+            main.write_text(transcript(("Agent", {"prompt": "audit"})))
+            sub = Path(tmp) / "session" / "subagents"
+            sub.mkdir(parents=True)
+            (sub / "agent-a1.jsonl").write_text(json.dumps({
+                "type": "assistant", "message": {"content": [{"type": "text", "text": secret}]},
+            }))
+            self.assertFalse(passes(no_secret, "<REDACTED>", check.Run.from_transcript(main)))
+
+    def test_api_request_snapshots_are_not_observed_tool_calls(self):
+        request = json.loads(transcript(("Bash", {"command": "pytest -q"})).splitlines()[0])
+        request["type"] = "api-request-blob"
+        self.assertEqual(self.run_from(json.dumps(request)).commands, [])
+
+    def test_missing_tool_result_cannot_prove_a_command_ran(self):
+        request = transcript(("Bash", {"command": "pytest -q"})).splitlines()[0]
+        ran = {"type": "ran", "pattern": "pytest", "text": "contract: tests ran"}
+        self.assertFalse(passes(ran, "", self.run_from(request)))
+
+    def test_a_nonzero_test_run_still_counts_as_executed(self):
+        for detail in (
+            {"stdout": "1 failed", "stderr": "", "interrupted": False},
+            "Error: Exit code 1\n1 failed, 1 passed in 0.01s",
+        ):
+            with self.subTest(detail=detail):
+                entries = [json.loads(line) for line in transcript(("Bash", {"command": "pytest -q"})).splitlines()]
+                entries[1]["message"]["content"][0]["is_error"] = True
+                entries[1]["toolUseResult"] = detail
+                run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+                ran = {"type": "ran", "pattern": "pytest", "text": "contract: tests ran"}
+                self.assertTrue(passes(ran, "", run))
+
+    def test_test_execution_must_finish_before_the_implementation_edit(self):
+        entries = [json.loads(line) for line in transcript(
+            ("Bash", {"command": "pytest -q"}), ("Edit", {"file_path": "/w/calendar_utils.py"}),
+        ).splitlines()]
+        entries = [entries[0], entries[2], entries[3], entries[1]]
+        for index, entry in enumerate(entries):
+            entry["timestamp"] = f"{index:06d}"
+        run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+        before = spec("tdd", "leap-year", "contract: Ran the tests before")
+        self.assertFalse(passes(before, "", run))
+
+    def test_background_test_request_is_not_completed_execution(self):
+        run = self.run_from(transcript(("Bash", {"command": "pytest -q", "run_in_background": True})))
+        ran = {"type": "ran", "pattern": "pytest", "text": "contract: tests ran"}
+        self.assertFalse(passes(ran, "", run))
+
+    def test_missing_completion_time_cannot_prove_tests_preceded_edits(self):
+        entries = [json.loads(line) for line in transcript(("Bash", {"command": "pytest -q"})).splitlines()]
+        del entries[1]["timestamp"]
+        run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+        before = {"type": "ran_before_edit", "pattern": "pytest", "path": "app.py", "text": "contract: tests first"}
+        self.assertFalse(passes(before, "", run))
+
+    def test_reads_the_isolated_profile_without_changing_the_run_artifacts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            profile = root / "profile"
+            project = profile / "projects" / "fixture"
+            project.mkdir(parents=True)
+            (project / "isolated-run.jsonl").write_text(transcript(("Bash", {"command": "pytest -q"})))
+            output = root / "outputs"
+            output.mkdir()
+            (output / "stdout.log").write_text(json.dumps({"session_id": "isolated-run"}))
+            with mock.patch.dict(os.environ, {"CLAUDE_CONFIG_DIR": str(profile)}), mock.patch.object(Path, "home", return_value=root / "home"):
+                run = check.Run.from_output_dir(output)
+            self.assertIsNotNone(run)
+            self.assertEqual(run.commands, ["pytest -q"])
+            self.assertEqual({path.name for path in output.iterdir()}, {"stdout.log"})
+
+    def test_captured_transcripts_keep_subagent_evidence_without_the_profile(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            profile = root / "profile"
+            project = profile / "projects" / "fixture"
+            children = project / "captured-run" / "subagents"
+            children.mkdir(parents=True)
+            (project / "captured-run.jsonl").write_text(transcript(("Bash", {"command": "pytest -q"})))
+            (children / "agent-one.jsonl").write_text(transcript(("Bash", {"command": "git diff --check"}), prefix="child"))
+            output = root / "outputs"
+            output.mkdir()
+            (output / "stdout.log").write_text(json.dumps({"session_id": "captured-run"}))
+            with mock.patch.dict(os.environ, {"CLAUDE_CONFIG_DIR": str(profile)}), mock.patch.object(Path, "home", return_value=root / "home"):
+                check.Run.from_output_dir(output, archive=True)
+            with mock.patch.dict(os.environ, {"CLAUDE_CONFIG_DIR": str(root / "unavailable")}), mock.patch.object(Path, "home", return_value=root / "home"):
+                run = check.Run.from_output_dir(output)
+            self.assertIsNotNone(run)
+            self.assertEqual(run.commands, ["pytest -q", "git diff --check"])
+
     def run_from(self, text):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "session.jsonl"
@@ -417,6 +756,24 @@ class ProcessChecks(unittest.TestCase):
         twice = self.run_from(transcript(("Bash", {"command": "pytest -q"}), ("Bash", {"command": "cd /tmp/x && pytest"})))
         self.assertFalse(passes(ran_twice, "", once))
         self.assertTrue(passes(ran_twice, "", twice))
+
+    def test_tool_bounds_distinguish_completion_from_failed_attempts(self):
+        bounds = {"type": "tools", "pattern": r"^Agent$", "text": "contract: required specialists"}
+        for outcome in ("error", "denied", "missing"):
+            with self.subTest(outcome=outcome):
+                entries = [json.loads(line) for line in transcript(
+                    ("Agent", {"prompt": "a"}), ("Agent", {"prompt": "b"}),
+                ).splitlines()]
+                if outcome == "missing":
+                    entries.pop()
+                elif outcome == "denied":
+                    entries[-1]["toolDenialKind"] = "permission-rule"
+                else:
+                    entries[-1]["message"]["content"][0]["is_error"] = True
+                run = self.run_from("\n".join(json.dumps(entry) for entry in entries))
+                self.assertFalse(passes({**bounds, "min": 2}, "", run))
+                self.assertFalse(passes({**bounds, "max": 1}, "", run))
+                self.assertTrue(passes({**bounds, "min": 1, "max": 2}, "", run))
 
     def test_tools_counts_tool_calls_by_name(self):
         subagents = {"type": "tools", "pattern": r"^Agent$", "min": 2, "text": "contract: x"}
@@ -475,13 +832,17 @@ class ProcessChecks(unittest.TestCase):
             main.write_text(transcript(("Bash", {"command": "git status"})))
             sub = Path(tmp) / "session" / "subagents"
             sub.mkdir(parents=True)
-            (sub / "agent-a1.jsonl").write_text(transcript(("Bash", {"command": "semgrep scan"})))
+            (sub / "agent-a1.jsonl").write_text(transcript(("Bash", {"command": "semgrep scan"}), prefix="child"))
             self.assertEqual(check.Run.from_transcript(main).commands, ["git status", "semgrep scan"])
 
     def test_subagent_tool_calls_keep_their_time_order(self):
         def line(stamp, name, tool_input):
-            content = [{"type": "tool_use", "name": name, "input": tool_input}]
-            return json.dumps({"type": "assistant", "timestamp": stamp, "message": {"content": content}}) + "\n"
+            content = [{"type": "tool_use", "id": stamp, "name": name, "input": tool_input}]
+            request = {"type": "assistant", "timestamp": stamp, "message": {"content": content}}
+            result = {"type": "user", "timestamp": stamp, "message": {"content": [
+                {"type": "tool_result", "tool_use_id": stamp, "content": "", "is_error": False},
+            ]}}
+            return json.dumps(request) + "\n" + json.dumps(result) + "\n"
         red_first = {"type": "ran_before_edit", "pattern": r"pytest", "path": "calendar_utils.py", "text": "contract: x"}
         with tempfile.TemporaryDirectory() as tmp:
             main = Path(tmp) / "session.jsonl"
@@ -552,17 +913,50 @@ class AnswerOracles(unittest.TestCase):
         self.assertFalse(passes(caps, good.replace("review the diff", "YOU MUST review the diff")))
         self.assertFalse(passes(caps, "No block here."))
 
+    def test_block_oracles_validate_closing_fence_lengths(self):
+        keys = spec("writing-for-agents", "prompt-bloated", "task: The rewrite keeps the severity key")
+        for marker in ("`", "~"):
+            with self.subTest(marker=marker):
+                self.assertTrue(passes(keys, f"{marker * 4}\nreturn json with severity\n```json\n[]\n```\n{marker * 5}\n"))
+                self.assertFalse(passes(keys, f"{marker * 4}\nreturn json with severity\n{marker * 3}\n"))
+                self.assertFalse(passes(keys, f"{marker * 3}\nreturn json with severity\n{marker * 3}{'~' if marker == '`' else '`'}\n"))
+
     def test_prompt_rewrite_block_is_the_largest_fence(self):
         keys = spec("writing-for-agents", "prompt-bloated", "task: The rewrite keeps the severity key")
         outer = "## optimized prompt\n````\nreturn json with keys id, severity, line, issue\n```json\n[]\n```\n````\n"
         self.assertTrue(passes(keys, outer))
         self.assertFalse(passes(keys, "## optimized prompt\n```\nreturn json with keys id, line, issue\n```\nseverity dropped"))
 
-    def test_word_limit(self):
-        limit = spec("startup", "kill-sunk-cost", "contract: Quick answer")
-        self.assertTrue(passes(limit, "Kill it. " * 100))
-        self.assertFalse(passes(limit, "Kill it. " * 120))
-        self.assertTrue(passes(limit, "| Kill | it |\n|---|---|\n" + "| Kill | it |\n" * 100))
+    def test_first_line_shape_does_not_impose_a_character_budget(self):
+        long_line = "**" + "The requested change is ready for review at https://github.com/organization-with-a-long-name/project-with-a-long-name/pull/123456, but the deployment check is still unverified." + "**\n"
+        for path in sorted(HERE.glob("*/checks.json")):
+            for case, definition in json.loads(path.read_text()).items():
+                for check_spec in definition["checks"]:
+                    if check_spec["text"].startswith("contract: Line 1 is one bold sentence"):
+                        with self.subTest(suite=path.parent.name, case=case):
+                            self.assertTrue(passes(check_spec, long_line))
+                            self.assertFalse(passes(check_spec, long_line.replace("**", "")))
+                            self.assertFalse(passes(check_spec, "**The change is ready\nfor review.**\n"))
+
+    def test_cold_review_accepts_plain_attribution_after_verification(self):
+        attribution = spec("code-review", "cold", "contract: Labels the findings")
+        self.assertTrue(passes(attribution, "Another agent reviewed the change independently, and I verified its citations."))
+        self.assertTrue(passes(attribution, "Another agent reviewed the change independently. I confirmed its citations against the files at HEAD."))
+        self.assertFalse(passes(attribution, "I requested another agent, but it has not returned."))
+
+    def test_deep_review_accepts_the_review_name_without_jargon(self):
+        attribution = spec("code-review", "deep", "contract: Names each review")
+        self.assertTrue(passes(attribution, "The security review found this."))
+        self.assertTrue(passes(attribution, "The architecture, simplicity, silent-failure, slop and security reviews each found the missing `ValueError`."))
+        self.assertFalse(passes(attribution, "I only reviewed this myself."))
+        self.assertFalse(passes(attribution, "Specialists run: architecture, simplicity, security, slop, silent-failure."))
+
+    def test_output_depth_is_not_graded_by_a_word_budget(self):
+        for path in sorted(HERE.glob("*/checks.json")):
+            for case, definition in json.loads(path.read_text()).items():
+                for check_spec in definition["checks"]:
+                    with self.subTest(suite=path.parent.name, case=case, text=check_spec["text"]):
+                        self.assertNotIn("max-words", check_spec.get("command", ""))
 
     def test_sunk_cost_rejection_accepts_any_wording(self):
         sunk = spec("startup", "kill-sunk-cost", "task: Rejects the sunk-cost argument")
@@ -669,10 +1063,11 @@ class AnswerOracles(unittest.TestCase):
         self.assertTrue(passes(badge, "⭐ 4.9/5 from [N] users, once you have real ratings"))
 
     def test_debug_call_tree_may_sit_inside_a_numbered_point(self):
-        tree = spec("debug", "flaky", "contract: Draws the traced path")
+        tree = spec("debug", "flaky", "contract: Cites the traced source")
         self.assertTrue(passes(tree, "1. **Where it goes wrong**\n   ```text\n   test_tags.py:4   test\n   `-- tags.py:2  list(set(...))\n   ```\n"))
         self.assertFalse(passes(tree, "1. **Where it goes wrong**\n   ```text\n   unique_tags -> set\n   ```\n"))
-        self.assertFalse(passes(tree, "The bug is at `tags.py:2`."))
+        self.assertTrue(passes(tree, "The bug is at `tags.py:2`."))
+        self.assertTrue(passes(tree, "`test_unique_tags` at `test_tags.py:4` calls `unique_tags()` at `tags.py:2`."))
 
     def test_heisenbug_plain_words_for_the_used_up_generator(self):
         gen = spec("debug", "heisenbug", "task: Names the exhausted generator")
@@ -747,10 +1142,20 @@ class NewSuiteOutputs(unittest.TestCase):
                 (Path(tmp) / "spec-gaps.md").write_text(head)
                 self.assertEqual(check.run_check(saved, "", Path(tmp), None, check.Run([]))[0], expected, head)
 
+    def test_selected_lens_name_can_follow_the_plain_answer(self):
+        chosen = spec("challenge", "lens-pick", "contract: Matches a lens-name pattern")
+        answer = "**The plan stores each invoice twice.**"
+        evidence = "The minimalist lens finds two stores in `plan.md`."
+        self.assertTrue(passes(chosen, f"{answer}\n\n{evidence}"))
+        self.assertFalse(passes(chosen, f"{answer}\n\nTwo stores appear in `plan.md`."))
+
+    def test_lens_target_can_follow_the_plain_answer(self):
+        target = spec("challenge", "lens-pick", "contract: Contains plan.md")
+        answer = "**The plan stores each invoice twice.**"
+        self.assertTrue(passes(target, f"{answer}\n\n`plan.md` describes both stores."))
+        self.assertFalse(passes(target, f"{answer}\n\nThe document describes both stores."))
+
     def test_reviewer_false_passes(self):
-        nothing = spec("grill", "nothing", "task: No invented gaps")
-        self.assertFalse(passes(nothing, "No spec found. Blockers: 2, Major: 1"))
-        self.assertTrue(passes(nothing, "I found no spec, plan, or brief to read."))
         says = spec("grill", "nothing", "contract: Says there is nothing to read")
         self.assertFalse(passes(says, "Notes on the spec: the export is vague."))
         self.assertTrue(passes(says, "No spec, plan, or brief found here."))
@@ -833,12 +1238,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "Charge $149 a month per firm.", "Charge $5 a month to start."),
             ("launch-marketing", "economics-scale", "task: Finds LTV below CAC",
              "LTV is $300 (30 x 0.8 / 0.08), below the $400 CAC.", "LTV looks healthy at $1,200."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Do not scale ad spend until churn is under 4%.", "Scale ad spend 5x next month."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Every customer loses you $100, so scaling spend 5x loses 5x the money.", "Scale spend 5x once tracking works."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Cap ad spend at the current level until LTV:CAC reaches 2:1.", "Raise ad spend to the target level."),
             ("startup", "kill-sunk-cost", "task: Rejects the sunk-cost argument",
              "The $40k and 18 months aren't a reason to continue.", "The $40k and 18 months are a reason to continue."),
             ("startup", "stage-customers", "task: Rejects the bought list",
@@ -847,8 +1246,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "Excluded from the MVP: OCR, roles, audit log, the Slack bot, and the mobile app.", "Build all seven features first."),
             ("startup", "stage-mvp", "task: Cuts the Slack bot",
              "Excluded from the MVP: OCR, roles, audit log, the Slack bot, and the mobile app.", "Build all seven features first."),
-            ("tickets", "target-github", "task: Reports the GitHub access blocker",
-             "Blocked: gh is not available here, so no issues were created.", "Created the issues on GitHub."),
             ("receive-review", "all-valid", "task: Marks item 4 as a duplicate",
              "| 4 | Same as 1 | ignore |", "| 1 | `total()` ignores qty | agree+fix |"),
             ("receive-review", "all-valid", "task: Accepts the quantity bug",
@@ -887,6 +1284,79 @@ class NewSuiteOutputs(unittest.TestCase):
         self.assertFalse(passes(hours, "| Time replaced | some hours |\n| Value | $780 |"))
         self.assertFalse(passes(hours, "You said it saves 6 hours a week. Charge what feels fair."))
 
+    def test_discover_without_git_maps_readable_files(self):
+        verdict = spec("discover", "discover-nogit", "contract: Verdict line")
+        self.assertTrue(passes(verdict, "Verdict: Partly mapped (Git state and history)"))
+        self.assertFalse(passes(verdict, "Verdict: Mapped"))
+        routes = spec("discover", "discover-nogit", "contract: Ways to unblock")
+        self.assertTrue(passes(routes, "1. **The script totals receipts.**\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read `ledger.py`."))
+        self.assertFalse(passes(routes, "1. Give the path of a Git clone.\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read `ledger.py`."))
+
+    def test_discover_requires_readable_mapping_content(self):
+        checks = json.loads((HERE / "discover" / "checks.json").read_text())["discover-nogit"]["checks"]
+        def output_passes(text):
+            return all(passes(c, text) for c in checks if c["type"] in ("first_line", "output_matches", "output_not_matches"))
+        self.assertTrue(output_passes("**This folder holds scratch notes and a shopping reminder.**\nThis is not a Git repository.\n1. **README.md holds scratch notes.**\n2. **todo.txt says buy milk.**\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read README.md."))
+        self.assertTrue(output_passes("**This folder contains notes, not application code.**\nThis is not a Git repository.\n1. **README.md is a notes document.**\n2. **todo.txt is a reminder to purchase milk.**\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read README.md."))
+        self.assertFalse(output_passes("**Readable files were not mapped.**\nThis is not a Git repository.\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read README.md."))
+        self.assertFalse(output_passes("**I have not mapped the readable files.**\nThis is not a Git repository.\nI did not inspect README.md or todo.txt, so I cannot tell whether they contain notes or a shopping list.\nVerdict: Partly mapped (Git state and history)\n**Next:**\n1. Read README.md."))
+
+    def test_tracker_allows_a_plain_open_questions_limitation(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        self.assertTrue(passes(questions, "Open questions remain because the editor was not observed.\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+        for title in ("### Open questions about the editor", "Open questions:", "**Open questions:**"):
+            with self.subTest(title=title):
+                self.assertFalse(passes(questions, f"{title}\nWhich editor stores the description?\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_tracker_allows_longer_artifact_closing_fences(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        for marker in ("`", "~"):
+            with self.subTest(marker=marker):
+                self.assertTrue(passes(questions, f"{marker * 3}markdown\n### Open questions\nTBD: which editor accepts this markup?\n{marker * 4}\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_tracker_rejects_emphasized_wrapper_sections(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        self.assertTrue(passes(questions, "**Open questions remain because the editor was not observed.**\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+        for title in ("### **Open questions**", "**Open questions about the editor**", "**Open questions:** Which editor accepts the draft?", "_Open questions_: Which editor accepts the draft?"):
+            with self.subTest(title=title):
+                self.assertFalse(passes(questions, f"{title}\nWhich editor stores the description?\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_tracker_allows_emphasized_exclamatory_limitations(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        for marker in ("**", "_"):
+            with self.subTest(marker=marker):
+                self.assertTrue(passes(questions, f"{marker}Open questions remain because the editor was not observed!{marker}\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+        self.assertFalse(passes(questions, "### **Open questions!**\nWhich editor stores the draft?\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_tracker_rejects_punctuated_bare_questions_titles(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        for marker in ("**", "_"):
+            for punctuation in ("!", "?"):
+                with self.subTest(marker=marker, punctuation=punctuation):
+                    self.assertFalse(passes(questions, f"{marker}Open questions{punctuation}{marker}\nWhich editor stores the draft?\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_tracker_questions_belong_in_next(self):
+        questions = spec("tickets", "tracker-jira", "contract: Questions and validation belong in Next")
+        self.assertTrue(passes(questions, "The editor was not observed.\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Which editor stores the ticket description?"))
+        self.assertFalse(passes(questions, "**Open questions**\nWhich editor stores the description?\nVerdict: Drafted, 1 ticket"))
+        self.assertFalse(passes(questions, "**Open questions**\nWhich editor stores the description?\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Which editor stores the description?"))
+        self.assertTrue(passes(questions, "```markdown\n## Ticket\n### Open questions\nTBD: which editor accepts this markup?\n```\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor and validate its markup."))
+        self.assertTrue(passes(questions, "1. **The draft is complete.**\n   ```markdown\n   ### Open questions\n   TBD: which editor accepts this markup?\n   ```\nVerdict: Drafted, 1 ticket\n**Next:**\n1. Confirm the editor."))
+
+    def test_scoped_discover_accepts_numbered_next_reading(self):
+        order = spec("discover", "scope-importer", "contract: Gives a read order")
+        self.assertTrue(passes(order, "Verdict: Mapped\n**Next:**\n1. Read the importer module.\n2. Read its caller."))
+        self.assertFalse(passes(order, "The importer and caller are related."))
+        self.assertFalse(passes(order, "**Next:**\nRead the importer module and its caller."))
+
+    def test_plan_review_accepts_cannot_be_checked_criteria(self):
+        criteria = spec("improve", "review-plan", "task: Flags the unverifiable done criteria")
+        self.assertTrue(passes(criteria, "The 'faster' condition can't be checked without a comparison."))
+        self.assertTrue(passes(criteria, "The 'faster' condition cannot be checked without a comparison."))
+        self.assertFalse(passes(criteria, "The criterion can be checked with the listed command."))
+        self.assertFalse(passes(criteria, "The fixture can't be changed."))
+        self.assertFalse(passes(criteria, "The check has not run yet."))
+
     def test_review_findings_close_false_passes(self):
         cases = [
             ("improve", "refactor-dup", "task: Flags that round and int differ",
@@ -903,8 +1373,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "3 agree+fix, 1 ignore, 0 disagree\n| 1 | qty | agree+fix |", "2. Decline: discounts over 100% never happen."),
             ("launch-marketing", "economics-scale", "task: Finds LTV below CAC",
              "LTV is $300 against a $400 CAC.", "LTV:CAC is 2.5:1, under 3:1."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Don't scale the ads yet.", "Before you scale 5x, set up tracking. This is not a problem; scale."),
             ("launch-marketing", "economics-scale", "contract: Leads with the number",
              "LTV $300 < CAC $400: fix retention first.", "LTV is below CAC, stop the ads."),
             ("launch-marketing", "pricing-low", "task: Recommends charging well above $5",
@@ -1009,10 +1477,6 @@ class NewSuiteOutputs(unittest.TestCase):
             ("grill", "no-idea", "task: Invents no idea",
              "What do you want to build, and who is it for?",
              "Round 1\n1. Should the export support CSV? Recommended: yes."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Don't scale the ads until LTV beats CAC.", "Don't wait \u2014 scale ad spend 5x now."),
-            ("launch-marketing", "economics-scale", "task: Advises against scaling",
-             "Scaling makes it worse: each customer loses $100.", "Scale now before you lose momentum."),
             ("startup", "stage-customers", "task: Rejects the bought list",
              "Don't email the bought list.",
              "Buy the list; don't send more than 200 a day so the automated sequence stays out of spam."),
@@ -1300,18 +1764,6 @@ class NewSuiteOutputs(unittest.TestCase):
         self.assertFalse(passes(first, "Here is how the request flows:"))
 
     def test_rollout_checks_accept_correct_plain_outputs(self):
-        long_line = "**I did not open a pull request: `gh` doesn't work here, and this repository has no remote to push to.**\nMore."
-        runaway = "**" + "word " * 30 + "end.**\nMore."
-        for skill, case in [("commit", "ticket-hook"), ("open-pr", "no-gh"), ("split-pr", "three"),
-                            ("checkpoint", "stuck"), ("lessons", "covered")]:
-            bold = spec(skill, case, "contract: Line 1 is one bold sentence")
-            self.assertTrue(passes(bold, long_line), (skill, case))
-            self.assertFalse(passes(bold, runaway), (skill, case))
-            self.assertFalse(passes(bold, "The branch is main, so I stop.\n\n**Stopped.**\n"), (skill, case))
-            labels = spec(skill, case, "contract: No label lines")
-            self.assertTrue(passes(labels, "Read the file first.\n- **Evidence:** you checked `a=b=c` by hand."), (skill, case))
-            self.assertFalse(passes(labels, "Left out: README.md"), (skill, case))
-            self.assertFalse(passes(labels, "**Scope:** calc.py"), (skill, case))
         cases = [
             ("code-review", "plain", "contract: Numbered finding with file:line",
              "1. **`greet(\"\")` does not raise.**\n   ```text\n   greet.py:2   return\n   ```\n\n"
@@ -1363,6 +1815,51 @@ class Suites(unittest.TestCase):
 
 
 class WorkspaceChecks(unittest.TestCase):
+    def test_file_symlink_cannot_pass_workspace_comparisons(self):
+        for check_spec in ({"type": "workspace_untouched"}, {"type": "file_unchanged", "path": "input.txt"}):
+            with self.subTest(check=check_spec):
+                with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace, tempfile.TemporaryDirectory() as outside:
+                    Path(fixtures, "input.txt").write_text("original")
+                    Path(outside, "input.txt").write_text("original")
+                    Path(workspace, "input.txt").symlink_to(Path(outside, "input.txt"))
+                    self.assertFalse(check.run_check(check_spec, "", Path(workspace), Path(fixtures), None)[0])
+
+    def test_unchanged_file_rejects_a_symlinked_parent(self):
+        with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace, tempfile.TemporaryDirectory() as outside:
+            Path(fixtures, "nested").mkdir()
+            Path(fixtures, "nested/input.txt").write_text("original")
+            Path(outside, "input.txt").write_text("original")
+            Path(workspace, "nested").symlink_to(outside, target_is_directory=True)
+            check_spec = {"type": "file_unchanged", "path": "nested/input.txt"}
+            self.assertFalse(check.run_check(check_spec, "", Path(workspace), Path(fixtures), None)[0])
+
+    def test_untouched_rejects_an_added_directory_symlink(self):
+        with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace:
+            Path(workspace, "added").symlink_to(fixtures, target_is_directory=True)
+            check_spec = {"type": "workspace_untouched"}
+            self.assertFalse(check.run_check(check_spec, "", Path(workspace), Path(fixtures), None)[0])
+
+    def test_unchanged_file_does_not_inspect_unrelated_paths(self):
+        with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace:
+            Path(fixtures, "input.txt").write_text("original")
+            Path(workspace, "input.txt").write_text("original")
+            Path(workspace, "unrelated").symlink_to(fixtures, target_is_directory=True)
+            check_spec = {"type": "file_unchanged", "path": "input.txt"}
+            self.assertTrue(check.run_check(check_spec, "", Path(workspace), Path(fixtures), None)[0])
+
+    def test_deleted_file_is_a_failed_unchanged_check(self):
+        unchanged = {"type": "file_unchanged", "path": "input.txt", "text": "task: input preserved"}
+        with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace:
+            Path(fixtures, "input.txt").write_text("original")
+            passed, _ = check.run_check(unchanged, "", Path(workspace), Path(fixtures), None)
+            self.assertFalse(passed)
+
+    def test_command_timeout_is_a_failed_check(self):
+        command = {"type": "command", "command": "pytest -q", "text": "task: tests pass"}
+        with mock.patch.object(check.subprocess, "run", side_effect=subprocess.TimeoutExpired("pytest -q", 120)):
+            passed, _ = check.run_check(command, "", None, None, None)
+        self.assertFalse(passed)
+
     def test_untouched_ignores_agent_and_cache_dirs(self):
         untouched = {"type": "workspace_untouched", "text": "task: x"}
         with tempfile.TemporaryDirectory() as fixtures, tempfile.TemporaryDirectory() as workspace:
@@ -1376,10 +1873,6 @@ class WorkspaceChecks(unittest.TestCase):
             self.assertTrue(check.run_check(untouched, "", Path(workspace), Path(fixtures), None)[0])
             Path(workspace, "a.py").write_text("x = 2\n")
             self.assertFalse(check.run_check(untouched, "", Path(workspace), Path(fixtures), None)[0])
-
-
-if __name__ == "__main__":
-    unittest.main()
 
 
 class ComplexDebugLineCitations(unittest.TestCase):
@@ -1437,6 +1930,7 @@ class EnvprecRegressionTest(unittest.TestCase):
 
     def test_fix_without_regression_test_fails(self):
         self.assertFalse(self.check(fix=True, test=False))
+
 
 HARD = "code-review-hard"
 HARD_GOOD = {
@@ -1505,6 +1999,120 @@ class CodeReviewHardChecks(unittest.TestCase):
         concrete = spec(HARD, "cr-revise", "contract: First Next step names a file")
         self.assertFalse(passes(concrete, "Verdict: Fix (1 problème)\n**Next:**\n1. Traiter séparément les deux écarts limités."))
         self.assertTrue(passes(concrete, "Verdict: Fix (1 problème)\n**Next:**\n1. Corriger `chart.py:9`."))
+
+    def test_tooltip_severity_does_not_belong_to_another_issue(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for wrong in ("Le tooltip est un material bug. " + "x" * 400 + " La lecture rows[0] est une limited issue.", "La lecture rows[0] est une limited issue; le tooltip est un material bug."):
+            with self.subTest(output=wrong):
+                self.assertFalse(passes(tooltip, wrong))
+        self.assertTrue(passes(tooltip, "Le tooltip est une limited issue; la lecture rows[0] est un material bug."))
+        self.assertTrue(passes(tooltip, "La lecture rows[0] est un material bug; le tooltip est une limited issue."))
+        self.assertTrue(passes(tooltip, "Une limited issue concerne le tooltip; la lecture rows[0] est un material bug."))
+
+    def test_tooltip_rejects_severity_first_cross_issue_labels(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("Un material bug affecte le tooltip; la lecture rows[0] est une limited issue.", "A material bug affects the tooltip. The rows[0] read is a limited issue."):
+            with self.subTest(output=output):
+                self.assertFalse(passes(tooltip, output))
+        self.assertTrue(passes(tooltip, "A material bug affects rows[0]. The tooltip is a limited issue."))
+
+    def test_tooltip_accepts_locally_negated_opposing_labels(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("Le tooltip n'est pas un material bug, mais une limited issue.", "Une limited issue concerne le tooltip, pas un material bug.", "Le tooltip n'est pas un material bug; c'est une limited issue.", "The tooltip is not a material bug; it is a limited issue.", "The tooltip is not a **material bug**, but a limited issue."):
+            with self.subTest(output=output):
+                self.assertTrue(passes(tooltip, output))
+
+    def test_tooltip_does_not_borrow_a_following_issues_label(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("The tooltip is not a material bug. The rows[0] read is a limited issue.", "The tooltip is not a material bug and is unresolved, while rows[0] is a limited issue.", "The tooltip is not a material bug and is unresolved, whereas rows[0] is a limited issue."):
+            with self.subTest(output=output):
+                self.assertFalse(passes(tooltip, output))
+        self.assertTrue(passes(tooltip, "The tooltip in chart.py is a limited issue. The rows[0] read is a material bug."))
+
+    def test_tooltip_checks_opposition_in_same_subject_continuations(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("The tooltip is not a material bug; it is a limited issue; it is a material bug.", "Le tooltip n'est pas un material bug; c'est une limited issue; c'est un material bug."):
+            with self.subTest(output=output):
+                self.assertFalse(passes(tooltip, output))
+        self.assertTrue(passes(tooltip, "The tooltip is not a material bug; it is a limited issue; it is not a material bug."))
+
+    def test_tooltip_accepts_separately_owned_contrast_labels(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for contrast in ("while", "whereas"):
+            for output in (f"The rows[0] read is a material bug, {contrast} the tooltip is a limited issue.", f"The tooltip is a limited issue, {contrast} rows[0] is a material bug."):
+                with self.subTest(output=output):
+                    self.assertTrue(passes(tooltip, output))
+
+    def test_tooltip_keeps_same_subject_sentence_ratings(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        self.assertTrue(passes(tooltip, "The tooltip shows raw watts. It is a limited issue."))
+
+    def test_tooltip_rejects_same_subject_sentence_opposition(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        self.assertFalse(passes(tooltip, "The tooltip is a limited issue. It is a material bug."))
+
+    def test_tooltip_rejects_opposition_on_a_repeated_subject(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for contrast in ("while", "whereas"):
+            for output in (f"The tooltip is a limited issue, {contrast} the tooltip is a material bug.", f"The tooltip is a material bug, {contrast} the tooltip is a limited issue."):
+                with self.subTest(output=output):
+                    self.assertFalse(passes(tooltip, output))
+
+    def test_tooltip_keeps_its_parenthetical_rating(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        self.assertTrue(passes(tooltip, "The tooltip, while only a limited issue, should still be fixed."))
+
+    def test_tooltip_keeps_ownership_when_its_description_mentions_rows(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("The tooltip formats rows[0], a limited issue.", "The tooltip shows the first row, a cosmetic issue."):
+            with self.subTest(output=output):
+                self.assertTrue(passes(tooltip, output))
+
+    def test_tooltip_distinguishes_fronted_references_from_rated_subjects(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        cases = (
+            ("For rows[0], the tooltip is a cosmetic issue.", True),
+            ("Compared with rows[0], the tooltip is a limited issue.", True),
+            ("For the tooltip, rows[0] is a limited issue.", False),
+            ("Compared with the tooltip, rows[0] is a limited issue.", False),
+        )
+        for output, expected in cases:
+            with self.subTest(output=output):
+                self.assertEqual(passes(tooltip, output), expected)
+
+    def test_tooltip_keeps_fronted_reference_ownership_in_bold_findings(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        cases = (
+            ("1. **Compared with test_chart.py, the tooltip is a cosmetic issue.**", True),
+            ("1. **Compared with the tooltip, test_chart.py has a cosmetic issue.**", False),
+        )
+        for output, expected in cases:
+            with self.subTest(output=output):
+                self.assertEqual(passes(tooltip, output), expected)
+
+    def test_tooltip_does_not_borrow_the_named_test_issue_rating(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        cases = (
+            ("The tooltip is unresolved. test_chart.py has a limited issue.", False),
+            ("Le tooltip affiche des watts bruts. test_chart.py ne couvre pas solar, une limited issue.", False),
+            ("The tooltip is a limited issue. test_chart.py has a material bug.", True),
+        )
+        for output, expected in cases:
+            with self.subTest(output=output):
+                self.assertEqual(passes(tooltip, output), expected)
+
+    def test_tooltip_recognizes_the_existing_numbered_row_alias(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        self.assertTrue(passes(tooltip, "Le tooltip est une limited issue; la ligne 0 est un material bug."))
+
+    def test_tooltip_requires_an_affirmed_unopposed_allowed_label(self):
+        tooltip = spec(HARD, "cr-revise", "task: Rates the tooltip limited")
+        for output in ("The tooltip is not a limited issue, but a material bug.", "The tooltip is not a cosmetic issue.", "The tooltip is a limited issue, a material bug."):
+            with self.subTest(output=output):
+                self.assertFalse(passes(tooltip, output))
+        self.assertTrue(passes(tooltip, "The tooltip is cosmetic, not a material bug."))
+        self.assertTrue(passes(tooltip, "The tooltip is cosmetic, not a limited issue."))
+        self.assertTrue(passes(tooltip, "The tooltip is a limited issue, while rows[0] is a material bug."))
 
     def test_review_findings_on_the_checks(self):
         self.assertFalse(passes(spec(HARD, "cr-noise", "contract: Names the generated file"), "Changed: generated/api_pb2.py, pager.py"))
@@ -1645,3 +2253,7 @@ class CodeReviewHardFixtures(unittest.TestCase):
         ws = self.build("cr-uncommitted")
         status = subprocess.run(["git", "status", "--porcelain"], cwd=ws, capture_output=True, text=True).stdout
         self.assertEqual(status, " M auth.py\n")
+
+
+if __name__ == "__main__":
+    unittest.main()

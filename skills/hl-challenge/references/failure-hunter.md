@@ -24,7 +24,7 @@ Walk the code as if it must survive production under hostile load. Find what bre
 
 ### `review`
 
-Pick up to three findings that matter most; skip minor issues. For each: what is wrong (one concrete sentence with `file:line`) and what to do instead (one concrete sentence). Verdict: one line.
+Report the consequential supported findings, worst first; skip minor issues. For each, explain what is wrong with `file:line` evidence and relevant uncertainty. Put proposed changes in Next. Give the verdict on its own line before Next.
 
 ## Stand down
 

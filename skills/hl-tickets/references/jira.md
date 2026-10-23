@@ -5,7 +5,7 @@ Jira specifics for steps 1 and 2 of the skill.
 ## Grounding
 
 - **Reference issue**: fetch it in full (`GET /rest/api/2/issue/<KEY>`, no `fields` param) for the raw description.
-- **Flavor**: self-hosted `/secure/RapidBoard.jspa` or `/browse/KEY` = Server/Data Center; `*.atlassian.net` = Cloud. The flavor decides the API version and wiki markup vs rich text; confirm it against a raw description and add it to the grounding line.
+- **Flavor**: use the instance URL as a clue, not proof of its API version or stored markup. Confirm the flavor and markup against the instance and a raw description before recording them as observed. A requested project key proves neither.
 - **Required fields**: `GET /rest/api/2/issue/createmeta?projectKeys=<KEY>&issuetypeNames=<Type>&expand=projects.issuetypes.fields`; on 404, `GET /rest/api/3/issue/createmeta/<KEY>/issuetypes`.
 - **No API** (SSO wall, no token): read the reference in the editor source view, and the required-field markers on the create dialog.
 
@@ -26,4 +26,4 @@ Convert when the instance stores wiki markup:
 | `> quote` | `{quote} … {quote}` |
 | `#1149` | full URL, Jira has no GitHub cross-reference |
 
-The Cloud rich-text editor converts Markdown on paste. Check which editor you face first: converting twice leaves literal `h2.` in the body.
+Confirm the editor's Markdown paste behavior before converting: converting twice leaves literal `h2.` in the body. When the reader must validate the editor or references, put that prerequisite only in Next, with its owner and the delivery step it blocks; leave unobserved markup explicit in the draft.

@@ -18,12 +18,12 @@
       },
       {
         "type": "output_matches",
-        "pattern": "^[^\\n]*(\\bNone\\b|stats\\.py:2\\b)[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask)|^[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask)[^\\n]*(\\bNone\\b|stats\\.py:2\\b)",
+        "pattern": "^[^\\n]*(\\bNone\\b|stats\\.py:2\\b)[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask|unresolved)|^[^\\n]*(disagree|decline|mistaken|push back|reject|unnecessary|not needed|clarify|defer|ask|unresolved)[^\\n]*(\\bNone\\b|stats\\.py:2\\b)",
         "text": "task: Does not accept the None check"
       },
       {
         "type": "output_not_matches",
-        "pattern": "^(?!\\W*\\d+\\s+agree)[^\\n]*(CSV)[^\\n]*(agree\\W*fix(?!\\W*later))|^(?!\\W*\\d+\\s+agree)[^\\n]*(agree\\W*fix(?!\\W*later))[^\\n]*(CSV)",
+        "pattern": "^(?!\\W*\\d+\\s+agree)[^\\n]*(CSV)[^\\n]*(\\bagree\\b(?!\\W*(deferred\\b|fix\\W*later\\b)))|^(?!\\W*\\d+\\s+agree)[^\\n]*(\\bagree\\b(?!\\W*(deferred\\b|fix\\W*later\\b)))[^\\n]*(CSV)",
         "text": "task: Does not accept the CSV export as a fix"
       },
       {
@@ -96,7 +96,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe)\\b[^\\n]*\\(default\\)",
+        "pattern": "\\?|\\b(please )?(tell|send|give|share) me\\b|\\bplease (tell|send|share|provide|describe|give|include)\\b|\\b(send|paste) (me )?(one of|a path|the (path|text|plan|diff))\\b|\\b(send|paste|share|provide)( me)?\\b[^.?\\n]{0,40}:\\s*$|\\breply with\\b|(^|\\n|[a-z)][.!]\\s+)(send|paste|give|share|provide)( me)? (a|an|the|one|your)\\b|\\b(inputs?|thing|information) I need\\b|\\bneed (\\w+ ){0,3}from you\\b|\\bI need\\b[^.?\\n]*:\\s*$|^\\s*\\d+\\.\\s+(\\*\\*)?(paste|send|give|share|provide|point|describe|name(?=(?:\\*\\*)?[ \\t]+(?:\\*\\*)?\\w))\\b[^\\n]*\\(default\\)",
         "text": "task: Asks for the missing input"
       },
       {

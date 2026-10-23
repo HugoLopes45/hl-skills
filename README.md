@@ -17,6 +17,8 @@ npx skills add HugoLopes45/hl-skills
 
 </div>
 
+**Release status: qualification in progress.** Installation and static checks do not establish production readiness. See the [qualification criteria and remaining failures](./evals/README.md#production-qualification).
+
 ---
 
 ## Quick start

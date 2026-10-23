@@ -4,12 +4,15 @@ By taking part, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Workflow
 
+Local checks require Python 3, `pytest`, `ruff`, `ffmpeg`, and `ffprobe`. Media checks are skipped when their tools are absent; a skipped check is not release evidence. Installation also requires Node.js and npm compatible with the selected skills CLI version.
+
 ```bash
 git clone git@github.com:HugoLopes45/hl-skills.git
 cd hl-skills
 git checkout -b feature/<short-name>
 # add or edit skills
 python3 scripts/validate.py
+ruff check --select C901 .
 python3 -m unittest discover scripts
 python3 -m unittest discover evals
 npx skills add . --list            # check that the CLI finds the skill

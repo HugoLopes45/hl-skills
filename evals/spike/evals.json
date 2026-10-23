@@ -15,7 +15,7 @@
     {
       "id": "spike-sqlite",
       "prompt": "Spike: can Python's stdlib sqlite3 insert 200,000 rows of (id, name, email) in under 2 seconds on this machine, using executemany in one transaction? Pass: under 2 s. Fail: 2 s or more. Budget: 10 minutes. Use a scratch database outside this directory.",
-      "expected_output": "Runs the experiment, records the measured time, leads with PROCEED or PIVOT, leaves the project untouched.",
+      "expected_output": "Runs the experiment, records the measured time, opens with a plain result sentence; the evidence-backed Proceed or Pivot verdict sits just before Next; leaves the project untouched.",
       "files": [
         "files/spike-sqlite/README.md"
       ],

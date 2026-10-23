@@ -32,7 +32,7 @@ Host support differs. Name the primitive, then check that the target host has it
 
 ### `design` (default)
 
-1. **Primitive**: which primitive this should be, justified in one sentence.
+1. **Primitive**: which primitive this should be, with the evidence that justifies the choice.
 2. **Smallest version**: remove every "we might want later".
 3. **Out of the model**: what moves to deterministic code.
 4. **Out of the instruction file**: what is noise there.
@@ -42,7 +42,7 @@ Host support differs. Name the primitive, then check that the target host has it
 
 ### `review`
 
-Review an instruction file, skill, hook, command, tool-server setup, or subagent prompt. Look for rules the model already follows by default, judgment that should be deterministic code, deterministic logic buried in a prompt, the wrong primitive, and a weaker copy of something the host already provides. Report up to three issues that matter most: what is wrong and what to do instead, one sentence each. One-line verdict.
+Review an instruction file, skill, hook, command, tool-server setup, or subagent prompt. Look for rules the model already follows by default, judgment that should be deterministic code, deterministic logic buried in a prompt, the wrong primitive, and a weaker copy of something the host already provides. Report the supported issues, most consequential first, with the evidence and uncertainty needed to check each. Put proposed changes in Next. End with a one-line verdict before Next.
 
 ### `compose`
 
@@ -50,7 +50,7 @@ Break a described workflow into primitives. For each one: name, location, one-li
 
 ### `types`
 
-For a type or signature: where can illegal states become unrepresentable, where does a plain string do real work and should be a literal union or branded type, where does an invariant live in a comment instead of the type? Output the rewritten type and one sentence on what it now guarantees.
+For a type or signature: where can illegal states become unrepresentable, where does a plain string do real work and should be a literal union or branded type, where does an invariant live in a comment instead of the type? Output the complete rewritten type and explain what it guarantees and what remains unchecked.
 
 ## Stand down
 

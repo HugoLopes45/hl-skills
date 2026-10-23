@@ -16,7 +16,7 @@ Explain a concept from the ground up, with a small worked example, so the user c
 ### `explain` (default)
 
 1. One-line takeaway: "So it is just ___."
-2. What it actually is, in one or two sentences.
+2. What it actually is, with enough plain detail to understand its use.
 3. One tiny worked example with numbers.
 
 ### `teach`

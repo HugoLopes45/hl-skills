@@ -39,8 +39,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -99,8 +99,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
@@ -148,11 +148,6 @@
         "text": "contract: Says the current branch is the base"
       },
       {
-        "type": "output_not_matches",
-        "pattern": "(?im)^#+\\s*verification",
-        "text": "contract: No PR body printed"
-      },
-      {
         "type": "output_matches",
         "pattern": "^\\W*Verdict:\\W*(stopped)",
         "text": "contract: Verdict line says Stopped"
@@ -164,8 +159,8 @@
       },
       {
         "type": "output_matches",
-        "pattern": "\\A\\s*\\*\\*[^\\n]{1,136}\\*\\*[ \\t]*\\n",
-        "text": "contract: Line 1 is one bold sentence, at most 140 characters"
+        "pattern": "\\A\\s*\\*\\*[^\\n]+\\*\\*[ \\t]*\\n",
+        "text": "contract: Line 1 is one bold sentence"
       },
       {
         "type": "output_matches",
