@@ -77,9 +77,9 @@ A bare agent is not expected to meet a skill's contract. Task checks show whethe
 
 ### Prompt depth
 
-The `ambitious` suite covers a bounded bug fix, missing conversion evidence in French, subjective fiction, an already-specific parser task, an absent task, an unverifiable success criterion, a method needing an independent check, and a time-boxed analysis that must not become a tooling project.
+The `ambitious` suite covers a bounded bug fix, missing conversion evidence in French, subjective fiction, an already-specific parser task, an absent task, an unverifiable success criterion, a method needing an independent check, and a time-boxed analysis that must not become a tooling project. It also covers a postmortem that must borrow methods, not roles (`range`), a crash fix whose larger goal belongs in Next only (`higher-outcome`), and a modest target that needs a proposed stretch target (`stretch-target`).
 
-Run it with `evals/run.sh ambitious --runs 3 --concurrency 3`. The deterministic checks cover workspace changes and attempted edits only. Review each answer against its `expected_output`: preserve scope, name usable primary material and methods, define an independent check, and deliver the prompt without executing it. A workspace check alone cannot establish these properties.
+Run it with `evals/run.sh ambitious --runs 3 --concurrency 3`. Task checks read the fenced prompt for the user's constraints; contract checks read the output format, the Next options, and the absence of edits. Review each answer against its `expected_output` too: a regular expression cannot establish that a method or check is sound. With Sonnet, 3 runs per case: task 33/33 runs passing with the skill, 3/33 without; contract 33/33 with, 0/33 without.
 
 Fresh-context model samples exercise the instructions, not host discovery or natural routing. Neither samples nor forced invocation prove that an agent selects `hl-ambitious` instead of the neighboring skills.
 

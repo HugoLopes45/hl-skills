@@ -3,13 +3,58 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing does not change workspace files"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not attempt to implement the embedded task"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)regression test'",
+        "text": "task: Prompt keeps the regression test"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)public API'",
+        "text": "task: Prompt keeps the public API constraint"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)dependenc'",
+        "text": "task: Prompt keeps the dependency constraint"
       }
     ]
   },
@@ -17,13 +62,58 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing does not change workspace files"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not attempt to implement the embedded task"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "first_line",
+        "pattern": "\\b(le|la|les|des|du|est|une?|si|pas)\\b",
+        "text": "task: Replies in French"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '200 mots'",
+        "text": "task: Prompt keeps the 200-word conclusion"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)caus|attribu|n.?est pas (\u00e9tabli|prouv\u00e9)|ne (permet|prouve|suffit)|groupe t\u00e9moin|non concluant'",
+        "text": "task: Prompt keeps the causal limit"
       }
     ]
   },
@@ -31,13 +121,68 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing does not change workspace files"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not attempt to implement the embedded task"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '600'",
+        "text": "task: Prompt keeps 600 words"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)ambigu'",
+        "text": "task: Prompt keeps the ambiguity"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)gore'",
+        "text": "task: Prompt keeps the no-gore constraint"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?i)\\b(no|without a|do not (add|include|use|give it) a) title\\b'",
+        "text": "task: Adds no title restriction"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\*\\*Next\\s?:\\*\\*.*\\b(larger goal|higher outcome|bigger goal|objectif plus (large|ambitieux))\\b",
+        "text": "contract: Offers no larger goal for a one-off or excluded outcome"
       }
     ]
   },
@@ -45,13 +190,63 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing does not change workspace files"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not attempt to implement the embedded task"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)afternoon'",
+        "text": "task: Prompt keeps the afternoon limit"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)decision note'",
+        "text": "task: Prompt keeps the decision note"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)hand-checked|expected records'",
+        "text": "task: Prompt keeps the hand-checked oracle"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\*\\*Next\\s?:\\*\\*.*\\b(larger goal|higher outcome|bigger goal|objectif plus (large|ambitieux))\\b",
+        "text": "contract: Offers no larger goal for a one-off or excluded outcome"
       }
     ]
   },
@@ -59,13 +254,28 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Missing input does not cause workspace changes"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Missing input does not trigger implementation"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Stopped\\W*$",
+        "text": "contract: Verdict line is Stopped"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "```",
+        "text": "task: Writes no prompt or example task"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)",
+        "text": "contract: Does not mention the skill"
       }
     ]
   },
@@ -73,13 +283,63 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing leaves the comparison inputs untouched"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not modify files to satisfy the comparison"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\bcmp\\b'",
+        "text": "task: Prompt keeps cmp"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)first differing byte'",
+        "text": "task: Prompt keeps the first differing byte"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)unverified'",
+        "text": "task: Prompt keeps the unverified outcome"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\*\\*Next\\s?:\\*\\*.*\\b(larger goal|higher outcome|bigger goal|objectif plus (large|ambitieux))\\b",
+        "text": "contract: Offers no larger goal for a one-off or excluded outcome"
       }
     ]
   },
@@ -87,13 +347,63 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing does not perform the conversion analysis"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not attempt to create analysis artifacts"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)half-page|half a page'",
+        "text": "task: Prompt keeps the half-page note"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)standard library'",
+        "text": "task: Prompt keeps the standard library limit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)confound|cannot separate|can.t separate|not separable|coincide|entangled|cannot (be )?distinguish|can.t (be )?(distinguish|disentangle|untangle)",
+        "text": "task: Says variant and week cannot be separated"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\*\\*Next\\s?:\\*\\*.*\\b(larger goal|higher outcome|bigger goal|objectif plus (large|ambitieux))\\b",
+        "text": "contract: Offers no larger goal for a one-off or excluded outcome"
       }
     ]
   },
@@ -101,13 +411,240 @@
     "checks": [
       {
         "type": "workspace_untouched",
-        "text": "task: Reframing leaves the bench data untouched"
+        "text": "task: Rewriting does not change workspace files"
       },
       {
         "type": "tools",
         "pattern": "^(Write|Edit|MultiEdit)$",
         "max": 0,
-        "text": "task: Does not build numerical analysis tooling"
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '20 minutes'",
+        "text": "task: Prompt keeps the 20-minute criterion"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)standard library'",
+        "text": "task: Prompt keeps the standard library limit"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)pair'",
+        "text": "task: Prompt keeps the pairing"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?is)\\*\\*Next\\s?:\\*\\*.*\\b(larger goal|higher outcome|bigger goal|objectif plus (large|ambitieux))\\b",
+        "text": "contract: Offers no larger goal for a one-off or excluded outcome"
+      }
+    ]
+  },
+  "ambitious-range": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Rewriting does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?i)\\b(act as|you are an? (expert|senior|seasoned|investigator)|role[- ]?play|pretend|in the voice of|write like)\\b'",
+        "text": "task: The rewritten prompt borrows methods, not roles"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)one[- ]page'",
+        "text": "task: Prompt keeps the one-page limit"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bborrowed from\\b",
+        "text": "contract: Names the field a borrowed method comes from"
+      }
+    ]
+  },
+  "ambitious-higher-outcome": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Rewriting does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)regression test'",
+        "text": "task: Prompt keeps the regression test"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '2\\.3\\.1'",
+        "text": "task: Prompt keeps the version"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\*\\*Next:\\*\\*.*\\b(optional|larger goal)\\b[^\\n]*crash",
+        "text": "contract: Next offers keeping the app free of crashes as an optional larger goal"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?i)dashboard|monitoring (system|service|pipeline)|alerting'",
+        "text": "task: The rewritten prompt adds no monitoring or dashboard"
+      }
+    ]
+  },
+  "ambitious-stretch-target": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Rewriting does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not execute the embedded task"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "\\A\\s*\\*\\*(?!\\W*(verdict|the field|le domaine)\\b)[^*\\n]+\\*\\*\\s*$",
+        "text": "contract: Line 1 is a bold plain sentence"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?s)\\A(?:(?!```).)*?^1\\. (?:(?!```).)*?^2\\. (?:(?!```).)*?^3\\. (?:(?!```).)*?^4\\. ",
+        "text": "contract: Four numbered assessments come before the prompt"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '\\S'",
+        "text": "contract: Delivers the prompt in a fenced block"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\W*Verdict:\\W*Rewritten\\W*$",
+        "text": "contract: Verdict line is Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "^\\*\\*Next\\s?:\\*\\*",
+        "text": "contract: Ends with a Next block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "\\b(the|this) skill\\b(?! file)|\\bla skill\\b",
+        "text": "contract: Does not mention the skill"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?i)(under|below|less than|<) ?5 ?(s|sec|seconds)\\b'",
+        "text": "task: The rewritten prompt keeps the 5-second pass condition"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)(stretch|proposed|optional)[^\\n]{0,120}\\b\\d+(\\.\\d+)? ?(ms|s|sec|seconds)\\b|\\b\\d+(\\.\\d+)? ?(ms|s|sec|seconds)\\b[^\\n]{0,120}\\b(stretch|proposed|optional)",
+        "text": "contract: Offers a more ambitious target, marked proposed or optional"
       }
     ]
   }
