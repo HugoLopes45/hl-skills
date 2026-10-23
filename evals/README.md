@@ -75,6 +75,16 @@ Eval ids must be unique across suites: agent-skill-eval names each agent workspa
 
 A bare agent is not expected to meet a skill's contract. Task checks show whether the contract costs correctness. A run passes a kind only when all required checks pass, its evidence is complete, and the CLI succeeds. `p` is the one-sided Fisher exact test comparing run passes. Incomplete or excluded runs make it `n/a`. Leftover runs from an earlier invocation also suppress significance rather than silently disappearing from the audit.
 
+### Prompt depth
+
+The `ambitious` suite covers a bounded bug fix, missing conversion evidence in French, subjective fiction, an already-specific parser task, an absent task, an unverifiable success criterion, a method needing an independent check, and a time-boxed analysis that must not become a tooling project.
+
+Run it with `evals/run.sh ambitious --runs 3 --concurrency 3`. The deterministic checks cover workspace changes and attempted edits only. Review each answer against its `expected_output`: preserve scope, name usable primary material and methods, define an independent check, and deliver the prompt without executing it. A workspace check alone cannot establish these properties.
+
+Fresh-context model samples exercise the instructions, not host discovery or natural routing. Neither samples nor forced invocation prove that an agent selects `hl-ambitious` instead of the neighboring skills.
+
+For comparative evaluations, fix the requests and criteria before generation. Keep the model and inputs identical, hide skill identities, and review each pair in both presentation orders. Count order disagreements as inconclusive. Prefer preserved scope, usable primary material, concrete methods, and checks that reject plausible errors, not output length or signature wording. After tuning on a case, use new held-out requests; retain losses and ties. Model preferences do not prove universal superiority or domain correctness.
+
 ## Production qualification
 
 Production qualification is incomplete. Automatic eval passes do not establish compliance with the full skill contract or safety requirements. Current-source qualification, including permission and missing-evidence boundaries, remains necessary before claiming readiness.

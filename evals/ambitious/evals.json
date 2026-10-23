@@ -1,0 +1,77 @@
+{
+  "skill_name": "hl-ambitious",
+  "evals": [
+    {
+      "id": "ambitious-bug-scope",
+      "prompt": "Make this task deeper, not bigger: fix the duplicate receipt email sent when a customer retries checkout. Keep the public API and dependencies unchanged. Deliver only the bug fix and its regression test; this is not a payment-system redesign.",
+      "expected_output": "Before the rewritten prompt, identify the field and explain expert moves, primary evidence, concrete methods/tools, and an independent pass/fail check. Preserve the bug fix plus regression test, API, and dependency constraints. Propose tracing and reproducing the retry path using original event records and code, without inventing file paths or claiming reproduction. The check must observe email delivery effects across retries, not just an internal success flag. Deliver a self-contained prompt, not a fix, architecture redesign, new monitoring system, or new deliverables.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-missing-evidence",
+      "prompt": "Approfondis cette demande sans l'élargir : vérifier si notre nouvelle page d'inscription améliore la conversion. Le seul document disponible est une capture d'un graphique qui semble monter. Aucune donnée individuelle ni information sur la répartition des visiteurs n'est accessible. Garde une conclusion de 200 mots comme seul livrable. Ne collecte rien maintenant.",
+      "expected_output": "Reply in French. Give the four analyses before a single self-contained prompt. Preserve the 200-word conclusion as the only task deliverable and do not collect data. Name missing primary visitor/exposure/conversion records and assignment information without inventing their location, sample size, availability, results, or statistical thresholds. Explain that the chart alone cannot establish a causal conversion improvement. Name appropriate methods and tools conditionally, distinguish a descriptive change from attribution, and define independent support, failure, and inconclusive outcomes. The rewrite must retain the evidence limitation and request the needed inputs rather than claiming success or silently expanding to running a new experiment.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-subjective-work",
+      "prompt": "Raise the standard of this prompt without adding deliverables: write a 600-word ghost story for adult readers. It must remain ambiguous whether the ghost exists. I want unease, not gore. Do not write the story yet.",
+      "expected_output": "Give field-specific professional moves, raw material, concrete methods/tools, and an external reader-based check before the rewritten prompt. Preserve exactly one 600-word story, adult readers, ambiguity, and no gore. Use original sensory observations or scene material without pretending autobiographical facts were provided. Name suitable narrative techniques rather than inventing software requirements. Treat independent reader responses as evidence about the intended effect, not objective proof of literary quality or a fabricated numerical benchmark. Do not require an additional critique document, survey report, or production campaign. Do not add unrelated format restrictions such as banning a title. Do not write the story.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-already-specific",
+      "prompt": "Deepen this prompt only where needed: In one afternoon, determine whether the local candidate CSV parser preserves all fields on the supplied UTF-8 fixture corpus. Use the fixture bytes and the documented dialect, including quoted commas, escaped quotes, embedded newlines, and empty fields. Compare every output field with the independent hand-checked expected records. Run the existing parser test command from the repository documentation. Pass only if every record and field matches; report any mismatch or unreadable fixture as failure or unverified, not success. Deliver one short decision note, not code changes or a benchmark suite. Do not execute it now.",
+      "expected_output": "Recognize that sources, method, external oracle, and pass criterion are already strong. Still provide the four assessments and one complete usable prompt. Preserve the afternoon limit, local-only scope, short decision note, field-level comparison, and no code changes. Do not invent missing weaknesses, new deliverables, performance requirements, sample sizes, tools, paths, or commands. Do not run the parser or report imagined results.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-no-target",
+      "prompt": "Use hl-ambitious.",
+      "expected_output": "With no task in the conversation, ask for the task or prompt and stop. Do not treat the skill invocation as the task, invent a domain or a sample task, produce a rewritten prompt, or start work.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-proof-limit",
+      "prompt": "Deepen only if needed: compare supplied before.txt and after.txt byte for byte with cmp, using the installed command. Do not normalize or modify either file. In one sentence report identical, different with the first differing byte, or unverified if a file cannot be read. Exit 0 means identical, exit 1 different, other exit status an error, not a difference. The original bytes and observed cmp result are the evidence. No additional output, tools, or research. Rewrite only, do not run the comparison.",
+      "expected_output": "Preserve the installed-cmp-only boundary and the first-differing-byte requirement. Do not silently replace that requirement with a weaker difference report. Do not assume undocumented installed-tool behavior or invent byte positions. If the permitted evidence cannot support a required position, identify the incompatibility and retain it as an unverified requirement rather than redefining success. Do not manufacture unrelated improvements to an already precise request. Provide the four assessments and complete rewritten prompt without execution.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-method-check",
+      "prompt": "Deepen this task, without making it bigger: determine in a half-page decision note whether onboarding B converts better than A. I have a local CSV with variant, signup_yes_no, acquisition_channel, and visit_date. B ran only in the second week; the advertising mix changed between weeks. Use the existing Python standard library, within one hour. No new data, experiment, dependencies, or dashboards. Do not perform the analysis now.",
+      "expected_output": "Check whether a contemporaneous comparison exists before estimating an onboarding effect. Choose an implementable comparison and uncertainty method with explicit assumptions, not an instruction to choose an appropriate method later. Specify an independent tally or known-answer check that can expose errors in the chosen calculation, not only a check of the conclusion's wording. Preserve the time, tools, inputs, and sole note. If the data cannot separate variant from time, retain that limitation rather than claiming that a correct calculation proves causation.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ambitious-no-auxiliary-tooling",
+      "prompt": "Make this task deeper, not bigger: decide in one short note whether firmware B improves battery runtime by at least 20 minutes over A. Available: a local CSV of ten paired bench runs, with pair_id, runtime_A_minutes, runtime_B_minutes, temperature_C, and load_profile; same battery within each pair, randomized order recorded in the bench notes. Use only the installed Python standard library and finish in one hour. No new measurements, packages, or separate report. Rewrite only.",
+      "expected_output": "Preserve the pairing and the 20-minute criterion. Distinguish observed improvement from evidence that the mean improvement reaches the criterion. Choose a concrete uncertainty method feasible with existing tools or direct calculations; do not turn the one-hour decision into implementing and validating a numerical distribution library. State assumptions and any proposed confidence convention. Use a feasible independent arithmetic check without adding deliverables. If the inputs or method cannot establish the claim, keep it unverified rather than weakening the criterion.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

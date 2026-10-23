@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Features
+
+* Add `hl-ambitious`: connect expert moves, primary material, concrete methods, and independent checks before rewriting a task; preserve its scope and success criteria when evidence is incomplete.
+
 ### Fixes
 
 * Reject missing skill entrypoints and broken links inside reference files; name code-review specialist paths explicitly.
