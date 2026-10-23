@@ -4,7 +4,7 @@
 
 ### Your coding agent says "done". Make it prove it.
 
-26 agent skills for Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and any agent that reads `SKILL.md`.
+27 agent skills for Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, and any agent that reads `SKILL.md`.
 
 [![skills.sh](https://skills.sh/b/HugoLopes45/hl-skills)](https://skills.sh/HugoLopes45/hl-skills)
 [![ci](https://github.com/HugoLopes45/hl-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/HugoLopes45/hl-skills/actions/workflows/ci.yml)
@@ -245,7 +245,7 @@ Use any skill alone, or chain them:
 - **Inherited codebase:** `hl-discover --depth full`, then `hl-improve arch`, then `hl-improve`.
 - **Startup idea:** `hl-startup scout` without an idea, `hl-startup` to evaluate one, `hl-startup ship` or `hl-startup kill` after launch.
 
-## All 26 skills
+## All 27 skills
 
 Every name starts with `hl-`, so no skill replaces a command your agent ships with, such as `/debug` in Claude Code.
 
@@ -270,10 +270,13 @@ Every name starts with `hl-`, so no skill replaces a command your agent ships wi
 
 | Say | Skill | You get |
 |---|---|---|
+| "Make this task deeper, not bigger" | `hl-ambitious` | Expert moves, primary sources, concrete methods, and independent pass/fail evidence, then a copyable prompt; no execution |
 | "Show me how auth works" | `hl-show-me` | A diagram, a tree, pseudocode, or an interactive HTML page |
 | "Make a short video explaining CRDTs" | `hl-explainer-video` (experimental) | A narrated explainer video, with a local voice by default |
 | "Can SQLite handle our write load?" | `hl-spike` | A time-boxed experiment that answers one question |
 | "Write an ADR for moving to Postgres" | `hl-adr` | A decision record with options and the cost of reversal |
+
+`hl-ambitious` strengthens the method and evidence without changing the task's scope. Use `hl-challenge` to critique a plan and `hl-writing-for-agents` to tighten instructions.
 
 ### Audit
 
@@ -307,7 +310,7 @@ The installer is the [`skills`](https://github.com/vercel-labs/skills) CLI. Comm
 ```bash
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                 # see the 26 skills first
+npx skills add HugoLopes45/hl-skills --list                 # see the 27 skills first
 npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)

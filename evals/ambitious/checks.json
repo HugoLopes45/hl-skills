@@ -1,0 +1,114 @@
+{
+  "ambitious-bug-scope": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not attempt to implement the embedded task"
+      }
+    ]
+  },
+  "ambitious-missing-evidence": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not attempt to implement the embedded task"
+      }
+    ]
+  },
+  "ambitious-subjective-work": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not attempt to implement the embedded task"
+      }
+    ]
+  },
+  "ambitious-already-specific": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing does not change workspace files"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not attempt to implement the embedded task"
+      }
+    ]
+  },
+  "ambitious-no-target": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Missing input does not cause workspace changes"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Missing input does not trigger implementation"
+      }
+    ]
+  },
+  "ambitious-proof-limit": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing leaves the comparison inputs untouched"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not modify files to satisfy the comparison"
+      }
+    ]
+  },
+  "ambitious-method-check": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing does not perform the conversion analysis"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not attempt to create analysis artifacts"
+      }
+    ]
+  },
+  "ambitious-no-auxiliary-tooling": {
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: Reframing leaves the bench data untouched"
+      },
+      {
+        "type": "tools",
+        "pattern": "^(Write|Edit|MultiEdit)$",
+        "max": 0,
+        "text": "task: Does not build numerical analysis tooling"
+      }
+    ]
+  }
+}
