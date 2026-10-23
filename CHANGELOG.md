@@ -23,6 +23,7 @@
 * Reject synthetic-key exposure in captured tool traffic and subagent transcripts; keep matched values out of grading evidence.
 * Clarify that the security-audit secret boundary covers tool inputs and outputs, files, and replies.
 * Run the ambition evaluation at the depth required by its full-output contract.
+* Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
 
 
 ## [1.2.0](https://github.com/HugoLopes45/hl-skills/compare/v1.1.0...v1.2.0) (2026-10-14)
