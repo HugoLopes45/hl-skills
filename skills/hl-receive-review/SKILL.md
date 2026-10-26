@@ -22,11 +22,11 @@ Give each comment its disposition and decisive evidence together. Keep proposed 
 
 Use the input or fetch current PR review comments with available authenticated GitHub tooling. No review or tooling: ask for the text or a path. No actionable items: say so. Do not edit or post replies.
 
-Split actionable claims, questions, style suggestions, and scope concerns. Check cited source and callers at the relevant revision. A mental trace is not an executed reproducer; label inference. Reviewer confidence, seniority, or unanimity is not evidence. Infer numeric domains and units only from a checked contract or validation, not an untyped parameter or example value.
+Split actionable claims, questions, style suggestions, and scope concerns. Check cited source and callers at one revision and name it: a commit, or the working tree when the files are uncommitted. For a comment on an older revision, check whether later commits changed its code. A mental trace is not an executed reproducer; label inference. Reviewer confidence, seniority, or unanimity is not evidence. Infer numeric domains and units only from a checked contract or validation, not an untyped parameter or example value.
 
 For numeric feedback, build a comparison table from probe output, with each transformation and comparison executed in the probe itself. Label any result supplied by reasoning instead as inferred. Keep intermediate values and current versus proposed results distinct. Unknown accepted input types keep domain-dependent dispositions and new test inputs conditional on clarification.
 
-For each item, report type, claim, evidence, and verdict: agree+fix, agree+defer, disagree+rationale, clarify, or ignore for a duplicate or irrelevant item. "Fix" is a proposed action here, not work performed. An out-of-scope fix remains a user decision.
+For each item, report type, claim, evidence, and verdict: agree+fix, agree+defer, disagree+rationale, clarify, or ignore for a duplicate or irrelevant item. "Fix" is a proposed action here, not work performed. An out-of-scope fix remains a user decision. A disposition is a proposal: it resolves no thread, satisfies no required review, and clears no merge gate. Reuse an earlier answer only when its cited evidence still holds at the checked revision; a bare reply, bot resolution, or agreement is not evidence. Recheck changed code or new evidence and name what changed.
 
 Count the items before you write any count. Copy each number and quote from the review text again before you repeat it.
 
@@ -36,7 +36,7 @@ Reader: the developer who received the review and decides how to reply: which co
 
 Line 1, bold, one plain sentence: which concerns are supported or unresolved, in the user's words, without prescribing the reader's actions. Never open with a count or a verdict word.
 
-Under line 1, plain sentences only for what limits the answer: a comment that could not be checked, a check not run, a missing input.
+Under line 1, plain sentences only for what limits the answer: the revision checked, a comment that could not be checked, a check not run, a missing input.
 
 Then one numbered point per comment, in the review's order. Each point:
 - A bold plain sentence: the comment in plain words, ending with its disposition: `Agree.`, `Agree, deferred.`, `Disagree.`, `Unresolved.`, or `Ignored: duplicate of comment 2.` (or `Ignored: irrelevant.`). These mean agree+fix, agree+defer, disagree+rationale, clarify, and ignore respectively; no fix has been applied.
@@ -49,15 +49,16 @@ When an item needs a separate trace or comparison to justify its disposition, ad
 - `Agree`: every real item is agreed or agreed but deferred. Ignored duplicates do not count.
 - `Disagree`: every real item is "disagree".
 - `Mixed`: the real items differ in verdict, or at least one remains unresolved. Add the counts: `Verdict: Mixed (2 to fix, 1 to push back, 1 ignored)`.
-- `No action needed`: the supplied review has no actionable items.
+- `No action needed`: the supplied review has no actionable items. It is not merge approval.
 - `Stopped`: no review text to assess.
 
-`**Next:**` owns every reader action, prerequisite, reply, and question once, in dependency order. Put a decision before any implementation that depends on it. Each open decision is one question with at most 4 options, each saying what it does, the default marked. Changes and replies are proposals, not work performed.
+`**Next:**` owns every reader action, prerequisite, reply, and question once, in dependency order. Put a decision before any implementation that depends on it. When the supplied history shows the same root cause still unfixed after three review-and-fix cycles, retain its unresolved disposition and ask one question about the approach instead of another fix-and-review round. Place that question after any live-secret or data-loss action and before routine fixes. Each open decision is one question with at most 4 options, each saying what it does, the default marked. Changes and replies are proposals, not work performed.
 
 Reader rules: never blame the reviewer; state what the code does. Reviewer seniority, confidence, or unanimity is not evidence. Do not disagree with every item to look rigorous, or agree with all of them because the review sounds authoritative.
 
 ````markdown
 **The expiry day and log message are wrong; the schema supports keeping `pid`.**
+I checked the comments against commit `3f9a2c1`.
 
 1. **The permit expires one day early. Agree.**
    `permits.py:9` uses `>=`, so the last valid day is rejected. I read this code; I did not run it.

@@ -521,7 +521,7 @@
       },
       {
         "type": "output_matches",
-        "pattern": "require_owner|owner(ship)?[- ]check|IDOR|any (authenticated |logged[- ]in )?user|propri[ée]taire|export_document[^\\n]{0,160}(authori|owner|access)",
+        "pattern": "require_owner|owner(ship)?[- ]check|IDOR|any (authenticated |logged[- ]in )?user|propri[ée]taire du document[^\\n]{0,60}\\b(n'|ne|pas|jamais)\\b|\\b(sans|aucune?|ne|n')\\b[^\\n]{0,80}propri[ée]taire|export_document[^\\n]{0,160}\\b(never|not|no|without|skips?|lacks?|missing|fails?|bypass\\w*|sans|aucune?|ne|n')\\b[^\\n]{0,80}(authori|owner|access|propri)",
         "text": "task: Finds the missing ownership check"
       },
       {

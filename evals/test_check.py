@@ -2123,7 +2123,14 @@ class CodeReviewHardChecks(unittest.TestCase):
         for case in ("cr-units", "cr-lock", "cr-revise"):
             self.assertTrue(passes(spec(HARD, case, "contract: Verdict line sits just before Next"), "Verdict : Fix (1 probl\u00e8me)\n**Next :**\n1. x"))
             self.assertTrue(passes(spec(HARD, case, "contract: Verdict is Fix with exactly 1"), "Verdict\u00a0: Fix (1 probl\u00e8me)"))
-        self.assertFalse(passes(spec(HARD, "cr-idor", "task: Finds the missing ownership check"), "Authorization is unchanged; the CSV allows formula injection."))
+        idor = spec(HARD, "cr-idor", "task: Finds the missing ownership check")
+        self.assertFalse(passes(idor, "Authorization is unchanged; the CSV allows formula injection."))
+        for review_step in ("1. export_document changes access to documents/; ask a human owner to review it.",
+                            "1. `export_document` touche un chemin sensible : demander une revue au propriétaire du code.",
+                            "1. Demander au propriétaire du document de valider ce changement."):
+            self.assertFalse(passes(idor, review_step), review_step)
+        for finding in ("export_document never compares the caller with the document owner.", "Le propriétaire du document n'est pas vérifié."):
+            self.assertTrue(passes(idor, finding), finding)
         severity = spec(HARD, "cr-revise", "contract: Uses only the four severity words")
         for wrong in ("un probl\u00e8me majeur", "severity: major", "gravit\u00e9 \u00e9lev\u00e9e"):
             self.assertFalse(passes(severity, wrong), wrong)

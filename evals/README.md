@@ -283,6 +283,7 @@ Limits:
 - The `hl-improve` task gap on the new cases comes from prompts in the skill's command syntax, such as "Run improve branch." A bare agent cannot know what they mean, so the gap overstates the skill's outcome gain.
 - `oracle.py` takes any parenthesized list of capitalized names, such as "(ProZ, Reddit)", as a named source. A list of venues passes as a citation.
 - `hl-ci-fix` and `hl-open-pr` are not tested against a live pull request: no case reads real check logs, pushes, or creates a pull request.
+- `pr-ready-stale` and `cr-rereview` have no recorded runs. The `cr-rereview` setup builds on the code-review repository and has not run in the harness. Their regular expressions can pass on quoted numbers or on any question near the word "split", and the no-run check can fail on a harmless search for "pytest".
 - An `hl-improve` case that forced asking before a direct "fix it" was removed: the request and the case contradicted each other.
 - agent-skill-eval runs `git init` in every workspace; a case that needs no repository deletes `.git` in `.eval-setup.sh`.
 - A bare agent sometimes writes the tickets, then its CLI does not exit; those runs time out and are excluded, so `hl-tickets` has fewer baseline runs.
