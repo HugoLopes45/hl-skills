@@ -6,7 +6,7 @@
 
 * Add `hl-ambitious`: connect expert moves, primary material, concrete methods, and independent checks before rewriting a task; preserve its scope and success criteria when evidence is incomplete.
 * Bind `hl-open-pr` readiness to the checked head: Low/Medium/High risk, an evidence matrix on disposable state, one fresh-context review plus a security pass for High risk, recovery evidence for irreversible changes, no automatic fix/review loop (a third cycle hands the approach to a human), and a draft-then-ready publish that reports a moved head. Readiness is not merge approval; bots never stand in for a human approver.
-* Make `hl-code-review` count only defects the diff introduces, exposes or worsens, one per root cause, decided by evidence rather than agreement between agents. Repeat reviews reuse stated coverage at the same head and review the delta plus its consumers otherwise; owner guidance is read at the base revision; sensitive paths ask for a human owner review. `Clear` states its coverage and is not merge approval.
+* Make `hl-code-review` count only defects the diff introduces, exposes or worsens, one per root cause, decided by evidence rather than agreement between agents. Repeat reviews reuse verified coverage at the same head and review the delta plus its consumers otherwise; owner guidance is read at the base revision; sensitive paths ask for a human owner review. `Clear` states its coverage and is not merge approval.
 * Make `hl-receive-review` dispositions proposals tied to one named revision: earlier answers are reused only while their evidence still holds, bot resolutions and approvals are not evidence, and a third cycle raises one approach question.
 * Add eval cases `pr-ready-stale` (stale preflight, bot-only approvals, irreversible migration, release workflow) and `cr-rereview` (third review round with a regression, an unfixed finding and a pre-existing defect).
 
@@ -27,12 +27,15 @@
 * Keep complete ticket drafts intact without inventing issue types, and check GitHub access before requesting approval.
 * State the numeric contract in the review fixture; retain its intentional bugs.
 * Remove scenario expectations that contradict documented output ordering or impose an unspecified word limit.
-* Stop the `cr-idor` ownership check from passing on an owner-review request alone; it now needs the missing check stated as a finding.
+* Reject the tested owner-review-only phrasings in `cr-idor`; broader ownership wording remains a regex limitation.
 * Reject scaling in the loss-making economics case; remove misleading ticket-convention, lint-name, and PR-heading assertions without regrading historical results.
 * Reject synthetic-key exposure in captured tool traffic and subagent transcripts; keep matched values out of grading evidence.
 * Clarify that the security-audit secret boundary covers tool inputs and outputs, files, and replies.
 * Run the ambition evaluation at the depth required by its full-output contract.
 * Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
+* Distinguish invalid dry-run PR targets from valid previews with stale proof; preserve agreed findings when escalating repeated review failures.
+* Require independently verifiable review evidence and an existing isolated runner before executing untrusted branch code.
+* Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
 
 
 ## [1.4.0](https://github.com/HugoLopes45/hl-skills/compare/v1.3.0...v1.4.0) (2026-10-23)
