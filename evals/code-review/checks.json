@@ -226,12 +226,12 @@
       },
       {
         "type": "output_matches",
-        "pattern": "(?mi)^(?=[^\\n]*\\b(vat\\w*|invoice_total|tax\\w*)\\b)(?=[^\\n]*(basis[- ]points?|\\bbps\\b|hundredths?|ten[- ]thousandths?|100\\s*(x|×|times)|1\\s*/\\s*100\\b|\\b0[.,]20?\\s*%|\\b10[ ,.]?020\\b|/\\s*10[ ,.]?000\\b|too (low|small|little)|under-?(charg|bill|tax|stat)\\w*))[^\\n]*$",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(vat\\w*|invoice_total|tax\\w*)\\b)(?![^\\n]*\\b(not|never)\\s+(too (low|small|little)|under-?\\w*))[^\\n]*(\\bunder-?(charg|bill|tax|stat)\\w*|\\btoo (low|small|little)\\b|\\ba hundredth of (its|the intended)\\b|\\bfrom\\s+20\\s*%\\s+to\\s+0[.,]20?\\s*%|\\bfrom\\s+12[ ,.]?000\\s+to\\s+10[ ,.]?020\\b|\\b20\\s+(instead of|rather than)\\s+2[ ,.]?000\\b|\\b10[ ,.]?020\\b[^\\n]{0,80}(instead of|rather than|not|versus|vs\\.?|expected)[^\\n]{0,40}\\b12[ ,.]?000\\b|\\b0[.,]20?\\s*%[^\\n]{0,60}(instead of|rather than|not|versus|vs\\.?|expected)[^\\n]{0,40}\\b20\\s*%)",
         "text": "task: Finds that VAT now goes through the basis-point percent_of"
       },
       {
         "type": "output_matches",
-        "pattern": "(?mi)^(?=[^\\n]*\\b(split_cents|prorat\\w*|plan_change_invoice|remainders?|leftover)\\b)(?=[^\\n]*(\\b2[ ,.]?001\\b|\\b98\\b|\\b5[ ,.]?001\\b|over-?(charg|bill)\\w*|extra cents?|cents? too (many|few)|exceed\\w*|more than|less than|fewer than|off by|short by|one cent (short|over)|(do|does|did|can|will)\\s+not\\s+(always\\s+)?(add|sum)|(don't|doesn't|didn't|can't|cannot|won't|never)\\s+(always\\s+)?(add|sum)|still\\s+(wrong|open|broken|fails?|failing|off|unfixed|overcharg\\w*|undercharg\\w*|loses?|drops?)|not\\s+(yet\\s+)?(fixed|resolved|settled)|unresolved|unsettled|only\\s+(fixes|handles|covers|corrects|patches)|reopen\\w*))[^\\n]*$",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(split_cents|prorat\\w*|plan_change_invoice|remainders?|leftover)\\b)[^\\n]*(\\bstill\\s+(wrong|open|broken|breaks?|fails?|failing|off|unfixed|overcharg\\w*|undercharg\\w*|loses?|drops?)\\b|\\bremains?\\s+(open|broken|unfixed|unresolved)\\b|\\bnot\\s+(yet\\s+)?(fixed|resolved|settled)\\b|\\b(does not|doesn't|cannot|can't|never)\\s+(always\\s+)?(add|sum)\\b|\\b(2[ ,.]?001|98)\\b[^\\n]{0,60}\\b(overcharges|undercharges|short of (the )?total)\\b|\\b2[ ,.]?001\\b[^\\n]{0,60}(instead of|rather than|when splitting|versus|expected)[^\\n]{0,30}\\b2[ ,.]?000\\b|\\b98\\b[^\\n]{0,60}(instead of|rather than|versus|expected)[^\\n]{0,30}\\b100\\b|\\bsplit_cents\\(\\s*2000\\b[^\\n]{0,100}\\b(gives|returns)\\b[^\\n]{0,80}\\b2[ ,.]?001\\b|\\bsplit_cents\\(\\s*100\\b[^\\n]{0,100}\\b(gives|returns)\\b[^\\n]{0,80}\\b98\\b)",
         "text": "task: Keeps the split_cents sum bug open at HEAD"
       },
       {
