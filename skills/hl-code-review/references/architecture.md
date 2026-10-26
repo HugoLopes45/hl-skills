@@ -12,7 +12,7 @@ Check whether:
 
 Before proposing removal or unification, verify the consumers and both contracts. A single caller or a missing PR explanation alone is not a defect. Report material findings only: no hypothetical generality, no documentation quotas.
 
-Severity: material bug or worse only for a reachable invariant violation; limited issue for demonstrated architectural cost or duplicated behavior rules that can drift; cosmetic otherwise.
+Severity: material bug or worse only for a reachable invariant violation; limited issue for demonstrated architectural cost or duplicated behavior rules that can drift; no finding otherwise.
 
 Each finding: FINDING_ID (ARCH-NNN), LOCATION (`file:line`), PRINCIPLE, SEVERITY (data or security failure|material bug|limited issue|cosmetic), FIX_COST (trivial|small|structural), FINDING (trigger and consequence), EVIDENCE, FIX.
 

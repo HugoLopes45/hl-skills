@@ -210,5 +210,45 @@
         "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
+  },
+  "cr-rereview": {
+    "fixtures": "cr-rereview",
+    "checks": [
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && test \"$(git symbolic-ref -q HEAD)\" = refs/heads/cr-feature && test \"$(git rev-parse cr-base)\" = \"$(cat .git/eval-base)\" && git status --porcelain --untracked-files=all | cmp -s - .git/eval-status && git hash-object review-notes.md | cmp -s - .git/eval-notes",
+        "text": "task: Branches, worktree, and review notes unchanged"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (checkout|switch|stash(?!\\s+(list|show)\\b)|reset|commit|push|restore|cherry-pick|rebase|merge(?!-)|worktree\\s+add|update-ref)\\b|gh (pr|api)\\b[^|;&\\n]*\\b(review|comment|merge)\\b|\\bpython[0-9.]*\\s+(-\\w+\\s+)*(-m\\s+)?(pytest|unittest|test_money|test_proration)\\b|\\b(pytest|py\\.test|tox|nox)\\b|\\bpython[0-9.]*\\b[^|&]*?\\b(import|from)\\s+(billing|test_money|test_proration)\\b",
+        "text": "contract: Runs no fixture code, test, checkout, or write"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(vat\\w*|invoice_total|tax\\w*)\\b)(?=[^\\n]*(basis[- ]points?|\\bbps\\b|hundredths?|ten[- ]thousandths?|100\\s*(x|×|times)|1\\s*/\\s*100\\b|\\b0[.,]20?\\s*%|\\b10[ ,.]?020\\b|/\\s*10[ ,.]?000\\b|too (low|small|little)|under-?(charg|bill|tax|stat)\\w*))[^\\n]*$",
+        "text": "task: Finds that VAT now goes through the basis-point percent_of"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(split_cents|prorat\\w*|plan_change_invoice|remainders?|leftover)\\b)(?=[^\\n]*(\\b2[ ,.]?001\\b|\\b98\\b|\\b5[ ,.]?001\\b|over-?(charg|bill)\\w*|extra cents?|cents? too (many|few)|exceed\\w*|more than|less than|fewer than|off by|short by|one cent (short|over)|(do|does|did|can|will)\\s+not\\s+(always\\s+)?(add|sum)|(don't|doesn't|didn't|can't|cannot|won't|never)\\s+(always\\s+)?(add|sum)|still\\s+(wrong|open|broken|fails?|failing|off|unfixed|overcharg\\w*|undercharg\\w*|loses?|drops?)|not\\s+(yet\\s+)?(fixed|resolved|settled)|unresolved|unsettled|only\\s+(fixes|handles|covers|corrects|patches)|reopen\\w*))[^\\n]*$",
+        "text": "task: Keeps the split_cents sum bug open at HEAD"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)\\A(?![\\s\\S]*parse_cents)|^(?=[^\\n]*parse_cents)(?=[^\\n]*(pre-?existing|unchanged|untouched|already\\s+(on|in|at)\\s+(main|the\\s+base|base)|\\bon\\s+main\\b|\\bin\\s+main\\b|at\\s+(the\\s+)?base|historical|not\\s+introduced|predates?|out\\s+of\\s+scope|outside\\s+(the|this)\\s+(diff|change|pull\\s+request|pr|branch|review|scope)|not\\s+part\\s+of|not\\s+counted|uncounted|separate\\w*|follow-?up|older))[^\\n]*$",
+        "text": "task: Does not count the unchanged parse_cents bug"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^\\W*Verdict\\s*:\\W*Fix\\W*\\(\\s*2\\s+probl",
+        "text": "contract: Verdict is Fix with exactly 2 problems"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^[^\\n]*\\bNext\\s*:(?:[^\\n]*\\n)*?(?=[^\\n]*(\\?|\\b(decid\\w*|decision|choose|agree\\w*|reconsider\\w*|rethink\\w*|redesign\\w*|escalat\\w*)\\b))(?=[^\\n]*\\b(split\\w*|prorat\\w*|allocat\\w*|remainders?|leftover|rounding|approach\\w*|algorithm\\w*|strateg\\w*)\\b)",
+        "text": "contract: Next asks one approach question about the split"
+      }
+    ]
   }
 }
