@@ -38,6 +38,18 @@
 * Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
 
 
+## [1.5.0](https://github.com/HugoLopes45/hl-skills/compare/v1.4.0...v1.5.0) (2026-10-26)
+
+
+### Features
+
+* **pr-review:** bind readiness and reviews to checked evidence ([3911d7c](https://github.com/HugoLopes45/hl-skills/commit/3911d7c469f0961be123f188ac60582c0cfde8d7))
+
+
+### Bug Fixes
+
+* **pr-review:** clarify evidence gates and grading checks ([7570bab](https://github.com/HugoLopes45/hl-skills/commit/7570bab945c85601e29bf5146e5312b6a821686c))
+
 ## [1.4.0](https://github.com/HugoLopes45/hl-skills/compare/v1.3.0...v1.4.0) (2026-10-23)
 
 
