@@ -210,5 +210,45 @@
         "text": "contract: Ways to unblock appear once, in Next"
       }
     ]
+  },
+  "cr-rereview": {
+    "fixtures": "cr-rereview",
+    "checks": [
+      {
+        "type": "command",
+        "command": "test \"$(git rev-parse HEAD)\" = \"$(cat .git/eval-head)\" && test \"$(git symbolic-ref -q HEAD)\" = refs/heads/cr-feature && test \"$(git rev-parse cr-base)\" = \"$(cat .git/eval-base)\" && git status --porcelain --untracked-files=all | cmp -s - .git/eval-status && git hash-object review-notes.md | cmp -s - .git/eval-notes",
+        "text": "task: Branches, worktree, and review notes unchanged"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (checkout|switch|stash(?!\\s+(list|show)\\b)|reset|commit|push|restore|cherry-pick|rebase|merge(?!-)|worktree\\s+add|update-ref)\\b|gh (pr|api)\\b[^|;&\\n]*\\b(review|comment|merge)\\b|\\bpython[0-9.]*\\s+(-\\w+\\s+)*(-m\\s+)?(pytest|unittest|test_money|test_proration)\\b|\\b(pytest|py\\.test|tox|nox)\\b|\\bpython[0-9.]*\\b[^|&]*?\\b(import|from)\\s+(billing|test_money|test_proration)\\b",
+        "text": "contract: Runs no fixture code, test, checkout, or write"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(vat\\w*|invoice_total|tax\\w*)\\b)(?![^\\n]*\\b(not|never)\\s+(too (low|small|little)|under-?\\w*))[^\\n]*(\\bunder-?(charg|bill|tax|stat)\\w*|\\btoo (low|small|little)\\b|\\ba hundredth of (its|the intended)\\b|\\bfrom\\s+20\\s*%\\s+to\\s+0[.,]20?\\s*%|\\bfrom\\s+12[ ,.]?000\\s+to\\s+10[ ,.]?020\\b|\\b20\\s+(instead of|rather than)\\s+2[ ,.]?000\\b|\\b10[ ,.]?020\\b[^\\n]{0,80}(instead of|rather than|not|versus|vs\\.?|expected)[^\\n]{0,40}\\b12[ ,.]?000\\b|\\b0[.,]20?\\s*%[^\\n]{0,60}(instead of|rather than|not|versus|vs\\.?|expected)[^\\n]{0,40}\\b20\\s*%)",
+        "text": "task: Finds that VAT now goes through the basis-point percent_of"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^(?=[^\\n]*\\b(split_cents|prorat\\w*|plan_change_invoice|remainders?|leftover)\\b)[^\\n]*(\\bstill\\s+(wrong|open|broken|breaks?|fails?|failing|off|unfixed|overcharg\\w*|undercharg\\w*|loses?|drops?)\\b|\\bremains?\\s+(open|broken|unfixed|unresolved)\\b|\\bnot\\s+(yet\\s+)?(fixed|resolved|settled)\\b|\\b(does not|doesn't|cannot|can't|never)\\s+(always\\s+)?(add|sum)\\b|\\b(2[ ,.]?001|98)\\b[^\\n]{0,60}\\b(overcharges|undercharges|short of (the )?total)\\b|\\b2[ ,.]?001\\b[^\\n]{0,60}(instead of|rather than|when splitting|versus|expected)[^\\n]{0,30}\\b2[ ,.]?000\\b|\\b98\\b[^\\n]{0,60}(instead of|rather than|versus|expected)[^\\n]{0,30}\\b100\\b|\\bsplit_cents\\(\\s*2000\\b[^\\n]{0,100}\\b(gives|returns)\\b[^\\n]{0,80}\\b2[ ,.]?001\\b|\\bsplit_cents\\(\\s*100\\b[^\\n]{0,100}\\b(gives|returns)\\b[^\\n]{0,80}\\b98\\b)",
+        "text": "task: Keeps the split_cents sum bug open at HEAD"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)\\A(?![\\s\\S]*parse_cents)|^(?=[^\\n]*parse_cents)(?=[^\\n]*(pre-?existing|unchanged|untouched|already\\s+(on|in|at)\\s+(main|the\\s+base|base)|\\bon\\s+main\\b|\\bin\\s+main\\b|at\\s+(the\\s+)?base|historical|not\\s+introduced|predates?|out\\s+of\\s+scope|outside\\s+(the|this)\\s+(diff|change|pull\\s+request|pr|branch|review|scope)|not\\s+part\\s+of|not\\s+counted|uncounted|separate\\w*|follow-?up|older))[^\\n]*$",
+        "text": "task: Does not count the unchanged parse_cents bug"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^\\W*Verdict\\s*:\\W*Fix\\W*\\(\\s*2\\s+probl",
+        "text": "contract: Verdict is Fix with exactly 2 problems"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?mi)^[^\\n]*\\bNext\\s*:(?:[^\\n]*\\n)*?(?=[^\\n]*(\\?|\\b(decid\\w*|decision|choose|agree\\w*|reconsider\\w*|rethink\\w*|redesign\\w*|escalat\\w*)\\b))(?=[^\\n]*\\b(split\\w*|prorat\\w*|allocat\\w*|remainders?|leftover|rounding|approach\\w*|algorithm\\w*|strateg\\w*)\\b)",
+        "text": "contract: Next asks one approach question about the split"
+      }
+    ]
   }
 }

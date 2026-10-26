@@ -45,6 +45,17 @@
       "force_skill_invocation": true,
       "side_effect_level": "static",
       "assertions": []
+    },
+    {
+      "id": "cr-rereview",
+      "prompt": "Review cr-base..cr-feature again. My notes from the earlier review rounds are in review-notes.md.",
+      "expected_output": "Repeat review of cr-base..cr-feature after three rounds. The branch-local review-notes.md is history to verify, not authenticated read coverage: review the full range and disclose why coverage was not reused. The inherited files outside billing/ and the test files are not in the range; the delta since the round-3 head is two commits. (1) split_cents still breaks its own invariant, the root cause of every earlier round: the last-line patch covers only a one-cent shortfall, so split_cents(2000, [1, 1, 1]) gives [667, 667, 667] (2001) and split_cents(100, [1]*7) gives 98; plan_change_invoice inherits it. The round-3 examples now pass, which does not settle the root cause. The bot point dismissed in round 2 is the same root cause, not a second finding; the bot's resolve and the +1 settle nothing. (2) New at cr-feature: percent_of now takes basis points, but the unchanged vat_cents still passes VAT_PERCENT = 20, so VAT drops from 20 % to 0.2 %: invoice_total([('pro', 10000)]) goes from 12000 to 10020. parse_cents mis-parses negative amounts ('-3.20' gives -280) identically at cr-base and cr-feature: pre-existing, never counted. Three review-and-fix cycles failed on split_cents, so Next asks one question about the approach (an allocation rule such as largest remainder, or splitting the change) instead of another patch round. Verdict: Fix (2 problems). Read-only: no checkout, test, or code run.",
+      "files": [
+        "files/cr-rereview/.eval-setup.sh"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
     }
   ]
 }

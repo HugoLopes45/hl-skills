@@ -1909,6 +1909,79 @@ for case in ("cr-schema", "cr-clean", "cr-deploy-order", "cr-tradeoff", "cr-test
     HARD_GOOD[case] = HARD_GOOD["cr-unreachable"]
 
 
+class PrEvidenceChecks(unittest.TestCase):
+    def test_vat_requires_a_regression_not_a_unit_mention(self):
+        finding = spec("code-review", "cr-rereview", "task: Finds that VAT")
+        for answer, expected in (
+            ("The delta adds discount_line in basis points; vat_cents and invoice_total are unchanged.", False),
+            ("VAT is not too low; the conversion to basis points is correct.", False),
+            ("VAT now undercharges invoices because 20 means 0.2% rather than 20%.", True),
+            ("invoice_total([('pro', 10000)]) returns 10020 instead of 12000.", True),
+            ("VAT drops from 20 % to 0.2 %.", True),
+            ("invoice_total([('pro', 10000)]) goes from 12000 to 10020.", True),
+            ("vat_cents(10000) now returns 20 instead of 2000.", True),
+            ("VAT is now a hundredth of its intended value.", True),
+        ):
+            with self.subTest(answer=answer):
+                self.assertEqual(passes(finding, answer), expected)
+
+    def test_proration_requires_a_current_defect_not_review_history(self):
+        finding = spec("code-review", "cr-rereview", "task: Keeps the split_cents")
+        for answer, expected in (
+            ("Round 3's split_cents finding is fixed: it now returns [333, 333, 334] instead of more than the total.", False),
+            ("Previously, split_cents could add up to less than the total.", False),
+            ("split_cents is no longer broken at HEAD.", False),
+            ("split_cents still returns [333, 333, 334], which correctly sums to 1000.", False),
+            ("At HEAD, split_cents still returns 2001 cents when splitting 2000.", True),
+            ("split_cents(100, [1] * 7) returns parts summing to 98 instead of 100.", True),
+            ("split_cents still loses cents; the +1 adjustment misses larger remainders.", True),
+            ("split_cents still breaks its own invariant.", True),
+            ("split_cents(2000, [1, 1, 1]) gives [667, 667, 667], which sums to 2001 and overcharges by a cent.", True),
+            ("split_cents(100, [1]*7) returns seven 14s: 98 cents, two short of the total.", True),
+            ("split_cents(2000, [1, 1, 1]) gives [667, 667, 667] (2001) and split_cents(100, [1]*7) gives 98; plan_change_invoice inherits it.", True),
+            ("split_cents(100, [1]*7) gives 98.", True),
+        ):
+            with self.subTest(answer=answer):
+                self.assertEqual(passes(finding, answer), expected)
+
+    def test_recovery_requires_a_data_recovery_limitation(self):
+        recovery = spec("open-pr", "pr-ready-stale", "task: Says a code revert")
+        for answer, expected in (
+            ("Rollback: revert the merge commit; no data is lost.", False),
+            ("Rollback: revert the merge commit; it does not need a migration.", False),
+            ("Rollback needs no backup; reverting restores the original keys.", False),
+            ("Rollback of the keys does not require a backup.", False),
+            ("Rollback of the keys doesn't need a backup.", False),
+            ("Rollback of the keys never requires a backup.", False),
+            ("A code revert cannot restore the original plaintext keys.", True),
+            ("Rollback requires restoring a backup of the original keys.", True),
+            ("The one-way hashing migration is irreversible; reverting code cannot recover the keys.", True),
+            ("Rollback: migration 0002 is irreversible; reverting the code leaves every stored key hashed.", True),
+            ("Reverting the merge commit is not a rollback: the plaintext keys are gone after migration 0002.", True),
+            ("Restoring the original keys after a rollback requires a pre-migration database backup.", True),
+            ("Rollback: restore the keys table from a backup taken before 0002; a code revert alone is not enough.", True),
+        ):
+            with self.subTest(answer=answer):
+                self.assertEqual(passes(recovery, answer), expected)
+
+    def test_bot_approvals_require_an_explicit_human_approval_gap(self):
+        approvals = spec("open-pr", "pr-ready-stale", "task: Bot approvals")
+        for answer, expected in (
+            ("Approvals: release-bot[bot] and ci-approver[bot] cover the required reviewers.", False),
+            ("Only bot approvals are needed; human review is not required.", False),
+            ("Bots approved; human approval is not missing.", False),
+            ("Bot approvals cannot replace the human owners' approval.", True),
+            ("Bots approved; independent human review is still required.", True),
+            ("Only bots approved; no human owner has approved this revision.", True),
+            ("Human owner approval: missing; only release-bot[bot] and ci-approver[bot] approved.", True),
+            ("Approvals: release-bot[bot] and ci-approver[bot] only; CODEOWNERS requires @acme/security, which has not approved.", True),
+            ("Bot approvals don't count toward CODEOWNERS; a human owner must approve.", True),
+            ("The two approvals are from bots and do not count; human owner approval is needed.", True),
+        ):
+            with self.subTest(answer=answer):
+                self.assertEqual(passes(approvals, answer), expected)
+
+
 class CodeReviewHardChecks(unittest.TestCase):
     OUTPUT_KINDS = {"output_matches", "output_not_matches", "first_line"}
 
@@ -2065,7 +2138,14 @@ class CodeReviewHardChecks(unittest.TestCase):
         for case in ("cr-units", "cr-lock", "cr-revise"):
             self.assertTrue(passes(spec(HARD, case, "contract: Verdict line sits just before Next"), "Verdict : Fix (1 probl\u00e8me)\n**Next :**\n1. x"))
             self.assertTrue(passes(spec(HARD, case, "contract: Verdict is Fix with exactly 1"), "Verdict\u00a0: Fix (1 probl\u00e8me)"))
-        self.assertFalse(passes(spec(HARD, "cr-idor", "task: Finds the missing ownership check"), "Authorization is unchanged; the CSV allows formula injection."))
+        idor = spec(HARD, "cr-idor", "task: Finds the missing ownership check")
+        self.assertFalse(passes(idor, "Authorization is unchanged; the CSV allows formula injection."))
+        for review_step in ("1. export_document changes access to documents/; ask a human owner to review it.",
+                            "1. `export_document` touche un chemin sensible : demander une revue au propriétaire du code.",
+                            "1. Demander au propriétaire du document de valider ce changement."):
+            self.assertFalse(passes(idor, review_step), review_step)
+        for finding in ("export_document never compares the caller with the document owner.", "Le propriétaire du document n'est pas vérifié."):
+            self.assertTrue(passes(idor, finding), finding)
         severity = spec(HARD, "cr-revise", "contract: Uses only the four severity words")
         for wrong in ("un probl\u00e8me majeur", "severity: major", "gravit\u00e9 \u00e9lev\u00e9e"):
             self.assertFalse(passes(severity, wrong), wrong)
