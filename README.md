@@ -74,14 +74,6 @@ Use any skill alone, or chain them:
 - **Inherited codebase:** `hl-discover --depth full`, then `hl-improve arch`, then `hl-improve`.
 - **Startup idea:** `hl-startup scout` without an idea, `hl-startup` to evaluate one, `hl-startup ship` or `hl-startup kill` after launch.
 
-### Pull requests: proof before approval
-
-`hl-open-pr` separates draft publication, ready-for-review prerequisites, and hosted merge gates. Its preflight ties runnable checks and independent review to the committed revision. A dirty-tree pass or stale approval does not certify that revision.
-
-`hl-code-review` remains static and read-only. It scales review depth with risk, distinguishes introduced or exposed defects from historical bugs, and bounds repeat reviews. `Clear` is not merge approval. `hl-receive-review` proposes evidence-backed dispositions; it neither fixes code nor resolves hosted threads.
-
-These skills do not configure branch protection, human approval requirements, merge queues, staged releases, or rollback infrastructure. Missing enforcement and untested recovery stay explicit.
-
 ## Real answers
 
 Answers from the skills, trimmed with `[...]` and wrapped to fit.
