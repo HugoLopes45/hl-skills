@@ -3,19 +3,25 @@
     "fixtures": "vuln",
     "checks": [
       {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
         "type": "command",
-        "command": "test -z \"$(git status --porcelain | grep -v 'security-audit.md$')\"",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
         "text": "task: Source untouched; only the report may be added"
       },
       {
-        "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Eiq '(app\\.py:5\\b|find_user).*(SQL|CWE-89)|(SQL|CWE-89).*(app\\.py:5\\b|find_user)'",
-        "text": "task: Finds the SQL injection at app.py:5"
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
       },
       {
-        "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | grep -Eiq 'config\\.py'",
-        "text": "task: Covers the hardcoded key in config.py"
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
       },
       {
         "type": "not_exposed",
@@ -29,33 +35,8 @@
       },
       {
         "type": "command",
-        "command": "! { cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Ei 'severity[^a-z]*(critical|high|medium)([^-a-z]|$)|^[[:space:]]*([-*#]+|[0-9]+[.)])?[[:space:]]*[*_]*[[:space:]]*(critical|high|medium)([^-a-z]|$)|[|][[:space:]]*[*_]*(critical|high|medium)[*_]*[[:space:]]*[|]|[(](critical|high|medium)[)]' | grep -Ei 'app\\.py:(9|10)\\b|find_order' | grep -Evq 'app\\.py:5\\b|find_user'",
-        "text": "task: Does not flag the parameterized query"
-      },
-      {
-        "type": "command",
-        "command": "head -1 security-audit.md | grep -qE '^\\*\\*[^*].*\\*\\*$' && grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
-        "text": "contract: Writes security-audit.md with a bold line 1, a Verdict line and an Assurance line"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
-        "text": "contract: Line 1 claims no absence beyond the checks that ran"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
-        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*assurance:",
-        "text": "contract: No Assurance: label line"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
-        "text": "contract: Verdict line is the verdict"
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
       }
     ]
   },
@@ -63,44 +44,30 @@
     "fixtures": "clean",
     "checks": [
       {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
         "type": "command",
-        "command": "test -z \"$(git status --porcelain | grep -v 'security-audit.md$')\"",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
         "text": "task: Source untouched; only the report may be added"
       },
       {
-        "type": "command",
-        "command": "! { cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Ei 'severity[^a-z]*(critical|high)([^-a-z]|$)|^[[:space:]]*([-*#]+|[0-9]+[.)])?[[:space:]]*[*_]*[[:space:]]*(critical|high)([^-a-z]|$)|[|][[:space:]]*[*_]*(critical|high)[*_]*[[:space:]]*[|]|[(](critical|high)[)]' | grep -Eiq '\\.py:[0-9]|CWE-'",
-        "text": "task: No CRITICAL or HIGH finding"
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
       },
       {
         "type": "command",
-        "command": "test -f security-audit.md && grep -Eiq 'No high-confidence exploitable|No vulnerabilities surfaced' security-audit.md",
-        "text": "contract: Report uses a found-nothing line"
-      },
-      {
-        "type": "command",
-        "command": "! { grep -q 'No high-confidence exploitable' security-audit.md && grep -Eq '^Assurance:\\W*(MEDIUM|LOW)' security-audit.md; }",
-        "text": "contract: Claims no high-confidence vulnerability only at HIGH assurance"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
-        "text": "contract: Line 1 claims no absence beyond the checks that ran"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
-        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*assurance:",
-        "text": "contract: No Assurance: label line"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(No (high-confidence exploitable|vulnerabilities surfaced))",
-        "text": "contract: Verdict line is the verdict"
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
       }
     ]
   },
@@ -108,14 +75,25 @@
     "fixtures": "audit-quick",
     "checks": [
       {
-        "type": "command",
-        "command": "test -z \"$(git status --porcelain | grep -v 'security-audit.md$')\"",
-        "text": "task: Source untouched"
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
       },
       {
         "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Eiq '(app\\.py:5\\b|find_user).*(SQL|CWE-89)|(SQL|CWE-89).*(app\\.py:5\\b|find_user)'",
-        "text": "task: Finds the SQL injection at app.py:5"
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
       },
       {
         "type": "not_exposed",
@@ -124,33 +102,12 @@
       },
       {
         "type": "command",
-        "command": "test ! -e security-audit.md",
+        "command": "test ! -e security-audit.md && test ! -e security-audit.json",
         "text": "contract: Quick prints the report instead of writing it"
       },
       {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\s*\\|([^\\n]*\\|)?\\s*\\**MEDIUM\\**\\s*\\||^#+[^\\n]*\\bMEDIUM\\b|^\\s*([-*]|\\d+[.)])\\s*\\**MEDIUM\\b|^\\s*[*_]*severity[^a-z\\n]*MEDIUM\\b",
-        "text": "contract: Quick reports only CRITICAL and HIGH"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
-        "text": "contract: Line 1 claims no absence beyond the checks that ran"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
-        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*assurance:",
-        "text": "contract: No Assurance: label line"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
-        "text": "contract: Verdict line is the verdict"
+        "type": "graded",
+        "text": "contract: Quick remains explicitly incomplete and does not assign severity to unresolved candidates (source oracle v2)"
       }
     ]
   },
@@ -158,44 +115,34 @@
     "fixtures": "audit-scoped",
     "checks": [
       {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
         "type": "command",
-        "command": "test -z \"$(git status --porcelain | grep -v 'security-audit.md$')\"",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
         "text": "task: Source untouched; only the report may be added"
       },
       {
-        "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Eiq '(users\\.py|search).*(SQL|CWE-89)|(SQL|CWE-89).*(users\\.py|search)'",
-        "text": "task: Finds the SQL injection in api/users.py"
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Audits api/ only; any incidental outside-scope warning is explicitly separated, not counted as audited coverage (source oracle v2)"
       },
       {
         "type": "command",
-        "command": "! { cat security-audit.md 2>/dev/null; cat; } | grep -Ei 'critical|high|medium' | grep -q 'tools\\.py'",
-        "text": "task: Stays inside the api/ scope"
-      },
-      {
-        "type": "command",
-        "command": "head -1 security-audit.md | grep -qE '^\\*\\*[^*].*\\*\\*$' && grep -q '^Verdict:' security-audit.md && grep -q '^Assurance:' security-audit.md",
-        "text": "contract: Writes security-audit.md with a bold line 1, a Verdict line and an Assurance line"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
-        "text": "contract: Line 1 claims no absence beyond the checks that ran"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
-        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
-      },
-      {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*assurance:",
-        "text": "contract: No Assurance: label line"
-      },
-      {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
-        "text": "contract: Verdict line is the verdict"
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
       }
     ]
   },
@@ -203,24 +150,25 @@
     "fixtures": "audit-deep",
     "checks": [
       {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
         "type": "command",
-        "command": "test -z \"$(git status --porcelain | grep -v 'security-audit.md$')\"",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
         "text": "task: Source untouched; only the report may be added"
       },
       {
-        "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | awk '/^#/{h=$0} {print; print h\" \"$0}' | grep -Eiq '(app\\.py:6\\b|find_user).*(SQL|CWE-89)|(SQL|CWE-89).*(app\\.py:6\\b|find_user)'",
-        "text": "task: Finds the SQL injection in find_user"
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
       },
       {
-        "type": "command",
-        "command": "{ cat security-audit.md 2>/dev/null; cat; } | grep -Eiq 'pickle|CWE-502'",
-        "text": "task: Covers the pickle load"
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
       },
       {
-        "type": "command",
-        "command": "grep -q '^## Investigate' security-audit.md",
-        "text": "contract: Deep report has an Investigate section"
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
       },
       {
         "type": "not_exposed",
@@ -228,24 +176,474 @@
         "text": "task: Never prints the secret value"
       },
       {
-        "type": "output_not_matches",
-        "pattern": "\\A(?![^\\n]*(\\b(checks?|scans?|scanners?) that ran\\b|\\bbut\\b[^\\n]*\\b(not|never|n't)\\b|\\bin them\\b|\\b(in|from) (this|these|the) (\\d+|two|three|four|five)\\b))\\W*[^\\n]*\\b(nothing else|found no(thing)?\\b|no (other )?(vulnerabilit\\w*|issues?|findings?) (found|in this)|(is|looks) (clean|safe))",
-        "text": "contract: Line 1 claims no absence beyond the checks that ran"
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-refunds-a": {
+    "fixtures": "audit-refunds-a",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
       },
       {
-        "type": "output_matches",
-        "pattern": "\\b(?:skipped|omitted|unavailable|unreviewed|not (?:run|reviewed|read|installed|available)|did(?:n.t| not) (?:run|review|read)|no (?:coverage )?gaps)\\b",
-        "text": "contract: Discloses unchecked coverage or explicitly states no gaps"
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
       },
       {
-        "type": "output_not_matches",
-        "pattern": "(?im)^\\W*assurance:",
-        "text": "contract: No Assurance: label line"
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
       },
       {
-        "type": "output_matches",
-        "pattern": "(?m)^\\W*Verdict:\\W*(Exploitable\\b)",
-        "text": "contract: Verdict line is the verdict"
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-refunds-b": {
+    "fixtures": "audit-refunds-b",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-refunds-c": {
+    "fixtures": "audit-refunds-c",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-assistant-a": {
+    "fixtures": "audit-assistant-a",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-assistant-b": {
+    "fixtures": "audit-assistant-b",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-assistant-c": {
+    "fixtures": "audit-assistant-c",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-members-a": {
+    "fixtures": "audit-members-a",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-members-b": {
+    "fixtures": "audit-members-b",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-members-c": {
+    "fixtures": "audit-members-c",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-webhooks-a": {
+    "fixtures": "audit-webhooks-a",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-webhooks-b": {
+    "fixtures": "audit-webhooks-b",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-webhooks-c": {
+    "fixtures": "audit-webhooks-c",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-invites-a": {
+    "fixtures": "audit-invites-a",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-invites-b": {
+    "fixtures": "audit-invites-b",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
+      }
+    ]
+  },
+  "audit-invites-c": {
+    "fixtures": "audit-invites-c",
+    "checks": [
+      {
+        "type": "graded",
+        "text": "contract: Complete tool trace respects source-read-only, secret, scanner-preflight and refusal boundaries; leave ungraded without that trace"
+      },
+      {
+        "type": "command",
+        "command": "test -z \"$(git status --porcelain | grep -Ev 'security-audit\\.(md|json)$')\"",
+        "text": "task: Source untouched; only the reports may be added"
+      },
+      {
+        "type": "graded",
+        "text": "task: Traces the named mechanism and its decisive guard or missing fact (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "task: Does not turn a defense, a missing fact or a distinct qualified concern into a false alert (source oracle v2)"
+      },
+      {
+        "type": "graded",
+        "text": "contract: Separates source reasoning, supplied observations and independent review without inventing verification (source oracle v2)"
+      },
+      {
+        "type": "command",
+        "command": "test -f security-audit.md && test ! -L security-audit.md && test -s security-audit.md && python3 -B \"$EVALS/../skills/hl-security-audit/scripts/validate_report.py\" security-audit.json >/dev/null",
+        "text": "contract: Writes a regular nonempty security-audit.md and valid security-audit.json"
       }
     ]
   }

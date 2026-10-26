@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "source_ref": "Illustrative record, not a real audit",
+  "scope": ["."],
+  "profile": "standard",
+  "run_status": "incomplete",
+  "assurance": "MEDIUM",
+  "limitations": [
+    "The dependency scan did not run: its advisory lookup needs network approval that was not given.",
+    "No secret scanner with documented redaction was installed.",
+    "Login rate limits at the reverse proxy are outside the repository."
+  ],
+  "prior_runs": [],
+  "coverage_review": {
+    "reviewer": "coverage-reviewer",
+    "uncovered": ["Effective rate limit on POST /login, configured outside the repository."],
+    "notes": "Compared the unit plan with every route in app/routes.py and the nightly cleanup job; no unplanned entry surface remained."
+  },
+  "units": [
+    {
+      "id": "reservations.cancel.ownership",
+      "surface": "DELETE /reservations/<id>",
+      "boundary": "member to another member's reservation",
+      "category": "authorization",
+      "paths": ["app/reservations.py", "app/routes.py"],
+      "status": "reviewed",
+      "checks": [
+        {
+          "method": "source",
+          "evidence": "Read the route guard at app/routes.py:18-19 and the delete query at app/reservations.py:40-42.",
+          "author": "hunter-authz",
+          "paths": ["app/reservations.py", "app/routes.py"]
+        }
+      ],
+      "finding_ids": ["reservations-cancel-other-member"],
+      "reason": null
+    },
+    {
+      "id": "auth.login.attempts",
+      "surface": "POST /login",
+      "boundary": "anonymous caller to member credentials",
+      "category": "credential guessing",
+      "paths": ["app/auth.py"],
+      "status": "blocked",
+      "checks": [
+        {
+          "method": "source",
+          "evidence": "Read app/auth.py:25-34: no attempt counter or delay exists in the application.",
+          "author": "hunter-auth",
+          "paths": ["app/auth.py"]
+        }
+      ],
+      "finding_ids": ["login-attempts-unbounded"],
+      "reason": "The effective limit depends on proxy configuration that is not in the repository."
+    },
+    {
+      "id": "search.sort.injection",
+      "surface": "GET /search",
+      "boundary": "member input to the database",
+      "category": "injection",
+      "paths": ["app/search.py"],
+      "status": "reviewed",
+      "checks": [
+        {
+          "method": "source",
+          "evidence": "Read app/search.py:8-12: sort is mapped through a fixed allowlist before the only query that interpolates it.",
+          "author": "hunter-injection",
+          "paths": ["app/search.py"]
+        }
+      ],
+      "finding_ids": ["search-sort-sql"],
+      "reason": null
+    },
+    {
+      "id": "dependencies.requirements.advisories",
+      "surface": "Packages installed from requirements.txt",
+      "boundary": "untrusted input to third-party package code",
+      "category": "known vulnerable dependency",
+      "paths": ["requirements.txt"],
+      "status": "blocked",
+      "checks": [],
+      "finding_ids": [],
+      "reason": "The advisory lookup needs network approval that was not given."
+    },
+    {
+      "id": "repository.committed-credentials",
+      "surface": "Tracked repository files",
+      "boundary": "repository reader to service credentials",
+      "category": "committed credential",
+      "paths": ["."],
+      "status": "blocked",
+      "checks": [],
+      "finding_ids": [],
+      "reason": "No secret scanner with documented redaction is installed, and a raw search could expose values."
+    }
+  ],
+  "findings": [
+    {
+      "id": "reservations-cancel-other-member",
+      "title": "A member can cancel another member's reservation",
+      "state": "confirmed",
+      "unit_ids": ["reservations.cancel.ownership"],
+      "author": "hunter-authz",
+      "attacker": "any logged-in member",
+      "boundary": "member to another member's reservation",
+      "impact": "Cancels any reservation whose ID the member supplies.",
+      "conditions": ["The attacker has a member account.", "The attacker knows or enumerates a reservation ID."],
+      "trace": [
+        {"path": "app/routes.py", "line": 18, "role": "entry", "detail": "reservation_id comes from the URL."},
+        {"path": "app/routes.py", "line": 19, "role": "step", "detail": "require_member checks login, not ownership."},
+        {"path": "app/reservations.py", "line": 42, "role": "sink", "detail": "DELETE selects by id only, with no owner filter."}
+      ],
+      "evidence_basis": "source",
+      "evidence": "Invariant: only a reservation's owner may cancel it. The strongest defense, require_member at app/routes.py:19, checks login, not ownership, and the delete at app/reservations.py:42 filters by ID only. Source-only; not reproduced.",
+      "reviewer": {
+        "id": "reviewer-2",
+        "decision": "confirmed",
+        "reason": "Reconstructed the path from the route to the query; no middleware adds an owner check."
+      },
+      "severity": "HIGH",
+      "cwe": "CWE-639",
+      "cvss": "unscored",
+      "remediation": "Restore owner-only cancellation in the delete itself: add the authenticated member's ID to its condition at app/reservations.py:42, so every route that reaches it is covered.",
+      "regression": "Unexecuted plan for the fixed revision, with dummy data: member B's cancellation of member A's reservation returns not-found and the reservation remains, a case that fails at 4f2c9e1; A can still cancel A's own reservation.",
+      "disposition": "active",
+      "exception": null
+    },
+    {
+      "id": "login-attempts-unbounded",
+      "title": "Login may accept unlimited password guesses",
+      "state": "needs_validation",
+      "unit_ids": ["auth.login.attempts"],
+      "author": "hunter-auth",
+      "attacker": "anonymous internet caller",
+      "boundary": "anonymous caller to member credentials",
+      "impact": "Unbounded password guessing against member accounts, if no outside limit applies.",
+      "conditions": ["No proxy or gateway limit caps failed attempts for an account on POST /login."],
+      "trace": [
+        {"path": "app/auth.py", "line": 30, "role": "entry", "detail": "Each request checks the password without counting failures."}
+      ],
+      "evidence_basis": "source",
+      "evidence": "The application has no limit; the deployment limit is unknown.",
+      "reviewer": {
+        "id": "reviewer-2",
+        "decision": "needs_validation",
+        "reason": "The application code is as described; the outcome depends on the proxy."
+      },
+      "blocker": "The proxy configuration for POST /login is not in the repository.",
+      "next_check": "Ask the operator for the effective proxy limits on POST /login: a cap on failed attempts per account refutes the claim; no such cap confirms it."
+    },
+    {
+      "id": "search-sort-sql",
+      "title": "Sort column interpolated into SQL",
+      "state": "rejected",
+      "unit_ids": ["search.sort.injection"],
+      "author": "hunter-injection",
+      "attacker": "any logged-in member",
+      "boundary": "member input to the database",
+      "impact": "None established.",
+      "conditions": [],
+      "trace": [
+        {"path": "app/search.py", "line": 8, "role": "entry", "detail": "sort comes from the query string."},
+        {"path": "app/search.py", "line": 12, "role": "sink", "detail": "The column name is formatted into the query."}
+      ],
+      "evidence_basis": "source",
+      "evidence": "app/search.py:9 maps sort through a fixed dictionary and rejects other values; the only query using the result is at line 12.",
+      "reviewer": {
+        "id": "reviewer-2",
+        "decision": "rejected",
+        "reason": "Only allowlisted column names reach the query."
+      },
+      "reason": "The allowlist at app/search.py:9 admits only fixed column names, and the only query that uses sort, at line 12, runs after it, so no path passes raw input into SQL."
+    }
+  ],
+  "scanners": [
+    {
+      "kind": "deps",
+      "command": "pip-audit --disable-pip --no-deps -r requirements.txt",
+      "directory": ".",
+      "executions": 0,
+      "status": "skipped",
+      "scope": ["."],
+      "preflight": "Plain pip-audit -r can install packages. This candidate needs fully pinned requirements and installed-version proof of no package execution or unredacted output; network use is also unapproved.",
+      "result": "Not run."
+    },
+    {
+      "kind": "secrets",
+      "command": "gitleaks dir --redact .",
+      "directory": ".",
+      "executions": 0,
+      "status": "skipped",
+      "scope": ["."],
+      "preflight": "gitleaks is not installed. A run also needs --config naming trusted rules outside the target; otherwise the target's .gitleaks.toml may replace or allowlist detection rules. Verify installed-version redaction, network behavior and target-controlled exclusions before running.",
+      "result": "Not run."
+    }
+  ]
+}

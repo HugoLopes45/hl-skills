@@ -50,7 +50,10 @@ def run_passes(results, kind):
 
 def run_results(run_dir, case_checks):
     output = (run_dir / "outputs" / "output.txt").read_text(errors="replace")
-    recorded = {r["text"]: r["passed"] for r in json.loads((run_dir / "grading.json").read_text())["assertion_results"]}
+    recorded = {
+        r["text"]: None if r.get("skipped") else r["passed"]
+        for r in json.loads((run_dir / "grading.json").read_text())["assertion_results"]
+    }
     transcript = check.Run.from_output_dir(run_dir / "outputs")
     moved = {text.split(":", 1)[-1]: passed for text, passed in recorded.items()}
     results = []

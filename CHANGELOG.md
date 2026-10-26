@@ -5,6 +5,7 @@
 ### Features
 
 * Add `hl-ambitious`: connect expert moves, primary material, concrete methods, and independent checks before rewriting a task; preserve its scope and success criteria when evidence is incomplete.
+* Rework `hl-security-audit` around architecture, falsifiable hypotheses, reviewed evidence, remediation and retest. Retain ten target-selected guides, coverage units, candidate states, prior-run checks, and paired Markdown/JSON reports. Keep audits read-only; derive coverage assurance from source or supplied evidence, not scanner counts. Add 15 source fixtures and correct semantic grading without rewriting historical scores.
 
 ### Fixes
 

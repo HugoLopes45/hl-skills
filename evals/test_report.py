@@ -38,6 +38,20 @@ class IterationDir(unittest.TestCase):
 
 
 class RunResults(unittest.TestCase):
+    def test_skipped_semantic_grade_is_incomplete_not_a_pass(self):
+        criterion = {"type": "graded", "text": "task: Claim is supported by its evidence"}
+        with tempfile.TemporaryDirectory() as tmp:
+            run = report.Path(tmp)
+            (run / "outputs").mkdir()
+            (run / "outputs" / "output.txt").write_text("The claim is supported.")
+            (run / "outputs" / "stdout.log").write_text(json.dumps({"session_id": "no-such-session"}))
+            for passed in (True, False):
+                with self.subTest(passed=passed):
+                    (run / "grading.json").write_text(json.dumps({"assertion_results": [
+                        {"text": criterion["text"], "passed": passed, "skipped": True}
+                    ]}))
+                    self.assertEqual(report.run_results(run, [criterion]), [(criterion["text"], None)])
+
     def test_answer_oracles_are_reevaluated_and_workspace_commands_keep_the_recorded_result(self):
         oracle = {"type": "command", "command": "python3 \"$EVALS/oracle.py\" max-words '3'", "text": "contract: short"}
         tests = {"type": "command", "command": "pytest -q", "text": "task: tests pass"}

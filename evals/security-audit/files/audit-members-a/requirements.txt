@@ -1,0 +1,4 @@
+--extra-index-url https://packages.corp.example/simple
+flask==3.1.2
+psycopg==3.2.10
+platform-events==1.4.0
