@@ -23,7 +23,8 @@ _spec.loader.exec_module(validate_report)
 
 
 def run_cli(path: Path) -> subprocess.CompletedProcess:
-    return subprocess.run([sys.executable, "-B", str(SCRIPT), str(path)], capture_output=True, text=True, check=False)
+    command = [sys.executable, "-B", str(SCRIPT), str(path)]
+    return subprocess.run(command, capture_output=True, text=True, check=False, timeout=10)
 
 
 def high_assurance_report() -> dict:
@@ -355,6 +356,19 @@ class CommandLineTest(unittest.TestCase):
         large.write_bytes(b" " * (2 * 1024 * 1024 + 1))
         for path in (link, self.root / "missing.json", self.root, large):
             self.assertEqual(run_cli(path).returncode, 2, path.name)
+
+    def test_large_valid_report_is_checked_promptly(self) -> None:
+        report = copy.deepcopy(EXAMPLE)
+        extra = [f"z{index}" for index in range(20000)]
+        report["scope"] = ["app", "requirements.txt", *extra]
+        next(unit for unit in report["units"] if unit["paths"] == ["."])["paths"] = ["app", "requirements.txt"]
+        report["units"][0]["paths"] += extra
+        report["units"][0]["checks"][0]["paths"] += extra
+        hop = {"path": extra[-1], "line": 1, "role": "step", "detail": "x"}
+        finding(report, "confirmed")["trace"][1:1] = [hop] * 20000
+        content = json.dumps(report, separators=(",", ":"))
+        self.assertLess(len(content), 2 * 1024 * 1024)
+        self.assertEqual(run_cli(self.write(content)).returncode, 0)
 
     @unittest.skipUnless(hasattr(os, "mkfifo"), "needs named pipes")
     def test_named_pipe_is_not_read(self) -> None:

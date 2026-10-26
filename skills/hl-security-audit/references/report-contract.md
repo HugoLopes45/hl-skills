@@ -18,7 +18,7 @@ python3 <skill-directory>/scripts/validate_report.py <report-directory>/security
 
 - Text: a string with visible characters; tab and newline are the only control characters; no bidirectional controls.
 - Identifier: 1 to 128 ASCII letters, digits, `.`, `_` or `-`, starting with a letter or digit. Keep IDs stable across re-audits.
-- Path: repository-relative POSIX path, or `.` for the whole repository. No leading `/` or `~`, backslash, colon, surrounding whitespace, or empty, `.` or `..` segment. Paths are recorded, never opened by the validator.
+- Path: repository-relative POSIX path of at most 1,024 characters, or `.` for the whole repository. No leading `/` or `~`, backslash, colon, surrounding whitespace, or empty, `.` or `..` segment. Paths are recorded, never opened by the validator.
 - Lists of text, paths or identifiers have unique entries.
 - `A within B`: B is `.`, or A equals B, or A starts with `B/`.
 

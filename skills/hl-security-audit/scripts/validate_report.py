@@ -285,16 +285,13 @@ ROOT = {
 # Relations between records
 
 
-def within(path: str, base: str) -> bool:
-    return base == "." or path == base or path.startswith(base + "/")
+def ancestors(path: str) -> list:
+    """Return '.', each parent directory of path, and path itself."""
+    return [".", *(path[:index] for index, char in enumerate(path) if char == "/"), path]
 
 
-def in_any(path: str, bases: list) -> bool:
-    return any(within(path, base) for base in bases)
-
-
-def overlaps(path: str, bases: list) -> bool:
-    return any(within(path, base) or within(base, path) for base in bases)
+def in_any(path: str, bases: set) -> bool:
+    return not bases.isdisjoint(ancestors(path))
 
 
 def actor(name: str) -> str:
@@ -302,9 +299,10 @@ def actor(name: str) -> str:
 
 
 def check_scope(scope: list, errors: list) -> None:
-    if "." in scope and len(scope) > 1:
+    entries = set(scope)
+    if "." in entries and len(scope) > 1:
         errors.append("scope: '.' must be the only entry")
-    elif any(a != b and within(a, b) for a in scope for b in scope):
+    elif any(not entries.isdisjoint(ancestors(path)[1:-1]) for path in scope):
         errors.append("scope: entries must not contain one another")
 
 
@@ -336,29 +334,32 @@ def unit_status_problems(unit: dict) -> list:
     return problems
 
 
-def unit_path_problems(unit: dict, scope: list) -> list:
+def unit_path_problems(unit: dict, scope: set, scope_ancestors: set) -> list:
     problems = []
     if unit["status"] == "out_of_scope":
-        if any(overlaps(path, scope) for path in unit["paths"]):
+        if any(path in scope_ancestors or in_any(path, scope) for path in unit["paths"]):
             problems.append("paths: an out_of_scope unit must lie outside the scope")
     elif not all(in_any(path, scope) for path in unit["paths"]):
         problems.append("paths: must lie within the scope")
+    paths = set(unit["paths"])
     for index, check in enumerate(unit["checks"]):
-        if not all(in_any(path, unit["paths"]) for path in check["paths"]):
+        if not all(in_any(path, paths) for path in check["paths"]):
             problems.append(f"checks[{index}].paths: must lie within the unit's paths")
     return problems
 
 
-def check_units(report: dict, findings: dict, errors: list) -> None:
+def check_units(report: dict, finding_units: dict, errors: list) -> None:
+    scope = set(report["scope"])
+    scope_ancestors = {ancestor for base in scope for ancestor in ancestors(base)}
     for index, unit in enumerate(report["units"]):
         where = f"units[{index}]"
-        problems = unit_status_problems(unit) + unit_path_problems(unit, report["scope"])
+        problems = unit_status_problems(unit) + unit_path_problems(unit, scope, scope_ancestors)
         errors.extend(f"{where}.{problem}" for problem in problems)
-        if any(unit["id"] not in findings.get(fid, {}).get("unit_ids", []) for fid in unit["finding_ids"]):
+        if any(unit["id"] not in finding_units.get(fid, ()) for fid in unit["finding_ids"]):
             errors.append(f"{where}.finding_ids: every linked finding must exist and link back")
 
 
-def trace_problems(entry: dict, scope: list, units: dict) -> list:
+def trace_problems(entry: dict, scope: set, owners: dict) -> list:
     roles = [hop["role"] for hop in entry["trace"]]
     problems = []
     if len(roles) == 1:
@@ -367,9 +368,11 @@ def trace_problems(entry: dict, scope: list, units: dict) -> list:
         ordered = roles[0] == "entry" and roles[-1] == "sink" and set(roles[1:-1]) <= {"step"}
     if not ordered:
         problems.append("trace: must run from an entry through steps to a sink")
-    unit_paths = [path for uid in entry["unit_ids"] if uid in units for path in units[uid]["paths"]]
+    linked = set(entry["unit_ids"])
     for index, hop in enumerate(entry["trace"]):
-        if not (in_any(hop["path"], scope) and in_any(hop["path"], unit_paths)):
+        hop_ancestors = ancestors(hop["path"])
+        in_unit = any(not linked.isdisjoint(owners.get(ancestor, ())) for ancestor in hop_ancestors)
+        if scope.isdisjoint(hop_ancestors) or not in_unit:
             problems.append(f"trace[{index}].path: must lie within the scope and a linked unit")
     return problems
 
@@ -399,21 +402,27 @@ def disposition_problems(entry: dict, today: datetime.date) -> list:
     return []
 
 
-def link_problems(entry: dict, units: dict) -> list:
+def link_problems(entry: dict, unit_findings: dict, supplied: set) -> list:
     problems = []
-    if any(entry["id"] not in units.get(uid, {}).get("finding_ids", []) for uid in entry["unit_ids"]):
+    if any(entry["id"] not in unit_findings.get(uid, ()) for uid in entry["unit_ids"]):
         problems.append("unit_ids: every linked unit must exist and link back")
-    checks = [check for uid in entry["unit_ids"] if uid in units for check in units[uid]["checks"]]
-    if entry["evidence_basis"] == "observed" and not any(check["method"] == "supplied" for check in checks):
+    if entry["evidence_basis"] == "observed" and supplied.isdisjoint(entry["unit_ids"]):
         problems.append("evidence_basis: observed evidence needs a supplied check in a linked unit")
     return problems
 
 
 def check_findings(report: dict, units: dict, today: datetime.date, errors: list) -> None:
+    scope = set(report["scope"])
+    unit_findings = {uid: set(unit["finding_ids"]) for uid, unit in units.items()}
+    supplied = {uid for uid, unit in units.items() if any(check["method"] == "supplied" for check in unit["checks"])}
+    owners: dict = {}
+    for uid, unit in units.items():
+        for path in unit["paths"]:
+            owners.setdefault(path, set()).add(uid)
     for index, entry in enumerate(report["findings"]):
         problems = (
-            link_problems(entry, units)
-            + trace_problems(entry, report["scope"], units)
+            link_problems(entry, unit_findings, supplied)
+            + trace_problems(entry, scope, owners)
             + review_problems(entry)
             + disposition_problems(entry, today)
         )
@@ -473,10 +482,10 @@ def check_coverage_reviewer(report: dict, errors: list) -> None:
 
 def check_relations(report: dict, today: datetime.date, errors: list) -> None:
     units = {unit["id"]: unit for unit in report["units"]}
-    findings = {entry["id"]: entry for entry in report["findings"]}
+    finding_units = {entry["id"]: set(entry["unit_ids"]) for entry in report["findings"]}
     check_scope(report["scope"], errors)
     check_unique_ids(report, errors)
-    check_units(report, findings, errors)
+    check_units(report, finding_units, errors)
     check_findings(report, units, today, errors)
     check_scanners(report, errors)
     check_run_status(report, errors)

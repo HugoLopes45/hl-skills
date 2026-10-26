@@ -138,7 +138,11 @@ No improvement in these outcomes was observed. The small synthetic sample has ce
 
 After v3, one example preflight was tightened to require external trusted gitleaks rules. No other skill byte changed. A fresh write-enabled audit then produced both reports with the final bytes. Only `Glob`, `Read` and `Write` appeared. Source and skill copies remained unchanged. The validator exited zero; the candidate stayed `needs_validation`, with no reviewer and source-only evidence. This proves report production and coherence, not the finding's truth.
 
-Final-byte checks passed: 27 skills validated, 47 script tests, and 234 eval tests with one pytest-dependent skip. The example validator, complexity check and shell checks passed. Final installation was not repeated: the skills CLI was unavailable without fetching a package. Scanner preflight, broader permission behavior, independent review during an audit, real remediation, retesting and all ten domains remain behaviorally unverified.
+Review then found quadratic relation checks in the validator: an 86 KB report with 10,002 scope entries ran over 3 seconds. Relation checks now use set and ancestor lookups. A regression test bounds a valid report with 20,000 scope paths and 20,000 trace hops to 10 seconds. On 20,000 mutated copies of the example report, the old and new validators returned identical error lists. The four stored agent-written reports still validate. The contract now also states the 1,024-character path limit that the validator already enforced; no other skill byte changed. No agent run used these bytes.
+
+Every report-writing case now has a graded check: `security-audit.md` states the same revision, scope, finding states, severities, assurance and coverage limits as `security-audit.json`. No run above was graded on it.
+
+Checks on the current bytes passed: 27 skills validated, 48 script tests, and 238 eval tests with one pytest-dependent skip. The example validator, complexity check and shell checks passed. Final installation was not repeated: the skills CLI was unavailable without fetching a package. Scanner preflight, broader permission behavior, independent review during an audit, real remediation, retesting and all ten domains remain behaviorally unverified.
 
 Skill-tree hashes identify the evaluated bytes. Hash sorted relative paths and file contents, each followed by NUL; omit `__pycache__`.
 
@@ -150,6 +154,7 @@ Skill-tree hashes identify the evaluated bytes. Hash sorted relative paths and f
 | Pre-review v2 exports and report smoke | `40bdaed379b3099cd51852855c07a8a0411f9d6fdb6aec178cd9ed8d8604d4ed` |
 | Reviewed v3 source-inclusive repeat | `ef16eda0fa02e341c9f897e1ee08b8ffd575e71837d31b8b12bafaefed53761f` |
 | Final gitleaks example preflight and fresh report smoke | `0842e92de7367796c79aaaa2b3cb086d1c4a865b9e7deb5a5fee9c3d513c53a1` |
+| Set-based validator checks, no agent run | `2acb866773e2efc80a6c9ba18aaedfcf260abc0f33b373e2f0d4666c87aba51c` |
 
 ## Production qualification
 
