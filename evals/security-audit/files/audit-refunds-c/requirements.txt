@@ -1,0 +1,6 @@
+--extra-index-url https://packages.corp.example/simple
+flask==3.1.2
+psycopg==3.2.10
+requests==2.32.5
+gunicorn==23.0.0
+ledger-client==3.2.0

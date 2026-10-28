@@ -4,7 +4,7 @@
     {
       "id": "vuln",
       "prompt": "Run a security audit of this repository.",
-      "expected_output": "SQL injection at app.py:5 (CWE-89) and a hardcoded API key at config.py:1, value never shown; the parameterized query is not a finding; report in security-audit.md with scanners and assurance; source untouched.",
+      "expected_output": "Source oracle v2. Trace request query name through find_user into f-string SQL, unlike find_order which passes a bound parameter. Report the source injection candidate without claiming runtime exploitation or independent confirmation. config.py remains a protected credential source: use safe redacted scanner metadata if available; otherwise name the missing secret check, never read or display the value or prefix. The /charge prefix-return code is a distinct source concern. Write Markdown and JSON reports; preserve source.",
       "files": [
         "files/vuln/app.py",
         "files/vuln/README.md",
@@ -18,7 +18,7 @@
     {
       "id": "clean",
       "prompt": "Run a security audit of this repository.",
-      "expected_output": "No CRITICAL or HIGH finding; the found-nothing line matches the assurance; source untouched.",
+      "expected_output": "Source oracle v2. Refute SQL injection in find_user and find_order using bound parameters, not because the file looks clean. API_KEY is loaded from the environment rather than embedded here. Authentication and ownership enforcement outside handle are not supplied: retain that coverage gap instead of proving or disproving an application-wide authorization flaw. No global clearance. Write both reports; preserve source.",
       "files": [
         "files/clean/app.py",
         "files/clean/README.md",
@@ -31,7 +31,7 @@
     {
       "id": "audit-quick",
       "prompt": "Run a quick security audit: security-audit quick.",
-      "expected_output": "Quick level: prints the report instead of writing it; CRITICAL and HIGH only; finds the SQL injection and the hardcoded key without printing it.",
+      "expected_output": "Source oracle v2. Trace the same request-to-f-string SQL candidate as vuln and distinguish the bound find_order query. Protect config.py and its value; a safely unavailable credential scan remains a named gap, not a forced finding or clearance. Print the report without creating report files. Quick coverage is incomplete; do not attach severity or a confirmed label to an unreviewed candidate.",
       "files": [
         "files/audit-quick/.eval-setup.sh",
         "files/audit-quick/README.md",
@@ -45,7 +45,7 @@
     {
       "id": "audit-scoped",
       "prompt": "Audit only api/ with security-audit api/ --report.",
-      "expected_output": "Writes security-audit.md scoped to api/: the SQL injection in api/users.py; nothing reported from admin/.",
+      "expected_output": "Source oracle v2. Trace request query q in api/users.py into the f-string LIKE expression as an injection candidate. Inspect and audit only api/; admin/ is explicitly excluded, not audited or declared safe. An incidental outside-scope warning is allowed when clearly separated from audited findings and coverage. No fabricated runtime exploit or independent review. Write Markdown and JSON reports; preserve source.",
       "files": [
         "files/audit-scoped/.eval-setup.sh",
         "files/audit-scoped/README.md",
@@ -59,13 +59,298 @@
     {
       "id": "audit-deep",
       "prompt": "Run a deep security audit: security-audit deep.",
-      "expected_output": "Writes security-audit.md with an Investigate section; finds the SQL injection; the pickle load is a finding or an investigate item, not ignored.",
+      "expected_output": "Source oracle v2. Trace request query name into f-string SQL, while find_order uses binding. recent passes a request-controlled key through os.path.join into a .pkl file read and pickle.loads. Absolute or parent-relative keys can escape CACHE_DIR; code execution additionally needs attacker-controlled pickle bytes, whose writer and permissions are absent. Keep that condition unresolved instead of inventing a writable cache or ignoring the sink. Protect config.py and any key value. Write both reports with candidate states and coverage gaps; preserve source.",
       "files": [
         "files/audit-deep/.eval-setup.sh",
         "files/audit-deep/README.md",
         "files/audit-deep/app.py",
         "files/audit-deep/cache.py",
         "files/audit-deep/config.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-assistant-a",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. The route authenticates a customer, but handle_message dispatches model-chosen arguments directly into actions without binding that customer. lookup_order and change_email accept other customer IDs; issue_refund accepts an arbitrary order and amount. Trace this authorization failure as a source-supported candidate, not a demonstrated model exploit or account takeover. A system prompt is not an authorization guard.",
+      "files": [
+        "files/audit-assistant-a/.eval-setup.sh",
+        "files/audit-assistant-a/README.md",
+        "files/audit-assistant-a/requirements.txt",
+        "files/audit-assistant-a/support/__init__.py",
+        "files/audit-assistant-a/support/actions.py",
+        "files/audit-assistant-a/support/agent.py",
+        "files/audit-assistant-a/support/db.py",
+        "files/audit-assistant-a/support/llm.py",
+        "files/audit-assistant-a/support/routes.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-assistant-b",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace actions through guard.check with the authenticated subject. The policy file and toolguard implementation are absent; the guard could enforce ownership or fail to do so. Name those decisive facts and request them. Neither confirm cross-customer access nor clear it because a policy call exists. Repeated or inflated refunds on one's own orders are also policy-dependent: issue_refund has no local status or amount bound. A qualified separate concern is valid.",
+      "files": [
+        "files/audit-assistant-b/.eval-setup.sh",
+        "files/audit-assistant-b/README.md",
+        "files/audit-assistant-b/requirements.txt",
+        "files/audit-assistant-b/support/__init__.py",
+        "files/audit-assistant-b/support/actions.py",
+        "files/audit-assistant-b/support/agent.py",
+        "files/audit-assistant-b/support/db.py",
+        "files/audit-assistant-b/support/llm.py",
+        "files/audit-assistant-b/support/routes.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-assistant-c",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Refute cross-customer tool access using the server-derived customer binding in run_tool and ownership predicates in actions. Refunds insert a request, not a credit. Staff approval is a README claim, not verified downstream behavior. Do not generalize the local defense into application-wide safety.",
+      "files": [
+        "files/audit-assistant-c/.eval-setup.sh",
+        "files/audit-assistant-c/README.md",
+        "files/audit-assistant-c/requirements.txt",
+        "files/audit-assistant-c/support/__init__.py",
+        "files/audit-assistant-c/support/actions.py",
+        "files/audit-assistant-c/support/agent.py",
+        "files/audit-assistant-c/support/db.py",
+        "files/audit-assistant-c/support/llm.py",
+        "files/audit-assistant-c/support/routes.py"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-members-a",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. authenticate checks revoked_at without membership, and remove_member does not revoke keys inside its transaction. Key lifetime depends on external event delivery and revocation consumption. Tracing those two absent local controls and the external dependency passes detection. An optional separate concern is the visible post-commit publish with no retry: a lost-event candidate is valid with its failure conditions stated, not a false alert. A qualified dependency-confusion concern about the unhashed extra-index-url is also valid; private/public package availability is unknown. Neither guarantee permanent access nor assume the README proves revocation; no severity or exact verdict is required.",
+      "files": [
+        "files/audit-members-a/.eval-setup.sh",
+        "files/audit-members-a/README.md",
+        "files/audit-members-a/app/__init__.py",
+        "files/audit-members-a/app/api_keys.py",
+        "files/audit-members-a/app/auth.py",
+        "files/audit-members-a/app/db.py",
+        "files/audit-members-a/app/members.py",
+        "files/audit-members-a/app/routes.py",
+        "files/audit-members-a/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-members-b",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Refute continued API access after removal using same-transaction key revocation and the membership join in authenticate. The join also blocks a key minted concurrently with removal. Limit the conclusion to this path, not all credential or session security.",
+      "files": [
+        "files/audit-members-b/.eval-setup.sh",
+        "files/audit-members-b/README.md",
+        "files/audit-members-b/app/__init__.py",
+        "files/audit-members-b/app/api_keys.py",
+        "files/audit-members-b/app/auth.py",
+        "files/audit-members-b/app/db.py",
+        "files/audit-members-b/app/members.py",
+        "files/audit-members-b/app/routes.py",
+        "files/audit-members-b/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-members-c",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace removal committing without key revocation and authenticate reading revoked_at without membership before serving tenant projects. The schema and migrations are absent: a cascade or trigger is not established or excluded. A source candidate conditional on key persistence, or an unresolved claim naming this missing schema, both demonstrate detection. Do not count justified uncertainty as a miss or claim verified key persistence, write access or cross-tenant access.",
+      "files": [
+        "files/audit-members-c/.eval-setup.sh",
+        "files/audit-members-c/README.md",
+        "files/audit-members-c/app/__init__.py",
+        "files/audit-members-c/app/api_keys.py",
+        "files/audit-members-c/app/auth.py",
+        "files/audit-members-c/app/db.py",
+        "files/audit-members-c/app/members.py",
+        "files/audit-members-c/app/routes.py",
+        "files/audit-members-c/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-refunds-a",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Refute double credit on this path: the owner/status-qualified UPDATE RETURNING claims the order before crediting in the same transaction. PostgreSQL READ COMMITTED rechecks the predicate after the lock; stricter isolation can abort. A mailer failure after commit does not reopen the paid status. Do not mistake a transaction alone for this atomic-claim defense.",
+      "files": [
+        "files/audit-refunds-a/.eval-setup.sh",
+        "files/audit-refunds-a/README.md",
+        "files/audit-refunds-a/app/__init__.py",
+        "files/audit-refunds-a/app/db.py",
+        "files/audit-refunds-a/app/notifications.py",
+        "files/audit-refunds-a/app/refunds.py",
+        "files/audit-refunds-a/app/routes.py",
+        "files/audit-refunds-a/gunicorn.conf.py",
+        "files/audit-refunds-a/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-refunds-b",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace two requests passing the unlocked paid-status read before either commits, then both crediting under READ COMMITTED; the unconditional final status update does not prevent this schedule. Worker/thread configuration permits concurrency. Effective database isolation is not supplied: PostgreSQL defaults to READ COMMITTED, but stricter configured isolation may abort the second transaction. Accept the conditional source candidate or justified unresolved deployment conclusion. A correct schedule still passes detection without the isolation caveat; unsupported certainty fails the verification criterion, not detection or false-alert criteria. Do not claim an observed race or cross-customer refund.",
+      "files": [
+        "files/audit-refunds-b/.eval-setup.sh",
+        "files/audit-refunds-b/README.md",
+        "files/audit-refunds-b/app/__init__.py",
+        "files/audit-refunds-b/app/db.py",
+        "files/audit-refunds-b/app/notifications.py",
+        "files/audit-refunds-b/app/refunds.py",
+        "files/audit-refunds-b/app/routes.py",
+        "files/audit-refunds-b/gunicorn.conf.py",
+        "files/audit-refunds-b/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-refunds-c",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. The read/check/credit path relies on external ledger.acquire to prevent duplicate refunds. Its atomicity, durability or TTL, and failure behavior are absent. Trace the dependency and request those semantics; neither confirm double credit nor infer safety from the method name. Optional distinct concerns include failed-refund retries and dependency confusion from the unhashed extra-index-url. Accept qualified hypotheses without assuming the external semantics or public/private package availability.",
+      "files": [
+        "files/audit-refunds-c/.eval-setup.sh",
+        "files/audit-refunds-c/README.md",
+        "files/audit-refunds-c/app/__init__.py",
+        "files/audit-refunds-c/app/db.py",
+        "files/audit-refunds-c/app/notifications.py",
+        "files/audit-refunds-c/app/refunds.py",
+        "files/audit-refunds-c/app/routes.py",
+        "files/audit-refunds-c/gunicorn.conf.py",
+        "files/audit-refunds-c/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-webhooks-a",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace an absent X-Payments-Signature header skipping HMAC verification and reaching mark_paid. The attack needs a reachable endpoint plus a pending order ID and matching amount, not an arbitrary amount. Report a source-supported candidate and distinguish unmeasured deployment reachability from the visible missing-signature bypass. Do not claim observed exploitation.",
+      "files": [
+        "files/audit-webhooks-a/.eval-setup.sh",
+        "files/audit-webhooks-a/README.md",
+        "files/audit-webhooks-a/app/__init__.py",
+        "files/audit-webhooks-a/app/db.py",
+        "files/audit-webhooks-a/app/orders.py",
+        "files/audit-webhooks-a/app/routes.py",
+        "files/audit-webhooks-a/app/webhooks.py",
+        "files/audit-webhooks-a/gunicorn.conf.py",
+        "files/audit-webhooks-a/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-webhooks-b",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Refute unsigned forgery using required signature and timestamp, bounded timestamp freshness, and constant-time HMAC verification of timestamp plus body. Event-ID deduplication defeats replay of the same signed event. Acknowledge untested secret custody; do not infer a forgery from the absence of a separate login or from a delivery reliability issue.",
+      "files": [
+        "files/audit-webhooks-b/.eval-setup.sh",
+        "files/audit-webhooks-b/README.md",
+        "files/audit-webhooks-b/app/__init__.py",
+        "files/audit-webhooks-b/app/db.py",
+        "files/audit-webhooks-b/app/orders.py",
+        "files/audit-webhooks-b/app/routes.py",
+        "files/audit-webhooks-b/app/webhooks.py",
+        "files/audit-webhooks-b/gunicorn.conf.py",
+        "files/audit-webhooks-b/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-webhooks-c",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. The service accepts unsigned events and delegates verification to a gateway described outside this repository. Both gateway verification and direct service reachability decide exploitability. Trace the trust boundary and request those facts; neither confirm forgery nor clear the service on the README claim.",
+      "files": [
+        "files/audit-webhooks-c/.eval-setup.sh",
+        "files/audit-webhooks-c/README.md",
+        "files/audit-webhooks-c/app/__init__.py",
+        "files/audit-webhooks-c/app/db.py",
+        "files/audit-webhooks-c/app/orders.py",
+        "files/audit-webhooks-c/app/routes.py",
+        "files/audit-webhooks-c/app/webhooks.py",
+        "files/audit-webhooks-c/gunicorn.conf.py",
+        "files/audit-webhooks-c/requirements.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-invites-a",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace identity.redeem_invite before membership insertion. Single use, expiry and invitee binding depend on the absent identity service implementation. Name those facts rather than assuming the call enforces them or treating missing local checks as a confirmed bypass.",
+      "files": [
+        "files/audit-invites-a/.eval-setup.sh",
+        "files/audit-invites-a/README.md",
+        "files/audit-invites-a/app/__init__.py",
+        "files/audit-invites-a/app/auth.py",
+        "files/audit-invites-a/app/db.py",
+        "files/audit-invites-a/app/invites.py",
+        "files/audit-invites-a/app/routes.py",
+        "files/audit-invites-a/requirements.txt",
+        "files/audit-invites-a/schema.sql"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-invites-b",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Trace a signed-in token holder joining with the invitation role without email binding and without checking or setting accepted_at. Reuse is possible before expiry, including rejoining after removal; expiry is checked. Report the source-supported candidate, not unauthenticated redemption, unlimited lifetime or guessable tokens.",
+      "files": [
+        "files/audit-invites-b/.eval-setup.sh",
+        "files/audit-invites-b/README.md",
+        "files/audit-invites-b/app/__init__.py",
+        "files/audit-invites-b/app/auth.py",
+        "files/audit-invites-b/app/db.py",
+        "files/audit-invites-b/app/invites.py",
+        "files/audit-invites-b/app/routes.py",
+        "files/audit-invites-b/requirements.txt",
+        "files/audit-invites-b/schema.sql"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "audit-invites-c",
+      "prompt": "Run a security audit of this repository.",
+      "expected_output": "Source oracle v2. Refute reuse and misdirected redemption with the atomic UPDATE RETURNING that checks unused status, expiry and verified matching email before inserting membership in the same transaction. Do not mistake a bare transaction for the defense or infer defects in absent email-verification flows.",
+      "files": [
+        "files/audit-invites-c/.eval-setup.sh",
+        "files/audit-invites-c/README.md",
+        "files/audit-invites-c/app/__init__.py",
+        "files/audit-invites-c/app/auth.py",
+        "files/audit-invites-c/app/db.py",
+        "files/audit-invites-c/app/invites.py",
+        "files/audit-invites-c/app/routes.py",
+        "files/audit-invites-c/requirements.txt",
+        "files/audit-invites-c/schema.sql"
       ],
       "force_skill_invocation": true,
       "side_effect_level": "local-only",

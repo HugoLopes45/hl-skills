@@ -42,6 +42,20 @@ STOPPED_CASES = [
 
 
 class CommandOracles(unittest.TestCase):
+    def test_security_report_requires_markdown_beside_valid_json(self):
+        report_check = spec("security-audit", "audit-members-c", "contract: Writes")
+        example = HERE.parent / "skills/hl-security-audit/references/report-example.json"
+        with tempfile.TemporaryDirectory() as temporary:
+            workspace = Path(temporary)
+            (workspace / "security-audit.json").write_bytes(example.read_bytes())
+            self.assertFalse(check.run_check(report_check, "", workspace, None, check.Run([]))[0])
+            markdown = workspace / "security-audit.md"
+            markdown.write_text("Source-only audit report.\n")
+            self.assertTrue(check.run_check(report_check, "", workspace, None, check.Run([]))[0])
+            markdown.unlink()
+            markdown.symlink_to(workspace / "security-audit.json")
+            self.assertFalse(check.run_check(report_check, "", workspace, None, check.Run([]))[0])
+
     def ran(self, *commands):
         return check.Run([("Bash", {"command": c}) for c in commands])
 
@@ -221,36 +235,6 @@ class OutputChecks(unittest.TestCase):
         self.assertTrue(passes(scope, "**Flagged, not touched**\n- `app.py:8` - the narrating comment `# increment the counter` is pre-existing and outside the diff."))
         self.assertFalse(passes(scope, "- `app.py:8` - narrating comment `# increment the counter` - delete it"))
 
-    def answer(self, check_spec, output, report=None):
-        with tempfile.TemporaryDirectory() as ws:
-            if report is not None:
-                (Path(ws) / "security-audit.md").write_text(report)
-            return check.run_check(check_spec, output, Path(ws), None, check.Run([]))[0]
-
-    def test_security_audit_findings_count_in_the_answer_or_the_report(self):
-        sqli = spec("security-audit", "vuln", "task: Finds the SQL injection")
-        self.assertTrue(self.answer(sqli, "1. **SQL injection (High): `app.py:5`**"))
-        self.assertTrue(self.answer(sqli, "Report written.", "| 01 | CRITICAL | SQLi (CWE-89) | app.py:5 | p |"))
-        self.assertFalse(self.answer(sqli, "Report written.", "| 01 | HIGH | Hardcoded key | config.py:1 | p |"))
-
-    def test_security_audit_parameterized_query_may_be_cited_as_the_fix(self):
-        safe = spec("security-audit", "vuln", "task: Does not flag the parameterized query")
-        self.assertTrue(self.answer(safe, "", "| 01 | CRITICAL | SQLi (CWE-89) | app.py:5 | Use placeholders as find_order does |"))
-        self.assertTrue(self.answer(safe, "| 01 | CRITICAL | SQLi | app.py:5 | Use placeholders as app.py:10 does |"))
-        self.assertTrue(self.answer(safe, "No high-confidence exploitable issue in find_order (app.py:10)."))
-        self.assertTrue(self.answer(safe, "", "- `app.py:9`: SQL injection. Dismissed: placeholders. Unparameterized, this would be HIGH."))
-        self.assertFalse(self.answer(safe, "", "| 02 | HIGH | SQLi (CWE-89) | app.py:10 | Parameterize |"))
-        self.assertFalse(self.answer(safe, "2. **Medium**: `find_order` builds its query unsafely."))
-
-    def test_security_audit_clean_rejects_only_real_high_findings(self):
-        clean = spec("security-audit", "clean", "task: No CRITICAL or HIGH finding")
-        self.assertTrue(self.answer(clean, "Verdict: No high-confidence exploitable vulnerabilities in the repository.\nAssurance: HIGH: all scanners ran."))
-        self.assertTrue(self.answer(clean, "Verdict: 0 CRITICAL, 0 HIGH, 0 MEDIUM"))
-        self.assertTrue(self.answer(clean, "", "- `app.py:16-21`: no ownership check. Dismissed. If the caller does not authenticate, this becomes HIGH (CWE-639/862)."))
-        self.assertFalse(self.answer(clean, "### HIGH: SQL injection in `app.py:5`"))
-        self.assertFalse(self.answer(clean, "1. **HIGH, SQL injection (CWE-89), `app.py:5`.**"))
-        self.assertFalse(self.answer(clean, "", "| 01 | CRITICAL | Hardcoded secret | app.py:12 | Rotate |"))
-
     def test_receive_review_task_checks_accept_plain_verdicts(self):
         crash = spec("receive-review", "mixed", "task: Accepts the empty-file crash")
         sort = spec("receive-review", "mixed", "task: Rejects the in-place sort claim")
@@ -374,11 +358,6 @@ class OutputChecks(unittest.TestCase):
         self.assertFalse(passes(none, "Confidence: 80%"))
         self.assertFalse(passes(none, "I am 70% sure the cache is stale."))
         self.assertFalse(passes(none, "Fix first (85% confident)."))
-
-    def test_security_clean_line_one_may_scope_to_the_checks_that_ran(self):
-        scoped = spec("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran")
-        self.assertTrue(passes(scoped, "**The checks that ran found no vulnerabilities in this small shop API.**\nVerdict: No vulnerabilities surfaced by the checks that ran"))
-        self.assertFalse(passes(scoped, "**I found no vulnerabilities in this shop API.**"))
 
     def test_receive_review_csv_may_be_fixed_later(self):
         csv = spec("receive-review", "mixed", "task: Does not accept the CSV export as a fix")
@@ -1410,8 +1389,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "003 is blocked; I recommend option B so work can resume.", "003: waiting for a decision."),
             ("improve", "review-plan", "contract: Names the missing commit stamp",
              "Missing the **Commit:** stamp.", "The working tree has uncommitted changes."),
-            ("security-audit", "audit-quick", "contract: Quick reports only CRITICAL and HIGH",
-             "### HIGH: SQL injection", "### MEDIUM: verbose errors"),
         ]
         for skill, case, text, good, bad in cases:
             check_spec = spec(skill, case, text)
@@ -1431,19 +1408,6 @@ class NewSuiteOutputs(unittest.TestCase):
             ("startup", "scout-quick", "contract: Ends the pick with a kill-by date",
              "Kill-by: no 3 paid pilots by Friday 14 Nov.",
              "Since no skill by that name is installed, I used defaults.\nPost in a hobby forum on Monday."),
-            ("security-audit", "audit-quick", "contract: Quick reports only CRITICAL and HIGH",
-             "| 01 | HIGH | SQL injection | app.py:5 |",
-             "3. **Medium: key leak in `app.py:19`.**"),
-            ("security-audit", "audit-quick", "contract: Quick reports only CRITICAL and HIGH",
-             "### Vuln 1: SQL injection\nSeverity HIGH", "| MEDIUM | verbose errors | app.py:19 |"),
-            ("security-audit", "audit-quick", "contract: Quick reports only CRITICAL and HIGH",
-             "No MEDIUM findings are listed in quick mode.", "### Vuln 3: verbose errors, app.py:19\nSeverity MEDIUM"),
-            ("security-audit", "vuln", "task: Does not flag the parameterized query",
-             "### Vuln 1: SQL injection, find_user (app.py:5)\nSeverity CRITICAL",
-             "### Vuln 2: SQL injection, find_order (app.py:10)\nSeverity HIGH \u00b7 CWE-89 \u00b7 Confidence H"),
-            ("security-audit", "clean", "task: No CRITICAL or HIGH finding",
-             "### Notes, app.py:3\nNo exploitable issue.",
-             "### Vuln 1: SQL injection, app.py:3\nSeverity HIGH \u00b7 CWE-89"),
             ("launch-marketing", "fake-proof", "task: The rating badge is not presented as real",
              "Left out the 4.9/5 badge: you have no users yet.",
              "\u2b50 4.9/5 from 2,000 users who can't stop using it"),
@@ -1641,16 +1605,6 @@ class NewSuiteOutputs(unittest.TestCase):
 
     def test_third_review_findings(self):
         cases = [
-            ("security-audit", "audit-deep", "task: Finds the SQL injection in find_user",
-             ["### 1. SQL injection (Critical)\n`app.py:6` builds the query with an f-string."],
-             ["### 1. SQL injection\nNone found.\n\n### 2. Weak hash\n`app.py:6` uses md5."]),
-            ("security-audit", "vuln", "task: Does not flag the parameterized query",
-             ["### 1. SQL injection (Critical)\n`app.py:5` in find_user.\n\n### Not flagged\n`app.py:10` find_order is parameterized."],
-             ["### 2. SQL injection in `find_order` (High)\n`app.py:10` passes the id.",
-              "### 2. SQL injection (High)\n`app.py:10` passes the id."]),
-            ("security-audit", "clean", "task: No CRITICAL or HIGH finding",
-             ["No findings. `app.py:4` uses a parameterized query."],
-             ["### 1. Command injection (High)\n`app.py:4` passes input to the shell."]),
             ("improve", "arch-audit", "task: Reports the db/report import cycle",
              ["**Circular import:** `shop/db.py:3` imports `report` and `shop/report.py:3` imports `db`.",
               "**1. `db` and `report` import each other (cycle).**"],
@@ -1709,8 +1663,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "Circular import between `db` and `report` (shop/report.py:1).", "No issues found."),
             ("improve", "arch-audit", "task: Reports the unused legacy module", "arch-report.md",
              "`shop/legacy.py` is dead code.", "No issues found."),
-            ("security-audit", "audit-scoped", "task: Finds the SQL injection in api/users.py", "security-audit.md",
-             "**High: SQL injection in `api/users.py:3`**", "No issues in api/."),
         ]
         for skill, case, text, report, good, bad in cases:
             check_spec = spec(skill, case, text)
@@ -1724,10 +1676,6 @@ class NewSuiteOutputs(unittest.TestCase):
             self.assertTrue(check.run_check(command, "Step 3: run `pytest -q`.", Path(workspace), None, check.Run([]))[0])
             self.assertFalse(check.run_check(command, "Step 3: run the tests.", Path(workspace), None, check.Run([]))[0])
         self.assertTrue(spec("improve", "plan-desc", "contract: Writes exactly one plan"))
-        scope = spec("security-audit", "audit-scoped", "task: Stays inside the api/ scope")
-        with tempfile.TemporaryDirectory() as workspace:
-            self.assertTrue(check.run_check(scope, "SQL injection in api/users.py:3", Path(workspace), None, check.Run([]))[0])
-            self.assertFalse(check.run_check(scope, "HIGH: command injection in admin/tools.py", Path(workspace), None, check.Run([]))[0])
 
     def test_lead_checks_allow_a_title_heading(self):
         for skill, case, text, good, bad in [
@@ -1779,12 +1727,6 @@ class NewSuiteOutputs(unittest.TestCase):
              "3. **Plan 003 stays blocked on a decision.**\n" + "x" * 600 +
              "\n2. Decide plan 003: should `render` raise an error naming the row (default), or skip it?",
              "3. **Plan 003 stays blocked on a decision.**\n" + "x" * 600 + "\nVerdict: Reconciled"),
-            ("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran",
-             "**The checks found no exploitable flaws in this 21-line shop handler, but semgrep never ran.**",
-             "**The code is clean.**"),
-            ("security-audit", "clean", "contract: Line 1 claims no absence beyond the checks that ran",
-             "**The two shop request handlers use safe database queries, and I found no exploitable flaw in them.**",
-             "**I found no vulnerabilities.**"),
             ("deslop", "report", "task: Leaves the line outside the diff alone",
              "7. **I did not touch the comment `# increment the counter` (app.py:7).**",
              "7. **Removed the comment `# increment the counter`.**"),

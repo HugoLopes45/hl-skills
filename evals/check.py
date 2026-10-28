@@ -253,6 +253,8 @@ def main():
     run = Run.from_output_dir(output_dir, archive=True)
     results = []
     for check in case["checks"]:
+        if check["type"] == "graded":
+            continue
         passed, evidence = run_check(check, output, workspace, fixtures, run)
         results.append({"text": check["text"], "passed": passed, "evidence": evidence})
     print(json.dumps(results))

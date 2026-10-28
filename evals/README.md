@@ -41,7 +41,7 @@ A suite is named after its skill without the `hl-` prefix: suite `debug` tests `
 | `<suite>/evals.json` | Cases in the [agent-skill-eval](https://pypi.org/project/agent-skill-eval/) format |
 | `<suite>/files/<fixture>/` | Files copied into the agent workspace |
 | `<suite>/files/<fixture>/.eval-setup.sh` | Optional: shell script that builds the case's git state (branches, commits, staged changes) in the workspace, then is deleted before the agent starts |
-| `<suite>/checks.json` | Deterministic checks for each case |
+| `<suite>/checks.json` | Deterministic checks and required semantic-review criteria for each case |
 | `<suite>/repo.sh` | Optional: builds a git repository for the cases, passed as `--source-repo` |
 | `check.py` | Post-grade hook that runs the checks |
 | `report.py` | Pass counts per skill, check kind, and configuration |
@@ -62,6 +62,8 @@ Completed shell requests can include nonzero exits. They do not prove that every
 Tool-count minimums require completed calls. Maximums count all attempts, including refused calls.
 
 `report.py` re-evaluates output and process checks with the current `checks.json`; workspace and command checks keep their recorded results. A command check receives the final answer on standard input.
+
+Checks of type `graded` require recorded review of complete answers, reports and tool traces against the source-derived oracle. Missing evidence leaves the corresponding criterion ungraded. The post-grade hook does not infer semantic results from keywords. A missing or skipped grade makes the run incomplete, not passing. Retain reviewer identity, evidence, evaluated bytes and SHA-256 digests of `evals.json` and `checks.json`; the oracle label alone does not identify its wording. `report.py` does not authenticate this provenance. Review agreement is not runtime proof. Do not automatically send fixture contents to a grader: native `agent-skill-eval` 0.7.0 grading reads workspace files, can expose secret fixtures, and omits files larger than 4 KiB.
 
 Workspace comparisons use descriptor-relative POSIX opens and reject symbolic links or non-regular files in checked paths. Single-file checks do not inspect unrelated paths.
 
@@ -84,6 +86,75 @@ Run it with `evals/run.sh ambitious --runs 3 --concurrency 3`. Task checks read 
 Fresh-context model samples exercise the instructions, not host discovery or natural routing. Neither samples nor forced invocation prove that an agent selects `hl-ambitious` instead of the neighboring skills.
 
 For comparative evaluations, fix the requests and criteria before generation. Keep the model and inputs identical, hide skill identities, and review each pair in both presentation orders. Count order disagreements as inconclusive. Prefer preserved scope, usable primary material, concrete methods, and checks that reject plausible errors, not output length or signature wording. After tuning on a case, use new held-out requests; retain losses and ties. Model preferences do not prove universal superiority or domain correctness.
+
+### Security audit variants
+
+The `security-audit` suite has five original cases and 15 variants covering refunds, assistant actions, member removal, payment webhooks, and invitations. Variant letters are shuffled. Each `expected_output` now gives a source-derived oracle, including defenses and missing facts. A qualified trace counts as detection; a missing schema, isolation setting, or downstream implementation must not become an automatic miss.
+
+#### Historical comparison, frozen oracle v1
+
+This comparison did not use the harness. Each run copied the skill and fixture into a fresh directory without git, then ran `claude -p` with `--model sonnet --effort medium --tools Read,Glob,Grep --safe-mode --restricted --setting-sources '' --strict-mcp-config` and empty MCP configuration. The baseline is release 1.4.0. Read-only tools required the full report in the answer. No reviewer agent was available. A blinded grader (`claude-opus-5-5`, no tools, JSON schema) classified complete answers as asserted, conditional, dismissed, or absent. Verbatim quotes were checked automatically and reviewed manually. The old oracle counted assertion as correct for vulnerable variants, dismissal or absence for defended variants, and conditional treatment for inconclusive variants. Those rules conflated detection with certainty.
+
+Run identity: Claude Code 2.1.309, observed runner model `claude-sonnet-5-5`, medium effort, randomized run order with seed `20261026`. Additional flags were `--no-session-persistence --output-format stream-json --verbose --add-dir <skill>`. The baseline matches `origin/main` at `8b221accb1b37ac6d79c383e0fff760749bee024`. Developmental pilots are excluded from these counts. Local qualification traces are not shipped.
+
+| Original v1 label | Runs per skill | Baseline v1 agreement | Revised v1 agreement |
+|---|---|---|---|
+| Vulnerable | 8 | 8 | 5 (3 conditional) |
+| Defended | 8 | 8 | 8 |
+| Inconclusive | 8 | 6 (2 asserted) | 8 |
+| Held-out `invites` family | 6 | 6 | 6 |
+
+- Per skill, the 24 runs cost 1.91 USD for the baseline and 3.75 USD for the revised skill; median turns were 11 and 17. The held-out runs cost 0.46 and 0.82 USD.
+- The frozen totals were 22/24 and 21/24. They are not corrected accuracy estimates: source re-review found legitimate reservations and a separate source-backed concern. No global gain is established.
+- In the inconclusive runs, the baseline gave the unproven claim a severity 7 times out of 8. The revised skill left it unscored 8 times out of 8.
+- The baseline returned `Exploitable` in all 8 vulnerable runs without an independent check. The revised skill returned `Unreviewed exploit path`.
+- Two revised `members-c` runs made the finding depend on a database cascade; that fixture has no schema to exclude one. One `webhooks-a` run asked for a deployment check. The two asserted `members-a` baseline runs also named a real in-repository gap: the removal event is published after the commit, without a retry.
+- Other fixture limits include the unverified PostgreSQL isolation level in `refunds-b` and absent deployment facts in the older families. These scores reflect the declared source oracles, not executed exploits.
+- Six revised runs used `Unreviewed exploit path` while also naming a missing outside fact. The verdict definition was then tightened. The `invites` family was written afterward: 2/2 vulnerable runs used that verdict, and 0/2 inconclusive runs did. This predates oracle v2 and the current skill.
+- One revised answer put the verdict under a heading instead of a `Verdict:` line.
+- The old regular-expression task checks did not separate variants. For example, the `invites-b` finding check matched defended answers explaining the guard. They have been replaced, without rewriting these historical results.
+- These runs did not measure the harness, natural routing, runtime reproduction, or the cloud, native, client, local-platform, availability, and supply-chain guides. An earlier report-writing smoke passed the validator; it is not evidence about current bytes.
+
+#### Corrected source oracles and versioned qualification
+
+A separate reviewer derived expected mechanisms from source without reading evaluated answers. The corrected oracles distinguish a source trace, a decisive defense, and a missing fact that could change the conclusion. They accept a supported candidate awaiting review. They do not demand a severity or exact verdict to count detection. In particular, absent schema can affect member-key revocation; effective isolation can affect refund races; post-commit event loss is distinct from unknown consumer behavior.
+
+Three new tenant-export variants were reserved from instruction design: missing tenant binding, server-derived tenant filtering, and an external store with unknown enforcement. In v2, their source oracles were frozen before responses, with two runs per case and skill. The blinded grader received the full answers and oracle, **not the source**; its rubric was completed after generation. These results measure oracle agreement, not checked citation accuracy.
+
+A fresh v3 pass repeated those cases after independent safety review. The source-inclusive rubric, oracle and hashes were frozen before twelve new runs. The grader received every fixture file and complete answer, without the condition label. This is a regression repeat, not a newly unseen family. Neither export answers nor grades were used to tune the instructions. All supporting quotes in both passes matched the answers.
+
+| Check | v2 baseline | v2 revision | v3 baseline | v3 reviewed |
+|---|---|---|---|---|
+| Vulnerable source mechanism detected | 2/2 | 2/2 | 2/2 | 2/2 |
+| Decisive tenant defense explained | 2/2 | 2/2 | 2/2 | 2/2 |
+| Missing downstream enforcement identified | 2/2 | 2/2 | 2/2 | 2/2 |
+| False alerts on the defended path | 0/2 | 0/2 | 0/2 | 0/2 |
+| Unsupported certainty about the named claim | 0/6 | 0/6 | 0/6 | 0/6 |
+| Material source-citation errors | Not checked | Not checked | 0/6 | 0/6 |
+| Source trees unchanged | 6/6 | 6/6 | 6/6 | 6/6 |
+| Denied tool attempts | 0 | 0 | 0 | 1 |
+
+No improvement in these outcomes was observed. The small synthetic sample has ceiling effects. Candidate status was not counted as missed detection. Grading is not exploit reproduction. One v3 revised run attempted an out-of-scope parent-directory glob. It was denied; subsequent reads and listing stayed within the authorized fixture and skill directories. This is not a permission-compliance pass or evidence of general refusal-handling reliability.
+
+After v3, one example preflight was tightened to require external trusted gitleaks rules. No other skill byte changed. A fresh write-enabled audit then produced both reports with the final bytes. Only `Glob`, `Read` and `Write` appeared. Source and skill copies remained unchanged. The validator exited zero; the candidate stayed `needs_validation`, with no reviewer and source-only evidence. This proves report production and coherence, not the finding's truth.
+
+Review then found quadratic relation checks in the validator: an 86 KB report with 10,002 scope entries ran over 3 seconds. Relation checks now use set and ancestor lookups. A regression test bounds a valid report with 20,000 scope paths and 20,000 trace hops to 10 seconds. On 20,000 mutated copies of the example report, the old and new validators returned identical error lists. The four stored agent-written reports still validate. The contract now also states the 1,024-character path limit that the validator already enforced; no other skill byte changed. No agent run used these bytes.
+
+Every report-writing case now has a graded check: `security-audit.md` states the same revision, scope, finding states, severities, assurance and coverage limits as `security-audit.json`. No run above was graded on it.
+
+Checks on the current bytes passed: 27 skills validated, 48 script tests, and 238 eval tests with one pytest-dependent skip. The example validator, complexity check and shell checks passed. Final installation was not repeated: the skills CLI was unavailable without fetching a package. Scanner preflight, broader permission behavior, independent review during an audit, real remediation, retesting and all ten domains remain behaviorally unverified.
+
+Skill-tree hashes identify the evaluated bytes. Hash sorted relative paths and file contents, each followed by NUL; omit `__pycache__`.
+
+| Evaluation version | Skill-tree SHA-256 |
+|---|---|
+| Release 1.4.0 baseline | `db3f79402acf805b2540c51d713122585aee3534a7fcf34783ff58a1acf4bf07` |
+| Historical first revision | `c9fbde6c6b2168df9286107404e44d78f9e013bfe0ae537a03581cf3467c2715` |
+| Historical tightened verdict | `0c8cd50243b226d09c50ef965f4a0a377889af8c17a50b35359566b29794269f` |
+| Pre-review v2 exports and report smoke | `40bdaed379b3099cd51852855c07a8a0411f9d6fdb6aec178cd9ed8d8604d4ed` |
+| Reviewed v3 source-inclusive repeat | `ef16eda0fa02e341c9f897e1ee08b8ffd575e71837d31b8b12bafaefed53761f` |
+| Final gitleaks example preflight and fresh report smoke | `0842e92de7367796c79aaaa2b3cb086d1c4a865b9e7deb5a5fee9c3d513c53a1` |
+| Set-based validator checks, no agent run | `2acb866773e2efc80a6c9ba18aaedfcf260abc0f33b373e2f0d4666c87aba51c` |
 
 ## Production qualification
 
@@ -155,7 +226,7 @@ Natural triggering (`routing`, 21 requests, every skill installed): 122 of 126 r
 
 ### Mode cases
 
-Iteration 50 added 31 adversarial cases, one per mode that had no case, and 4 routing requests. Runs passing at iteration 50, graded with the current checks, new cases only. `hl-improve` arch-audit and `hl-security-audit` audit-scoped come from iteration 52, because their checks read files and a regrade keeps the recorded result. The `hl-security-audit` audit-deep finding check changed after the run; it was rerun by hand on the stored answers:
+Iteration 50 added 31 adversarial cases and 4 routing requests. The table preserves the checks and counts recorded then, not current qualification. `hl-improve` arch-audit and `hl-security-audit` audit-scoped use iteration 52. The security-audit deep finding check was rerun manually on stored answers at that time. None of the security-audit rows below was regraded under source oracle v2; the required semantic reviews are absent, so current checks would mark them incomplete.
 
 | Skill | Cases | Task with | Task without | p | Contract with | Contract without | p |
 |---|---|---|---|---|---|---|---|
