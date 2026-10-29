@@ -39,6 +39,13 @@
 * Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
 
 
+## [1.6.0](https://github.com/HugoLopes45/hl-skills/compare/v1.5.0...v1.6.0) (2026-10-29)
+
+
+### Features
+
+* make security audit decisions evidence-led ([#24](https://github.com/HugoLopes45/hl-skills/issues/24)) ([d4ae650](https://github.com/HugoLopes45/hl-skills/commit/d4ae650be61329ed10015fe85b2b054c3e0e5d5e))
+
 ## [1.5.0](https://github.com/HugoLopes45/hl-skills/compare/v1.4.0...v1.5.0) (2026-10-26)
 
 
