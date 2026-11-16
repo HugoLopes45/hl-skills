@@ -2412,6 +2412,7 @@ class DeslopTraps(unittest.TestCase):
         "phantom-call": set(),
         "reinvented": {"task: Hand-rolled chunking replaced by utils.batched"},
         "dynamic-dispatch": {"task: Unused helper removed"},
+        "comment-rot": {"task: Stale retry count removed"},
     }
 
     def test_traps_build_and_only_removal_checks_fail_before_cleanup(self):

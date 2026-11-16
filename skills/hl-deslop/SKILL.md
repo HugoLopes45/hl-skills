@@ -33,7 +33,7 @@ Every edit passes all four:
 1. Behavior unchanged. If removal could change runtime behavior, it is not slop; leave it. A fix never adds behavior: no new fallbacks, defaults, or handling.
 2. Code is the source of truth for prose about it. Never edit code to satisfy a comment or doc. Decide a comment-code disagreement on evidence:
    - Comment rot: an existing test or caller pins the code's behavior, or git history shows the comment predates a later code change. Fix or delete the prose.
-   - Possible bug: the comment is newer than the code, nothing pins the behavior, or the comment may record intent the code fails to implement. Flag it; edit neither side.
+   - Possible bug: nothing pins the behavior, and the comment is newer than the code or may record intent the code fails to implement. Flag it; edit neither side.
 3. Diff only. Editable lines are the diff's added lines plus lines an in-scope edit mechanically forces (re-indenting after flattening a wrapping `if`). Never the rest of a hunk's context; never a whole function for one changed line. A fix that needs other lines is flagged, not applied. This limits edits, not reads: verifying a claim may need any file.
 4. Unsure: flag, do not delete. A comment that might say why, a guard that might catch a real failure, a claim you cannot verify: keep it and list it for a human.
 

@@ -243,5 +243,35 @@
         "text": "contract: Verdict line is the verdict"
       }
     ]
+  },
+  "comment-rot": {
+    "fixtures": "comment-rot",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'up to 3 times' client.py",
+        "text": "task: Stale retry count removed"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'MAX_RETRIES = 5' client.py",
+        "text": "task: Retry count in code unchanged"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      }
+    ]
   }
 }
