@@ -158,5 +158,120 @@
         "text": "contract: Says unstaged changes exist and were not reviewed"
       }
     ]
+  },
+  "phantom-call": {
+    "fixtures": "phantom-call",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "possible bug[\\s\\S]{0,400}slugify_unicode|slugify_unicode[\\s\\S]{0,400}possible bug",
+        "text": "task: Flags the missing slugify_unicode as a possible bug"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'utils.slugify_unicode(tag)' posts.py",
+        "text": "task: Live call to the phantom function not edited"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      }
+    ]
+  },
+  "reinvented": {
+    "fixtures": "reinvented",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'def _chunks' report.py && grep -q 'batched' report.py",
+        "text": "task: Hand-rolled chunking replaced by utils.batched"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      }
+    ]
+  },
+  "dynamic-dispatch": {
+    "fixtures": "dynamic-dispatch",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q '_format_row' handlers.py",
+        "text": "task: Unused helper removed"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'def handle_export' handlers.py",
+        "text": "task: Handler reached by dynamic dispatch kept"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      }
+    ]
+  },
+  "comment-rot": {
+    "fixtures": "comment-rot",
+    "checks": [
+      {
+        "type": "command",
+        "command": "python3 -m pytest -q",
+        "text": "task: Tests still pass"
+      },
+      {
+        "type": "command",
+        "command": "! grep -q 'up to 3 times' client.py",
+        "text": "task: Stale retry count removed"
+      },
+      {
+        "type": "command",
+        "command": "grep -q 'MAX_RETRIES = 5' client.py",
+        "text": "task: Retry count in code unchanged"
+      },
+      {
+        "type": "not_ran",
+        "pattern": "git (commit|stash(?! list\\b)|checkout|reset|restore|add)\\b",
+        "text": "task: No git state change"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*(Cleaned\\b)",
+        "text": "contract: Verdict line is the verdict"
+      }
+    ]
   }
 }

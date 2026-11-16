@@ -1,6 +1,6 @@
 ---
 name: hl-deslop
-description: "Remove AI-generated slop and hallucinations from a change: style tells (narrating comments, defensive cruft on trusted paths, type escapes, needless nesting, one-call wrappers), dead weight (unused code, speculative generality, placeholder residue, reinvented helpers), false claims (comments the code contradicts, phantom references, fabricated numbers, doc drift, error-message drift), and AI prose tells in Markdown, docs, and comments in any language. Edits only changed lines by default; naming a path opts that file in. --report lists findings without editing. Use when AI-written code was generated or accepted, before committing, when a diff smells generated, or on a pull request that is technically correct but over-explained, over-defended, or confidently wrong."
+description: "Remove AI-generated slop and hallucinations from a change: style tells (narrating comments, defensive cruft on trusted paths, type escapes, needless nesting, one-call wrappers), dead weight (unused code, speculative generality, placeholder residue, reinvented helpers), false claims (comments the code contradicts, phantom references, fabricated numbers, doc drift, error-message drift). Edits only changed lines by default; naming a path opts that file in. --report lists findings without editing. Use when AI-written code was generated or accepted, before committing, when a diff smells generated, or on a pull request that is technically correct but over-explained, over-defended, or confidently wrong."
 ---
 # Deslop
 
@@ -43,7 +43,7 @@ On prose, gate 1 means meaning unchanged, except that false meaning has no prote
 
 1. Before editing, record typecheck and test results as the baseline.
 2. Truth catalog first. Check every comment you plan to delete as noise against the code it describes: one that narrates and lies is a possible-bug flag; deleting it as style destroys the evidence.
-3. Code catalog and prose catalog.
+3. Code catalog.
 4. Verify and report (see Output).
 
 ## Scope
@@ -102,28 +102,6 @@ Check every claim in the changed lines that names something checkable: a symbol 
 3. Fabricated specificity: concrete-sounding facts with no source (benchmark numbers, "40% faster", version or date stamps, spec or RFC citations, quotes). Checkable in the repository: check and fix. Checkable only externally: flag; do not delete what might be true.
 4. Doc drift: README, docs, or changelog lines in the diff that document flags, endpoints, signatures, defaults, or behavior the code does not match. The code wins only when its behavior predates this diff. If the code also changed in this diff (doc said 5, old code said 5, new code says 3), the change may be a regression: flag as a possible bug; do not rewrite the doc to match unverified new code.
 5. Error-message drift: a thrown or logged message describing a different failure than its condition (a timeout catch whose message says `invalid input`). The message is program output that may be matched elsewhere, and the mismatch often marks a mis-structured catch: flag as a possible bug; never rewrite it silently.
-
-## Prose catalog
-
-Applies to Markdown, docs, and written text in the change, including doc comments (JSDoc, docstrings, `///`, `/** */`, `#` blocks) and inline comments, in any language. Never to string literals: program output is data. Match the literal tell, apply the fix, honor the keep condition.
-
-1. Typographic tells: `—` or `–` as a connector -> `:` in a heading; comma, parentheses, or `-` in prose. Arrows `←` `→` `↔` `⇒` -> ASCII `<-` `->` `<->` `=>`. Curly quotes `“` `”` `‘` `’` -> straight `"` `'`. `…` -> `...`. Mid-text `•` -> `-`. Emoji in comments or docs: delete. Non-breaking or narrow spaces: normal space. Trailing hard-break whitespace: strip. Keep where the document already uses the form everywhere (idiom drift wins), inside real ASCII art, or in a quoted source.
-2. Callout ceremony: `> **Tip:**`, `> **Note:**`, `> **Warning:**` banners: flatten to an inline `Note:` or the plain sentence. Keep a blockquote that quotes a real source.
-3. Bold-label arrow rows: `**Label** → does X`: plain text (`Label: does X`) or a real table. Keep bold on a genuine first-use term.
-4. Heading inflation: `## Validation rules` -> `## Validation`; Title Case headings -> sentence case; drop `Step 1:` prefixes on an already ordered list. Keep a word a heading needs to tell siblings apart.
-5. Filler adverbs: `automatically`, `simply`, `easily`, `seamlessly`, `effortlessly`, `basically`, `essentially`, `just`: cut. Keep only when load-bearing (manual versus automatic is the actual point).
-6. Throat-clearing and closers: `It's worth noting that`, `It's important to note`, `Keep in mind that`, `As you can see`, `Note that`: cut and state the fact. `In conclusion`, `In summary`, `Overall`, `Hope this helps`: cut. Keep a caveat that changes what the reader should do.
-7. Hype, AI vocabulary, triads: `powerful`, `robust`, `seamless`, `comprehensive`, `blazing-fast`, `cutting-edge`, `elegant`; `delve`, `pivotal`, `crucial`, `showcase`, `leverage` (verb), `foster`, `vibrant`, `boast`, `testament to`, `underscore(s)`, `game-changer`, `journey`, figurative `landscape` or `tapestry`; rule-of-three padding (`fast, reliable, and scalable`): cut, or replace with the concrete fact. Keep a backed claim and literal domain use (`leverage` in finance).
-8. Hedge stacks: `may potentially`, `might possibly`, `can sometimes help`: one modal or none. Keep a single hedge that marks real uncertainty.
-9. Doc-comment ceremony: a parameter tag echoing the name (`@param name - the name`, `:param name: the name`); a return tag for a void or self-evident return; a type already in a typed signature; a lead line repeating the function name; an example block for a trivial one-liner; metadata noise (author, since, version). Trim to what the signature does not state. Keep notes on units, constraints, ownership, nullability, or a non-obvious contract.
-10. Formulaic frames: `it's not just X, it's Y`, `X isn't just about Y`, `not only X but (also) Y`, `more than just`, `here's the thing`, `the real question is`: cut the frame and state the claim plainly. Keep emphasis the sentence needs.
-11. False agency: `the data reveals`, `the results demonstrate`, `this section explores`, `the table shows that`: name the real actor or state the fact. Keep agency that is literally true.
-12. Dramatic fragments: `And that changes everything.`, `Not anymore.`, `The catch?`: fold into the full sentence or cut. Keep a fragment the surrounding style uses on purpose.
-13. Vague declaratives: `This is important.`, `There are several factors.`, `It's complicated.`: replace with the specific fact or cut.
-14. Copula dodges and vague attributions: `serves as`, `stands as`, `functions as`, `represents` where `is` carries the sentence: use `is`. `experts suggest`, `studies show`, `it is widely considered` with no named source: name the source or state it as the document's own claim. Keep a role verb that describes actual behavior (`acts as a proxy`) and a cited attribution.
-15. Diff-anchored prose: `now supports`, `previously`, `no longer`, `New:`, `Enhanced`, `Improved` in docs or comments: describe present behavior. Keep them in changelogs and migration guides, where the change is the subject.
-
-Backstop: prose written to impress rather than inform, which loses nothing when cut, is slop.
 
 ## Output
 
