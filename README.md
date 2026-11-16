@@ -4,7 +4,7 @@
 
 ### Build it right. Then get it found.
 
-**51 skills that give your coding agent an engineering team and a growth team.**
+**Skills that give your coding agent an engineering team and a growth team.**
 
 Question the idea. Write the test. Prove the bug. Ship the PR.
 
@@ -59,7 +59,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 ### Engineering
 
 <details>
-<summary><strong>Think · Kill bad ideas before they cost a sprint</strong> · 7 skills</summary>
+<summary><strong>Think · Kill bad ideas before they cost a sprint</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -74,7 +74,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Build · Write the test first, keep the code small</strong> · 6 skills</summary>
+<summary><strong>Build · Write the test first, keep the code small</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -88,7 +88,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Fix · Prove the cause before you touch the code</strong> · 5 skills</summary>
+<summary><strong>Fix · Prove the cause before you touch the code</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -101,7 +101,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Ship · Merge work you can defend</strong> · 8 skills</summary>
+<summary><strong>Ship · Merge work you can defend</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -117,7 +117,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Launch · Decide if it is worth building, then tell the world</strong> · 2 skills</summary>
+<summary><strong>Launch · Decide if it is worth building, then tell the world</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -129,7 +129,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 ### Growth and marketing
 
 <details>
-<summary><strong>Strategy · Give people a reason to choose you</strong> · 4 skills</summary>
+<summary><strong>Strategy · Give people a reason to choose you</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -141,21 +141,21 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>SEO & AI search · Build pages worth finding</strong> · 6 skills</summary>
+<summary><strong>SEO, AEO & GEO · Build pages search and AI answers can use</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
 | [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | `Use hl-seo-audit to find why this page is blocked from search.` |
 | [hl-keyword-research](./skills/hl-keyword-research/SKILL.md) | `Use hl-keyword-research to pick the next page to write from this Search Console export.` |
 | [hl-content-brief](./skills/hl-content-brief/SKILL.md) | `Use hl-content-brief to brief a guide on how to chase a late invoice, for freelance designers in the United States.` |
-| [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | `Use hl-ai-search-visibility to check this page for blockers before AI answers quote it.` |
+| [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | `Use hl-ai-search-visibility to check whether ChatGPT, Perplexity, and Google AI answers can use this page.` |
 | [hl-schema-markup](./skills/hl-schema-markup/SKILL.md) | `Use hl-schema-markup to check the JSON-LD on this product page against its visible price.` |
 | [hl-internal-linking](./skills/hl-internal-linking/SKILL.md) | `Use hl-internal-linking to find orphan pages and broken targets in this links export.` |
 
 </details>
 
 <details>
-<summary><strong>Copy & email · Say it clearly, keep every fact</strong> · 5 skills</summary>
+<summary><strong>Copy & email · Say it clearly, keep every fact</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -168,7 +168,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Conversion · Turn visits into the next step</strong> · 3 skills</summary>
+<summary><strong>Conversion · Turn visits into the next step</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -179,7 +179,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Channels · Show up where your buyers already are</strong> · 3 skills</summary>
+<summary><strong>Channels · Show up where your buyers already are</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -190,7 +190,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 </details>
 
 <details>
-<summary><strong>Analytics · Know what to measure next</strong> · 2 skills</summary>
+<summary><strong>Analytics · Know what to measure next</strong></summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -498,7 +498,7 @@ The installer is the [`skills`](https://github.com/vercel-labs/skills) CLI. Comm
 ```bash
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                 # see the 51 skills first
+npx skills add HugoLopes45/hl-skills --list                 # see every skill first
 npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)

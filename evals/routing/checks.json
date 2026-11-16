@@ -522,5 +522,19 @@
         "text": "trigger: Does not invoke hl-code-review"
       }
     ]
+  },
+  "aeo-answer-engines": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-ai-search-visibility",
+        "text": "trigger: Invokes hl-ai-search-visibility"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-seo-audit",
+        "text": "trigger: Does not invoke hl-seo-audit"
+      }
+    ]
   }
 }

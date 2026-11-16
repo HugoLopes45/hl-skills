@@ -368,6 +368,17 @@
       "force_skill_invocation": false,
       "side_effect_level": "local-only",
       "assertions": []
+    },
+    {
+      "id": "aeo-answer-engines",
+      "prompt": "page.html is our pricing page. It never shows up in ChatGPT or Perplexity answers. What should we fix for AEO?",
+      "expected_output": "Invokes hl-ai-search-visibility.",
+      "files": [
+        "files/aeo/page.html"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
     }
   ]
 }

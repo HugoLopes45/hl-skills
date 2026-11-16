@@ -1,6 +1,6 @@
 ---
 name: hl-ai-search-visibility
-description: "Check whether one page can be found and quoted in AI-generated search answers, such as AI Overviews and AI Mode: indexing and snippet controls, crawl access, the direct answer, sourced facts, and structure, from supplied HTML or a URL. Never guarantees citations and never invents citation or traffic data. Use when the user asks how to appear in AI answers, why an AI answer does not cite a page, or what to change for generative engine optimization (GEO)."
+description: "Check whether one page can be found and quoted in AI-generated answers, such as Google AI Overviews and AI Mode, Gemini, ChatGPT search, Perplexity, Claude, and Bing: indexing and snippet controls, each engine's search crawler access, the direct answer, sourced facts, and structure, from supplied HTML or a URL. Never guarantees citations and never invents citation or traffic data. Use when the user asks how to appear in AI answers, why an AI answer does not cite a page, or what to change for answer engine optimization (AEO) or generative engine optimization (GEO)."
 ---
 # AI Search Visibility
 
@@ -19,8 +19,14 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 - Source checked on 2026-11-13: [Google's AI features guide](https://developers.google.com/search/docs/appearance/ai-features). Recheck it before relying on a policy that may have changed. Its claims apply to Google Search, not all answer engines.
 - Google's AI features guide says that a page must be indexed and eligible to show a snippet, that there are "no additional technical requirements", and that there are no special requirements to appear in AI Overviews or AI Mode. Cite it for Google only. Do not extend it to other answer engines without a source.
 - The same guide says that you "don't need to create new machine readable files, AI text files, or markup" to appear in these features. Do not recommend such files or AI-specific markup as a way to appear. When a user asks for one, say that Google does not require it, and that this check does not measure whether it changes answers.
-- Snippet controls are `nosnippet`, `data-nosnippet`, `max-snippet`, and `noindex`. Check them in the meta robots tag and, when headers are supplied, in the X-Robots-Tag header. A control that blocks the main answer is a blocker.
-- Google-Extended is the control that Google documents for AI training and grounding in some of its other systems. Check robots.txt only when it is supplied or fetched. Write "not read" otherwise.
+- Snippet controls are `nosnippet`, `data-nosnippet`, `max-snippet`, and `noindex`, plus `noarchive` and `nocache` for Bing. Check them in the meta robots tag and, when headers are supplied, in the X-Robots-Tag header. A control that blocks the main answer is a blocker.
+- Google-Extended: Google's [crawler list](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers), checked 2026-11-16, says this robots.txt token controls Gemini model training and grounding in Gemini Apps, and does not affect Google Search. A disallow is a finding for Gemini Apps only. Check robots.txt only when it is supplied or fetched. Write "not read" otherwise.
+- Sources checked on 2026-11-16, each for its own engine only: [OpenAI crawlers](https://platform.openai.com/docs/bots), [Perplexity crawlers](https://docs.perplexity.ai/guides/bots), [Anthropic crawlers](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler). Recheck them before relying on a crawler name.
+  - Search crawlers, whose robots.txt rules control appearing in that engine's answers: `OAI-SearchBot` (ChatGPT search; OpenAI says opted-out sites are not shown in ChatGPT search answers), `PerplexityBot` (Perplexity search results), `Claude-SearchBot` (Claude search results).
+  - Training crawlers, which do not control answer visibility: `GPTBot` (OpenAI), `ClaudeBot` (Anthropic). Allowing one never makes up for a disallowed search crawler; blocking one is the owner's training choice, not a visibility finding.
+  - User-triggered fetchers: `Claude-User` follows robots.txt, and blocking it may reduce visibility for Claude user searches. Perplexity says `Perplexity-User` generally ignores robots.txt.
+  - Bing: Microsoft's [2023 webmaster post](https://blogs.bing.com/webmaster/september-2023/Announcing-new-options-for-webmasters-to-control-usage-of-their-content-in-Bing-Chat) says `noarchive` keeps a page out of Bing Chat answers and `nocache` limits them to URL, title, and snippet. It names Bing Chat, not Copilot; say that its scope today is unverified.
+  - An engine not listed here: check its own crawler documentation, or write that its crawler was not checked.
 - HTML alone cannot measure citations, mentions, AI referral traffic, or answer share. If the user supplies answer captures or analytics, report only their engine, prompt, date, locale, sample coverage, and observed results. Otherwise mark these outcomes `not measured`. Never treat Google's aggregate Web traffic as an isolated AI-citation metric.
 - Never say that a page will be cited, ranked, or shown in an AI answer. State what the page makes possible and what remains unknown.
 - Every number in the copy is a claim. A number with no source and no date is a finding.
@@ -38,7 +44,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 1. Confirm the requested engine, page or answer sample, and target question. Note the market when given. Scope Google-specific checks below to Google; other engines need their own checked documentation.
 2. Read indexing and snippet controls: meta robots, any googlebot meta, X-Robots-Tag, and canonical. Explain their documented eligibility constraints for the requested engine. Preserve deliberate controls unless the owner confirms that inclusion is intended; never equate eligibility with actual inclusion.
-3. Read crawl access: robots.txt rules that match the page, when supplied or fetched. Report a disallow as a crawl constraint, not proof of current indexing or citations.
+3. Read crawl access: robots.txt rules that match the page, when supplied or fetched, for the search crawler of each requested engine. A group naming that crawler replaces the `*` group for it. Report a disallow as a crawl constraint, not proof of current indexing or citations. When the main answer is missing from the served HTML, say that a crawler that does not run JavaScript cannot read it; the sources above do not say which AI crawlers run it.
 4. Assess whether the content answers the established question with usable, supported information. A short answer, question heading or table is an editorial option, not an inclusion requirement. Without intent, leave answer fit unconfirmed.
 5. Check each fact: a number has its unit, date, and source. Quote each unsourced claim.
 6. Check structure: each section answers one question; lists or tables appear where the content has those shapes; visible text matches any markup.
@@ -56,7 +62,7 @@ Under line 1, in plain sentences: each blocker, each check you did not run, and 
 Then numbered points, blockers first. Each point gives the quoted evidence with its line or header, the consequence, and the fix, with the place to edit it: the page template, the CMS field, or the server header.
 
 Verdict words:
-- `Fix first`: a control or rule blocks indexing or the snippet: noindex, nosnippet, `max-snippet:0`, a robots disallow, or an error status.
+- `Fix first`: a control or rule blocks indexing, the snippet, or the requested engine's search crawler: noindex, nosnippet, `max-snippet:0`, a robots disallow, or an error status.
 - `Fix later`: no blocker; the direct answer, sourcing, or structure needs work.
 - `Sound`: no finding in the checks you ran. Name those checks.
 - `Stopped`: no page HTML or URL.
@@ -66,7 +72,7 @@ Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is
 Stopped: line 1 says what is missing and why it blocks the check. Then `Verdict: Stopped`. Next holds the grouped questions, each with its default (or `Default: none`) and what it changes.
 
 Reader rules:
-- Define each term once at first use: GEO (making content usable in AI answers), AI Overviews (Google's AI summary above some results), snippet (the short text a search engine shows under a result), and noindex (a tag that asks search engines not to list the page).
+- Define each term once at first use: AEO or GEO (making content usable in AI answers), search crawler (the robot an answer engine uses to find pages for its answers), AI Overviews (Google's AI summary above some results), snippet (the short text a search engine shows under a result), and noindex (a tag that asks search engines not to list the page).
 - Quote tags and values exactly.
 - No guarantees, no hype, and no blame for the page's owner or developer.
 
