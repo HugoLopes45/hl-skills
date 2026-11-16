@@ -207,7 +207,7 @@
     {
       "id": "landing-copy",
       "prompt": "Write the landing page copy for Tallyo, a time-tracking app for freelance translators. We are pre-launch.",
-      "expected_output": "Invokes hl-launch-marketing.",
+      "expected_output": "Invokes hl-copywriting.",
       "files": [
         "files/empty/README.md"
       ],
@@ -309,6 +309,50 @@
       "files": [
         "files/sloppy/.eval-setup.sh",
         "files/sloppy/calc.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "launch-two-weeks",
+      "prompt": "Plan a two-week launch for Tallyo, a time-tracking app for freelance translators. We are pre-launch with no users.",
+      "expected_output": "Invokes hl-launch-marketing.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "position-claims",
+      "prompt": "What should Tallyo be compared with, and which claims can we make? Tallyo is a time-tracking app for freelance translators that turns tracked hours into invoices.",
+      "expected_output": "Invokes hl-positioning.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "price-plans",
+      "prompt": "What should I charge for Ledgerly, and how should I package the plans? It reconciles bank feeds for 10-person accounting firms.",
+      "expected_output": "Invokes hl-pricing.",
+      "files": [
+        "files/empty/README.md"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
+    },
+    {
+      "id": "less-generated-text",
+      "prompt": "Make this read less generated: \"In today's fast-paced world, Tallyo is a game-changing solution that empowers freelance translators to seamlessly track their time.\"",
+      "expected_output": "Invokes hl-de-ai-rewriting.",
+      "files": [
+        "files/empty/README.md"
       ],
       "force_skill_invocation": false,
       "side_effect_level": "local-only",
