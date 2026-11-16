@@ -2330,6 +2330,16 @@ class GrowthSkillChecks(unittest.TestCase):
                 with self.subTest(check=spec["text"]):
                     self.assertTrue(passes(spec, answer))
 
+    def test_geo_search_crawler_block_is_the_finding_not_the_training_crawler(self):
+        specs = json.loads((HERE / "ai-search-visibility/checks.json").read_text())["ai-search-chatgpt-blocked"]["checks"]
+        right = "1. robots.txt disallows OAI-SearchBot on /pricing; GPTBot is a training crawler.\nVerdict: Fix first"
+        wrong = "1. GPTBot is allowed, so ChatGPT can read the page.\nVerdict: Sound"
+        for spec in specs:
+            if spec["type"].startswith("output_"):
+                with self.subTest(check=spec["text"]):
+                    self.assertTrue(passes(spec, right))
+                    self.assertFalse(passes(spec, wrong))
+
     def test_tracking_requires_review_when_consent_is_unverified(self):
         spec = json.loads((HERE / "tracking-plan/checks.json").read_text())["tracking-clear-booking"]["checks"][1]
         self.assertTrue(passes(spec, "Consent is unverified.\nVerdict: Review first"))

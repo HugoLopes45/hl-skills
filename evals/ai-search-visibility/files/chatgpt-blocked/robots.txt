@@ -1,0 +1,8 @@
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Disallow: /pricing
+
+User-agent: *
+Allow: /

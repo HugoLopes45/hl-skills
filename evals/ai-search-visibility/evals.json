@@ -20,6 +20,18 @@
       "force_skill_invocation": true,
       "side_effect_level": "static",
       "assertions": []
+    },
+    {
+      "id": "ai-search-chatgpt-blocked",
+      "prompt": "Can ChatGPT search use page.html? robots.txt is the live file for tallyo.example. Give the first finding and the verdict.",
+      "expected_output": "The first finding is that robots.txt disallows OAI-SearchBot on /pricing, which OpenAI documents as the crawler for ChatGPT search; allowing GPTBot, a training crawler, does not lift it. Verdict Fix first if ChatGPT visibility is the goal. Citations are not measured.",
+      "files": [
+        "files/chatgpt-blocked/page.html",
+        "files/chatgpt-blocked/robots.txt"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
     }
   ]
 }

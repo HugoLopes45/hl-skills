@@ -1,6 +1,6 @@
 ---
 name: hl-seo-audit
-description: "Audit a page or small site for search indexing, technical SEO, on-page basics, and AI-answer readiness, from supplied HTML, exports, or fetched pages. Ranks findings by impact with quoted evidence; never invents rankings or traffic. Use when the user asks why a page is not indexed or ranking, why organic traffic dropped, or wants an SEO health check."
+description: "Audit a page or small site for search indexing, technical SEO, on-page basics, and AI-answer readiness, from supplied HTML, exports, or fetched pages. Ranks findings by impact with quoted evidence; never invents rankings or traffic. Use when the user asks why a page is not indexed or ranking, why organic traffic dropped, or wants an SEO health check. Not for visibility in ChatGPT, Perplexity, Claude, or other AI answer engines (hl-ai-search-visibility)."
 ---
 # SEO Audit
 
@@ -44,7 +44,7 @@ Rank by what blocks search first. Order findings by layer, then by impact:
 2. **Technical**: HTTPS, primary content in the HTML, viewport, and field speed.
 3. **On-page**: title, meta description, H1, heading order, internal links, image alt text.
 4. **Content**: does the page answer its target query with specific, supported facts? Give an author and dates where the topic needs them.
-5. **AI-answer readiness (GEO)**: generative engine optimization makes content usable in AI answers. Check sourced facts and unsupported numbers. Assess answer fit only against established query intent; do not require question headings or predict citation effects from their absence. Citability is a proxy: a citable page does not mean an AI system will cite it.
+5. **AI-answer readiness (GEO)**: generative engine optimization makes content usable in AI answers. Check sourced facts and unsupported numbers. Assess answer fit only against established query intent; do not require question headings or predict citation effects from their absence. Citability is a proxy: a citable page does not mean an AI system will cite it. Leave answer-engine crawlers and controls to `hl-ai-search-visibility`.
 
 Google's [Core Web Vitals guidance](https://web.dev/articles/vitals), checked 2026-11-13: good LCP is at most 2.5 seconds, INP 200 milliseconds, and CLS 0.1. Assess all three at the 75th percentile of field visits, separately for mobile and desktop. A lab run or TBT proxy does not establish field INP or a passing field assessment.
 

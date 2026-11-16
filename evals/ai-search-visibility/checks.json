@@ -66,5 +66,29 @@
         "text": "task: Addresses the llms.txt request"
       }
     ]
+  },
+  "ai-search-chatgpt-blocked": {
+    "fixtures": "chatgpt-blocked",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?sm)^ {0,3}1[.](?:(?!^ {0,3}2[.]).)*?OAI-SearchBot",
+        "text": "task: The OAI-SearchBot disallow is the first finding"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*Fix first",
+        "text": "contract: Verdict Fix first for a search-crawler block"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*Sound",
+        "text": "task: Allowing GPTBot is not read as ChatGPT search access"
+      }
+    ]
   }
 }
