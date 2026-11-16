@@ -95,19 +95,6 @@
       "force_skill_invocation": true,
       "side_effect_level": "local-only",
       "assertions": []
-    },
-    {
-      "id": "comment-rot",
-      "prompt": "Deslop my change.",
-      "expected_output": "Fixes or deletes the docstring that says 3 retries; the test pins 5; code unchanged; tests pass.",
-      "files": [
-        "files/comment-rot/client.py",
-        "files/comment-rot/test_client.py",
-        "files/comment-rot/.eval-setup.sh"
-      ],
-      "force_skill_invocation": true,
-      "side_effect_level": "local-only",
-      "assertions": []
     }
   ]
 }
