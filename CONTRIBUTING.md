@@ -1,12 +1,10 @@
 # Contributing
 
-[简体中文](CONTRIBUTING.zh-CN.md)
-
 By taking part, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Workflow
 
-Local checks require Python 3, `pytest`, `ruff`, `ffmpeg`, and `ffprobe`. Media checks are skipped when their tools are absent; a skipped check is not release evidence. Installation also requires Node.js and npm compatible with the selected skills CLI version.
+Local checks require Python 3 and `ruff`. Installation also requires Node.js and npm compatible with the selected skills CLI version.
 
 ```bash
 git clone git@github.com:HugoLopes45/hl-skills.git
@@ -16,7 +14,6 @@ git checkout -b feature/<short-name>
 python3 scripts/validate.py
 ruff check --select C901 .
 python3 -m unittest discover scripts
-python3 -m unittest discover evals
 npx skills add . --list            # check that the CLI finds the skill
 git commit -m "feat: add <skill>"
 gh pr create
@@ -46,7 +43,6 @@ skills/<name>/SKILL.md          one skill
 skills/<name>/references/       long material the skill loads on demand
 scripts/validate.py             format and link checks, run by CI
 scripts/test_validate.py        tests for validate.py
-evals/                          behavior evals and their checks, see evals/README.md
 STYLE.md                        how a skill is written
 ```
 

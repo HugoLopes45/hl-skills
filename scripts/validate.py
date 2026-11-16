@@ -11,15 +11,7 @@ NAME_PREFIX = "hl-"
 LINK_RE = re.compile(r"references/[A-Za-z0-9._/-]+\.md")
 MAX_BODY_LINES = 500
 GROUNDING = "Ground factual claims in supplied evidence or results you observed in this session."
-TRANSLATED_DOCS = (
-    "README.md",
-    "CONTRIBUTING.md",
-    "STYLE.md",
-    "SECURITY.md",
-    "CODE_OF_CONDUCT.md",
-    "THIRD_PARTY_NOTICES.md",
-    "evals/README.md",
-)
+TRANSLATED_DOCS = ("README.md",)
 
 
 def heading_levels(text: str) -> list[int]:
@@ -37,7 +29,7 @@ def links_to(text: str, name: str) -> bool:
 
 
 def translation_errors(root: Path) -> list[str]:
-    """Each human doc needs a zh-CN version, links both ways, and the same heading levels."""
+    """Each translated doc needs a zh-CN version, links both ways, and the same heading levels."""
     errors: list[str] = []
     for doc in TRANSLATED_DOCS:
         english = root / doc

@@ -1,7 +1,5 @@
 # Third-party notices
 
-Chinese version: [THIRD_PARTY_NOTICES.zh-CN.md](THIRD_PARTY_NOTICES.zh-CN.md).
-
 Apart from the Contributor Covenant text named below, this repository copies no third-party text into its skills or docs. Skill text is original.
 
 ## Contributor Covenant
