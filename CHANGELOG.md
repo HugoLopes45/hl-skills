@@ -39,6 +39,13 @@
 * Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
 
 
+## [1.7.0](https://github.com/HugoLopes45/hl-skills/compare/v1.6.0...v1.7.0) (2026-11-16)
+
+
+### Features
+
+* merge growth and marketing skills from hl-growth-skills ([#30](https://github.com/HugoLopes45/hl-skills/issues/30)) ([03c3b76](https://github.com/HugoLopes45/hl-skills/commit/03c3b76007fab96ee8544e2a2a89619686e00943))
+
 ## [1.6.0](https://github.com/HugoLopes45/hl-skills/compare/v1.5.0...v1.6.0) (2026-10-29)
 
 
