@@ -20,7 +20,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 Lead with evidenced attacker impact and coverage. Keep exploit prerequisites and uncertainty with each finding; preserve the complete report and outside-scope warnings.
 
-Review a security question without automatically starting a repository audit. For an explicit audit, use the workflow below. A path limits the audit, not the evidence standard. Default depth: `standard`.
+Review a security question without automatically starting a repository audit. For an explicit audit, use the workflow below. A path limits the audit, not the evidence standard. Default depth: `deep`. Paranoid verification applies at every depth; an explicit smaller depth limits coverage, not the evidence standard.
 
 ## Safety boundary
 
@@ -57,6 +57,10 @@ Review a security question without automatically starting a repository audit. Fo
 | `standard` | Relevant methods and domains; resolve coverage-review gaps within the agreed scope | Critical/high/medium findings and unresolved leads |
 | `deep` | Split by subsystem and lifecycle; independently revisit high-impact controls and final records | Same evidence bar, with detailed rejected leads and residual limits |
 
+Keep paranoid verification within the authorized scope and budget. An explicit depth or budget is a hard bound; do not spend more to satisfy the default. For each source-supported boundary, challenge an alternate caller or protocol, representation, identity or lifecycle state against the same security rule. Record missing evidence and untested variants; repeated payload spellings and agreement between reviewers are not independent proof. Paranoid coverage never authorizes code execution, live probes, repairs or a claim of perfect security.
+
+Before delivering, ask: "If this line causes a $10M loss, where's the bug?" Apply it to consequential guards, alternate paths and assurance claims. Trace a concrete failure and its strongest counterevidence. The amount is hypothetical, not observed impact or a severity score. Correct unsupported conclusions and propose source-grounded fixes; this audit never patches targets. Refuted concerns need no finding, and missing evidence remains an explicit gap, not an invented vulnerability.
+
 Without delegation, perform source review yourself, but report candidates as `needs_validation` pending independent review rather than inventing another reviewer.
 
 ## Evidence and decisions
@@ -73,7 +77,7 @@ Map confirmed findings to CWE in the report. Rank only demonstrated or fully sou
 
 ## Scanner selection
 
-Choose a scanner only when it answers a planned unit's question; none is mandatory. These are candidates, not permission to execute:
+Choose a scanner only when it answers a planned unit's question; none is mandatory. If a necessary capability is absent, you may propose a specific tool with its verified source/version, purpose, installation effects, network or privilege needs and any cost. If documentation cannot be checked, keep those prerequisites explicitly unverified; never invent a version or capability. A proposal is not approval or availability; this source-only audit does not install it. Continue permitted source review and keep the tool-dependent check unresolved. These are candidates, not permission to execute:
 
 - Dependencies: installed ecosystem auditors or vulnerability databases, such as `pip-audit`, `npm audit`, `cargo audit`, `govulncheck` or `osv-scanner`. Package resolution may install or execute code; approval for a remote advisory lookup does not authorize it. Prefer static lockfile analysis with documented behavior. Separate direct/transitive packages and establish the affected path's reachability.
 - Secrets: an installed scanner, such as `gitleaks`, only after its installed version's pre-output redaction and network behavior are verified. Never substitute a raw matching-line search.
@@ -105,9 +109,9 @@ Validate JSON with the bundled `scripts/validate_report.py`, as described in the
 In chat:
 
 1. Open with one bold plain sentence stating the impact, or exactly what the checks covered. A live credential or data-loss risk goes first, even outside scope. Never open with a label, severity word, CWE ID or count; keep formal fields such as `Assurance:` in the stored report.
-2. State decisive coverage limits. Put incidental outside-scope risks on separate lines beginning `Outside what you asked:`; do not include them in audited findings.
+2. State decisive coverage limits. When a source-supported lead remains, lead with the unresolved boundary rather than a clean verdict; retain uncertain reachability in the summary and impact wording. Put incidental outside-scope risks on separate lines beginning `Outside what you asked:`; do not include them in audited findings.
 3. Present confirmed priority findings, worst first: consequence, reachability and decisive evidence. Say what was read versus run. Keep unresolved leads separate and unscored.
-4. End with the verdict, `**Next:**` and `**Changed:**`. Put reader actions only in Next: credential response first, grounded fixes, then safe checks or missing prerequisites.
+4. End with the verdict, `**Next:**` and `**Changed:**`. Put reader actions only in Next: credential response first, grounded fixes, then safe checks or missing prerequisites. If a missing policy or external guard could refute a lead, request that evidence before prescribing redundant enforcement; any suggested fix remains conditional.
 
 Verdicts:
 - `Exploitable`: an active critical/high finding has a complete, independently checked path. Qualify source-only evidence explicitly.
