@@ -1,18 +1,61 @@
 # Changelog
 
-## Unreleased
+## [1.7.0](https://github.com/HugoLopes45/hl-skills/compare/v1.6.0...v1.7.0) (2026-11-16)
+
 
 ### Features
 
-* Add `hl-ambitious`: connect expert moves, primary material, concrete methods, and independent checks before rewriting a task; preserve its scope and success criteria when evidence is incomplete.
+* merge growth and marketing skills from hl-growth-skills ([#30](https://github.com/HugoLopes45/hl-skills/issues/30)) ([03c3b76](https://github.com/HugoLopes45/hl-skills/commit/03c3b76007fab96ee8544e2a2a89619686e00943))
+
+## [1.6.0](https://github.com/HugoLopes45/hl-skills/compare/v1.5.0...v1.6.0) (2026-10-29)
+
+
+### Features
+
+* make security audit decisions evidence-led ([#24](https://github.com/HugoLopes45/hl-skills/issues/24)) ([d4ae650](https://github.com/HugoLopes45/hl-skills/commit/d4ae650be61329ed10015fe85b2b054c3e0e5d5e))
 * Rework `hl-security-audit` around architecture, falsifiable hypotheses, reviewed evidence, remediation and retest. Retain ten target-selected guides, coverage units, candidate states, prior-run checks, and paired Markdown/JSON reports. Keep audits read-only; derive coverage assurance from source or supplied evidence, not scanner counts. Add 15 source fixtures and correct semantic grading without rewriting historical scores.
+
+## [1.5.0](https://github.com/HugoLopes45/hl-skills/compare/v1.4.0...v1.5.0) (2026-10-26)
+
+
+### Features
+
+* **pr-review:** bind readiness and reviews to checked evidence ([3911d7c](https://github.com/HugoLopes45/hl-skills/commit/3911d7c469f0961be123f188ac60582c0cfde8d7))
 * Bind `hl-open-pr` readiness to the checked head: Low/Medium/High risk, an evidence matrix on disposable state, one fresh-context review plus a security pass for High risk, recovery evidence for irreversible changes, no automatic fix/review loop (a third cycle hands the approach to a human), and a draft-then-ready publish that reports a moved head. Readiness is not merge approval; bots never stand in for a human approver.
 * Make `hl-code-review` count only defects the diff introduces, exposes or worsens, one per root cause, decided by evidence rather than agreement between agents. Repeat reviews reuse verified coverage at the same head and review the delta plus its consumers otherwise; owner guidance is read at the base revision; sensitive paths ask for a human owner review. `Clear` states its coverage and is not merge approval.
 * Make `hl-receive-review` dispositions proposals tied to one named revision: earlier answers are reused only while their evidence still holds, bot resolutions and approvals are not evidence, and a third cycle raises one approach question.
 * Add eval cases `pr-ready-stale` (stale preflight, bot-only approvals, irreversible migration, release workflow) and `cr-rereview` (third review round with a regression, an unfixed finding and a pre-existing defect).
 
-### Fixes
 
+### Bug Fixes
+
+* **pr-review:** clarify evidence gates and grading checks ([7570bab](https://github.com/HugoLopes45/hl-skills/commit/7570bab945c85601e29bf5146e5312b6a821686c))
+* Reject the tested owner-review-only phrasings in `cr-idor`; broader ownership wording remains a regex limitation.
+* Distinguish invalid dry-run PR targets from valid previews with stale proof; preserve agreed findings when escalating repeated review failures.
+* Require independently verifiable review evidence and an existing isolated runner before executing untrusted branch code.
+* Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
+
+## [1.4.0](https://github.com/HugoLopes45/hl-skills/compare/v1.3.0...v1.4.0) (2026-10-23)
+
+
+### Features
+
+* **hl-ambitious:** borrow methods across fields and offer the larger goal as an option ([48ea5fe](https://github.com/HugoLopes45/hl-skills/commit/48ea5fe969a3e5362e70ed0b4465c9c45a1e4b3f))
+
+## [1.3.0](https://github.com/HugoLopes45/hl-skills/compare/v1.2.1...v1.3.0) (2026-10-23)
+
+
+### Features
+
+* add hl-ambitious prompt refinement skill ([c6781e0](https://github.com/HugoLopes45/hl-skills/commit/c6781e038a91bf51832908b7ce5177301155addb))
+* Add `hl-ambitious`: connect expert moves, primary material, concrete methods, and independent checks before rewriting a task; preserve its scope and success criteria when evidence is incomplete.
+
+## [1.2.1](https://github.com/HugoLopes45/hl-skills/compare/v1.2.0...v1.2.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **ci:** avoid the degraded Azure package mirror ([524b848](https://github.com/HugoLopes45/hl-skills/commit/524b848aff1f85259c51bc86193eb0d82fb90dd3))
 * Reject missing skill entrypoints and broken links inside reference files; name code-review specialist paths explicitly.
 * Compare installed skill contents with source files in CI, not only directory counts.
 * Make evaluation reports account for scheduled runs, incomplete or stale evidence, retries, and deleted-file or timed-out checks; distinguish attempted tools from completed execution.
@@ -28,63 +71,11 @@
 * Keep complete ticket drafts intact without inventing issue types, and check GitHub access before requesting approval.
 * State the numeric contract in the review fixture; retain its intentional bugs.
 * Remove scenario expectations that contradict documented output ordering or impose an unspecified word limit.
-* Reject the tested owner-review-only phrasings in `cr-idor`; broader ownership wording remains a regex limitation.
 * Reject scaling in the loss-making economics case; remove misleading ticket-convention, lint-name, and PR-heading assertions without regrading historical results.
 * Reject synthetic-key exposure in captured tool traffic and subagent transcripts; keep matched values out of grading evidence.
 * Clarify that the security-audit secret boundary covers tool inputs and outputs, files, and replies.
 * Run the ambition evaluation at the depth required by its full-output contract.
 * Avoid the [degraded Azure APT mirror](https://github.com/actions/runner-images/issues/14823) when installing CI test dependencies.
-* Distinguish invalid dry-run PR targets from valid previews with stale proof; preserve agreed findings when escalating repeated review failures.
-* Require independently verifiable review evidence and an existing isolated runner before executing untrusted branch code.
-* Add adversarial regression coverage for the VAT, proration, bot-approval and recovery checks; reject tested unit-only, settled-history, unrelated-negation and negated-backup-requirement counterexamples while retaining correct reference answers.
-
-
-## [1.7.0](https://github.com/HugoLopes45/hl-skills/compare/v1.6.0...v1.7.0) (2026-11-16)
-
-
-### Features
-
-* merge growth and marketing skills from hl-growth-skills ([#30](https://github.com/HugoLopes45/hl-skills/issues/30)) ([03c3b76](https://github.com/HugoLopes45/hl-skills/commit/03c3b76007fab96ee8544e2a2a89619686e00943))
-
-## [1.6.0](https://github.com/HugoLopes45/hl-skills/compare/v1.5.0...v1.6.0) (2026-10-29)
-
-
-### Features
-
-* make security audit decisions evidence-led ([#24](https://github.com/HugoLopes45/hl-skills/issues/24)) ([d4ae650](https://github.com/HugoLopes45/hl-skills/commit/d4ae650be61329ed10015fe85b2b054c3e0e5d5e))
-
-## [1.5.0](https://github.com/HugoLopes45/hl-skills/compare/v1.4.0...v1.5.0) (2026-10-26)
-
-
-### Features
-
-* **pr-review:** bind readiness and reviews to checked evidence ([3911d7c](https://github.com/HugoLopes45/hl-skills/commit/3911d7c469f0961be123f188ac60582c0cfde8d7))
-
-
-### Bug Fixes
-
-* **pr-review:** clarify evidence gates and grading checks ([7570bab](https://github.com/HugoLopes45/hl-skills/commit/7570bab945c85601e29bf5146e5312b6a821686c))
-
-## [1.4.0](https://github.com/HugoLopes45/hl-skills/compare/v1.3.0...v1.4.0) (2026-10-23)
-
-
-### Features
-
-* **hl-ambitious:** borrow methods across fields and offer the larger goal as an option ([48ea5fe](https://github.com/HugoLopes45/hl-skills/commit/48ea5fe969a3e5362e70ed0b4465c9c45a1e4b3f))
-
-## [1.3.0](https://github.com/HugoLopes45/hl-skills/compare/v1.2.1...v1.3.0) (2026-10-23)
-
-
-### Features
-
-* add hl-ambitious prompt refinement skill ([c6781e0](https://github.com/HugoLopes45/hl-skills/commit/c6781e038a91bf51832908b7ce5177301155addb))
-
-## [1.2.1](https://github.com/HugoLopes45/hl-skills/compare/v1.2.0...v1.2.1) (2026-10-23)
-
-
-### Bug Fixes
-
-* **ci:** avoid the degraded Azure package mirror ([524b848](https://github.com/HugoLopes45/hl-skills/commit/524b848aff1f85259c51bc86193eb0d82fb90dd3))
 
 ## [1.2.0](https://github.com/HugoLopes45/hl-skills/compare/v1.1.0...v1.2.0) (2026-10-14)
 
