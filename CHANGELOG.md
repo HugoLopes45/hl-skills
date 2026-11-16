@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/HugoLopes45/hl-skills/compare/v1.7.1...v1.8.0) (2026-11-16)
+
+
+### Features
+
+* **hl-ai-search-visibility:** check each answer engine's own crawler ([#39](https://github.com/HugoLopes45/hl-skills/issues/39)) ([cec0311](https://github.com/HugoLopes45/hl-skills/commit/cec0311891cc200f2aa17d27e6f1c568b652ada2))
+* **hl-roast:** add hl-roast skill ([#37](https://github.com/HugoLopes45/hl-skills/issues/37)) ([3e192d9](https://github.com/HugoLopes45/hl-skills/commit/3e192d9e36debe6f0559a2aecf3a87ec6c1d2699))
+
 ## [1.7.1](https://github.com/HugoLopes45/hl-skills/compare/v1.7.0...v1.7.1) (2026-11-16)
 
 
