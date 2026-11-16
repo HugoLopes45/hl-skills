@@ -35,7 +35,7 @@ STOPPED_CASES = [
     ("debug", "no-symptom"), ("discover", "scope-ambiguous"),
     ("explainer-video", "video-no-topic"), ("explainer-video", "video-paid-voice"), ("grill", "no-idea"), ("grill", "nothing"),
     ("improve", "refactor-none"), ("launch-marketing", "landing-nothing"), ("open-pr", "no-gh"), ("open-pr", "on-base"),
-    ("receive-review", "no-review"), ("show-me", "show-nothing"), ("spec", "plan-nothing"), ("spike", "spike-undefined"),
+    ("receive-review", "no-review"), ("roast", "roast-nothing"), ("show-me", "show-nothing"), ("spec", "plan-nothing"), ("spike", "spike-undefined"),
     ("tdd", "no-behavior"), ("tdd", "seam-missing"), ("tickets", "tracker-none"), ("verify", "claim-no-threshold"),
     ("verify", "text-none"), ("writing-for-agents", "prompt-empty"),
 ]
@@ -952,6 +952,27 @@ class AnswerOracles(unittest.TestCase):
                        "The first thing I need is a description of the idea. Please include:\n\n1. **The idea**"]:
             self.assertTrue(passes(ask, answer), answer)
         self.assertFalse(passes(ask, "Cut the retry layer. The client will send the request once."))
+
+    def test_roast_fix_accepts_a_placeholder_query(self):
+        fix = spec("roast", "roast-code", "task: Next gives the parameterized-query fix")
+        self.assertTrue(passes(fix, "Verdict: Roasted\n\n**Next:**\n1. Change line 13 to `conn.execute(\"... WHERE customer = ?\", (customer_name,))`."))
+        self.assertTrue(passes(fix, "**Next:**\n1. Use a parameterized query in `find_orders`."))
+        self.assertFalse(passes(fix, "Use `?` placeholders.\n\n**Next:**\n1. Delete the bare `except`."))
+
+    def test_roast_security_risk_is_stated_before_the_points(self):
+        plain = spec("roast", "roast-code", "contract: Mentions the injection before the first point")
+        self.assertTrue(passes(plain, "**Your SQL trusts strangers.**\nThis is SQL injection at line 13.\n\n1. **Joke.**\n"))
+        self.assertFalse(passes(plain, "**Your SQL trusts strangers.**\n\n1. **Joke.**\n   This is SQL injection.\n"))
+
+    def test_roast_unsourced_claim_needs_more_than_the_number(self):
+        claim = spec("roast", "roast-savage-page", "task: Flags the unsourced 10,000 customers claim")
+        self.assertTrue(passes(claim, "10,000 happy customers, and not one has a name or a source."))
+        self.assertFalse(passes(claim, "FlowMax is trusted by 10,000 customers."))
+
+    def test_roast_insult_check_targets_people_not_the_work(self):
+        insult = spec("roast", "roast-savage-page", "contract: Roasts the work, not the person")
+        self.assertFalse(passes(insult, "Whoever wrote this is an idiot."))
+        self.assertTrue(passes(insult, "The form asks dumb questions, nine of them."))
 
     def test_empty_prompt_accepts_did_not_include(self):
         empty = spec("writing-for-agents", "prompt-empty", "task: Says there is no prompt")

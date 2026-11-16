@@ -4,7 +4,7 @@
 
 ### 把东西做对，再让人找到它。
 
-**50 个技能，为你的编程智能体配上一支工程团队和一支增长团队。**
+**51 个技能，为你的编程智能体配上一支工程团队和一支增长团队。**
 
 质疑想法。先写测试。证明缺陷。交付拉取请求。
 
@@ -67,7 +67,7 @@ npx skills add HugoLopes45/hl-skills
 ### 工程
 
 <details>
-<summary><strong>思考 · 在想法耗掉一个迭代之前，淘汰坏想法</strong> · 6 个技能</summary>
+<summary><strong>思考 · 在想法耗掉一个迭代之前，淘汰坏想法</strong> · 7 个技能</summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -77,6 +77,7 @@ npx skills add HugoLopes45/hl-skills
 | [hl-challenge](./skills/hl-challenge/SKILL.md) | `Use hl-challenge to find the weak assumptions in this plan.` |
 | [hl-spike](./skills/hl-spike/SKILL.md) | `Use hl-spike to test whether SQLite can handle our write load.` |
 | [hl-adr](./skills/hl-adr/SKILL.md) | `Use hl-adr to record why we chose PostgreSQL and the cost of reversing it.` |
+| [hl-roast](./skills/hl-roast/SKILL.md) | `Use hl-roast to roast this landing page, savage level.` |
 
 </details>
 
@@ -509,7 +510,7 @@ existing-customer change is your decision)
 ```bash
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                 # see the 50 skills first
+npx skills add HugoLopes45/hl-skills --list                 # see the 51 skills first
 npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)

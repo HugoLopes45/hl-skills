@@ -357,6 +357,17 @@
       "force_skill_invocation": false,
       "side_effect_level": "local-only",
       "assertions": []
+    },
+    {
+      "id": "roast-trigger",
+      "prompt": "Roast orders.py. Be brutal, but make it funny.",
+      "expected_output": "Invokes hl-roast.",
+      "files": [
+        "files/roastme/orders.py"
+      ],
+      "force_skill_invocation": false,
+      "side_effect_level": "local-only",
+      "assertions": []
     }
   ]
 }

@@ -4,7 +4,7 @@
 
 ### Build it right. Then get it found.
 
-**50 skills that give your coding agent an engineering team and a growth team.**
+**51 skills that give your coding agent an engineering team and a growth team.**
 
 Question the idea. Write the test. Prove the bug. Ship the PR.
 
@@ -59,7 +59,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 ### Engineering
 
 <details>
-<summary><strong>Think · Kill bad ideas before they cost a sprint</strong> · 6 skills</summary>
+<summary><strong>Think · Kill bad ideas before they cost a sprint</strong> · 7 skills</summary>
 
 | Skill | Give your agent a job |
 |---|---|
@@ -69,6 +69,7 @@ Eleven departments. Pick the job in front of you, copy a prompt, and replace its
 | [hl-challenge](./skills/hl-challenge/SKILL.md) | `Use hl-challenge to find the weak assumptions in this plan.` |
 | [hl-spike](./skills/hl-spike/SKILL.md) | `Use hl-spike to test whether SQLite can handle our write load.` |
 | [hl-adr](./skills/hl-adr/SKILL.md) | `Use hl-adr to record why we chose PostgreSQL and the cost of reversing it.` |
+| [hl-roast](./skills/hl-roast/SKILL.md) | `Use hl-roast to roast this landing page, savage level.` |
 
 </details>
 
@@ -497,7 +498,7 @@ The installer is the [`skills`](https://github.com/vercel-labs/skills) CLI. Comm
 ```bash
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                 # see the 50 skills first
+npx skills add HugoLopes45/hl-skills --list                 # see the 51 skills first
 npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)
