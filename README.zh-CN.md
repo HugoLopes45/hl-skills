@@ -4,7 +4,7 @@
 
 ### 把东西做对，再让人找到它。
 
-**51 个技能，为你的编程智能体配上一支工程团队和一支增长团队。**
+**一组技能，为你的编程智能体配上一支工程团队和一支增长团队。**
 
 质疑想法。先写测试。证明缺陷。交付拉取请求。
 
@@ -67,7 +67,7 @@ npx skills add HugoLopes45/hl-skills
 ### 工程
 
 <details>
-<summary><strong>思考 · 在想法耗掉一个迭代之前，淘汰坏想法</strong> · 7 个技能</summary>
+<summary><strong>思考 · 在想法耗掉一个迭代之前，淘汰坏想法</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -82,7 +82,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>构建 · 先写测试，保持代码精简</strong> · 6 个技能</summary>
+<summary><strong>构建 · 先写测试，保持代码精简</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -96,7 +96,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>修复 · 动代码之前先证明原因</strong> · 5 个技能</summary>
+<summary><strong>修复 · 动代码之前先证明原因</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -109,7 +109,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>交付 · 合并你能为之辩护的工作</strong> · 8 个技能</summary>
+<summary><strong>交付 · 合并你能为之辩护的工作</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -125,7 +125,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>发布 · 判断是否值得做，然后告诉世界</strong> · 2 个技能</summary>
+<summary><strong>发布 · 判断是否值得做，然后告诉世界</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -137,7 +137,7 @@ npx skills add HugoLopes45/hl-skills
 ### 增长与营销
 
 <details>
-<summary><strong>策略 · 给人们一个选择你的理由</strong> · 4 个技能</summary>
+<summary><strong>策略 · 给人们一个选择你的理由</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -149,21 +149,21 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>SEO 与 AI 搜索 · 做值得被找到的页面</strong> · 6 个技能</summary>
+<summary><strong>SEO、AEO 与 GEO · 做搜索和 AI 回答都能用的页面</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
 | [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | `Use hl-seo-audit to find why this page is blocked from search.` |
 | [hl-keyword-research](./skills/hl-keyword-research/SKILL.md) | `Use hl-keyword-research to pick the next page to write from this Search Console export.` |
 | [hl-content-brief](./skills/hl-content-brief/SKILL.md) | `Use hl-content-brief to brief a guide on how to chase a late invoice, for freelance designers in the United States.` |
-| [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | `Use hl-ai-search-visibility to check this page for blockers before AI answers quote it.` |
+| [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | `Use hl-ai-search-visibility to check whether ChatGPT, Perplexity, and Google AI answers can use this page.` |
 | [hl-schema-markup](./skills/hl-schema-markup/SKILL.md) | `Use hl-schema-markup to check the JSON-LD on this product page against its visible price.` |
 | [hl-internal-linking](./skills/hl-internal-linking/SKILL.md) | `Use hl-internal-linking to find orphan pages and broken targets in this links export.` |
 
 </details>
 
 <details>
-<summary><strong>文案与邮件 · 说清楚，保留每一个事实</strong> · 5 个技能</summary>
+<summary><strong>文案与邮件 · 说清楚，保留每一个事实</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -176,7 +176,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>转化 · 把访问变成下一步</strong> · 3 个技能</summary>
+<summary><strong>转化 · 把访问变成下一步</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -187,7 +187,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>渠道 · 出现在买家已经在的地方</strong> · 3 个技能</summary>
+<summary><strong>渠道 · 出现在买家已经在的地方</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -198,7 +198,7 @@ npx skills add HugoLopes45/hl-skills
 </details>
 
 <details>
-<summary><strong>分析 · 知道下一步该衡量什么</strong> · 2 个技能</summary>
+<summary><strong>分析 · 知道下一步该衡量什么</strong></summary>
 
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
@@ -510,7 +510,7 @@ existing-customer change is your decision)
 ```bash
 # Install
 npx skills add HugoLopes45/hl-skills                        # pick skills and agents interactively
-npx skills add HugoLopes45/hl-skills --list                 # see the 51 skills first
+npx skills add HugoLopes45/hl-skills --list                 # see every skill first
 npx skills add HugoLopes45/hl-skills -s hl-debug -s hl-tdd  # only some skills
 npx skills add HugoLopes45/hl-skills -a claude-code -a codex # only some agents
 npx skills add HugoLopes45/hl-skills -g                     # for every project (global)
