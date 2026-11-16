@@ -2,6 +2,8 @@ set -e
 printf '.claude/\n__pycache__/\n.pytest_cache/\n' >> .git/info/exclude
 git add app.py test_app.py
 git commit -qm "feat: count words"
+git update-ref refs/remotes/origin/main HEAD
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 cat > app.py <<'X'
 import json
 import os

@@ -2,6 +2,8 @@ set -e
 printf '.claude/\n__pycache__/\n.pytest_cache/\n' >> .git/info/exclude
 git add utils.py report.py test_report.py
 git commit -qm "feat: report totals"
+git update-ref refs/remotes/origin/main HEAD
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 cat >> report.py <<'X'
 
 
