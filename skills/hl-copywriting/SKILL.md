@@ -1,6 +1,6 @@
 ---
 name: hl-copywriting
-description: "Write or rewrite landing page copy from a product brief or existing copy. Keeps every claim supported by the brief, leaves placeholders for missing proof, matches the audience's own words without forced slang, and removes AI-sounding patterns. Use when the user asks for landing page copy, a page rewrite, or copy that sounds less generated."
+description: "Write or rewrite landing page copy from a product brief or existing copy. Keeps every claim supported by the brief, leaves placeholders for missing proof, matches the audience's own words without forced slang, and removes AI-sounding patterns. Use when the user asks for landing page copy or a page rewrite."
 ---
 # Copywriting
 
