@@ -43,7 +43,7 @@ The agent running a skill sees only that skill's files, never this guide. Each `
 - The fixed verdict words for the `Verdict:` line, each with its meaning.
 - The views the skill uses, picked from the table below.
 - The stopped cases: what can be missing, and how the reader unblocks it.
-- One rendered example in a domain absent from the skill's eval fixtures.
+- One rendered example in a domain the skill does not otherwise mention.
 
 Keep it as short as the skill allows: state only what differs from a careful default, and repeat the Reader rules that the skill's domain makes easy to break (security jargon, test vocabulary, marketing hype).
 
