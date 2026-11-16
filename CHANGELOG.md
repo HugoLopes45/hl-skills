@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/HugoLopes45/hl-skills/compare/v1.7.0...v1.7.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* **hl-deslop:** drop the prose catalog and add repository-check traps ([#34](https://github.com/HugoLopes45/hl-skills/issues/34)) ([a3442c8](https://github.com/HugoLopes45/hl-skills/commit/a3442c8f4aa9286969e3be7d4c515aa00278c17a))
+* **routing:** send positioning, pricing and copy to specialists ([#33](https://github.com/HugoLopes45/hl-skills/issues/33)) ([bc5e2c4](https://github.com/HugoLopes45/hl-skills/commit/bc5e2c44c7c2e34f1242377a52eaa2a57283db13))
+
 ## [1.7.0](https://github.com/HugoLopes45/hl-skills/compare/v1.6.0...v1.7.0) (2026-11-16)
 
 
