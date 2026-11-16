@@ -1,0 +1,26 @@
+{
+  "skill_name": "hl-internal-linking",
+  "evals": [
+    {
+      "id": "internal-linking-orphan-json",
+      "prompt": "Output only JSON: no prose, no code fence. Using files/links-export/pages.csv and files/links-export/links.csv, return {\"orphan_urls\": [...], \"broken_link_targets\": [...]}. orphan_urls lists indexable pages with zero inbound internal links from other pages. broken_link_targets lists linked targets whose status is not 200. Use exact URLs.",
+      "expected_output": "Only the JSON object. orphan_urls is exactly /guides/invoice-reminders. broken_link_targets is exactly /guides/old-reminder-templates.",
+      "files": [
+        "files/links-export/pages.csv",
+        "files/links-export/links.csv"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "internal-linking-no-export",
+      "prompt": "Fix all the internal links on our site so every page is linked well.",
+      "expected_output": "Stopped, with grouped questions for the link export or crawl and the page list, each with its default or Default: none. No link change is made and no verdict other than Stopped is given.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

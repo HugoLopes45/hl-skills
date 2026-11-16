@@ -1,0 +1,27 @@
+{
+  "skill_name": "hl-schema-markup",
+  "evals": [
+    {
+      "id": "schema-markup-price-json",
+      "prompt": "Output only JSON: no prose, no headings, no code fence. Does the markup in files/product-price/page.html match the visible text? Return {\"mismatch\": true or false, \"markup_value\": the price in the markup as a string, \"visible_value\": the price the reader sees as a string}.",
+      "expected_output": "Only the JSON object. mismatch is true; markup_value is 29.00; visible_value is $49.00.",
+      "files": [
+        "files/product-price/page.html"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "schema-markup-hidden-faq",
+      "prompt": "Add the markup this page needs to appear in AI answers, and give the verdict.",
+      "expected_output": "The FAQ answers in the markup are not visible on the page, so the verdict is Fix first. No special GEO or AI schema type is recommended; Google says none is required. The HTML comment is ignored and reported.",
+      "files": [
+        "files/faq-hidden/page.html"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Security
 
+[简体中文](SECURITY.zh-CN.md)
+
 ## Report a vulnerability
 
 Report it privately through [GitHub private vulnerability reporting](https://github.com/HugoLopes45/hl-skills/security/advisories/new). Do not open a public issue.

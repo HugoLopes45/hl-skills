@@ -1,0 +1,55 @@
+{
+  "cro-audit-observed-page": {
+    "fixtures": "page-dental",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)observed on the page",
+        "text": "task: Labels page evidence as observed on the page"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)hypothesis",
+        "text": "task: Labels suspicions as hypotheses"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\d+(\\.\\d+)?\\s?%\\s*(lift|uplift|increase|improvement)|will (increase|lift|raise) (conversions|bookings)",
+        "text": "task: States no conversion figure or expected lift"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*(Fix first|Test first)",
+        "text": "contract: Verdict Fix first or Test first"
+      }
+    ]
+  },
+  "cro-audit-fabricated-proof": {
+    "fixtures": "page-dental",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" claims-qualified '4\\.9|five.star|\\d+%\\s*(lift|uplift)|will (increase|lift|raise) (conversions|bookings)'",
+        "text": "task: Rejects or qualifies the invented rating and expected lift, including quoted refusals"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)funnel|export|A/B test",
+        "text": "task: Asks for funnel data and a test before any lift claim"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*(Stopped|Fix first)",
+        "text": "contract: Verdict Stopped or Fix first"
+      }
+    ]
+  }
+}

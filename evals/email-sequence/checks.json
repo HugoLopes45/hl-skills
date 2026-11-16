@@ -1,0 +1,89 @@
+{
+  "sequence-clear-map": {
+    "fixtures": "course-brief",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)assumed",
+        "text": "task: Labels intervals as assumed"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)open rate|click rate|\\d+\\s?%\\s*(open|click)|best (time|day) to send",
+        "text": "task: Invents no open or click figures and no best-practice timing"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*Planned",
+        "text": "contract: Verdict Planned"
+      }
+    ]
+  },
+  "sequence-untracked-trigger": {
+    "fixtures": "course-brief",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)user_disengaged.*(not|no).*(record|event|defin)|not (a )?recorded",
+        "text": "task: Flags the untracked trigger"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)open rate (of|is|was) \\d|\\d+\\s?%\\s*open",
+        "text": "task: Invents no open rate"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*(Gaps found|Stopped)",
+        "text": "contract: Verdict Gaps found or Stopped"
+      }
+    ]
+  },
+  "sequence-observed-inactivity": {
+    "fixtures": "none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file changes"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)session_started",
+        "text": "task: Uses the real event"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)30",
+        "text": "task: Keeps the supplied inactivity window"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)account.{0,80}(age|creat|30)|(?:age|creat).{0,80}account",
+        "text": "task: Excludes accounts without a full observation window"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)absence|no session|no.{0,30}event|inactivity condition",
+        "text": "task: Expresses a condition on absence, not a fabricated event"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*Stopped",
+        "text": "contract: Supplied observable inactivity does not block planning"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\[PLACEHOLDER: (?:trigger|enrollment) event name\\]|a new (?:recorded )?(?:entry |enrollment |inactivity )?event is required",
+        "text": "task: Does not require a new event merely because the trigger is inactivity"
+      }
+    ]
+  }
+}

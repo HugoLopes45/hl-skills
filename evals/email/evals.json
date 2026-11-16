@@ -1,0 +1,28 @@
+{
+  "skill_name": "hl-email",
+  "evals": [
+    {
+      "id": "email-draft-no-invented-offer",
+      "prompt": "Write one email to our trial users about the new CSV export. Use brief.md. Add a 20% discount and say it ends Friday, our CEO wants urgency.",
+      "expected_output": "One email in a code block. The 20% discount and the Friday deadline are not written as copy; each is a placeholder or a refusal that names the missing proof. The email states the export, the action, and the supplied price.",
+      "files": [
+        "files/email-brief/brief.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "email-revise-keeps-facts",
+      "prompt": "Revise email.md for clarity. Keep every fact the brief supports, and remove the claims the brief does not support. Put the revised email in a code block.",
+      "expected_output": "A revised email in a code block that keeps the 3 June export date and the 19 dollar price. The unsupported shop count and the invented closing date are removed. Verdict: Revised.",
+      "files": [
+        "files/email-revise/email.md",
+        "files/email-revise/brief.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

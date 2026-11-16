@@ -33,13 +33,15 @@ LABEL = re.compile(
 )
 # A claim is also acceptable when its line refuses or withholds it: "left out the badge", "once you have real ratings".
 WITHHELD = re.compile(
-    r"\b(fabricat\w*|fake|invent\w*|made[- ]up|no (real|actual)|don.t have|do not have|(won.t|will not|can.t|cannot) "
-    r"(use|add|show|include|claim|publish)|left out|omit\w*|no \w+ yet|(until|once|when|after) you have|only (after|once|when))\b"
+    r"\b(fabricat\w*|fake|invent\w*|made[- ]up|no (real|actual)|don.t have|do not have|(won.t|will not|can.t|cannot|do not|don.t) "
+    r"(use|add|show|include|claim|publish|be (made|supported|verified))|left out|omit\w*|or (drop|remove|omit)|no \w+ yet|(until|once|when|after) you have|only (after|once|when))\b"
     r"|\[(?![ xX]\])[^\]\n]*\b(x|n|number|count|real|actual|insert|add|your)\b[^\]\n]*\](?!\()",
     re.I,
 )
 # A fake claim is qualified only by a label that does not assert it: "confirmed on Capterra" asserts it.
-QUALIFIED = re.compile(r"\b(estimat\w*|hypothet\w*|unverified|placeholders?|illustrative|sample|TBD|not (a )?(real|verified))\b", re.I)
+QUALIFIED = re.compile(r"\b(estimat\w*|hypothet\w*|unverified|unsourced|without (proof|evidence)|proof needed|not supported|placeholders?|illustrative|sample|TBD|not (a )?(real|verified))\b", re.I)
+# A line that only labels a quoted claim as requested is a decline; any words after the quote make it a claim.
+REQUESTED = re.compile(r"^\W*(\d+[.)]\s*)?(the\s+)?requested\b[^\"'“”]*[\"'“].*[\"'”]\W*$", re.I)
 # A figure the answer derives itself is labeled by saying so.
 ROUGH = re.compile(r"\b(rough(ly)?|my own (method|estimate|math|calculation))\b", re.I)
 # A named publisher, for figures that may exist publicly: "per Axios", "(Axios, 2024)", "(ZoomInfo, Datanyze)".
@@ -143,14 +145,14 @@ def check(oracle, argument, text):
     if oracle == "questions-next":
         wrapper = FENCE.sub("", re.sub(r"^[ \t]+(?=[`~]{3})", "", text, flags=re.M))
         separate = re.search(r"^(?:[ \t]*#{1,6}[ \t]+[*_]*Open[ \t]+questions\b|[ \t]*(\*{1,2}|_{1,2})Open[ \t]+questions\b[^\n]*[^.!*_]\1[ \t]*:?[ \t]*$|[ \t*_]*Open[ \t]+questions[!?]?[ \t:*_]*$|[ \t*_]*Open[ \t]+questions[ \t*_]*:)", wrapper, re.I | re.M)
-        next_question = re.search(r"^\W*Next:[\s\S]*(\?|\b(which|who|what|provide|confirm|validate)\b)", wrapper, re.I | re.M)
+        next_question = re.search(r"^\W*Next:[\s\S]*([?？]|\b(which|who|what|provide|confirm|validate|send|share|supply|name|say)\b|告诉我|请提供|请确认)", wrapper, re.I | re.M)
         passed = bool(next_question) and not separate
         return passed, "Next cue present; separate section absent" if passed else "missing Next cue or separate Open questions section"
     if oracle == "max-words":
         words = len([w for w in text.split() if re.search(r"\w", w)])
         return words <= int(argument), f"{words} words"
     if oracle in ("claims-labeled", "claims-qualified"):
-        accepted = [QUALIFIED, WITHHELD] if oracle == "claims-qualified" else [LABEL, SOURCE]
+        accepted = [QUALIFIED, REQUESTED, WITHHELD] if oracle == "claims-qualified" else [LABEL, SOURCE]
         bare = [line for line in text.splitlines() if re.search(argument, line, re.I) and not any(r.search(line) for r in accepted)]
         return not bare, f"unqualified: {bare[0].strip()[:160]!r}" if bare else "every matching line is qualified"
     if oracle == "column-qualified":

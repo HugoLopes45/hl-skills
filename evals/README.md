@@ -1,5 +1,7 @@
 # Evals
 
+[简体中文](README.zh-CN.md)
+
 These evals measure whether a skill changes what a real agent does. Each case runs in Claude Code with the skill installed and without it. The baseline omits the tested skill; other host capabilities may remain.
 
 ## Run

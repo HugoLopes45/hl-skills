@@ -2277,5 +2277,133 @@ class CodeReviewHardFixtures(unittest.TestCase):
         self.assertEqual(status, " M auth.py\n")
 
 
+class GrowthSkillChecks(unittest.TestCase):
+    def test_persona_accepts_an_actionable_evidence_request(self):
+        spec = json.loads((HERE / "persona/checks.json").read_text())["persona-gen-z-no-data"]["checks"][3]
+        self.assertTrue(passes(spec, "Send interview notes with their source and date."))
+        self.assertFalse(passes(spec, "What colour should the card be?"))
+
+    def test_pricing_distinguishes_denial_from_safety_claim(self):
+        spec = json.loads((HERE / "pricing/checks.json").read_text())["pricing-raise-all-now"]["checks"][1]
+        self.assertTrue(passes(spec, "The survey does not show that 9 euros is safe."))
+        self.assertFalse(passes(spec, "The increase to 9 euros is safe."))
+        self.assertFalse(passes(spec, "This will increase revenue by 28%."))
+
+    def test_rewrite_accepts_plain_synonyms_without_dropping_the_signature(self):
+        specs = json.loads((HERE / "de-ai-rewriting/checks.json").read_text())["rewrite-keeps-facts"]["checks"]
+        good = "```text\nReturns should be fast and trustworthy. Returns are accepted within 30 days unless faulty. Refunds take 5 to 7 working days. Our policy lets you shop with confidence.\n```\n1. Rephrased the speed-and-trust contrast without dropping either idea.\nVerdict: Rewritten\n**Next:**\n1. Confirm the return policy."
+        with mock.patch.dict(os.environ, {"EVALS": str(HERE)}):
+            for spec in specs:
+                if spec["type"] != "workspace_untouched":
+                    with self.subTest(check=spec["text"]):
+                        self.assertTrue(passes(spec, good))
+            for spec in specs[-2:]:
+                with self.subTest(missing_signature=spec["text"]):
+                    self.assertFalse(passes(spec, good.split("\nVerdict:")[0]))
+
+    def test_geo_first_finding_request_does_not_require_a_second(self):
+        specs = json.loads((HERE / "ai-search-visibility/checks.json").read_text())["ai-search-nosnippet"]["checks"]
+        answer = "1. Google nosnippet restriction; other engines were not checked.\nVerdict: Fix first"
+        for spec in specs:
+            if spec["type"].startswith("output_"):
+                with self.subTest(check=spec["text"]):
+                    self.assertTrue(passes(spec, answer))
+
+    def test_tracking_requires_review_when_consent_is_unverified(self):
+        spec = json.loads((HERE / "tracking-plan/checks.json").read_text())["tracking-clear-booking"]["checks"][1]
+        self.assertTrue(passes(spec, "Consent is unverified.\nVerdict: Review first"))
+        self.assertFalse(passes(spec, "Verdict: Draft"))
+
+    def test_reporting_accepts_separate_currency_subtotals(self):
+        spec = json.loads((HERE / "reporting/checks.json").read_text())["reporting-clear-weekly"]["checks"][7]
+        self.assertTrue(passes(spec, "Search spend is 2,840 USD in total. Social spend is 1,990 EUR."))
+        self.assertFalse(passes(spec, "Combined spend is 4,830 USD."))
+
+    def test_reporting_distinguishes_negation_from_causality(self):
+        spec = json.loads((HERE / "reporting/checks.json").read_text())["reporting-clear-weekly"]["checks"][9]
+        self.assertTrue(passes(spec, "The gap is associated with the channel, not caused by it."))
+        self.assertFalse(passes(spec, "Social caused 12 enrolments."))
+
+    def test_article_body_check_rejects_incidental_mentions(self):
+        cases = json.loads((HERE / "article-writing/checks.json").read_text())
+        for case in ("article-market-canada", "article-market-kenya"):
+            spec = next(item for item in cases[case]["checks"] if "anchored body" in item["text"])
+            with self.subTest(case=case):
+                self.assertFalse(passes(spec, "The body will be written later."))
+                self.assertFalse(passes(spec, "## Outline\n1. Introduction\n2. Main body\n"))
+                self.assertTrue(passes(spec, "## Body\nPrepare the notebook before the workshop.\n"))
+                self.assertTrue(passes(spec, "**Body:**\nPrepare the notebook before the workshop.\n"))
+
+    def test_article_page_count_check_preserves_supplied_product_facts(self):
+        cases = json.loads((HERE / "article-writing/checks.json").read_text())
+        for case in ("article-market-canada", "article-market-kenya"):
+            spec = next(item for item in cases[case]["checks"] if "per-session page count" in item["text"])
+            with self.subTest(case=case):
+                self.assertTrue(passes(spec, "1. Confirm the supplied 40-page count is current before publishing."))
+                self.assertFalse(passes(spec, "1. Obtain the page-count guidance from the guide owner before publishing Step 2."))
+
+    def test_social_checks_reject_missing_requested_components(self):
+        specs = json.loads((HERE / "social/checks.json").read_text())["note-language-en"]["checks"]
+        components = {
+            "Includes an actual title": "## A notebook for your workshop",
+            "Includes prose body": "Fold is a refillable notebook with forty blank pages.",
+            "Includes proposed topic tags": "#Workshop #Notebook",
+            "Includes a visual": "Visual suggestion: show the notebook cover.",
+        }
+        for label, present in components.items():
+            spec = next(item for item in specs if label in item["text"])
+            with self.subTest(component=label):
+                self.assertTrue(passes(spec, present))
+                self.assertFalse(passes(spec, "USD 12"))
+
+    def test_video_checks_reject_missing_requested_components(self):
+        specs = json.loads((HERE / "short-video/checks.json").read_text())["video-channel-youtube"]["checks"]
+        components = {
+            "Includes spoken copy": "## Spoken lines\nPrepare your notebook.",
+            "Includes on-screen text": "On-screen text: Prepare your notebook.",
+            "Includes filming directions": "## Shot plan\nShow the notebook.",
+            "Includes proposed topic tags": "#Workshop #Notebook",
+            "Addresses sponsorship": "Sponsorship status: not supplied.",
+            "Addresses sound rights": "Music rights: not supplied.",
+        }
+        for label, present in components.items():
+            spec = next(item for item in specs if label in item["text"])
+            with self.subTest(component=label):
+                self.assertTrue(passes(spec, present))
+                self.assertFalse(passes(spec, "A notebook costs USD 12."))
+
+    def test_hero_copy_rejects_commentary_after_the_two_lines(self):
+        hero = spec("copywriting", "copy-hero-only", "contract: Copy only, two lines")
+        self.assertTrue(passes(hero, "Payroll that runs itself\n\nPay your team on time, every time."))
+        self.assertFalse(passes(hero, "Payroll that runs itself\nPay your team on time.\nI kept it short to match the brief."))
+
+    def test_keyword_list_rejects_analysis_lines(self):
+        listing = spec("keyword-research", "keyword-narrow-ideas", "contract: Plain list, no analysis")
+        self.assertTrue(passes(listing, "1. yoga for beginners\n\n2) morning yoga flow"))
+        self.assertFalse(passes(listing, "1. yoga for beginners\n2. morning yoga flow\nThese target low competition."))
+
+    def test_questions_next_accepts_requests_for_input_in_both_languages(self):
+        for request in ("Send the page URL.", "Name the target market.", "告诉我产品名称。", "请提供受众信息。"):
+            with self.subTest(request=request):
+                self.assertTrue(oracle.check("questions-next", "", "**Next:**\n1. " + request)[0])
+        self.assertFalse(oracle.check("questions-next", "", "**Next:**\n1. Publish the post.")[0])
+
+    def test_withheld_claims_accept_refusal_and_approval_gates(self):
+        for answer in ("The cheaper claim cannot be made yet.", "Get approval for '10 hours a week', or drop it.", "Do not add the 10 hours claim.", "The 10 hours claim is unsourced.", "Claims without proof: cheaper.", "Cheaper (proof needed).", "The cheaper claim is not supported."):
+            with self.subTest(answer=answer):
+                self.assertTrue(oracle.check("claims-qualified", "cheaper|10 hours", answer)[0])
+        self.assertFalse(oracle.check("claims-qualified", "cheaper|10 hours", "We are cheaper and save 10 hours.")[0])
+
+    def test_claims_qualified_accepts_a_requested_claim_quoted_in_a_decline(self):
+        claim = r"5,000"
+        decline = '1. The requested claim, quoted: "Trusted by 5,000 payroll teams"'
+        self.assertTrue(oracle.check("claims-qualified", claim, decline)[0])
+        self.assertFalse(oracle.check("claims-qualified", claim, 'Trusted by 5,000 payroll teams is the hero line.')[0])
+        self.assertFalse(oracle.check("claims-qualified", claim, '"Trusted by 5,000 payroll teams."')[0])
+        self.assertFalse(oracle.check("claims-qualified", claim, 'Requested: "Trusted by 5,000 payroll teams". Use it in the hero.')[0])
+        self.assertFalse(oracle.check("claims-qualified", claim, 'Requested: "Trusted by 5,000 payroll teams", shown above the fold.')[0])
+        self.assertFalse(oracle.check("claims-qualified", claim, 'Requested: "Trusted by 5,000 payroll teams" goes live Monday.')[0])
+
+
 if __name__ == "__main__":
     unittest.main()

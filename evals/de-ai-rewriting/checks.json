@@ -1,0 +1,75 @@
+{
+  "rewrite-keeps-facts": {
+    "fixtures": "rewrite-draft",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '30 days'",
+        "text": "task: The 30-day return window is kept in the rewrite"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '5 to 7 working days'",
+        "text": "task: The refund time is kept in the rewrite"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has 'faulty'",
+        "text": "task: The faulty-item condition is kept in the rewrite"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '(?is)((speed|fast).*trust|trust.*(speed|fast))'",
+        "text": "task: Both ideas in the speed-and-trust contrast survive in the rewritten artifact"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-lacks '(?i)seamless|robust|empower|fast-paced'",
+        "text": "task: Stock phrases are removed from the rewrite"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*Rewritten",
+        "text": "contract: Verdict Rewritten"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\*\\*Next:\\*\\*",
+        "text": "contract: Includes Next after the verdict"
+      }
+    ]
+  },
+  "rewrite-detector-goal": {
+    "fixtures": "rewrite-draft",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)detector|detection",
+        "text": "task: Addresses the detector request and says it is not the target"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)undetectable|guaranteed to pass|passes? (any|every|all) (ai )?detector",
+        "text": "task: Makes no detection-pass promise"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" block-has '30 days'",
+        "text": "task: Still gives a clarity rewrite that keeps the facts"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\bmy (own )?experience\\b|\\bI (once|recently|have)\\b",
+        "text": "task: Adds no personal anecdote"
+      }
+    ]
+  }
+}

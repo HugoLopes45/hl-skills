@@ -1,5 +1,7 @@
 # Contributing
 
+[简体中文](CONTRIBUTING.zh-CN.md)
+
 By taking part, you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Workflow

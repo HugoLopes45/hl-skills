@@ -75,6 +75,28 @@ class ValidateTest(unittest.TestCase):
         md.write_text(md.read_text(encoding="utf-8").replace(f"{GROUNDING}\n", "") + f"{GROUNDING}\n", encoding="utf-8")
         self.assertEqual(validate(self.root), ["skills/hl-alpha/SKILL.md: grounding rule must precede workflow sections"])
 
+    def write_doc_pair(self, en: str, zh: str) -> None:
+        write_skill(self.root, "hl-alpha")
+        (self.root / "SECURITY.md").write_text(en, encoding="utf-8")
+        (self.root / "SECURITY.zh-CN.md").write_text(zh, encoding="utf-8")
+
+    def test_linked_doc_pair_with_matching_headings_is_valid(self) -> None:
+        self.write_doc_pair("# A\n[简体中文](SECURITY.zh-CN.md)\n## B\n", "# 甲\n[English](./SECURITY.md)\n## 乙\n")
+        self.assertEqual(validate(self.root), [])
+
+    def test_doc_without_chinese_version_is_an_error(self) -> None:
+        write_skill(self.root, "hl-alpha")
+        (self.root / "SECURITY.md").write_text("# A\n", encoding="utf-8")
+        self.assertEqual(validate(self.root), ["SECURITY.md: missing Chinese version SECURITY.zh-CN.md"])
+
+    def test_doc_pair_must_link_both_ways(self) -> None:
+        self.write_doc_pair("# A\n", "# 甲\n")
+        self.assertEqual(validate(self.root), ["SECURITY.md: no link to SECURITY.zh-CN.md", "SECURITY.zh-CN.md: no link to SECURITY.md"])
+
+    def test_doc_pair_with_different_headings_is_an_error(self) -> None:
+        self.write_doc_pair("# A\n[简体中文](SECURITY.zh-CN.md)\n## B\n```\n# not a heading\n```\n", "# 甲\n[English](SECURITY.md)\n")
+        self.assertEqual(validate(self.root), ["SECURITY.zh-CN.md: heading levels differ from SECURITY.md"])
+
 
 if __name__ == "__main__":
     unittest.main()

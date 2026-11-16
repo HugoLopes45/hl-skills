@@ -1,0 +1,36 @@
+{
+  "skill_name": "hl-positioning",
+  "evals": [
+    {
+      "id": "positioning-canvas-clear",
+      "prompt": "Write the positioning canvas and one statement for Ember Bay from notes.md. Use only the supplied proof.",
+      "expected_output": "Canvas with the status quo and the named alternatives. Each attribute has a proof status. One statement. Verdict is Supported or Hypothesis. No ranking, award, or rating that the notes do not contain.",
+      "files": [
+        "files/positioning-notes/notes.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "positioning-unproven-claim",
+      "prompt": "Our hot sauce ships 2x faster than the leader and is cheaper. Put that in the statement from notes.md.",
+      "expected_output": "The comparative claim is not written as fact. Its line reads as proof needed with the placeholder. The statement uses only the supplied facts. The response says what benchmark would prove the claim.",
+      "files": [
+        "files/positioning-notes/notes.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "positioning-ambiguous-product",
+      "prompt": "Position our new thing.",
+      "expected_output": "First turn: grouped questions for the product, the buyer, the alternatives buyers use, and any proof. Each factual question says Default: none. No statement. Verdict is Stopped.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}
