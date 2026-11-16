@@ -2,6 +2,8 @@ set -e
 printf '.claude/\n__pycache__/\n.pytest_cache/\n' >> .git/info/exclude
 git add client.py test_client.py
 git commit -qm "feat: retrying fetch"
+git update-ref refs/remotes/origin/main HEAD
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 python3 - <<'X'
 from pathlib import Path
 p = Path("client.py")

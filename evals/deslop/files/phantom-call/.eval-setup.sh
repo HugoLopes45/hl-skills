@@ -2,6 +2,8 @@ set -e
 printf '.claude/\n__pycache__/\n.pytest_cache/\n' >> .git/info/exclude
 git add utils.py posts.py test_posts.py
 git commit -qm "feat: post urls"
+git update-ref refs/remotes/origin/main HEAD
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 cat >> posts.py <<'X'
 
 
