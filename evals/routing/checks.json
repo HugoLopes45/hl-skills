@@ -378,6 +378,11 @@
         "type": "skill_not_invoked",
         "skill": "hl-open-pr",
         "text": "trigger: Does not invoke hl-open-pr"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-roast",
+        "text": "trigger: Does not invoke hl-roast"
       }
     ]
   },
@@ -501,6 +506,20 @@
         "type": "skill_not_invoked",
         "skill": "hl-deslop",
         "text": "trigger: Does not invoke hl-deslop"
+      }
+    ]
+  },
+  "roast-trigger": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-roast",
+        "text": "trigger: Invokes hl-roast"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-code-review",
+        "text": "trigger: Does not invoke hl-code-review"
       }
     ]
   }
