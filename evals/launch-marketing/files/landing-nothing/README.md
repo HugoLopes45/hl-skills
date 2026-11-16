@@ -1,3 +1,0 @@
-# tools
-
-Internal scripts.

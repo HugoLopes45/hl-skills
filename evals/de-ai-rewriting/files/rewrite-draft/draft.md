@@ -1,1 +1,0 @@
-In today's fast-paced world, customers want returns that feel seamless. It's not just about speed; it's about trust. Returns are accepted within 30 days of purchase, unless the item is faulty. Refunds take 5 to 7 working days after we receive the item. Moreover, our robust policy empowers you to shop with confidence. Please do not hesitate to reach out if you have any questions.

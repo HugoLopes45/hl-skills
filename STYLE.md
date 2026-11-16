@@ -1,7 +1,5 @@
 # Skill style guide
 
-[简体中文](STYLE.zh-CN.md)
-
 Every skill in this repository follows this guide. Write the smallest thing a copy of you could regenerate it from. Compress language, not the investigation or delivered behavior.
 
 ## Format

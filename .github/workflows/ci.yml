@@ -22,16 +22,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Install ffmpeg and pytest for the eval check tests
-        run: |
-          sudo sed -i '/azure\.archive\.ubuntu\.com/d' /etc/apt/apt-mirrors.txt
-          sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg python3-pytest
       - name: Validate skills
         run: python3 scripts/validate.py
       - name: Test the validator
         run: python3 -m unittest discover scripts
-      - name: Test the eval checks
-        run: python3 -m unittest discover evals
       - name: Install with the skills CLI
         run: |
           HOME=$(mktemp -d)
@@ -53,8 +47,6 @@ jobs:
         run: pipx run --spec ruff==0.15.4 ruff check --select C901 .
       - name: Lint workflows with actionlint and shellcheck
         run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 -color
-      - name: Check the eval scripts with shellcheck
-        run: shellcheck evals/run.sh evals/*/repo.sh
       - name: Audit workflows with zizmor
         uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
         with:

@@ -1,3 +1,0 @@
-# stats
-
-Small statistics helpers.

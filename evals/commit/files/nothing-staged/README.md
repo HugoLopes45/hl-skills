@@ -1,3 +1,0 @@
-# calc
-
-Small math helpers.
