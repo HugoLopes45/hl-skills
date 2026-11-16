@@ -2405,5 +2405,29 @@ class GrowthSkillChecks(unittest.TestCase):
         self.assertFalse(oracle.check("claims-qualified", claim, 'Requested: "Trusted by 5,000 payroll teams" goes live Monday.')[0])
 
 
+class DeslopTraps(unittest.TestCase):
+    """Each trap builds with passing tests; its removal checks fail until the slop is cleaned."""
+
+    MUST_FAIL = {
+        "phantom-call": set(),
+        "reinvented": {"task: Hand-rolled chunking replaced by utils.batched"},
+        "dynamic-dispatch": {"task: Unused helper removed"},
+        "comment-rot": {"task: Stale retry count removed"},
+    }
+
+    def test_traps_build_and_only_removal_checks_fail_before_cleanup(self):
+        checks = json.loads((HERE / "deslop" / "checks.json").read_text())
+        env = {"PATH": os.environ["PATH"], "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null",
+               "GIT_AUTHOR_NAME": "e", "GIT_AUTHOR_EMAIL": "e@e", "GIT_COMMITTER_NAME": "e", "GIT_COMMITTER_EMAIL": "e@e"}
+        for case, must_fail in self.MUST_FAIL.items():
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as ws:
+                shutil.copytree(HERE / "deslop" / "files" / case, ws, dirs_exist_ok=True)
+                for command in ("git init -q", "sh .eval-setup.sh"):
+                    subprocess.run(command, shell=True, cwd=ws, env=env, check=True, capture_output=True)
+                failed = {c["text"] for c in checks[case]["checks"] if c["type"] == "command"
+                          and subprocess.run(c["command"], shell=True, cwd=ws, capture_output=True).returncode}
+                self.assertEqual(failed, must_fail)
+
+
 if __name__ == "__main__":
     unittest.main()
