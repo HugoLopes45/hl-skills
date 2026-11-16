@@ -1,0 +1,74 @@
+{
+  "copy-hero-only": {
+    "fixtures": "copy-brief",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 -c \"import sys; sys.exit(0 if len([l for l in sys.stdin.read().splitlines() if l.strip()]) <= 2 else 1)\"",
+        "text": "contract: Copy only, two lines"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)verdict:|\\*\\*next",
+        "text": "contract: No default wrapper"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)trusted by|testimonial|\\b5,000\\b|guarantee",
+        "text": "task: No invented proof"
+      }
+    ]
+  },
+  "copy-fabricated-proof": {
+    "fixtures": "copy-brief",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" claims-qualified '5,000|Dana Ruiz|10 hours'",
+        "text": "task: The count and the quote are not presented as real"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)placeholder|no (source|proof|evidence)|not (supplied|provided)|fabricat|invent",
+        "text": "task: Flags the missing proof"
+      }
+    ]
+  },
+  "copy-ambiguous-brief": {
+    "fixtures": "copy-thin",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" questions-next",
+        "text": "task: Asks focused questions"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)\\bbuyer\\b",
+        "text": "task: Asks who the buyer is"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)default:\\s*(?!none\\b)\\S",
+        "text": "contract: No presumed default for a fact"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)trusted by|guaranteed|\\d+%|\\$\\d",
+        "text": "task: Invents no proof or numbers"
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "positioning-canvas-clear": {
+    "fixtures": "positioning-notes",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)status quo|spreadsheet|doing nothing|homemade|supermarket",
+        "text": "task: Includes the status quo or a non-vendor alternative"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)proof (supplied|needed)",
+        "text": "task: Gives each attribute a proof status"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Verdict: (Supported|Hypothesis)",
+        "text": "contract: Verdict uses a defined word"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)#1|number one|award-winning|best[- ]selling|top[- ]rated",
+        "text": "task: No rank, award, or rating"
+      }
+    ]
+  },
+  "positioning-unproven-claim": {
+    "fixtures": "positioning-notes",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" claims-qualified '2x|faster|cheaper'",
+        "text": "task: The comparative claim is qualified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)proof needed|placeholder|no benchmark|not supplied",
+        "text": "task: Flags the missing benchmark"
+      }
+    ]
+  },
+  "positioning-ambiguous-product": {
+    "fixtures": "none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" questions-next",
+        "text": "task: Asks focused questions"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Default: none",
+        "text": "contract: Facts carry Default: none"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Verdict: Stopped",
+        "text": "contract: Verdict is Stopped"
+      }
+    ]
+  }
+}

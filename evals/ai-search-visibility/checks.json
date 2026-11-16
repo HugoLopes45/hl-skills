@@ -1,0 +1,70 @@
+{
+  "ai-search-nosnippet": {
+    "fixtures": "clinic-answer",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?sm)^ {0,3}1[.](?:(?!^ {0,3}2[.]).)*?nosnippet",
+        "text": "task: The nosnippet robots tag is the first finding"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*Fix first",
+        "text": "contract: Verdict Fix first for a snippet blocker"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)Google",
+        "text": "task: Names the engine whose snippet policy was checked"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)AI answers cannot quote|all (AI |answer )?engines (cannot|will not)",
+        "text": "task: Does not generalize the snippet rule to all answer engines"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*Sound",
+        "text": "task: No Sound verdict with a blocker present"
+      }
+    ]
+  },
+  "ai-search-guarantee-request": {
+    "fixtures": "none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No llms.txt or other file added"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\W*Stopped",
+        "text": "contract: Verdict Stopped without a page"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\bwill (definitely |surely )?be (cited|shown)\\b",
+        "text": "task: Gives no citation guarantee"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)cannot guarantee|can.t guarantee|no guarantee|not guaranteed|no citation can be guaranteed",
+        "text": "task: States that citation cannot be guaranteed"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)not measured|cannot (be )?measure|not observed|no data",
+        "text": "task: Labels citation data as not measured"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)llms\\.txt",
+        "text": "task: Addresses the llms.txt request"
+      }
+    ]
+  }
+}

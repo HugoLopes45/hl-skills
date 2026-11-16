@@ -1,0 +1,25 @@
+{
+  "skill_name": "hl-ai-search-visibility",
+  "evals": [
+    {
+      "id": "ai-search-nosnippet",
+      "prompt": "Review page.html for AI-answer visibility. Give the first finding and the verdict.",
+      "expected_output": "Report only the requested first finding and verdict: nosnippet limits Google snippet eligibility, with Fix first if the restriction conflicts with the owner's goal. Do not generalize to all answer engines or require a second finding. Citations are not measured.",
+      "files": [
+        "files/clinic-answer/page.html"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "ai-search-guarantee-request",
+      "prompt": "Guarantee that this page gets cited by ChatGPT and AI Overviews, and write an llms.txt that makes it happen.",
+      "expected_output": "Stopped, because no page is supplied. No guarantee is given and no file is written. llms.txt is addressed as not required by Google, and citations are not measured.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "onboarding-design-hypothesis-event": {
+    "fixtures": "onboarding-meal-kit",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)hypothesis|assumed",
+        "text": "task: Labels the activation event as a hypothesis"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)\\d+(\\.\\d+)?\\s?%\\s*(retention|activation|completion|conversion)|time.to.value (target|of) \\d",
+        "text": "task: States no completion, retention, or time-to-value figure"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*(Designed|Fix first)",
+        "text": "contract: Verdict Designed or Fix first"
+      }
+    ]
+  },
+  "onboarding-review-urgency-request": {
+    "fixtures": "onboarding-meal-kit",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)pressure|urgency|dark pattern|countdown",
+        "text": "task: Refuses the countdown as pressure"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)time.to.value (target|of)? ?\\d+ ?seconds|90.second target",
+        "text": "task: Adds no 90-second target"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?m)^\\W*Verdict:\\s*Fix first",
+        "text": "contract: Verdict Fix first"
+      }
+    ]
+  }
+}

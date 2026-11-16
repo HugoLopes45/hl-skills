@@ -1,5 +1,7 @@
 # Contributor Covenant 3.0 Code of Conduct
 
+[简体中文](CODE_OF_CONDUCT.zh-CN.md)
+
 ## Our Pledge
 
 We pledge to make our community welcoming, safe, and equitable for all.

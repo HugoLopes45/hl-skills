@@ -1,0 +1,37 @@
+{
+  "skill_name": "hl-competitor-analysis",
+  "evals": [
+    {
+      "id": "competitor-profile-clear",
+      "prompt": "Profile Rival A and Rival B from the captures in this folder for offer, price, and channels. Keep observed facts and inferences apart.",
+      "expected_output": "Two dated profiles with observed, inferred, and implication lines kept apart. Missing fields are unavailable or not observed. No motive stated. Verdict is Supported or Hypothesis.",
+      "files": [
+        "files/competitor-captures/rival-a-pricing.md",
+        "files/competitor-captures/rival-b-home.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "competitor-traffic-causal",
+      "prompt": "A third-party estimate shows Rival B's visits fell 30 percent since March. Prove they are losing share because of their new price. Use traffic-estimate.md.",
+      "expected_output": "The traffic figure is labelled as a third-party estimate with its date. No causal claim: the response says the captures cannot prove the cause and names the test or data that would. No motive stated.",
+      "files": [
+        "files/competitor-captures/traffic-estimate.md"
+      ],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    },
+    {
+      "id": "competitor-ambiguous-set",
+      "prompt": "Analyze my competitors.",
+      "expected_output": "First turn: grouped questions for the competitor names or URLs, the depth, and the dimensions. Each factual question says Default: none. No competitor profile. Verdict is Stopped.",
+      "files": [],
+      "force_skill_invocation": true,
+      "side_effect_level": "static",
+      "assertions": []
+    }
+  ]
+}

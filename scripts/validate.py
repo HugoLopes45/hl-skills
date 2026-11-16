@@ -11,6 +11,51 @@ NAME_PREFIX = "hl-"
 LINK_RE = re.compile(r"references/[A-Za-z0-9._/-]+\.md")
 MAX_BODY_LINES = 500
 GROUNDING = "Ground factual claims in supplied evidence or results you observed in this session."
+TRANSLATED_DOCS = (
+    "README.md",
+    "CONTRIBUTING.md",
+    "STYLE.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
+    "THIRD_PARTY_NOTICES.md",
+    "evals/README.md",
+)
+
+
+def heading_levels(text: str) -> list[int]:
+    levels, fenced = [], False
+    for line in text.splitlines():
+        if line.startswith(("```", "~~~")):
+            fenced = not fenced
+        elif not fenced and (match := re.match(r"(#{1,6}) ", line)):
+            levels.append(len(match.group(1)))
+    return levels
+
+
+def links_to(text: str, name: str) -> bool:
+    return re.search(rf"\]\((?:\./)?{re.escape(name)}(?:#[^)]*)?\)", text) is not None
+
+
+def translation_errors(root: Path) -> list[str]:
+    """Each human doc needs a zh-CN version, links both ways, and the same heading levels."""
+    errors: list[str] = []
+    for doc in TRANSLATED_DOCS:
+        english = root / doc
+        if not english.is_file():
+            continue
+        chinese = english.with_name(english.stem + ".zh-CN.md")
+        if not chinese.is_file():
+            errors.append(f"{doc}: missing Chinese version {chinese.name}")
+            continue
+        en_text, zh_text = english.read_text(encoding="utf-8"), chinese.read_text(encoding="utf-8")
+        zh_doc = chinese.relative_to(root)
+        if not links_to(en_text, chinese.name):
+            errors.append(f"{doc}: no link to {chinese.name}")
+        if not links_to(zh_text, english.name):
+            errors.append(f"{zh_doc}: no link to {english.name}")
+        if heading_levels(en_text) != heading_levels(zh_text):
+            errors.append(f"{zh_doc}: heading levels differ from {english.name}")
+    return errors
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -96,7 +141,7 @@ def validate(root: Path) -> list[str]:
                     errors.append(f"{reference.relative_to(root)}: broken reference: {link}")
     for nested in sorted(root.glob("skills/*/*/**/SKILL.md")):
         errors.append(f"{nested.relative_to(root)}: nested skill; move it to skills/<name>/SKILL.md")
-    return errors
+    return errors + translation_errors(root)
 
 
 def main() -> int:

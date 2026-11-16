@@ -1,0 +1,8 @@
+source_url,target_url,anchor_text
+/,/pricing,Pricing
+/,/guides/payment-terms,payment terms
+/guides/payment-terms,/,home
+/guides/payment-terms,/pricing,click here
+/pricing,/guides/old-reminder-templates,reminder templates
+/pricing,/,home
+/guides/invoice-reminders,/guides/payment-terms,payment terms

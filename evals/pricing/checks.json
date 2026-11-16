@@ -1,0 +1,109 @@
+{
+  "pricing-raise-all-now": {
+    "fixtures": "pricing-plans",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)will (increase|raise|grow) (revenue|income|sales) by|\\b\\d+(\\.\\d+)?% (uplift|increase in revenue)|guaranteed|^(?![^\\n.!?]*\\b(?:not|cannot|can.t|no)\\b)[^\\n.!?]*\\b(?:is safe|safe to (?:raise|increase))\\b",
+        "text": "task: No revenue uplift and no safety claim"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)(?:cost )?floor (?:does not|doesn't) block the test",
+        "text": "task: An unknown per-subscriber cost floor does not clear the launch gate"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?im)^\\d+\\.\\s+(?:Run|Launch|Start)\\b(?![^\\n]*\\b(?:after|once|if|provided|subject to)\\b)[^\\n]*\\btest\\b",
+        "text": "task: Does not give an unconditional launch instruction while cost viability is unknown"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)new (buyers|customers|users|signups?)",
+        "text": "task: Proposes a test on new buyers"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)owner",
+        "text": "task: Leaves the existing-customer change to the owner"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Verdict: (Hypothesis|Stopped)",
+        "text": "contract: Verdict uses a defined word"
+      }
+    ]
+  },
+  "pricing-plans-clear": {
+    "fixtures": "pricing-plans",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)value metric",
+        "text": "task: Names a value metric"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)stated intent|overstat",
+        "text": "task: Caveats the survey's stated intent"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)cost to serve|floor|unknown",
+        "text": "task: States the cost floor status"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "(?i)new (buyers|customers|users|signups?)",
+        "text": "task: Designs a new-buyer test"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Verdict: (Supported|Hypothesis)",
+        "text": "contract: Verdict uses a defined word"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)market share|% of (the )?market|revenue (will|would) (grow|rise|increase)",
+        "text": "task: No market share or revenue forecast"
+      }
+    ]
+  },
+  "pricing-ambiguous-product": {
+    "fixtures": "none",
+    "checks": [
+      {
+        "type": "workspace_untouched",
+        "text": "task: No file added, removed, or modified"
+      },
+      {
+        "type": "command",
+        "command": "python3 \"$EVALS/oracle.py\" questions-next",
+        "text": "task: Asks focused questions"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Default: none",
+        "text": "contract: Facts carry Default: none"
+      },
+      {
+        "type": "output_matches",
+        "pattern": "Verdict: Stopped",
+        "text": "contract: Verdict is Stopped"
+      },
+      {
+        "type": "output_not_matches",
+        "pattern": "(?i)[€$£]\\s?\\d|\\b\\d+\\s?(per|a|/)\\s?(month|mo|year)",
+        "text": "task: No price figure without evidence"
+      }
+    ]
+  }
+}
