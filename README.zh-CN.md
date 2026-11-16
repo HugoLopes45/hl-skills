@@ -129,7 +129,7 @@ npx skills add HugoLopes45/hl-skills
 | 技能 | 给你的智能体派一项工作 |
 |---|---|
 | [hl-startup](./skills/hl-startup/SKILL.md) | `Use hl-startup to pressure-test this SaaS idea before I build it.` |
-| [hl-launch-marketing](./skills/hl-launch-marketing/SKILL.md) | `Use hl-launch-marketing to turn this README into a landing page.` |
+| [hl-launch-marketing](./skills/hl-launch-marketing/SKILL.md) | `Use hl-launch-marketing to plan a two-week launch for this product.` |
 
 </details>
 

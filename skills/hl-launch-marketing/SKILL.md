@@ -1,6 +1,6 @@
 ---
 name: hl-launch-marketing
-description: "Produce marketing artifacts for a solo or small-team software product: positioning block, complete landing draft, 14-day launch plan, ranked channel experiments, 30-day content engine. Produces the artifact, not advice. Also prices the product and designs the offer and unit economics. Use when the user asks how to market, launch, position, or price a product."
+description: "Produce launch artifacts for a solo or small-team software product: 14-day launch plan, ranked channel experiments, 30-day content engine, and an offer and unit-economics check. Produces the artifact, not advice. Its position, landing, and pricing modes serve a launch when named with --mode. Use when the user asks how to market or launch a product, which channels to use, or what to post. Not for a standalone positioning canvas (hl-positioning), price structure (hl-pricing), or landing page copy (hl-copywriting)."
 ---
 # Launch Marketing
 

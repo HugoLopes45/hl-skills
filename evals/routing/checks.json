@@ -276,8 +276,13 @@
     "checks": [
       {
         "type": "skill_invoked",
+        "skill": "hl-copywriting",
+        "text": "trigger: Invokes hl-copywriting"
+      },
+      {
+        "type": "skill_not_invoked",
         "skill": "hl-launch-marketing",
-        "text": "trigger: Invokes hl-launch-marketing"
+        "text": "trigger: Does not invoke hl-launch-marketing"
       },
       {
         "type": "skill_not_invoked",
@@ -420,6 +425,82 @@
         "type": "skill_not_invoked",
         "skill": "hl-commit",
         "text": "trigger: Does not invoke hl-commit"
+      }
+    ]
+  },
+  "launch-two-weeks": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-launch-marketing",
+        "text": "trigger: Invokes hl-launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-positioning",
+        "text": "trigger: Does not invoke hl-positioning"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-startup",
+        "text": "trigger: Does not invoke hl-startup"
+      }
+    ]
+  },
+  "position-claims": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-positioning",
+        "text": "trigger: Invokes hl-positioning"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-launch-marketing",
+        "text": "trigger: Does not invoke hl-launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-copywriting",
+        "text": "trigger: Does not invoke hl-copywriting"
+      }
+    ]
+  },
+  "price-plans": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-pricing",
+        "text": "trigger: Invokes hl-pricing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-launch-marketing",
+        "text": "trigger: Does not invoke hl-launch-marketing"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-startup",
+        "text": "trigger: Does not invoke hl-startup"
+      }
+    ]
+  },
+  "less-generated-text": {
+    "checks": [
+      {
+        "type": "skill_invoked",
+        "skill": "hl-de-ai-rewriting",
+        "text": "trigger: Invokes hl-de-ai-rewriting"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-copywriting",
+        "text": "trigger: Does not invoke hl-copywriting"
+      },
+      {
+        "type": "skill_not_invoked",
+        "skill": "hl-deslop",
+        "text": "trigger: Does not invoke hl-deslop"
       }
     ]
   }
