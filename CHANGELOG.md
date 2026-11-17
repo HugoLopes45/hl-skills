@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/HugoLopes45/hl-skills/compare/v1.8.0...v1.9.0) (2026-11-17)
+
+
+### Features
+
+* **security:** add paranoid pentest and remediation skills ([#41](https://github.com/HugoLopes45/hl-skills/issues/41)) ([b6ea681](https://github.com/HugoLopes45/hl-skills/commit/b6ea681c34682378fa0433f07826e3fbcceece43))
+
+
+### Bug Fixes
+
+* **security:** tighten evidence and remove research-only notices ([#43](https://github.com/HugoLopes45/hl-skills/issues/43)) ([0812007](https://github.com/HugoLopes45/hl-skills/commit/08120074e40210283ca089daf813f89ee2ba512c))
+
 ## [1.8.0](https://github.com/HugoLopes45/hl-skills/compare/v1.7.1...v1.8.0) (2026-11-16)
 
 
