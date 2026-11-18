@@ -107,7 +107,7 @@ Location is `file:line`, a function name, an address or a capture record. No row
 
 Reader: someone who must act on the artifact now: keep or remove it, ship a change, or build a feature. They know what the artifact is for, not its internals. Say effects in their terms ("it can read every password you type, on every site") before the technical name ("content script on `<all_urls>`"). Define each format or permission term at first use.
 
-Line 1 answers the user's question. Right below it: any finding that alone decides the answer, layers left unread that limit it, and whether anything ran. Then one numbered point per finding or answer, worst or most useful first, each with its consequence, its location and its evidence type. In `audit`, each finding starts with its severity from the ledger. Use a call tree for a feature path, a `diff` for a version change, a table for a capability map of 5 rows or fewer. Unresolved questions follow, once.
+Line 1 is one bold plain sentence that answers the user's question in their terms. It never opens with a label, verdict word, or number. Right below it: any finding that alone decides the answer, layers left unread that limit it, and whether anything ran. Then one numbered point per finding or answer, worst or most useful first, each with its consequence, its location and its evidence type. In `audit`, give each finding's severity from the ledger next to its evidence type. Use a call tree for a feature path, a `diff` for a version change, a table for a capability map of 5 rows or fewer. Unresolved questions follow, once.
 
 Verdict words:
 - `Answered`: every checklist question is answered with evidence (`explain`, `diff`, `rebuild`).
