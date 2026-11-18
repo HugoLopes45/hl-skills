@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/HugoLopes45/hl-skills/compare/v1.11.0...v1.12.0) (2026-11-18)
+
+
+### Features
+
+* **hl-show-me:** project-styled, animated HTML pages ([#50](https://github.com/HugoLopes45/hl-skills/issues/50)) ([084d879](https://github.com/HugoLopes45/hl-skills/commit/084d87960ba70d072a0ad93a58883894f7cccd70))
+
 ## [1.11.0](https://github.com/HugoLopes45/hl-skills/compare/v1.10.0...v1.11.0) (2026-11-18)
 
 
