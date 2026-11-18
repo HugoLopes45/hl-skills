@@ -36,7 +36,7 @@ Every edit passes all five:
    - Possible bug: nothing pins the behavior, and the comment is newer than the code or may record intent the code fails to implement. Flag it; edit neither side.
 3. Diff only. Editable lines are the diff's added lines plus lines an in-scope edit mechanically forces (re-indenting after flattening a wrapping `if`). Never the rest of a hunk's context; never a whole function for one changed line. A fix that needs other lines is flagged, not applied. This limits edits, not reads: verifying a claim may need any file. In existing-code mode, editable lines are the plan items the user approved.
 4. Unsure: flag, do not delete. A comment that might say why, a guard that might catch a real failure, a claim you cannot verify: keep it and list it for a human.
-5. Double-checked: a reading of the code and an observed mechanical check agree (see Double-check). Name what already guarantees the removed item. The checks disagree, or a required mechanical check could not run: flag.
+5. Double-checked: a reading of the code and, where the Double-check table requires one, an observed mechanical check agree. Name what already guarantees the removed item. The checks disagree, or a required mechanical check could not run: flag.
 
 On prose, gate 1 means meaning unchanged, except that false meaning has no protection: correcting a wrong claim is the fix.
 
@@ -46,7 +46,7 @@ On prose, gate 1 means meaning unchanged, except that false meaning has no prote
 2. Truth catalog first. Check every comment you plan to delete as noise against the code it describes: one that narrates and lies is a possible-bug flag; deleting it as style destroys the evidence.
 3. Code catalog.
 4. Double-check every candidate. Existing-code mode: map first, propose the plan, and stop (see Existing code).
-5. Verify and report (see Output). Done means the lint exits 0. A function still above the complexity limit: delete only tautological branches, never a branch a caller can reach; still above: report the function and its score, and leave the split to the user.
+5. Verify and report (see Output). Done means the lint exits 0. A function still above the complexity limit: delete only tautological branches inside the diff or the approved plan, never a branch a caller can reach; still above: report the function and its score, and leave the split to the user.
 
 ## Scope
 
@@ -116,7 +116,7 @@ Check every claim in the changed lines that names something checkable: a symbol 
 
 ## Existing code
 
-Unchanged code may be needed for reasons no one remembers: map it, double-check every candidate, and propose a plan before any edit. Here both catalogs apply to every line in scope, not only to what a change added.
+Unchanged code may be needed for reasons no one remembers: map it, double-check every candidate, and propose a plan before any edit. Here both catalogs apply to every line in scope, not only to what a change added: read "changed lines" and "the change added" in them as "in scope", and the diff-only limits of code items 5 and 7 do not apply.
 
 Map: each symbol in scope with its callers, each test with the code and behavior it reaches, and the project's entry points. Use the most precise inspection available, and say which you used:
 1. Semantic: a language server or code index (references, call hierarchy, implementations, diagnostics), the compiler or type checker.
@@ -125,11 +125,11 @@ Map: each symbol in scope with its callers, each test with the code and behavior
 
 A large scope: map one module at a time. Split modules across parallel agents only when the environment provides them and the user's instructions allow delegation; merge their maps before classifying anything shared. A useful tool is missing: do not install it or add configuration. Work with what exists, and name the tool and what it would prove in `**Next:**`; adding it is the user's decision.
 
-Run every mechanical check in a disposable copy of the project outside the workspace. The typecheck, lint, or tests cannot run: report as `--report` does and say why. Apply the whole plan in the copy and run the typecheck, the lint, and the tests; a failure removes the items that caused it from the plan. Propose the plan and stop. Apply only the items the user approves, in the request ("apply it without asking") or in a later message. A file changed since the plan: double-check its items again first.
+Run every mechanical check in a disposable copy of the project outside the workspace. No copy can be made (a sandbox blocks it): say so, plan only items whose checks need no copy (reading only, or reference searches), and flag the rest. The typecheck, lint, or tests cannot run: report as `--report` does and say why. Apply the whole plan in the copy and run the typecheck, the lint, and the tests; a failure removes the items that caused it from the plan. Propose the plan and stop. Apply only the items the user approves, in the request ("apply it without asking") or in a later message. A file changed since the plan: double-check its items again first.
 
 ## Double-check
 
-Tool results are leads, not proof. Each candidate needs a reading and a mechanical check, both observed. Diff mode runs the mechanical check in the workspace and reverts an edit whose check fails; existing-code mode runs it in the disposable copy.
+Tool results are leads, not proof. Each candidate needs a reading and the mechanical check its row names, both observed. A deliberate break of code always runs in a disposable copy outside the workspace. Other checks run in the workspace in diff mode, which reverts an edit whose check fails, and in the copy in existing-code mode.
 
 | Candidate | Reading | Mechanical check |
 |---|---|---|
@@ -139,6 +139,8 @@ Tool results are leads, not proof. Each candidate needs a reading and a mechanic
 | Test that restates the code | Read what it restates | Change the restated value: a behavior test also fails |
 | Copy of another test | Read both | Each break that fails it also fails the kept test |
 | Comment that restates its line | Read the comment and the line | None needed: the line is the guarantor |
+| Truth fix | Read the target it names | None needed: the target is the guarantor |
+| Any other code edit | Read the edited code | Typecheck, lint, and tests pass after it |
 
 A restating test whose change no behavior test catches is the only guard of that value: rewrite it against behavior, or flag it. A rewrite is proven when it fails on a break of the behavior it guards and passes once the code is restored.
 
