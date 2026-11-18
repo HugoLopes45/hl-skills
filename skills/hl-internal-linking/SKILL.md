@@ -15,7 +15,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Evidence rules
 
-- Use only the supplied link export, page list, and page text. Without a link export or a page list, stop.
+- Use only the supplied link export, page list, and page text. Without a link export or a page list, ask for one, then stop.
 - An inbound link count is the number of internal links to that URL in the export, excluding links from the page to itself. When the export does not say whether it includes navigation and footer links, write that the count may include them.
 - Status and indexability come only from the export or the page list. A link the export does not show is not reported as broken. A target that returns 401, 403, or 429 is reported as not checked, never broken.
 - Propose a source page only when its supplied text covers the target's topic. Quote the sentence or heading that shows it. Without page text, write "page text needed".

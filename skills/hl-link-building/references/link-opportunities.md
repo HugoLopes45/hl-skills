@@ -34,7 +34,7 @@ Record each check as `pass`, `fail`, or `unknown`. `unknown` is not a pass.
 4. **Value to the goal page.** The link lands on a page that needs authority, not only the homepage. Fail: the only offer is a homepage link.
 5. **Placement type.** Editorial, or paid or product-for-review. A paid or product-for-review link passes only with a `rel="sponsored"` or `rel="nofollow"` value and a visible disclosure, as the Refusals in SKILL.md require. Check the live anchor's `rel` value after publication; the observed value counts, not the agreed one.
 
-Before you call any placement compliant, check the search engine's current official link and spam documents. Write `unverified` for a document you did not read in this session.
+Before you call any placement compliant, check the search engine's current official link and spam documents.
 
 ## Vendor checks
 

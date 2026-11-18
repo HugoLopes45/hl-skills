@@ -21,7 +21,7 @@ Job: one visitor from one source takes one action.
 
 Shape: first screen (headline, one line, button, friction line); the problem as the buyer lives it; how it works; proof where it exists; price where the brief has one; the doubts answered; the action again.
 
-- When the page answers an ad, email, or post, the first screen repeats that promise in the same words. A near-synonym is a miss. If the business cannot keep the promise, say so and stop; do not soften the headline to fit.
+- When the page answers an ad, email, or post, the first screen repeats that promise in the same words. A near-synonym is a miss.
 - Problem: write a scene or the buyer's own sentences, not a list of abstract pains. Quantify only with supplied totals.
 - How it works: at most four steps (heuristic default), each a plain verb and what the reader gets. Name each step as the buyer's job ("We chase the late ones"), not as a feature name. A supplied method may get one short name the reader can repeat; never name a method the brief does not supply.
 - Show one supplied use as a walkthrough or image sequence when the brief supplies the material.
@@ -91,7 +91,6 @@ Job: a reader learns what is new and takes the launch action.
 - First line: what shipped and for whom. Not the company's excitement.
 - Then what the reader can do now that they could not do before, shown in one use.
 - A deadline or launch price needs its date, time, time zone, and reason, all supplied. An invented deadline is a lie.
-- Importance words ("pivotal", "redefines", "revolutionary") are cut. State the fact and let the reader judge.
 
 ## Long sales page
 

@@ -6,7 +6,6 @@ Read this file when a payment fails, a card expires, or a renewal is near. The e
 
 - Access follows only the provider's subscription status events: past due, cancellation scheduled, cancelled at the effective date, and ended.
 - Verify each event name and its meaning in the provider's current documentation before wiring it.
-- A failed one-off charge changes no access and counts as no churn.
 - A cancellation scheduled for a later date keeps access until that date.
 - Write the owner's map: each provider event goes to one account state.
 

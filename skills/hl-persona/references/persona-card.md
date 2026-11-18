@@ -14,7 +14,7 @@ Status: Supported | Hypothesis (proxy: [name the proxy])
 
 Job to be done: [the outcome they want, in their words if quoted]
 Triggers: [what made them look for a solution or leave an alternative; quoted or cited, with `appears in X of Y sources`]
-Pains: [each pain with its root reason from the source, its quote, its intensity score from 1 to 5, its confidence tier, and `appears in X of Y sources`; a pain with no quote scored 4 or 5 is not a lead pain]
+Pains: [each pain with its root reason from the source, its quote, its intensity score from 1 to 5, its confidence tier, and `appears in X of Y sources`]
 Cost of the problem: [what the problem costs the buyer in time, money or opportunity, quoted or cited]
 Passion points: [what they value and would miss, quoted; never a pain]
 Dominant emotion: [one word, with the 2-3 quotes that show it (heuristic default)]
@@ -48,4 +48,4 @@ Not a fit: [a mismatch the source states, with its reason, quoted or cited; a de
 
 - Two groups with different decisions are two cards, even when they share a job.
 - Two groups whose evidence cannot be told apart are one card, marked `Hypothesis`.
-- A hypothetical card is a research proposal, not a validated description of customers. Keep its assumptions separate from observations; remove invented biography and quotations.
+- A hypothetical card is a research proposal, not a validated description of customers. Keep its assumptions separate from observations.

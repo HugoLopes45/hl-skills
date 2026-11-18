@@ -33,7 +33,6 @@ Use targeted questions only when missing context changes the requested deliverab
 - Act directly when the page and the primary action are supplied.
 - Ask in one round when the primary action is missing. Write `Default: none`, because it is a fact about the business. Explain that the audit ranks each finding by whether it blocks this action.
 - Missing funnel data does not stop the audit. Say which figures are not measured.
-- Reuse what the user already supplied.
 - An exact output format the user names replaces the default output. The evidence rules still apply.
 
 ## Audit layers

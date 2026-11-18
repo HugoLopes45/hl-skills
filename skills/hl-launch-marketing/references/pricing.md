@@ -1,6 +1,6 @@
 # Pricing
 
-Price from the buyer's alternative and segment, not from cost or fear. Show the money math. Label figures as supplied, measured with a method, checked source, unverified, or estimated from stated assumptions.
+Price from the buyer's alternative and segment, not from cost or fear. Show the money math.
 
 ## Principles
 

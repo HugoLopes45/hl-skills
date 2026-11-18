@@ -31,7 +31,6 @@ Each claim type below needs one kind of proof. Without that proof, the line beco
 ## Variant method
 
 - One message per variant. A variant that carries two offers splits into two variants.
-- Use the field lengths the platform's current policy page states. Without that page, write `unverified: check field length`.
 - Name the offer and the price with their currency, as the user supplied them.
 - Pick the opening line by the reader's awareness stage, when the brief or the search context shows it and the brief gives no landing page headline. Unaware: a contrarian or pattern-breaking line, or a feeling from one specific moment. Problem-aware: a question in the reader's own words, or a named friction with the outcome it blocks. Solution-aware: proof, a contrast with the usual approach, a state change (the current workflow and the proposed one, each with a concrete artifact), or a documented statistic with its source, population, and period. Product-aware: specific proof of the offer. Most-aware: the offer with a reason to act now. Unknown stage: lead with the offer.
 - Put the opening line inside the visible part of the primary text. Write a short version where the opening line lands, and a longer version for readers who expand. Use the platform's stated visible length; without it, write `unverified: check field length`.

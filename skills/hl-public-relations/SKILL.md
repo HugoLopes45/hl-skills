@@ -114,7 +114,7 @@ Verdict: Draft
 
 - No news, situation, or story to work from: `Stopped`. Ask what happened or what the story is.
 - A quote with no approval record: a placeholder, not a stop.
-- A tier 2 to 4 incident with no confirmed fact: `Statement`. The holding statement says the issue is under investigation and gives the update time.
+- A tier 2 to 4 incident with no confirmed fact: `Statement`. The holding statement gives the update time and states an investigation only if confirmed.
 - A severity tier 4 incident (data breach, safety issue, regulator inquiry, executive misconduct): `Statement`. The adviser clears it before publication.
 
 ## References

@@ -56,7 +56,7 @@ Uniform shape is the strongest sign that nobody wrote the piece. Check the whole
 - **Sentence length.** Sentences of about the same length in a row read as a list. Give each sentence the length its idea needs: a short one after a long one lands; three short ones in a row is a drumbeat.
 - **Paragraph length.** Not every paragraph is two or three sentences. A one-line paragraph, then a longer one, is how a person writes.
 - **Section balance.** When every section has a heading, two sentences, and three bullets, rewrite. The section with the most material runs longest; a section with one thing to say is one line.
-- **Devices are rationed.** One list of three, one fragment run, one contrast, and one or two lines built to be remembered per piece (heuristic default). The second use of a device weakens the first.
+- **Devices are rationed.** One contrast and one or two lines built to be remembered per piece (heuristic default). The second use of a device weakens the first.
 - **Bullets.** Bullets that all open with a bold label, or all with the same verb form, become sentences, or open with what the reader gets.
 - **Parallel pairs.** Two short matching phrases ("Heavy on purpose. Hard to cut.") are the default shape of generated headlines and taglines. Keep the pair only when the second phrase adds a fact the first does not.
 - **Endings.** Sections that each end on a short punchy line form a pattern. End most sections on the fact.

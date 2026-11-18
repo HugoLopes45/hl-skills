@@ -59,4 +59,4 @@ Then `Verdict: Rewritten`, just before `**Next:**`, then the steps, one line eac
 1. Set any supported, approved settings, then paste the complete prompt into a new session with its inputs filled in. For an unattended loop, use the stated schedule and prompt location in the host's scheduler.
 2. For a task only: run the artifact's verify check and confirm it passes; if the check was derived, confirm it matches the intended outcome first.
 
-No opener before line 1 and no recap after `**Next:**`. The prompt you emit obeys what you just applied, and so does this file: delete a line here and the output changes.
+No opener before line 1 and no recap after `**Next:**`.

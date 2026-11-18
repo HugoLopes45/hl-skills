@@ -47,8 +47,6 @@ def test_total():
     assert total([10, 5]) == 15
 ```
 
-Expected values come from a known-good literal, a worked example, or the spec.
-
 ## Horizontal
 
 All tests first, then all code. The tests describe imagined behavior and lock in a structure before the code teaches anything. Write one test, make it pass, then write the next.

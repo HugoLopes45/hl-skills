@@ -71,7 +71,7 @@ Stopped: line 1 says in plain words what is missing and why it blocks; then `Ver
 
 Reader rules:
 - Define each term once: MRR (monthly recurring revenue), churn (customers who cancel), CAC (cost to win one paying customer, counting paid media, tools, contractors, and founder time; state the supplied hourly rate, or say founder time is excluded; label a paid-only figure as paid-only), LTV (profit one customer brings over their time), MVP (smallest test that answers one question), cohort (customers who signed up in the same period), pivot (change the customer or problem, keep some assets), sunk cost (money and time already spent).
-- Never invent people, market sizes, quotes, traction, or certainty. Say plainly what is not known yet.
+- Say plainly what is not known yet.
 - Dollars and days carry units and a source or label.
 - No blame, no hype. Say "the plan", not "you".
 - No process narration: no "the skill says", "the framework", or "I read".
@@ -82,7 +82,7 @@ Example (a stage run):
 **Whether office managers lose time or money on dead plants is still untested.**
 No interview has happened yet, so nobody has confirmed the problem.
 
-1. **Two of your questions would give a false yes.**
+1. **Two questions in the plan would give a false yes.**
    - "Would you pay $8 a month?" suggests the desired answer instead of establishing past behavior.
    - "Don't you hate forgetting to water plants?" suggests agreement without establishing a cost.
 

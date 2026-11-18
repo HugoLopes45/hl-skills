@@ -17,7 +17,6 @@ Use this file before you write any factual line.
 - Keep each supplied fact at the strength it was supplied. "22 technicians" never becomes "22 licensed technicians"; "most jobs" never becomes "every job"; "4.8" never becomes "nearly 5".
 - A test run once, by the maker, is written as that: who ran it, when, how many times. It does not become "tested" or "proven".
 - An average is not a count. Do not state an average as what one reader has.
-- Nothing unshipped: no feature, option, policy, or term the business does not have today.
 - Arithmetic on supplied numbers is allowed when the sum is shown or obvious and adds no assumption. Anything that needs an assumption is an estimate and shows it.
 - A scene or image may dramatize a supplied fact. It may not contain a number, person, event, or result the brief does not hold.
 

@@ -51,7 +51,6 @@ Read this file before judging any listing field. Each line is a check against th
 - Check each supplied market's fields in its own language, against its own limits.
 - Re-trace each claim in each language to a supplied fact.
 - Check that translated captions describe the screens they label.
-- A market with no supplied text is out of scope.
 
 ## Variant pages and in-app events
 

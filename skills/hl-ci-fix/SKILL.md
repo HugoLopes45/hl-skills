@@ -56,7 +56,8 @@ This covers only the required checks I saw on head `4f0b2d1`.
 
 1. **unit / rates failed, and passes after one fix.**
    `rates.py:22` rounds half to even; the fix rounds half up. Commit `4f0b2d1`.
-2. **lint and build passed before any change.**
+2. **lint passed before any change.**
+3. **build passed before any change.**
 
 Verdict: Green
 

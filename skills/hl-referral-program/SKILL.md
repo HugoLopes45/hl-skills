@@ -115,7 +115,7 @@ Verdict: Redesign (reward total over the ceiling)
 
 ## Stop conditions
 
-- Price, target CAC, other acquisition cost, non-reward program cost, or gross margin missing: Stopped. Ask in one round, including the eligible action when it is missing, with `Default: none` for each fact.
+- Price, target CAC, other acquisition cost, non-reward program cost, or gross margin missing: Stopped, except a missing price or margin for a newsletter referral (step 1). Ask in one round, including the eligible action when it is missing, with `Default: none` for each fact.
 - Reward or eligibility tied to the referred person's review, rating, or sentiment: Redesign. Refuse that condition and offer a milestone instead.
 - A request for an uplift figure, a referral rate, or a legal answer without supplied data: refuse that figure or answer; give the measurement plan and the adviser list instead.
 - The tool or ledger cannot implement attribution, hold, clawback, or duplicate rules: Redesign.

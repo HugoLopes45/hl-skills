@@ -43,7 +43,7 @@ Use targeted questions only when missing context changes the requested deliverab
 2. **Each step has a trigger and a timing.** The timing counts from the entry trigger or the previous step. Name the time zone the send uses: the recipient's local time, or one stated zone. Send marketing steps in a daytime window labeled `assumed`; when the list spans jurisdictions, use the stricter local window, and check each market's hours in its official source. Space early steps closer together and widen later gaps, as an `assumed` default the team measures. Use a daily cadence only for a dated deadline in the supplied facts.
 3. **Each step has a skip rule.** A step is skipped when its goal already happened, for example the person already upgraded. A skipped step is not sent late.
 4. **Each step has one goal and one call to action.** Name the action the step asks for. Two actions mean two steps or a split. In a sequence that sells, name the step that first makes the offer and the bridge from the free step to it.
-5. **Exits stop the whole sequence.** Write each exit once, below the map, with what happens to pending steps.
+5. **Each exit names the steps it stops.** Write each exit once, below the map, with what happens to pending steps.
 6. **Use the fewest steps that each have a reason.** Remove any step that repeats the one before it without new information. Set the step count from the decision: use more steps for a higher price, a longer time to decide, or more decision makers, and fewer steps for the opposite. The list size does not set the count. Label the count `assumed` unless the user supplies it.
 
 Exit conditions to consider, when the product has them:

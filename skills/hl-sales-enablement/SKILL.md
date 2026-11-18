@@ -30,7 +30,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 - Each claim in the asset ends with a source tag: `[source: <file or owner message>, <section or row>]`. A claim with no tag does not appear.
 - A claim the asset needs and the material cannot support becomes `[PLACEHOLDER: <what is missing>]`. A claim the asset does not need is cut.
 - A metric needs its record, its date, and its measurement method. Without all three, it is a placeholder.
-- A customer name, logo, or quote needs a recorded permission for that use. Without it, write `[PLACEHOLDER: permission needed]`, or paraphrase the buyer's words with their tag instead of quoting them. Quote supplied words exactly.
+- A customer name, logo, or quote needs a recorded permission for that use. Without it, write `[PLACEHOLDER: permission needed]`, or paraphrase the buyer's words with their tag instead of quoting them.
 - A rival fact needs a dated capture. Write "not listed on their page as of [date]" for an absence, never "they lack it". State no rival weakness, motive, or price that no capture supports.
 - A value figure (payback, return, saving over time) needs every input from the prospect or the owner. Show each formula and each input's source. Sample values are labeled `sample`. Use no benchmark and no default input.
 - A price comes from a supplied price list with its date and tax basis. A discount needs the owner's rule.

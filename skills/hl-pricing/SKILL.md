@@ -65,7 +65,6 @@ Stopped: line 1 says what is missing and why it blocks the proposal. Then `Verdi
 
 Reader rules:
 - Define each term once at first use: value metric (the unit the price scales with), packaging (how plans bundle features), cost to serve (what delivering one unit costs), floor (the lowest price that covers cost to serve), stated intent (what buyers say they would pay, not an observed transaction).
-- Show currency and tax as supplied.
 - No hype, no promised results, and no "best value" claim without a comparison.
 
 Example (signature only; the domain is not a fixture):

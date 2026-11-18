@@ -5,7 +5,7 @@ Read this file when you design or review the cancel path. The evidence rules and
 ## Path and steps
 
 - Put the cancel control on the page where the subscription is managed, one step from the billing or account page.
-- Use only these steps, in order. Each one is required by a rule below. Skip step 2 when the reason gives no offer:
+- Use only these steps, in order. Skip step 2 when the reason gives no offer; each other step is required by a rule below:
   1. Reason: one question with the reason choices below and optional free text. The customer can skip the question and continue.
   2. Save offer: one offer matched to the reason, shown once.
   3. Confirm: the access end date (the last day of the paid period), what happens to the account data under the owner's terms, an offer of a data export before any deletion the owner's terms allow, and two controls of equal weight: cancel and keep.

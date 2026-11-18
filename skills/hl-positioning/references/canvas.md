@@ -19,7 +19,7 @@ Keep the alternative in the buyer's terms. "Spreadsheet and a weekly reminder" i
 
 ## Decision summary
 
-Discover the position through alternatives, supported attributes, value, segment and category before summarizing it. A fill-in-the-blanks sentence cannot establish any of those choices.
+Discover the position through alternatives, supported attributes, value, segment and category before summarizing it.
 
 When useful or requested, summarize the supported position in plain language. No fixed sentence form is required. Once the chain is complete, the statement may take this form: "For [segment] who [situation], [product] is the [category] that [value]; unlike [primary alternative], we [proof attribute]." Keep decisive trade-offs and unknowns visible rather than squeezing them into a slogan. An unsupported choice remains `Hypothesis`, however polished its wording.
 
@@ -37,5 +37,5 @@ When useful or requested, summarize the supported position in plain language. No
 
 ## Scope limits
 
-- A positioning is not a message, a price, or a channel plan. Name the neighbouring skill and stop there.
+- A positioning is not a message, a price, or a channel plan.
 - Wording may differ by market and language. Write one statement per market only when the evidence for each market differs.

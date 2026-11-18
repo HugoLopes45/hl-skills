@@ -37,7 +37,7 @@ Write in the markup the tracker stores. Markdown pasted into a wiki-markup field
 - **How to verify**: retain the slice's behavioral checks, not an invented test-count quota. A literal command or click-path, e.g. `npx tsc --noEmit`, `npm run test:unit -- results.spec.ts`, "open /results, switch preset to hourly, no spinner appears".
 - **Links**: parent epic, blockers, source of truth, as full URLs.
 
-**Fields**: only values observed in step 1. Parent or epic link by real key. Estimate only if source supports one.
+**Fields**: only values observed in step 1. Parent or epic link by real key.
 
 ## The gates
 

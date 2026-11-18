@@ -9,8 +9,6 @@
 | 3. Significant | full outage, billing error across many customers | executive approves; one spokesperson |
 | 4. Severe | data breach, safety issue, executive misconduct, regulator inquiry | adviser clears any statement before publication |
 
-When unsure, assign the higher tier.
-
 ## First hour
 
 1. Confirm the facts with the people who know them directly, not from summaries.
@@ -64,5 +62,3 @@ List these as questions for the owner's adviser. Do not answer them:
 - Contact with a regulator.
 - Employment matters.
 - Sponsored-content disclosure rules in each country.
-
-The owner and team write any postmortem after the root cause is confirmed.

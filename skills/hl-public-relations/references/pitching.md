@@ -17,7 +17,7 @@ Target tiers:
 
 Skip a journalist whose beat does not match, who has not published on the beat in the window the owner sets, or who has said they take no pitches.
 
-List a person only when the owner supplies the name and has checked the recent work. This skill does not browse; the owner supplies the list.
+This skill does not browse; the owner supplies the list.
 
 Award entries are targets too. Enter only with supplied proof. Check the fees and rules on the organiser's current page; until you read them, mark them `unknown`.
 

@@ -1,6 +1,6 @@
 # Jira
 
-Jira specifics for steps 1 and 2 of the skill.
+Jira specifics for steps 1 and 2 of [tracker.md](tracker.md).
 
 ## Grounding
 

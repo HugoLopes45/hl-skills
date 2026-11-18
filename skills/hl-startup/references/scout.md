@@ -6,7 +6,7 @@ Find SaaS bets a solo dev can ship with an AI coding agent and run in under two 
 
 ## Every run
 
-1. Parse args: niche or open field, count (default 8), depth (default deep). They form the scope line (Output item 1).
+1. Parse args: niche or open field, count (default 8), depth (default deep). They form the scope line under line 1 of the reply.
 2. Founder edge: list only assets the user named (domain knowledge, audience, paid tools, painful workflows). Nothing named: founder assets are unknown; score only the supplied evidence. Never invent access.
 3. Mine signals, cluster, generate bets, gate, score, report.
 
@@ -76,6 +76,5 @@ Body, in this order, one heading per point:
 
 Reader rules:
 - Define once: solo-ops (one person can run it), AI-buildable (a coding agent can build it from a written spec), fixture (sample data that tests the core outcome), pilot (a paid trial with a few users).
-- Search results are not market size. A trend shows why now, not demand.
 - Every candidate gated out: say `No shippable bet` with the failed conditions. Never force a winner.
 - Write no files unless asked.

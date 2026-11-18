@@ -95,7 +95,7 @@ Stopped: line 1 says what is missing and why it blocks the email. Then `Verdict:
 
 Reader rules:
 - Define each term once at first use: placeholder (a marked slot for proof you do not have), footer (the lines at the end of a marketing email that name the sender and offer an opt-out).
-- No false urgency, no fake reply threads, no exclamation marks in body copy.
+- No exclamation marks in body copy.
 
 Example (signature only; the domain is not a fixture):
 
