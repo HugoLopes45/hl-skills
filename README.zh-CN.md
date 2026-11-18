@@ -114,7 +114,7 @@ npx skills add HugoLopes45/hl-skills
 |---|---|---|
 | [hl-code-review](./skills/hl-code-review/SKILL.md) | 带位置、触发条件、后果和证据的审查发现 | `Use hl-code-review to review this branch for bugs and regressions.` |
 | [hl-receive-review](./skills/hl-receive-review/SKILL.md) | 对每条意见给出同意、推迟、反对或澄清 | `Use hl-receive-review to evaluate these review comments before we make changes.` |
-| [hl-deslop](./skills/hl-deslop/SKILL.md) | 从变更中移除 AI 垃圾代码和幻觉 | `Use hl-deslop to remove unnecessary abstractions from this diff.` |
+| [hl-deslop](./skills/hl-deslop/SKILL.md) | 从变更中移除 AI 垃圾代码和同义反复，或为现有代码提出清理计划 | `Use hl-deslop to remove unnecessary abstractions from this diff.` |
 | [hl-verify](./skills/hl-verify/SKILL.md) | 每项需求的通过、失败、未验证或受阻 | `Use hl-verify to check this change against its acceptance criteria.` |
 | [hl-commit](./skills/hl-commit/SKILL.md) | 基于已暂存变更的提交信息 | `Use hl-commit to commit the staged changes.` |
 | [hl-split-pr](./skills/hl-split-pr/SKILL.md) | 把大 diff 拆成有序、可审查的拉取请求 | `Use hl-split-pr to plan smaller PRs from this oversized diff.` |
