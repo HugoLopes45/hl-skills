@@ -1,6 +1,6 @@
 ---
 name: hl-email
-description: "Write or revise one email from a brief: subject, preview text, body, one call to action, and sender footer placeholders. Keeps each claim tied to the brief, marks missing proof as placeholders, and separates transactional from marketing messages. Writes text only and never sends. Use when the user asks for one email, a single announcement, a reply to a lead or customer, or a revision of an existing email."
+description: "Write or revise one email from a brief: subject, preview text, body, one call to action, and sender footer placeholders. Keeps each claim tied to the brief, marks missing proof as placeholders, and separates transactional from marketing messages. Writes text only and never sends. Use when the user asks for one email, a single announcement, a journalist pitch, a correction, a reply to a lead or customer, or a revision of an existing email."
 ---
 # Email
 
@@ -18,12 +18,31 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Evidence rules
 
-- Use only facts in the brief or in the existing email. Any other claim, figure, date, price, discount, deadline, testimonial, or result becomes `[PLACEHOLDER: proof needed]`, naming the proof that replaces it.
+- Use only facts in the brief or in the existing email. Any other claim, figure, date, price, discount, deadline, testimonial, or result becomes `[PLACEHOLDER: proof needed]`, naming the proof that replaces it. When the brief supports a narrower line, write that line instead of a placeholder. Never write an invented testimonial.
 - Do not create urgency. A deadline, stock count, or "last chance" appears only when the brief gives its date or count.
-- Name the message type first. A transactional message answers an action the recipient took, such as a confirmation or a receipt. A marketing message promotes a product, an offer, or an event.
-- A marketing message gets the footer placeholders: sender identity, unsubscribe link, and postal address. This skill does not state what any law requires. Check the official rule for each recipient's market before sending.
+- Name the message type first. A transactional message answers an action the recipient took, such as a confirmation or a receipt. A marketing message promotes a product, an offer, or an event. A transactional message that carries a promotion or discount is marketing; check the official classification rule for each channel.
+- A marketing message gets the footer placeholders: sender identity, unsubscribe link, and postal address. This skill does not state what any law requires. Check the official rule for each recipient's market before sending, and the current official sender requirements for the unsubscribe method and its deadline.
 - Do not write a subject that imitates a reply or a forward ("Re:", "Fwd:") unless the message is one.
 - Do not assume the recipient's age group, generation, or platform habits. Write for the relationship the brief states.
+- Never personalize on health, financial hardship, politics, religion, sexuality or family, even when a public post shows it.
+- Keep sensitive details out of the subject and preview. Notifications and lock screens can show them.
+
+## Journalist pitch
+
+- Name the journalist's recent coverage from the brief. Without it, write `[PLACEHOLDER: recent article or beat]`; do not guess the beat.
+- State one news hook from the brief. The subject names the specific fact, not the company or the product.
+- Offer an embargo only to a journalist whom the brief says has honored one before. State its day, time, and time zone.
+- Keep the pitch under 150 words (heuristic default); this cap replaces the draft step 3 length defaults, and the draft step 2 cold-prospect subject rule does not apply. End with one ask, such as an interview or a quote.
+- Do not write a "did you get my email" follow-up. Write a follow-up only on request, as its own email, with one further fact from the brief; when the brief shows two follow-ups already sent (heuristic default), write none. Timing of follow-ups belongs to `hl-public-relations`.
+
+## Reply
+
+When the email answers a message from the recipient:
+- Answer only the question that message asks, with a fact the user supplies; add nothing else except the one call to action from the brief. When that message asks no question, answer its main point.
+- Never criticize another vendor or company.
+- When that message asks how the sender got the recipient's address, give the true source from the brief and offer removal.
+
+After a wrong send, write one short correction to each recipient the email reached: name the error and the correct fact, and add no claim or offer beyond the one call to action from the brief.
 
 ## Intent
 
@@ -42,17 +61,17 @@ Use targeted questions only when missing context changes the requested deliverab
 ### draft (default)
 
 1. **Fix the message type, recipient, and action.** One action only. If the brief names two actions, ask which one leads; the other moves to a separate message.
-2. **Write the subject and preview.** The subject states what the email contains. The preview adds one fact the subject does not carry.
-3. **Write the body.** Open with the reason the recipient gets this email, in terms of their relationship to the sender. Give each idea one paragraph, and keep each paragraph on one line.
-4. **Write one call to action.** Use a verb phrase that names the result, with one link placeholder.
+2. **Write two subjects and a preview.** The first subject states what the email contains. The second uses a different mechanism, such as a question or a stake the brief supports. Keep each subject 40 to 60 characters and each preview about 90 to 140 characters (heuristic defaults), and pay the subject off in the first 100 words (heuristic default). Put the concrete value first in the subject and the preview. The preview adds one fact the subject does not carry and does not repeat the subject. For a prospect who did not opt in, the subject is 2 to 4 lowercase words (heuristic default), the range above does not apply, and the subject uses no first name, number, urgency, emoji, or pitch; if it is a question, it names a specific problem. Never use a generic question such as "quick question", and never imitate a reply or an internal message.
+3. **Write the body.** Open with the reason the recipient gets this email, in terms of their relationship to the sender. Give each idea one paragraph of one to three sentences (heuristic default), and keep each paragraph on one line. Heuristic default lengths: 50 to 125 words for a transactional message, 150 to 300 for an educational marketing email, and 300 to 500 for a story. For a message to a prospect who did not opt in, keep the body under 80 words (heuristic default) and use one shape: an observation from the brief or a user-supplied source, the one problem it implies, the result figure the user supplies (or its placeholder), and one reply ask. Leave out any sentence that needs a recipient detail (name, company, role) the brief lacks; other missing values stay placeholders. When the brief gives no first name, use a greeting with no name. Never imply a closer relationship than the brief states. Do not vary the copy by a trait you inferred about the recipient. Vary it only by a segment the brief states. When the user supplies sample emails, match their register; use no stock greeting, opener, or emoji unless the samples use them.
+4. **Write one call to action.** Use a verb phrase that names the result, with one link placeholder or a reply ask. Use one primary button or one link.
 5. **Add the sign-off and footer.** The sign-off holds sender name and role placeholders. Add the footer placeholders from the evidence rules for a marketing message.
-6. **Test each line.** Trace each claim to the brief. Ask whether another company could send the line unchanged; if yes, replace it with a fact from the brief or a placeholder.
+6. **Test each line.** Trace each claim to the brief. Ask whether another company could send the line unchanged; if yes, replace it with a fact from the brief or a placeholder. Remove these AI tells: contrast reveals ("it's not X, it's Y"), "no X, no Y" lists, trailing pile-on clauses, questions you answer yourself, colon reveals, stock phrases, jargon such as "synergy" or "leverage", dashes in the subject and preview, fake Re: or Fwd: prefixes, clickbait subjects, stock openers, and sign-off filler. Check each dimension in [the calibration reference](references/email-calibration.md) and rewrite the weakest first.
 
 ### revise
 
 1. List each fact and claim in the existing email, with the line it comes from.
 2. Mark each claim the brief does not support. Replace it with a placeholder, or remove it.
-3. Apply draft steps 2 to 6 to the wording.
+3. Run draft steps 2 to 6 as checks on the wording. Change only the sentences the revision needs; keep the rest of the copy as written.
 4. Report each changed sentence with its reason in one sentence.
 
 ## Output
@@ -63,12 +82,12 @@ Line 1 is one bold plain sentence that says whether the email is ready and what 
 
 Under line 1, in plain sentences: each placeholder that blocks sending, and each missing input that limited the draft.
 
-The email copy goes in a `text` fence, with `Subject:`, `Preview:`, the body, the sign-off, and any footer. Placeholders stay in square brackets. Keep instructions outside the fence.
+The email copy goes in a `text` fence, with `Subject:`, `Alternate subject:`, `Preview:`, the body, the sign-off, and any footer. In revise mode, include `Alternate subject:` only when the revision rewrites the subject. Placeholders stay in square brackets. Keep instructions outside the fence.
 
 Verdict words:
 - `Draft`: email complete; unsupported claims are placeholders.
 - `Revised`: revision complete; each changed sentence is listed.
-- `Stopped`: no purpose, recipient relationship, or action to write from.
+- `Stopped`: a stop condition applies; the email is not written.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one action a person can take now, in order. Each placeholder appears in Next with the proof that fills it.
 
@@ -81,17 +100,19 @@ Reader rules:
 Example (signature only; the domain is not a fixture):
 
 ````markdown
-**The waitlist email is ready once you fill two slots: the opening date and the booking link.**
-The brief gives the garden, the waitlist, and the sender, but no opening date or booking link, so the email holds placeholders for both. It is a transactional message, so it has no marketing footer.
+**The waitlist email is ready once you fill four slots: the join date, the opening date, the booking link, and the sender name.**
+The brief gives the garden, the waitlist, and the sending team, but no join date, opening date, booking link, or sender name, so the email holds a placeholder for each. It is a transactional message, so it has no marketing footer.
 
 ```text
-Subject: Your plot waitlist place is confirmed
-Preview: Spring bookings open on [PLACEHOLDER: opening date]
+Subject: Your Marsh Lane waitlist place is confirmed for spring
+Alternate subject: When can you book your spring plot at Marsh Lane?
+Preview: You joined the waitlist on [PLACEHOLDER: join date]. Bookings open on [PLACEHOLDER: opening date]; the link is below.
 
-Hi [PLACEHOLDER: first name],
+Hi,
 
-You joined the waitlist for a plot at Marsh Lane Garden on [PLACEHOLDER: join date].
-Bookings open on [PLACEHOLDER: opening date].
+You joined the waitlist for a plot at Marsh Lane Garden on [PLACEHOLDER: join date]. This email confirms your place on the list.
+
+Bookings open on [PLACEHOLDER: opening date]. Use the booking link below on that day to book your plot. Keep this email until then, so the link is easy to find.
 
 Book your plot when bookings open: [PLACEHOLDER: booking link]
 
@@ -101,9 +122,12 @@ Book your plot when bookings open: [PLACEHOLDER: booking link]
 Verdict: Draft
 
 **Next:**
-1. Replace the opening date with the date the garden committee sets, and confirm it in writing.
-2. Replace the booking link with the live booking page address, and open it to test it.
-3. Approve the send in writing before anyone sends it; this skill does not send and does not give that approval.
+1. Choose one subject line before the send; the alternate subject is an option, not a second email.
+2. Fill the join date for each recipient from the waitlist record.
+3. Replace the opening date with the date the garden committee sets, and confirm it in writing.
+4. Replace the booking link with the live booking page address, and open it to test it.
+5. Replace the sender name with the name of the person who sends the email, as the garden team approves it.
+6. Approve the send in writing before anyone sends it; this skill does not send and does not give that approval.
 ````
 
 ## Stop conditions

@@ -17,6 +17,7 @@ Answer two decisions for a small software business: what to ship next, and wheth
 The minimum path to a launched, paying product.
 - Start from a boilerplate or managed services for solved problems (authentication, billing, email); build only the part that is specific to this product.
 - Done beats perfect. Proven technology, one server, until load measured today needs more.
+- The first version does one job as a whole experience users would choose; further polish or scope is delay.
 - Cut features the first paying user does not need. Preserve security, privacy, accessibility, and data-integrity requirements. Treat the launch schedule as a proposal, not a guarantee.
 
 Use for: first-version scope, minimum to launch, boilerplate versus from scratch, what to cut.
@@ -26,7 +27,9 @@ Use for: first-version scope, minimum to launch, boilerplate versus from scratch
 Judge one product's survival on traction, not on effort already spent.
 - Signals: revenue trend, retention of the last cohorts, organic growth, and how the founder's time compares with what the product returns.
 - Months of flat revenue with no new lever to test is a kill or pivot signal. Effort already spent is not a reason to continue.
-- Fit, without vanity metrics: the buyer states the value in 30 seconds; buyers from 90 days ago are still active (name the cohort); organic referrals exist. Signups, downloads, and press do not count.
+- Do not call a trend from a signal too sparse to read; name the data that would settle it.
+- A review whose supplied data shows no kill or pivot signal returns `Keep` and proposes no product change; Next names the data to check. With no readable data, return `Stopped`.
+- Fit, without vanity metrics (heuristic defaults): the buyer states the value in 30 seconds; buyers from 90 days ago are still active (name the cohort); organic referrals exist. Signups, downloads, and press do not count.
 - Kill fast and keep what works. Name what is worth keeping (code, audience, lessons).
 - After a launch, ask one question at a time: did usage solve the original problem, what friction appeared, stop, iterate, or keep as-is? Iterate: draft a bounded problem statement from the friction. Stop: record the actual reason; solved and stopped can coexist.
 
@@ -59,7 +62,7 @@ Several topics: name both, answer the dominant one. "Fastest stack to ship this?
 Example for a pricing question with only two supplied monthly prices:
 
 ````markdown
-**At $9/month, matching $29/month revenue needs about 3.2 times as many paying customers.**
+**At $15/month, matching $60/month revenue needs 4 times as many paying customers.**
 This ratio comes from your two prices, not observed customer behavior.
 Buyer type and willingness to pay are unknown, so the ratio does not settle the price.
 

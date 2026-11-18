@@ -61,7 +61,7 @@ Body, one numbered point per idea, each a bold plain sentence, then its decisive
 
 End with `Verdict: <word>` on its own line, one per mode:
 - Evaluate: `Go` (the evidence supports the test), `Pivot` (change the customer or problem first), `Stop` (the evidence is against it), `Insufficient evidence` (the stages cannot judge yet).
-- Stage: `Proceed`, `Revise`, `Stop`, `Insufficient evidence`, with the same meanings for that stage only. The MVP stage names the riskiest assumption on line 1: `**Whether owners pay to stop plants dying is the riskiest assumption to test.**`
+- Stage: `Proceed`, `Revise` (change the customer, problem, or this stage's plan first), `Stop`, `Insufficient evidence`, with the same meanings for that stage only. The MVP stage names the riskiest assumption on line 1: `**Whether owners pay to stop plants dying is the riskiest assumption to test.**`
 - Kill: `Keep`, `Pivot`, `Kill`. Scout: `Verdict: Pick: <bet>, <score>/10` or `Verdict: No shippable bet`. Ship: `Verdict: Ship`, with the smallest first version on line 1. Questions outside ship/kill use the bounded-answer policy in `references/ship-or-kill.md`: `Quick take` for a supported limited answer, `Stopped` when none is supported.
 
 Then `**Next:**`, one step per line, each something the founder can do now. Offer the actual next stage by name, or the final summary after MVP. Advance only after confirmation.
@@ -70,7 +70,7 @@ Stopped: line 1 says in plain words what is missing and why it blocks; then `Ver
 - No idea given: `**I need your product idea before I can evaluate it; the request does not describe one.**`, then in Next: 1. Which idea, in one line, and who pays for it? (default). 2. Run `scout` to find ideas first.
 
 Reader rules:
-- Define each term once: MRR (monthly recurring revenue), churn (customers who cancel), CAC (cost to win one paying customer), LTV (profit one customer brings over their time), MVP (smallest test that answers one question), cohort (customers who signed up in the same period), pivot (change the customer or problem, keep some assets), sunk cost (money and time already spent).
+- Define each term once: MRR (monthly recurring revenue), churn (customers who cancel), CAC (cost to win one paying customer, counting paid media, tools, contractors, and founder time; state the supplied hourly rate, or say founder time is excluded; label a paid-only figure as paid-only), LTV (profit one customer brings over their time), MVP (smallest test that answers one question), cohort (customers who signed up in the same period), pivot (change the customer or problem, keep some assets), sunk cost (money and time already spent).
 - Never invent people, market sizes, quotes, traction, or certainty. Say plainly what is not known yet.
 - Dollars and days carry units and a source or label.
 - No blame, no hype. Say "the plan", not "you".

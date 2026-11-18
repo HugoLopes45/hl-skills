@@ -21,13 +21,13 @@ Keep the alternative in the buyer's terms. "Spreadsheet and a weekly reminder" i
 
 Discover the position through alternatives, supported attributes, value, segment and category before summarizing it. A fill-in-the-blanks sentence cannot establish any of those choices.
 
-When useful or requested, summarize the supported position in plain language. No fixed sentence form is required. Keep decisive trade-offs and unknowns visible rather than squeezing them into a slogan. An unsupported choice remains `Hypothesis`, however polished its wording.
+When useful or requested, summarize the supported position in plain language. No fixed sentence form is required. Once the chain is complete, the statement may take this form: "For [segment] who [situation], [product] is the [category] that [value]; unlike [primary alternative], we [proof attribute]." Keep decisive trade-offs and unknowns visible rather than squeezing them into a slogan. An unsupported choice remains `Hypothesis`, however polished its wording.
 
 ## Distinctiveness test
 
 1. Name the alternative from the canvas that is closest to the statement.
 2. Ask whether that alternative could honestly write the same sentence. If it could, the statement needs a different attribute, a narrower segment, or a condition.
-3. Check each comparative word ("faster", "only", "best") against the proof status. A word with `proof needed` stays out of the statement, or stays marked.
+3. Check each comparative word ("faster", "only", "best") against the proof status. A word with `proof needed` stays out of the statement.
 
 ## Proof status
 

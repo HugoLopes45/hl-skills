@@ -18,7 +18,7 @@ Find SaaS bets a solo dev can ship with an AI coding agent and run in under two 
 - **Transfer lane**: a workflow already paid for in one market that's missing/overpriced/badly localized in another (geography, language, segment). Business-sale marketplaces (Acquire.com, Flippa, Microns, Dotmarket) are idea mines, not proof: listing revenue/traffic are seller claims, asking price is never willingness-to-pay.
 - **Open field** (no niche given): seed queries from the boundary of two unrelated industries. Earns bets only with real signals at the boundary; else drop and say so.
 
-Collect relevant signals, each with URL + date. Independent = distinct author/company; syndicated copies count once. Search-result count is never market size; a trend explains why-now only, never proves demand (Google Trends is relative interest, not volume). Also search disconfirming evidence: native feature ship, mature free substitutes, declining demand. Two reformulations, nothing found → report the dead lane, don't fabricate one.
+Collect relevant signals, each with URL + date. Independent = distinct author/company; syndicated copies count once. Search-result count is never market size; a trend explains why-now only, never proves demand. Also search disconfirming evidence: native feature ship, mature free substitutes, declining demand. Two reformulations, nothing found → report the dead lane, don't fabricate one.
 
 `quick`: no live research; every market claim carries `[unverified]`; cap 5 bets. A shortlist to research, not a verdict. Keep the shortlist, the pick's evidence gaps and economics, and the validation steps. Omit repeated explanations, not the conditions that would reject a bet.
 
@@ -41,7 +41,7 @@ Rejected at generation, before any gate: generic AI wrappers with no buyer-speci
 
 Both hard: score never overrides; unknown on a core condition is not a pass.
 
-**Solo-ops**: one buyer, one painful event, one core outcome. Paid path shippable in ≤14 solo days (agent-written code does not shrink this; count integration, fixtures, deployment, human setup). Auth/billing/email are boilerplate, not outcomes: the 14 days buy the 5% that's yours. No two-sided liquidity, enterprise procurement, per-result regulated judgment (legal/medical/financial), or brittle scraping. ≤2 essential external APIs. ~80% gross margin after variable costs. Support <2 hours/week at 20 customers.
+**Solo-ops**: one buyer, one painful event, one core outcome. Paid path shippable in ≤14 solo days (heuristic defaults; agent-written code does not shrink this; count integration, fixtures, deployment, human setup). Auth/billing/email are boilerplate, not outcomes: the 14 days buy the 5% that's yours. No two-sided liquidity, enterprise procurement, per-result regulated judgment (legal/medical/financial), or brittle scraping. ≤2 essential external APIs. ~80% gross margin after variable costs (heuristic defaults). Support <2 hours/week at 20 customers (heuristic defaults).
 
 **AI-buildability**: all six hold or the bet dies:
 
