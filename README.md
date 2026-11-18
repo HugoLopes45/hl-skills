@@ -144,6 +144,8 @@ From what you claim to what you measure. Each skill works from what you supply: 
 | [hl-persona](./skills/hl-persona/SKILL.md) | Personas from interviews, reviews, and tickets, with nothing invented | `Use hl-persona to build buyer cards from these six interview notes, with no invented details.` |
 | [hl-competitor-analysis](./skills/hl-competitor-analysis/SKILL.md) | Dated competitor profiles, with facts kept apart from guesses | `Use hl-competitor-analysis to profile these two rivals from their dated captures.` |
 | [hl-pricing](./skills/hl-pricing/SKILL.md) | A price structure, a price range, and a test on new buyers | `Use hl-pricing to propose a plan structure and a test, from our buyer survey.` |
+| [hl-win-loss](./skills/hl-win-loss/SKILL.md) | Why deals are won and lost, coded from buyers' words and counted | `Use hl-win-loss to read why we lose to a rival from these deal records.` |
+| [hl-marketing-plan](./skills/hl-marketing-plan/SKILL.md) | A period plan: three bets at most, moves by funnel stage, stop criteria | `Use hl-marketing-plan to plan next quarter's bets.` |
 
 ### Get found
 
@@ -151,12 +153,15 @@ From what you claim to what you measure. Each skill works from what you supply: 
 
 | Skill | You get | Try this prompt |
 |---|---|---|
-| [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | Indexing, technical SEO, and on-page issues on a page or small site | `Use hl-seo-audit to find why this page is blocked from search.` |
+| [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | Search audit, site structure, migration checks, and ranking diagnosis | `Use hl-seo-audit to find why this page is blocked from search.` |
 | [hl-keyword-research](./skills/hl-keyword-research/SKILL.md) | Keywords and topic clusters from buyer words and Search Console | `Use hl-keyword-research to pick the next page to write from this Search Console export.` |
 | [hl-content-brief](./skills/hl-content-brief/SKILL.md) | One page brief: query, intent, answer, outline, and facts to source | `Use hl-content-brief to brief a guide on how to chase a late invoice, for freelance designers in the United States.` |
 | [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | Whether a page can be found and quoted in AI answers | `Use hl-ai-search-visibility to check whether ChatGPT, Perplexity, and Google AI answers can use this page.` |
 | [hl-schema-markup](./skills/hl-schema-markup/SKILL.md) | Structured data checked against what the page shows | `Use hl-schema-markup to check the JSON-LD on this product page against its visible price.` |
 | [hl-internal-linking](./skills/hl-internal-linking/SKILL.md) | Orphan pages and links to broken, redirected, or noindex pages | `Use hl-internal-linking to find orphan pages and broken targets in this links export.` |
+| [hl-link-building](./skills/hl-link-building/SKILL.md) | Link plan: target pages, linking sites, outreach drafts, checks | `Use hl-link-building to plan which sites should link to our buyer guide.` |
+| [hl-local-visibility](./skills/hl-local-visibility/SKILL.md) | Local listing, review, and lead-reply readout with ordered fixes | `Use hl-local-visibility to audit how my business shows in local search.` |
+| [hl-app-store-listing](./skills/hl-app-store-listing/SKILL.md) | Audit or draft store listing fields, checked against store rules | `Use hl-app-store-listing to rewrite my app store title and keywords.` |
 
 ### Write the words
 
@@ -164,11 +169,11 @@ From what you claim to what you measure. Each skill works from what you supply: 
 
 | Skill | You get | Try this prompt |
 |---|---|---|
-| [hl-copywriting](./skills/hl-copywriting/SKILL.md) | Landing page copy with placeholders where proof is missing | `Use hl-copywriting to rewrite this hero without invented proof.` |
+| [hl-copywriting](./skills/hl-copywriting/SKILL.md) | Website and product copy, taglines, and interface microcopy from supplied facts | `Use hl-copywriting to rewrite this hero without invented proof.` |
 | [hl-article-writing](./skills/hl-article-writing/SKILL.md) | Explanatory articles from your brief and sources | `Use hl-article-writing to turn this brief into a complete article for our publication, in the requested language. Keep every figure sourced.` |
 | [hl-de-ai-rewriting](./skills/hl-de-ai-rewriting/SKILL.md) | Plainer prose that keeps every claim, number, and name | `Use hl-de-ai-rewriting to make this shipping notice clearer, keeping every date and fee.` |
-| [hl-email](./skills/hl-email/SKILL.md) | One email: subject, preview, body, and one call to action | `Use hl-email to draft a renewal reminder from this brief, with placeholders for any offer we have not supplied.` |
-| [hl-email-sequence](./skills/hl-email-sequence/SKILL.md) | A sequence map: triggers, timing, skip rules, and exits | `Use hl-email-sequence to map a three-step welcome sequence from these recorded events.` |
+| [hl-email](./skills/hl-email/SKILL.md) | One email, journalist pitch, correction, or reply with one action | `Use hl-email to draft a renewal reminder from this brief, with placeholders for any offer we have not supplied.` |
+| [hl-email-sequence](./skills/hl-email-sequence/SKILL.md) | Lifecycle and outreach sequence maps: triggers, timing, skip rules, and exits | `Use hl-email-sequence to map a three-step welcome sequence from these recorded events.` |
 
 ### Turn visitors into users
 
@@ -178,6 +183,8 @@ From what you claim to what you measure. Each skill works from what you supply: 
 |---|---|---|
 | [hl-page-cro-audit](./skills/hl-page-cro-audit/SKILL.md) | The barriers between a visitor and the page's main action | `Use hl-page-cro-audit to find what blocks booking on this clinic page, and label each hypothesis.` |
 | [hl-onboarding](./skills/hl-onboarding/SKILL.md) | The shortest path from first run to first value | `Use hl-onboarding to design the first-week flow for this fitness app from its step list.` |
+| [hl-lead-lifecycle](./skills/hl-lead-lifecycle/SKILL.md) | Lead stages, qualification, routing, and the handoff to sales | `Use hl-lead-lifecycle to write the stages and handoff rules from my won and lost leads.` |
+| [hl-churn-prevention](./skills/hl-churn-prevention/SKILL.md) | Voluntary and involuntary churn split, a cancel flow with one save offer, and failed-payment recovery | `Use hl-churn-prevention to plan a cancel flow from our cancellation export.` |
 | [hl-ab-test-plan](./skills/hl-ab-test-plan/SKILL.md) | One A/B test with metrics and a sample size from your baseline | `Use hl-ab-test-plan to plan a test on this pricing toggle, with sizing from our baseline export.` |
 
 ### Reach people
@@ -186,9 +193,16 @@ From what you claim to what you measure. Each skill works from what you supply: 
 
 | Skill | You get | Try this prompt |
 |---|---|---|
-| [hl-social](./skills/hl-social/SKILL.md) | Posts and captions for the platform in your brief | `Use hl-social to draft two captions from this brief. Platform and market are in the brief.` |
+| [hl-social](./skills/hl-social/SKILL.md) | Posts, carousels, comments, and replies for the platform in your brief | `Use hl-social to draft two captions from this brief. Platform and market are in the brief.` |
 | [hl-paid-ads](./skills/hl-paid-ads/SKILL.md) | Ad copy for any ad platform, market, and currency | `Use hl-paid-ads to write three search ad variants from this brief, with missing proof as placeholders.` |
 | [hl-short-video](./skills/hl-short-video/SKILL.md) | Short-video scripts with lines, shots, and on-screen text | `Use hl-short-video to turn this brief into a 30-second script for our chosen platform, with spoken lines, shots, on-screen text and rights checks.` |
+| [hl-referral-program](./skills/hl-referral-program/SKILL.md) | A referral reward under your cost ceiling, with rules and measurement | `Use hl-referral-program to design a referral reward that stays under our acquisition target.` |
+| [hl-creator-deal](./skills/hl-creator-deal/SKILL.md) | Creator fit, paid trials, briefs, deal terms, and measurement | `Use hl-creator-deal to evaluate this creator's fit and brief a sponsored post.` |
+| [hl-event-plan](./skills/hl-event-plan/SKILL.md) | A go, pilot, redesign, or pass decision on one event, with run of show and readout | `Use hl-event-plan to decide whether this workshop is worth its budget.` |
+| [hl-public-relations](./skills/hl-public-relations/SKILL.md) | Press plan, pitch, release, reactive comment and crisis holding statement | `Use hl-public-relations to plan press coverage for our product launch.` |
+| [hl-text-messaging](./skills/hl-text-messaging/SKILL.md) | Opt-in text program plan: consent proof, flow spec, opt-out rules, adviser questions | `Use hl-text-messaging to plan the restock text flow and its opt-in form.` |
+| [hl-prospecting](./skills/hl-prospecting/SKILL.md) | A sourced prospect list and outbound plan from supplied records | `Use hl-prospecting to build a sourced prospect list of independent bakeries in our town.` |
+| [hl-sales-enablement](./skills/hl-sales-enablement/SKILL.md) | Sales collateral from supplied proof, every claim source-tagged | `Use hl-sales-enablement to draft a one-pager for a champion.` |
 
 ### Measure what happened
 
@@ -230,7 +244,7 @@ A prompt asks for one result. A skill gives your agent a full method: when to us
 
 ## Limits
 
-Each skill is tested against a real agent, with and without the skill. These are AI instructions, not guaranteed results: review the output. Skills run with your agent's full permissions, so read a skill before you install it. Report vulnerabilities as [SECURITY.md](./SECURITY.md) describes.
+Structural checks pass; agent-output evaluations are incomplete. These are AI instructions, not guaranteed results: review the output. Skills run with your agent's full permissions, so read a skill before you install it. Report vulnerabilities as [SECURITY.md](./SECURITY.md) describes.
 
 ## Contribute
 
