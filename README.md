@@ -113,7 +113,7 @@ All three security skills use paranoid verification by default. This increases s
 |---|---|---|
 | [hl-code-review](./skills/hl-code-review/SKILL.md) | Findings with location, trigger, consequence, and evidence | `Use hl-code-review to review this branch for bugs and regressions.` |
 | [hl-receive-review](./skills/hl-receive-review/SKILL.md) | Agree, defer, disagree, or clarify, for each comment | `Use hl-receive-review to evaluate these review comments before we make changes.` |
-| [hl-deslop](./skills/hl-deslop/SKILL.md) | AI slop and hallucinations removed from a change | `Use hl-deslop to remove unnecessary abstractions from this diff.` |
+| [hl-deslop](./skills/hl-deslop/SKILL.md) | AI slop and tautologies removed from a change, or a cleanup plan for existing code | `Use hl-deslop to remove unnecessary abstractions from this diff.` |
 | [hl-verify](./skills/hl-verify/SKILL.md) | Passed, failed, unverified, or blocked, for each requirement | `Use hl-verify to check this change against its acceptance criteria.` |
 | [hl-commit](./skills/hl-commit/SKILL.md) | A commit message grounded in the staged changes | `Use hl-commit to commit the staged changes.` |
 | [hl-split-pr](./skills/hl-split-pr/SKILL.md) | A large diff split into ordered, reviewable pull requests | `Use hl-split-pr to plan smaller PRs from this oversized diff.` |
