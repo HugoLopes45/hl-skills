@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/HugoLopes45/hl-skills/compare/v1.10.0...v1.11.0) (2026-11-18)
+
+
+### Features
+
+* add hl-reverse-engineering ([#48](https://github.com/HugoLopes45/hl-skills/issues/48)) ([88e6c82](https://github.com/HugoLopes45/hl-skills/commit/88e6c82521cb9feaca68bb8d9ffd8ea0614f7c6c))
+* **hl-deslop:** plan cleanup of existing code, prune useless tests, gate on lint ([#47](https://github.com/HugoLopes45/hl-skills/issues/47)) ([56e3e01](https://github.com/HugoLopes45/hl-skills/commit/56e3e01e84d655dfe008f5be33acf58f2604bcec))
+
 ## [1.10.0](https://github.com/HugoLopes45/hl-skills/compare/v1.9.0...v1.10.0) (2026-11-18)
 
 
