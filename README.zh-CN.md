@@ -99,6 +99,7 @@ npx skills add HugoLopes45/hl-skills
 | [hl-debug](./skills/hl-debug/SKILL.md) | 缺陷的已证实原因，来自一个能复现症状的循环 | `Use hl-debug to find why this test fails only in the full suite.` |
 | [hl-ci-fix](./skills/hl-ci-fix/SKILL.md) | 修好失败的 PR 检查，且不削弱测试或 CI | `Use hl-ci-fix to fix the failing checks on this PR.` |
 | [hl-security-audit](./skills/hl-security-audit/SKILL.md) | 一份从源码追踪、按优先级排序的安全报告 | `Use hl-security-audit to audit our password-reset flow for account-takeover risks.` |
+| [hl-reverse-engineering](./skills/hl-reverse-engineering/SKILL.md) | 从可引用的证据出发，弄清已发布的应用、二进制文件、软件包或扩展如何工作、改了什么、是否应保留 | `Use hl-reverse-engineering to tell me if this ad blocker .crx is safe to keep.` |
 | [hl-pentest](./skills/hl-pentest/SKILL.md) | 经授权、有边界、带观察证据的渗透测试 | `Use hl-pentest to plan paranoid tests for this staging API. Do not contact it yet.` |
 | [hl-security-fix](./skills/hl-security-fix/SKILL.md) | 从根源修复漏洞，再复测攻击和绕过方式 | `Use hl-security-fix to close this cross-tenant export flaw and verify the fix.` |
 | [hl-improve](./skills/hl-improve/SKILL.md) | 交给另一个智能体执行的优先级修复计划，从不修改源码 | `Use hl-improve to prioritize what we should fix in this codebase.` |

@@ -97,6 +97,7 @@ From the first idea to the merged pull request. Find your moment, then copy the 
 | [hl-debug](./skills/hl-debug/SKILL.md) | The proven cause of a bug, from a loop that shows the symptom | `Use hl-debug to find why this test fails only in the full suite.` |
 | [hl-ci-fix](./skills/hl-ci-fix/SKILL.md) | Failing PR checks fixed, without weakening tests or CI | `Use hl-ci-fix to fix the failing checks on this PR.` |
 | [hl-security-audit](./skills/hl-security-audit/SKILL.md) | A prioritized security report, traced from the source | `Use hl-security-audit to audit our password-reset flow for account-takeover risks.` |
+| [hl-reverse-engineering](./skills/hl-reverse-engineering/SKILL.md) | How a shipped app, binary, package or extension really works, what changed, or whether to keep it, from cited evidence | `Use hl-reverse-engineering to tell me if this ad blocker .crx is safe to keep.` |
 | [hl-pentest](./skills/hl-pentest/SKILL.md) | Authorized, bounded penetration tests with observed evidence | `Use hl-pentest to plan paranoid tests for this staging API. Do not contact it yet.` |
 | [hl-security-fix](./skills/hl-security-fix/SKILL.md) | A vulnerability fixed at its root, then attacks and bypasses retested | `Use hl-security-fix to close this cross-tenant export flaw and verify the fix.` |
 | [hl-improve](./skills/hl-improve/SKILL.md) | Prioritized fix plans for another agent; never edits source code | `Use hl-improve to prioritize what we should fix in this codebase.` |
