@@ -88,7 +88,7 @@ I read the links export and page list you supplied. Navigation links may be incl
 2. **The care index page links to a redirecting page with the anchor "read more".**
    `/articles/repotting-old` has 1 inbound link in `site-links.csv` (row 4). It returns 301 in `site-pages.csv` (row 6), so it redirects. Point the link to the final URL and use the anchor "repotting a houseplant".
 
-Verdict: Fix first
+Verdict: Fix later
 
 **Next:**
 1. In the care index page, add a link to `/articles/watering-schedule` with the anchor "watering schedule for houseplants".

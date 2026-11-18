@@ -36,7 +36,7 @@ Use this shape for a holding statement and for each update before the facts are 
 
 ```text
 We are aware of [confirmed issue, in plain words].
-We are investigating, and we have done [confirmed actions only].
+[PLACEHOLDER: confirmed actions, or an owner-approved commitment; state an investigation only if confirmed].
 Our next update is at [PLACEHOLDER: time and time zone, set by the owner].
 ```
 

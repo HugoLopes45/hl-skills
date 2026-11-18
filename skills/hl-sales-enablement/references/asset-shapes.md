@@ -40,7 +40,7 @@ Order, one idea per slide:
 
 - Four parts in order: name and company; a specific reason, tagged to a supplied trigger; a request for permission to continue; and nothing more until the buyer answers.
 - Never claim a prior contact that did not happen, and never claim to know the buyer's situation without a source.
-- Stop after the second no. Log each refusal reason for the sequence review.
+- Stop at the first refusal of permission or request to end contact. Address a product objection only while permission to continue remains. Log each refusal reason for the sequence review.
 - Call recording and calling-consent rules go to the owner's adviser.
 
 ## Live objection

@@ -4,11 +4,11 @@ Read this file when the user asks how to move a page up in results, supplies a s
 
 ## Buckets
 
-Use query and page pairs for a recent period, compared with the period before to filter spikes. Sort each pair into one bucket.
+Use query and page pairs for a recent period, compared with the period before to filter spikes. Sort each matching pair into one bucket. `Near the top` takes precedence over `Striking distance` when both match. Leave unmatched pairs `unclassified`.
 
 | Bucket | Filter (heuristic default) | Fix type |
 |---|---|---|
-| Striking distance | Average position 8 to 20; impressions above a floor you set from the export size | Content and internal links |
+| Striking distance | Average position 5 to 20 (heuristic default); impressions above a floor you set from the export size | Content and internal links |
 | Weak click-through | Position 1 to 3; click-through low against other pages at similar positions | Title and meta description |
 | Near the top | Position 4 to 7 on a query that matters to the business | Content, internal links, and the format the results use |
 

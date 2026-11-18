@@ -17,7 +17,7 @@ Map each provider decline code to one type, using the provider's current documen
 - Soft (temporary, such as low balance or a processing error) --> retry on the schedule below.
 - Hard (permanent, such as a card reported lost or stolen, a closed account, or an expired card) --> no retry; ask for a new payment method.
 - Authentication (the bank needs the customer to confirm) --> send the customer to confirm; check in the provider's current documentation whether a server-side retry can clear it.
-- Code not in the documentation --> `unclassified`: at most one retry (heuristic default), then ask for a new method. The owner classifies the code.
+- Code not in the documentation --> `unclassified`: no retry until the owner classifies it as soft using verified provider guidance. Ask for that guidance or a new payment method.
 
 ## Retry schedule
 
@@ -28,18 +28,19 @@ Map each provider decline code to one type, using the provider's current documen
 
 ## Grace period and pause
 
-Set access by customer type. Immediate lockout is never the first step.
+Set proposed access by customer type only when an event in the owner's verified provider-status map permits the change. Preserve existing access without that event. Immediate lockout is never the first step.
 
 - B2B: full access during the grace period (heuristic default). The owner sets the length; heuristic default: 7 to 14 days after the last failed attempt.
 - Consumer: read-only access (heuristic default), with a visible notice that the payment is past due and how to fix it, on every page until the payment succeeds.
 - Blank customer type on a record --> the grace rule is `unavailable` for that account. No customer type field and no customer type stated --> `Gaps found`.
-- After the grace period, pause the account. Do not delete its data. Deletion follows the owner's stated retention terms.
+- After the grace period, propose a pause only when the owner's verified provider-status map permits it. Do not delete account data. Deletion follows the owner's stated retention terms.
 
 ## Timeline rules
 
-- Payment fails, soft --> schedule retries and start the grace rule for the customer type.
-- Retry succeeds --> full access is restored and the billing messages stop.
-- Last retry fails --> the grace rule applies, then the owner's map sets the account state.
+- Payment fails, soft --> schedule retries; the failure alone changes no access.
+- A mapped subscription-status event arrives --> apply the mapped account state and its grace rule for the customer type.
+- Retry succeeds --> stop the billing messages; restore access only when the mapped subscription-status event confirms it.
+- Last retry fails --> follow the mapped account state and grace rule; the failure alone changes no access.
 - Payment fails, hard --> no retry; the notice asks for a new method.
 - Payment fails, authentication --> the notice asks the customer to confirm.
 - Customer cancels or changes plan --> stop retries and notices.

@@ -39,7 +39,7 @@ Name the current phase and, if one exists, the next one. Then take the matching 
 
 - Send an onboarding email sequence that introduces the key features to new users.
 - Mention the launch in the next regular roundup email, for people who missed it.
-- Publish comparison pages for the alternatives buyers name.
+- Draft comparison pages for the alternatives buyers name. Before publication, confirm each claim is accurate, current, and provable from a dated source; the owner approves publication.
 - Add a no-code, interactive demo so visitors can try the product before signing up.
 - Update each site section that describes the product, so no old description remains.
 - Plan the next launch moment before this one ends.

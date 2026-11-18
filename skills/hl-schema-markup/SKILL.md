@@ -67,8 +67,8 @@ Then numbered points, worst first. Each point gives the property, the markup val
 
 Verdict words:
 - `Fix first`: markup describes content the page does not show, or it does not parse.
-- `Fix later`: nothing in the markup you read is wrong, or the rendered DOM has no markup, and the page shows values that could be marked up.
-- `Sound`: every markup value in the HTML you read matches the visible text. Name the types you checked.
+- `Fix later`: no `Fix first` or `Stopped` item, and confirmed visible values are missing from the markup, including a rendered DOM with no markup.
+- `Sound`: every markup value in the HTML you read matches the visible text, with no `Fix first`, `Stopped`, or `Fix later` item. Name the types you checked.
 - `Stopped`: no HTML, rendered DOM, or URL; or no `Fix first` item and a value is `not confirmed in static HTML`, which only the rendered DOM can settle.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one action a person can take now, in order.
