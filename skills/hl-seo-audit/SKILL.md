@@ -1,6 +1,6 @@
 ---
 name: hl-seo-audit
-description: "Audit a page or small site for search indexing, technical SEO, on-page basics, and AI-answer readiness, from supplied HTML, exports, or fetched pages. Ranks findings by impact with quoted evidence; never invents rankings or traffic. Use when the user asks why a page is not indexed or ranking, why organic traffic dropped, or wants an SEO health check. Not for visibility in ChatGPT, Perplexity, Claude, or other AI answer engines (hl-ai-search-visibility)."
+description: "Audit a page or small site for search indexing, technical SEO, on-page basics, and AI-answer readiness, from supplied HTML, exports, or fetched pages. Ranks findings by impact with quoted evidence; never invents rankings or traffic. Use when the user asks why a page is not indexed or ranking, why organic traffic dropped, wants an SEO health check, or needs a site structure, migration check, or ranking diagnosis. Not for visibility in ChatGPT, Perplexity, Claude, or other AI answer engines (hl-ai-search-visibility)."
 ---
 # SEO Audit
 
@@ -36,6 +36,20 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 - Do not invent a site, audience, goal, market, or target query.
 - An exact output format the user names (JSON only, one table) replaces the default wrapper. Evidence, permission, and safety rules still apply inside it.
 
+## Site structure
+
+Use this mode when the user asks for a site structure and supplies a page list or a list of what the business offers.
+Build the draft from the supplied material only; do not fetch the site.
+Read [references/site-structure.md](references/site-structure.md) for the site types and their usual sections.
+With neither list, stop (see Stop conditions).
+
+1. Classify the site type: software product, content site, shop, documentation, mixed, or small business. Name the supplied signals that show it. Mark a weak match as a guess.
+2. Draft the hierarchy from that type's usual sections. Tie each section to a supplied page URL or offer. Leave out a usual section with no supplied page or offer; name it once under the draft so the owner can supply it. Link placement inside the structure stays with `hl-internal-linking`.
+
+Line 1 is one bold sentence that names the site type and says the draft needs the owner's confirmation.
+Then give the draft as a nested list, then `Verdict: Draft`, or `Verdict: Stopped` when both lists are missing.
+End with `**Next:**`: one action per line, in order, such as confirming the type, confirming each section, or supplying a missing page or offer.
+
 ## Priority
 
 Rank by what blocks search first. Order findings by layer, then by impact:
@@ -45,10 +59,24 @@ Rank by what blocks search first. Order findings by layer, then by impact:
 3. **On-page**: title, meta description, H1, heading order, internal links, image alt text.
 4. **Content**: does the page answer its target query with specific, supported facts? Give an author and dates where the topic needs them.
 5. **AI-answer readiness (GEO)**: generative engine optimization makes content usable in AI answers. Check sourced facts and unsupported numbers. Assess answer fit only against established query intent; do not require question headings or predict citation effects from their absence. Citability is a proxy: a citable page does not mean an AI system will cite it. Leave answer-engine crawlers and controls to `hl-ai-search-visibility`.
+6. **Structured data**: markup values against the visible text, per `references/checks.md`.
+7. **Links**: paid or exchanged links and their required rel values, per `references/checks.md`.
+
+Findings from the international, migration, rankings-push, and traffic-drop references take the layer of the page check they affect.
+
+Within a layer and a rating, put findings on a revenue page first, such as a service, product, or booking page the user names. This changes order only, not a rating. The count of affected pages does not change a rating; one blocked revenue page outranks many cosmetic warnings.
 
 Google's [Core Web Vitals guidance](https://web.dev/articles/vitals), checked 2026-11-13: good LCP is at most 2.5 seconds, INP 200 milliseconds, and CLS 0.1. Assess all three at the 75th percentile of field visits, separately for mobile and desktop. A lab run or TBT proxy does not establish field INP or a passing field assessment.
 
 The check catalog with the evidence to read for each item is in [references/checks.md](references/checks.md).
+
+Read [references/international.md](references/international.md) when the site has pages in more than one language or region.
+
+Read [references/migration.md](references/migration.md) when the user plans or reviews a move of domains, URLs, or platforms, or a section served through a proxy.
+
+Read [references/rankings-push.md](references/rankings-push.md) when the user asks how to move a page up in results, supplies a search-performance export for that purpose, or plans to publish a new page.
+
+Read [references/traffic-drop.md](references/traffic-drop.md) when the user asks why organic traffic dropped, or supplies an export for a drop.
 
 ## Workflow
 
@@ -64,15 +92,18 @@ Reader: a site owner or marketer who decides this week which change to ship. The
 
 Line 1 is one bold plain sentence that answers the user's question. It never opens with a label, verdict word, number, or path.
 
-Under line 1, in plain sentences: each blocker, each unconfirmed item that limits the answer, and what you did not read or run.
+Under line 1, in plain sentences: each blocker, each unconfirmed item that limits the answer, and what you did not read or run, including any crawl limit or page left out of a sample.
 
-Then numbered points, worst first. Each point is a bold sentence stating the problem, then its consequence, the quoted evidence, and the fix when the fix is not obvious.
+Then numbered points, worst first. Each point is a bold sentence stating the problem, then its consequence, the quoted evidence, and the fix when the fix is not obvious. Merge findings with one cause into one point. When the site has only a few findings, say so instead of padding the list.
+
+When the user supplies an earlier audit, keep worst-first order and say in each point whether the finding is new or still open. List resolved findings in one last point. Call a finding resolved only after re-running its check. Call a page new or gone only when both audits crawled the same scope.
 
 Verdict words:
 - `Fix first`: a finding blocks indexing or the target query.
-- `Fix later`: no blocker; on-page, content, or GEO gaps remain.
+- `Fix later`: no blocker; any non-blocking finding remains.
 - `Sound`: no finding in the checks you ran; name those checks.
-- `Stopped`: no page evidence to audit.
+- `Draft`: a site structure is drafted; owner review is pending.
+- `Stopped`: no page evidence to audit, or no list for a site structure.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one action a person can take now, in order.
 
@@ -108,5 +139,6 @@ Verdict: Fix first
 
 ## Stop conditions
 
-- No URL, HTML, or export: Stopped. Ask for one of them.
+- Outside Site structure, no URL, HTML, or export: Stopped. Ask for one of them.
 - A screenshot shows visible text only. Indexing, header, and markup checks need HTML or a URL.
+- Site structure request with neither a page list nor a list of offers: Stopped. Ask for one of them.

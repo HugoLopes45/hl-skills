@@ -41,9 +41,9 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ### draft (default)
 
-1. Establish the viewer's situation and known relationship to the subject. Connect the opening to a supported demonstration and an available next action. Do not invent an audience segment or a universal hook duration.
-2. Write the spoken lines first, then match each beat to a shot and its on-screen text. Separate proposed visuals from supplied assets. Include requested title, cover text, caption and topic tags; tags are editorial suggestions, not measured search demand.
-3. When duration is supplied, allocate it across beats and check that the schedule totals that duration. Label timing as estimated until a read-through in the target language verifies it. Do not use one universal speech rate across languages.
+1. Establish the viewer's situation and known relationship to the subject. Connect the opening to a supported demonstration and an available next action. Do not invent an audience segment or a universal hook duration. Choose the beat order from [references/video-structures.md](references/video-structures.md). Choose the opening from [references/hook-patterns.md](references/hook-patterns.md) when a hook is requested.
+2. Write the spoken lines first, then match each beat to a shot and its on-screen text. Separate proposed visuals from supplied assets. Subtitle the spoken lines by default unless the brief opts out; subtitles are the spoken lines with their timings, not a separate script. On-screen text beyond the subtitles stays limited to what the brief or the shot plan requires. Include requested title, cover text, caption and topic tags; tags are editorial suggestions, not measured search demand.
+3. When duration is supplied, allocate it across beats and check that the schedule totals that duration. Label timing as estimated until a read-through in the target language verifies it. Do not use one universal speech rate across languages. For a voiceover, the Next step asks the editor to listen on a phone and mark unclear lines for re-recording.
 4. Preserve music and asset-rights status, sponsorship status, applicable disclosure checks and source gaps. Keep them outside spoken copy unless the intended disclosure must appear in the video.
 5. Check that every requested component is usable, every factual claim has support, and the next action exists. Do not leave an unsupported operation or result in spoken copy while flagging only its shot: mark the claim itself wherever it appears. Filming readiness requires confirmation of necessary proposed assets and actions; publication additionally requires applicable rights and disclosure checks.
 
@@ -71,16 +71,16 @@ The supplied workshop guide supports the three steps. The timing below is a 15-s
 
 ```markdown
 ## Spoken lines
-0–5 s: Open the clasp.
-5–10 s: Slide the new strap through the loop.
-10–15 s: Close the clasp and check that it holds.
+0-5 s: Open the clasp.
+5-10 s: Slide the new strap through the loop.
+10-15 s: Close the clasp and check that it holds.
 
 ## Shot plan
 | Time | Visual | On-screen text |
 |---|---|---|
-| 0–5 s | Supplied clasp close-up | Open |
-| 5–10 s | Proposed strap insertion close-up | Slide |
-| 10–15 s | Supplied finished clasp | Close and check |
+| 0-5 s | Supplied clasp close-up | Step 1 of 3 |
+| 5-10 s | Proposed strap insertion close-up | Slide |
+| 10-15 s | Supplied finished clasp | Close and check |
 
 ## Publishing copy
 Title: Replace the strap in three steps

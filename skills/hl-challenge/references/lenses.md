@@ -38,7 +38,7 @@ Read only the chosen lens file, then follow it within the depth's format.
 - Plain words: the verdict in everyday words first. Define a lens term once at first use, in a few words.
 - Name concrete things: the component, the metric, the segment, the failure scenario. Generic advice does not count.
 - The target matches the lens's "Stand down" line: say the lens does not fit and suggest a better one.
-- Read-only unless the user asks for edits. Without that request, put code a mode writes or cuts in the reply or a temporary directory.
+- Read-only, as SKILL.md states: put code a mode writes or cuts in the reply or a temporary directory.
 - Never load another skill.
 
 ## Panel
@@ -49,6 +49,6 @@ Read only the chosen lens file, then follow it within the depth's format.
 2. With subagents: run each lens in its own subagent, all in parallel. Give each one the lens file content, the target, the depth, and the rules above, and nothing about the other lenses. Wait for every lens to return before you answer, and leave no background job or monitor running. Without subagents: run the lenses one after another. State whether the lenses ran independently once, with the evidence this qualifies.
 3. Answer in this order:
    - Line 1, bold: where the lenses agree and where they split, in plain words (`Two of three lenses say fix first; they split on the queue.`). Never merge them into one recommendation; the user decides.
-   - `## Where they disagree`: each real disagreement in one line, with the lens names on each side; none: say so.
+   - `## Where they disagree`: each real disagreement in one line, with the lens names on each side, the trade-off behind it, and the evidence that would settle it (the check to run goes in Next); none: say so.
    - Each lens's distinct findings under `## <lens>`, with its evidence and verdict preserved once. Do not paste its full reply or repeat shared findings.
    - After every lens returns, end with `Verdict: Panel complete`, immediately followed by `**Next:**` for the decisions or actions. Completion does not mean agreement.

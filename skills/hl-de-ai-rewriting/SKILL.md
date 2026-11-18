@@ -19,7 +19,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 ## Evidence rules
 
 - The supplied text is the only evidence. Do not add facts, examples, names, numbers, sources, anecdotes, or opinions the author did not write.
-- Before any edit, list what the text claims: each claim, number with its unit, name, date, condition, negation, opinion, and cause-and-effect link. The rewrite keeps every item. A style edit is not a fact-checking mandate: retain an unsupported opinion in neutral wording and flag it outside the rewrite rather than silently deleting it. For example, a speed-and-trust contrast must retain both ideas, not merely the nearby return-policy numbers.
+- Before any edit, list what the text claims: each claim, number with its unit, name, date, condition, negation, opinion, and cause-and-effect link. The rewrite keeps every item. A style edit is not a fact-checking mandate: retain an unsupported opinion in neutral wording and flag it outside the rewrite rather than silently deleting it.
 - Flag a sentence only for a pattern in [references/patterns.md](references/patterns.md). Give the reason in terms a reader feels: vague, padded, unclear, or unsupported. "It sounds generated" is not a reason.
 - Do not claim, promise, or aim for any AI-detection result. Detector output does not measure clarity or accuracy. Do not add typos, odd word choices, or random variation to change how a text scores.
 - Keep the author's language, register, and terms. Do not translate.
@@ -36,9 +36,9 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ### rewrite (default)
 
-1. **List the claims.** Number each claim, number, name, date, condition, and negation, with the sentence it comes from.
+1. **List the claims.** Number each item of the claim list, with the sentence it comes from.
 2. **Flag the sentences.** Mark each sentence that matches a pattern in the reference. Name the pattern and give one reason.
-3. **Rewrite each flagged sentence.** Preserve meaning, not padded wording. Replace vague claims with plain equivalents, such as easy returns instead of seamless returns, without adding proof or removing the author's view. Keep negation, condition, cause, and order. Remove a hedge only when it does not qualify a claim.
+3. **Rewrite each flagged sentence.** Preserve meaning, not padded wording. Replace vague claims with plain equivalents, such as easy setup instead of seamless setup, without adding proof or removing the author's view. Keep negation, condition, cause, and order. Remove a hedge only when it does not qualify a claim.
 4. **Check the meaning.** Compare the rewrite with the list. Each item survives, no item is added, and each qualifier is kept.
 5. **Leave a sentence alone** when the change is not clearly better. Report each changed sentence with its reason.
 
@@ -54,12 +54,12 @@ Line 1 is one bold plain sentence that states the result, for example "**The not
 
 Under line 1, in plain sentences: each claim the rewrite could not state without more information from the author, and each sentence whose meaning you could not confirm. Omit both when none apply.
 
-Rewrite mode puts the full text in a `text` fence with no added headings. After the fence, list each changed sentence: the original in quotes, its pattern, and one sentence of reason.
+Rewrite mode puts the full text in a `text` fence with no added headings. After the fence, list each changed sentence: the original in quotes, its pattern, and one sentence of reason. List each flagged sentence you left unchanged the same way, with what the author must supply.
 
 Flag mode lists each flagged sentence with its pattern and reason. It has no rewrite.
 
 Verdict words:
-- `Rewritten`: rewrite complete; each change is listed; the claim list is kept.
+- `Rewritten`: rewrite mode complete; each change is listed, or none was needed; the claim list is kept.
 - `Flagged`: flag mode complete.
 - `Stopped`: no text to work on.
 
@@ -80,18 +80,19 @@ Example (signature only; the domain is not a fixture):
 ```text
 Starting 2 June, flour deliveries move from Tuesdays to Thursdays.
 Orders placed by Wednesday at 6 p.m. arrive the following Thursday.
-Call the shop if a delivery is missing.
+The change helps us serve bakers better.
+Contact us with any questions.
 ```
 
 1. "We are excited to share some important news about our delivery schedule." Pattern: empty announcement. Reason: it states no fact; the next sentence carries the change. Removed.
-2. "This thoughtful change allows us to better serve our valued community of bakers." Pattern: vague praise. Reason: it claims a benefit with no fact behind it. Removed; restore it only if the author has a fact for it.
-3. "Please do not hesitate to reach out if you have any questions." Pattern: closing filler. Reason: it adds no instruction. Rewritten to the call to action.
+2. "This thoughtful change allows us to better serve our valued community of bakers." Pattern: vague praise. Reason: it claims a benefit with no fact behind it. Rewritten in neutral wording.
+3. "Feel free to get in touch with any queries." Pattern: closing filler. Reason: it adds no instruction. Rewritten to the call to action.
 
 Verdict: Rewritten
 
 **Next:**
 1. Check the three facts in the rewrite (2 June, Tuesday to Thursday, Wednesday 6 p.m.) against the supplier notice.
-2. Decide whether to restore the benefit sentence, if you have a fact for it.
+2. Confirm that "The change helps us serve bakers better." is your view, or remove it.
 3. Put the text in the newsletter yourself.
 ````
 

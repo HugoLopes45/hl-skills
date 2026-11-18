@@ -24,7 +24,7 @@ Walk the code as if it must survive production under hostile load. Find what bre
 
 ### `review`
 
-Report the consequential supported findings, worst first; skip minor issues. For each, explain what is wrong with `file:line` evidence and relevant uncertainty. Put proposed changes in Next. Give the verdict on its own line before Next.
+Report the consequential supported findings, worst first; skip minor issues. For each, explain what is wrong with `file:line` evidence and relevant uncertainty. Put proposed changes in Next. Use the `audit` verdict words.
 
 ## Stand down
 

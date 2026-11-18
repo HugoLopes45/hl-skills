@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/HugoLopes45/hl-skills/compare/v1.9.0...v1.10.0) (2026-11-18)
+
+
+### Features
+
+* **growth:** add 14 skills and expand marketing workflows ([0984c5f](https://github.com/HugoLopes45/hl-skills/commit/0984c5fc5b11e1a0d3e787f1a9bb9fed11024305))
+
 ## [1.9.0](https://github.com/HugoLopes45/hl-skills/compare/v1.8.0...v1.9.0) (2026-11-17)
 
 
