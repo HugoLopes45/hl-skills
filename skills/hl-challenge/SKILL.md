@@ -57,7 +57,7 @@ Under line 1, state the decisive untested assumption or limitation, without repe
 - No target or no goal: line 1 says in plain words what is missing and why it blocks, e.g. `**I need the plan or work before I can assess its goal.**`, then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways to unblock, default marked; they appear nowhere else.
 
 ````markdown
-**The leaderboard misses one-minute freshness, and rebuilds can overlap.**
+**The leaderboard misses its one-minute freshness promise.**
 I checked the plan against the freshness goal in `spec.md:12`; I read the code but did not run it.
 
 1. **New scores never reach the precomputed table until the next rebuild.**
@@ -88,7 +88,7 @@ Verdict: Fix first
 
 ## Premortem
 
-With `--premortem`, assume the goal failed at a horizon that fits it: 12 months by default; for a one-off change, just after it runs. Missing goal, actor, or mechanism: ask.
+With `--premortem`, assume the goal failed at a horizon that fits it: 12 months by default; for a one-off change, just after it runs. Missing goal, actor, or mechanism: ask, using the stopped form in Report (`Verdict: Stopped`).
 
 Scenarios to examine, where they apply: insufficient demand, a stronger alternative, a reliability failure, a security failure. Say which events are imagined. Never invent releases, customer quotes, revenue, fines, or probabilities.
 
@@ -96,7 +96,7 @@ For each scenario, trace a present weakness, supported by the input, through a p
 
 Rank causes by effect: fatal (defeats the goal alone), serious (materially threatens it), minor (limited impact). Two serious causes are not automatically fatal.
 
-Line 1, bold, one plain sentence, written as if the failure already happened ("Three months after launch, admins still file tickets because a stalled invite has no fix."): the worst cause and its effect, never opening with a rank. Under it, state what you read, its limits, and that the events after the present weakness are imagined. Then a numbered list of supported scenarios, worst first. Each: a bold plain sentence with the cause and its rank in words, then the chain from the present weakness to the failed goal, one link per line; mark only the first link as the fact you found:
+Line 1, bold, one plain sentence, written as if the failure already happened ("Two months after the move, night staff still phone the office because door badges fail when the network drops."): the worst cause and its effect, never opening with a rank. No supported cause: line 1 says so and names what you read. Under it, state what you read, its limits, and that the events after the present weakness are imagined. Then a numbered list of supported scenarios, worst first. Each: a bold plain sentence with the cause and its rank in words, then the chain from the present weakness to the failed goal, one link per line; mark only the first link as the fact you found:
 ```text
 plan.md:14  backups run on the same disk as the database   # in the plan today
 --> the disk fails

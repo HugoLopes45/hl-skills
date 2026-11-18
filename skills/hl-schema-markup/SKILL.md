@@ -15,7 +15,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Evidence rules
 
-- Read markup from the supplied HTML or rendered DOM. Static HTML misses markup that a script adds later. Write "not confirmed in static HTML" and ask for the rendered DOM. Never write "no structured data" from a static read alone.
+- Read markup from the supplied HTML or rendered DOM. Static HTML misses markup that a script adds later. Write "not confirmed in static HTML" for markup or values absent from the static HTML, and ask for the rendered DOM. Never write "no structured data" from a static read alone.
 - Factual claims represented by markup must agree with the page's visible content. Do not require technical vocabulary (`@context`, `@type`, identifiers, or equivalent machine-readable date formats) to appear literally in visible copy. Verify type-specific required properties against current schema.org and target-engine documentation.
 - Sources checked on 2026-11-13: [Google structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies) and [Google AI features](https://developers.google.com/search/docs/appearance/ai-features). Recheck changing requirements before publication.
 - Google's structured data policy says: "Don't mark up content that is not visible to readers of the page." Cite it as Google's rule for its search features. Do not extend it to other engines without a source.
@@ -33,12 +33,27 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Workflow
 
-1. Identify the page type from its visible content: product, article, FAQ, organization, event, local business, and similar. When the type is unclear, list the candidate types and ask.
+1. Identify the page type from its visible content: product, article, FAQ, organization, event, local business, and similar. When the type is unclear, list the candidate types and ask. Before recommending a type, check in Google's structured data documentation that Google still supports it for a search feature; if it does not, do not recommend the type for that feature. Do not report missing markup for a feature that Google no longer supports as a broken implementation; check each feature's status first, such as FAQ, HowTo, and site search box markup. Without web access, write that this check was not run. For a generated set of pages, choose each page's type: its entity type, an item list (`ItemList`) on the hub page (the index that links to the set), and a breadcrumb trail on every page that shows one. Apply the check above to both. Add each value only when that page shows it.
 2. Read each JSON-LD block and each microdata element. Record its type, each property, its value, and the line.
-3. Find the same value in the visible text and record its line. Classify each item as `matches`, `mismatch` (the visible value differs), or `hidden in markup` (no visible value).
+3. Find the same value in the visible text and record its line. Classify each item as `matches`, `mismatch` (the visible value differs), `hidden in markup` (no visible value in the rendered DOM), or `not confirmed in static HTML` (no visible value in the static HTML; the rendered DOM was not read, and a script may add the value).
 4. Parse JSON-LD with an available JSON parser and report the actual result. If no parser is available, label syntax unverified. For microdata, inspect its own item attributes rather than requiring JSON-LD keys. Check type and property definitions against schema.org.
-5. List the properties the visible text supports but the markup lacks. Add a property only when the page shows its value.
-6. Write corrected markup for supported facts only. Omit unsupported optional properties. If a required value is missing, request it and label the markup incomplete; never present placeholder values as deployable JSON-LD.
+5. List the properties the visible text supports but the markup lacks. Add a property only when the page shows its value. For a breadcrumb trail, the markup must list the items the visible trail shows, in the same order.
+6. Write corrected markup for supported facts only. Omit unsupported optional properties. If a required value is missing, request it and label the markup incomplete; never present placeholder values as deployable JSON-LD. Combine several types for one page in one `@graph`, give each entity a stable `@id`, and reference a shared entity such as the publisher by its `@id`. When you embed JSON-LD in HTML, escape every `<` as `\u003c` in the serialized JSON, and keep the source data unchanged.
+
+## Business entity
+
+- Compare the name in the markup with the visible footer and title; classify a difference as `mismatch`.
+- Compare the phone number in the markup with the visible text and classify it per step 3. When the number appears and the page shows other numbers too, ask which number is intended; several numbers can be intended, such as call tracking.
+- When you read several pages, report a business name or phone number that differs between them as a point, and ask which is intended.
+- Write `sameAs` in corrected markup only for profiles the page links to and the owner confirms exist. Never add a profile that may belong to someone else.
+- Do not copy a rating from an outside profile into the markup, and do not mark up reviews the business wrote about itself, singly or as an `aggregateRating`. For reviews of the business collected on its own site, write an `aggregateRating` only when the search engine's current review policy allows it. Check the search engine's current review policy before you recommend review markup. Without web access, write that this check was not run.
+- Do not put an address the page hides, or a home address, in the markup. Use `areaServed` for a service area; it does not replace an address. Do not create a business entity for a town where the page shows no premises address.
+
+## Article and FAQ
+
+- Mark the author as a Person only when the page names the author. Apply the `sameAs` rule above to the author's profiles.
+- Do not add an Article `keywords` property unless the current search engine documentation names it as used. Without web access, write that this check was not run.
+- For an FAQ section, claim no benefit from the markup beyond a question and answer structure.
 
 ## Output
 
@@ -52,13 +67,13 @@ Then numbered points, worst first. Each point gives the property, the markup val
 
 Verdict words:
 - `Fix first`: markup describes content the page does not show, or it does not parse.
-- `Fix later`: the markup is valid and matches, but the page shows more properties that could be marked up.
-- `Sound`: every markup value in the HTML you read matches the visible text. Name the types you checked.
-- `Stopped`: no HTML, rendered DOM, or URL.
+- `Fix later`: no `Fix first` or `Stopped` item, and confirmed visible values are missing from the markup, including a rendered DOM with no markup.
+- `Sound`: every markup value in the HTML you read matches the visible text, with no `Fix first`, `Stopped`, or `Fix later` item. Name the types you checked.
+- `Stopped`: no HTML, rendered DOM, or URL; or no `Fix first` item and a value is `not confirmed in static HTML`, which only the rendered DOM can settle.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one action a person can take now, in order.
 
-Stopped: line 1 says what is missing and why it blocks the check. Then `Verdict: Stopped`. Next holds the grouped questions, each with its default (or `Default: none`) and what it changes.
+Stopped: line 1 says what is missing and why it blocks the check. Then `Verdict: Stopped`. Next holds the grouped questions, each with its default (or `Default: none`) and what it changes. When the stop is an unconfirmed value, keep the numbered points for what you checked.
 
 Reader rules:
 - Define each term once at first use: structured data (machine-readable labels in the page), JSON-LD (structured data in a script block), schema.org (the shared vocabulary of types and properties), rich result (an enhanced search listing, when the search engine shows one).
@@ -69,17 +84,17 @@ Example (signature only; the domain is not a fixture):
 
 ````markdown
 **Your bakery class page marks up a price the page does not show, so the markup must change before release.**
-I read the HTML you pasted. I did not run a validator or render the page.
+I read the HTML you pasted. I did not run a validator or render the page. The year in the start date is not confirmed in static HTML.
 
 1. **The Event markup gives a seat price the page does not show.**
-   The JSON-LD `"price": "35.00"` (line 9) and the visible text `Seats: from $42` (line 21) differ. Structured data must match the visible text, so the markup is a mismatch. Fix: set the markup value to the price the page shows, or show the price the markup gives.
-2. **The start date has no year.**
-   The visible text `Saturday 14 June, 10:00` (line 19) gives no year, so the markup `"startDate": "2026-06-14T10:00"` (line 8) adds one the page does not show. Fix: show the year in the visible text, then keep the markup date.
+   The JSON-LD (structured data in a script block) `"price": "35.00"` (line 9) and the visible text `Seats: from $42` (line 21) differ. Structured data must match the visible text, so the markup is a mismatch. Fix: set the markup value to the price the page shows, or show the price the markup gives.
+2. **The start date has no year in the static HTML.**
+   The visible text `Saturday 14 June, 10:00` (line 19) gives no year, so the markup `"startDate": "2026-06-14T10:00"` (line 8) adds one that the static HTML does not show. A script may add the year, so the rendered DOM must confirm it. Fix: if the rendered DOM shows no year either, show the year in the visible text, then keep the markup date.
 
 Verdict: Fix first
 
 **Next:**
 1. In the page template, change the markup price on line 9 to the price the page shows, or change the visible price to match the markup. Confirm which one is correct first.
-2. Show the year beside the visible date on line 19, then keep the `startDate` on line 8.
-3. Run the search engine's rich result test on the live URL after the change. It was not run here.
+2. Check the rendered DOM for the year of the visible date on line 19. If it has none, show the year beside that date, then keep the `startDate` on line 8.
+3. Run the search engine's rich result test (a check of markup for rich results) on the live URL after the change. It was not run here.
 ````

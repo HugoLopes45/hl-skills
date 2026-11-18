@@ -42,7 +42,7 @@ Host support differs. Name the primitive, then check that the target host has it
 
 ### `review`
 
-Review an instruction file, skill, hook, command, tool-server setup, or subagent prompt. Look for rules the model already follows by default, judgment that should be deterministic code, deterministic logic buried in a prompt, the wrong primitive, and a weaker copy of something the host already provides. Report the supported issues, most consequential first, with the evidence and uncertainty needed to check each. Put proposed changes in Next. End with a one-line verdict before Next.
+Review an instruction file, skill, hook, command, tool-server setup, or subagent prompt. Look for rules the model already follows by default, judgment that should be deterministic code, deterministic logic buried in a prompt, the wrong primitive, and a weaker copy of something the host already provides. Report the supported issues, most consequential first, with the evidence and uncertainty needed to check each. Put proposed changes in Next. End with `Verdict: Reviewed`.
 
 ### `compose`
 

@@ -31,7 +31,7 @@ Start from the smallest thing that runs, and keep every step runnable. Before ad
 
 ### `roast`
 
-Skip what is fine. One line per finding: `[WRONG|BLOAT|SMELL] file:line - problem - what to do instead`. WRONG is broken behavior, a broken contract, or a security hole. BLOAT is unneeded lines, layers, or abstractions. SMELL is a structure that suggests a deeper design mistake. End with a count per tag.
+Skip what is fine. One numbered finding each: say in words whether it is broken behavior, unneeded code, or a sign of a deeper design mistake, then `file:line`, the problem, and what to do instead. End with a count per kind.
 
 ## Stand down
 

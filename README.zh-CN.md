@@ -146,6 +146,8 @@ npx skills add HugoLopes45/hl-skills
 | [hl-persona](./skills/hl-persona/SKILL.md) | 来自访谈、评论和工单的用户画像，不含任何编造 | `Use hl-persona to build buyer cards from these six interview notes, with no invented details.` |
 | [hl-competitor-analysis](./skills/hl-competitor-analysis/SKILL.md) | 注明日期的竞品档案，事实与推测分开 | `Use hl-competitor-analysis to profile these two rivals from their dated captures.` |
 | [hl-pricing](./skills/hl-pricing/SKILL.md) | 价格结构、价格区间，以及面向新买家的测试 | `Use hl-pricing to propose a plan structure and a test, from our buyer survey.` |
+| [hl-win-loss](./skills/hl-win-loss/SKILL.md) | 赢单和丢单的原因，按买家原话编码并计数 | `Use hl-win-loss to read why we lose to a rival from these deal records.` |
+| [hl-marketing-plan](./skills/hl-marketing-plan/SKILL.md) | 周期营销计划：至多三个押注，按漏斗阶段的行动，停止标准 | `Use hl-marketing-plan to plan next quarter's bets.` |
 
 ### 被找到
 
@@ -153,12 +155,15 @@ npx skills add HugoLopes45/hl-skills
 
 | 技能 | 你得到 | 试试这条提示词 |
 |---|---|---|
-| [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | 页面或小型网站的索引、技术 SEO 和页面基础问题 | `Use hl-seo-audit to find why this page is blocked from search.` |
+| [hl-seo-audit](./skills/hl-seo-audit/SKILL.md) | 搜索审核、网站结构、迁移检查和排名诊断 | `Use hl-seo-audit to find why this page is blocked from search.` |
 | [hl-keyword-research](./skills/hl-keyword-research/SKILL.md) | 来自买家用语和 Search Console 的关键词和主题集群 | `Use hl-keyword-research to pick the next page to write from this Search Console export.` |
 | [hl-content-brief](./skills/hl-content-brief/SKILL.md) | 一份页面简报：查询、意图、答案、大纲和待引用的事实 | `Use hl-content-brief to brief a guide on how to chase a late invoice, for freelance designers in the United States.` |
 | [hl-ai-search-visibility](./skills/hl-ai-search-visibility/SKILL.md) | 页面能否在 AI 回答中被找到和引用 | `Use hl-ai-search-visibility to check whether ChatGPT, Perplexity, and Google AI answers can use this page.` |
 | [hl-schema-markup](./skills/hl-schema-markup/SKILL.md) | 对照页面可见内容检查结构化数据 | `Use hl-schema-markup to check the JSON-LD on this product page against its visible price.` |
 | [hl-internal-linking](./skills/hl-internal-linking/SKILL.md) | 孤立页面，以及指向失效、重定向或 noindex 页面的链接 | `Use hl-internal-linking to find orphan pages and broken targets in this links export.` |
+| [hl-link-building](./skills/hl-link-building/SKILL.md) | 外链计划：目标页面、链接站点、外联草稿与检查 | `Use hl-link-building to plan which sites should link to our buyer guide.` |
+| [hl-local-visibility](./skills/hl-local-visibility/SKILL.md) | 本地列表、评价与线索回复的排序修复清单 | `Use hl-local-visibility to audit how my business shows in local search.` |
+| [hl-app-store-listing](./skills/hl-app-store-listing/SKILL.md) | 审核或起草应用商店列表字段，依据商店现行规则核对 | `Use hl-app-store-listing to rewrite my app store title and keywords.` |
 
 ### 写好文字
 
@@ -166,11 +171,11 @@ npx skills add HugoLopes45/hl-skills
 
 | 技能 | 你得到 | 试试这条提示词 |
 |---|---|---|
-| [hl-copywriting](./skills/hl-copywriting/SKILL.md) | 在缺少证据处留占位符的落地页文案 | `Use hl-copywriting to rewrite this hero without invented proof.` |
+| [hl-copywriting](./skills/hl-copywriting/SKILL.md) | 基于已提供事实的网站与产品文案、标语和界面微文案 | `Use hl-copywriting to rewrite this hero without invented proof.` |
 | [hl-article-writing](./skills/hl-article-writing/SKILL.md) | 基于你的简报和来源的解释性文章 | `Use hl-article-writing to turn this brief into a complete article for our publication, in the requested language. Keep every figure sourced.` |
 | [hl-de-ai-rewriting](./skills/hl-de-ai-rewriting/SKILL.md) | 更直白的文字，保留每个主张、数字和名称 | `Use hl-de-ai-rewriting to make this shipping notice clearer, keeping every date and fee.` |
-| [hl-email](./skills/hl-email/SKILL.md) | 一封邮件：主题、预览、正文和一个行动号召 | `Use hl-email to draft a renewal reminder from this brief, with placeholders for any offer we have not supplied.` |
-| [hl-email-sequence](./skills/hl-email-sequence/SKILL.md) | 序列地图：触发条件、时机、跳过规则和退出条件 | `Use hl-email-sequence to map a three-step welcome sequence from these recorded events.` |
+| [hl-email](./skills/hl-email/SKILL.md) | 一封邮件、媒体推介、更正或回复，围绕一个行动 | `Use hl-email to draft a renewal reminder from this brief, with placeholders for any offer we have not supplied.` |
+| [hl-email-sequence](./skills/hl-email-sequence/SKILL.md) | 生命周期和外联邮件序列：触发条件、时机、跳过规则和退出条件 | `Use hl-email-sequence to map a three-step welcome sequence from these recorded events.` |
 
 ### 把访客变成用户
 
@@ -180,6 +185,8 @@ npx skills add HugoLopes45/hl-skills
 |---|---|---|
 | [hl-page-cro-audit](./skills/hl-page-cro-audit/SKILL.md) | 访客与页面主要行动之间的障碍 | `Use hl-page-cro-audit to find what blocks booking on this clinic page, and label each hypothesis.` |
 | [hl-onboarding](./skills/hl-onboarding/SKILL.md) | 从首次运行到首次获得价值的最短路径 | `Use hl-onboarding to design the first-week flow for this fitness app from its step list.` |
+| [hl-lead-lifecycle](./skills/hl-lead-lifecycle/SKILL.md) | 线索阶段、资格判定、分配，以及向销售的交接 | `Use hl-lead-lifecycle to write the stages and handoff rules from my won and lost leads.` |
+| [hl-churn-prevention](./skills/hl-churn-prevention/SKILL.md) | 自愿与非自愿流失的拆分、含一次挽留优惠的取消流程，以及扣款失败的挽回规则 | `Use hl-churn-prevention to plan a cancel flow from our cancellation export.` |
 | [hl-ab-test-plan](./skills/hl-ab-test-plan/SKILL.md) | 一次 A/B 测试，含指标和基于你的基线的样本量 | `Use hl-ab-test-plan to plan a test on this pricing toggle, with sizing from our baseline export.` |
 
 ### 触达用户
@@ -188,9 +195,16 @@ npx skills add HugoLopes45/hl-skills
 
 | 技能 | 你得到 | 试试这条提示词 |
 |---|---|---|
-| [hl-social](./skills/hl-social/SKILL.md) | 适合你简报中平台的帖子和配文 | `Use hl-social to draft two captions from this brief. Platform and market are in the brief.` |
+| [hl-social](./skills/hl-social/SKILL.md) | 适合简报中平台的帖子、轮播图、评论和回复 | `Use hl-social to draft two captions from this brief. Platform and market are in the brief.` |
 | [hl-paid-ads](./skills/hl-paid-ads/SKILL.md) | 适用于任何广告平台、市场和货币的广告文案 | `Use hl-paid-ads to write three search ad variants from this brief, with missing proof as placeholders.` |
 | [hl-short-video](./skills/hl-short-video/SKILL.md) | 含台词、镜头和屏幕文字的短视频脚本 | `Use hl-short-video to turn this brief into a 30-second script for our chosen platform, with spoken lines, shots, on-screen text and rights checks.` |
+| [hl-referral-program](./skills/hl-referral-program/SKILL.md) | 不超过成本上限的推荐奖励，含规则和衡量方案 | `Use hl-referral-program to design a referral reward that stays under our acquisition target.` |
+| [hl-creator-deal](./skills/hl-creator-deal/SKILL.md) | 达人匹配度、付费试用合作、简报、合作条款和衡量方案 | `Use hl-creator-deal to evaluate this creator's fit and brief a sponsored post.` |
+| [hl-event-plan](./skills/hl-event-plan/SKILL.md) | 单场活动的办、试办、调整或放弃决定，含活动流程和复盘口径 | `Use hl-event-plan to decide whether this workshop is worth its budget.` |
+| [hl-public-relations](./skills/hl-public-relations/SKILL.md) | 媒体计划、推介信、新闻稿、回应评论和危机临时声明 | `Use hl-public-relations to plan press coverage for our product launch.` |
+| [hl-text-messaging](./skills/hl-text-messaging/SKILL.md) | 选择加入的短信方案：同意证明、流程规格、退订规则、顾问问题 | `Use hl-text-messaging to plan the restock text flow and its opt-in form.` |
+| [hl-prospecting](./skills/hl-prospecting/SKILL.md) | 根据提供的记录生成带来源的潜客名单和外联方案 | `Use hl-prospecting to build a sourced prospect list of independent bakeries in our town.` |
+| [hl-sales-enablement](./skills/hl-sales-enablement/SKILL.md) | 基于已提供证据的销售资料，每项主张标注来源 | `Use hl-sales-enablement to draft a one-pager for a champion.` |
 
 ### 衡量结果
 
@@ -232,7 +246,7 @@ Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot CLI、OpenCode、Pi�
 
 ## 局限
 
-每个技能都在真实智能体上分别以使用和不使用该技能的方式进行测试。这些是 AI 指令，不是有保证的结果：请审查输出。技能以你的智能体的全部权限运行，因此安装前请先阅读技能。请按 [SECURITY.md](./SECURITY.md) 的说明报告漏洞（英文）。
+结构检查已通过；智能体输出评估尚未完成。这些是 AI 指令，不是有保证的结果：请审查输出。技能以你的智能体的全部权限运行，因此安装前请先阅读技能。请按 [SECURITY.md](./SECURITY.md) 的说明报告漏洞（英文）。
 
 ## 参与贡献
 

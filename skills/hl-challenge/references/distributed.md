@@ -18,7 +18,7 @@ Assume every component fails in the worst way at the worst moment. Check what th
 ### `audit` (default)
 
 1. **The claim**: quote the exact consistency, availability, or durability claim.
-2. **Failure table**: ID, failure, current behavior, outcome. Cover at least: partition between nodes, clock skew, crash mid-write, concurrent writers to one key, duplicate delivery, a slow node treated as dead, a disk that lies about fsync, read-your-writes after failover, replication lag. Outcome is one of `safe`, `degraded but correct`, `data loss`, `silent corruption`, `unknown (untested)`.
+2. **Failure table**: failure, current behavior, outcome. Cover at least: partition between nodes, clock skew, crash mid-write, concurrent writers to one key, duplicate delivery, a slow node treated as dead, a disk that lies about fsync, read-your-writes after failover, replication lag. Outcome is one of `safe`, `degraded but correct`, `data loss`, `silent corruption`, `unknown (untested)`.
 3. **Deal-breakers**: every `data loss`, `silent corruption`, or `unknown` row that touches user-visible state.
 4. **Required invariants**: idempotence keys, monotonic IDs, fencing tokens, quorums; for each, where it is enforced or that it is not.
 5. **Verdict**: `safe under <scenarios>` / `unsafe under <scenarios>` / `untested, assume unsafe`.
