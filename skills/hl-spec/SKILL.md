@@ -88,7 +88,6 @@ Reader rules:
 - Spell out acceptance check (a test or observation that proves a part works), `[new]` (added by this plan), and handoff brief (a brief for an agent that has none of this context) at first use.
 - A check is checkable when someone can see it pass or fail. "Feels snappy" is not a check: propose a number or a check, and ask.
 - Ask each decision as a plain question with at most 4 options and the default marked. "How long may a code stay valid?", not "expiry TTL".
-- Never state a number, metric, or log text that no source gave.
 
 End: `Verdict: <word>` on its own line, then `**Next:**`:
 - `Plan ready`: no open decision blocks the first step. Line 1 names the feature.

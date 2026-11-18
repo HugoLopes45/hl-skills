@@ -43,7 +43,7 @@ Use with [attack methods](attack-methods.md). This guide covers unmanaged memory
 ## Decide
 
 - A crash is not code execution, and a safely rejected malformed input is not memory corruption. State the established effect: out-of-bounds read or write, use of freed memory, wrong-type access, disclosure or shared-process termination.
-- A bounds check using the same wrong unit as the allocation still fails. Cite both the check and the consuming operation.
+- A bounds check using the same wrong unit as the allocation is still defective. Cite both the check and the consuming operation.
 - A user loading their own plugin into their own process is not a privilege boundary.
 - A source-established invariant violation can be confirmed without execution if every condition is visible. Mark the evidence source-only.
 - Use `needs_validation` when the claim depends on an opaque foreign implementation, compiler or allocator behavior, a specific interleaving that source cannot fix, deployed sandbox or device permissions, or architecture-specific layout not visible in source. Name the sanitizer, fixture or schedule an authorized reproduction would need.

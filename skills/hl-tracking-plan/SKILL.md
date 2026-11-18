@@ -18,7 +18,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Evidence rules
 
-- A plan is a specification. Write `specified` or `not implemented` for every event. Never write that tracking works, that an event fires, or that data is collected. Only a payload or test result from the live implementation, which the user supplies, supports those words.
+- A plan is a specification. Write `specified`, `not implemented`, or `blocked: <reason>` for every event. Never write that tracking works, that an event fires, or that data is collected. Only a payload or test result from the live implementation, which the user supplies, supports those words.
 - Build each row in order: decision, metric, event, property. Link each event to a metric and each metric to a decision. A row without its parent is marked `no decision linked` and listed as an open question.
 - Label each element `Supplied` (in the input), `Proposed` (you suggest; the owner must accept), or `Unknown`. Never present a proposed name or definition as the user's.
 - Never invent a market, consent rule, legal basis, data owner, tool, retention period, or existing event. Write `not stated`.

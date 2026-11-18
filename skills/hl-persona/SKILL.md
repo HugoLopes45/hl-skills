@@ -65,7 +65,6 @@ Stopped: line 1 says what is missing and why it blocks the cards. Then `Verdict:
 
 Reader rules:
 - Define each term once at first use: persona (a written description of one group of people, built from evidence), proxy (evidence about a similar group, used when the target group's evidence is missing), evidence count (the number of sources behind a card), intensity score (1 to 5 for how much a quote shows a cost: 1 is mild preference, 5 is the customer acting), solution-aware (the buyer names a type of fix, not a product).
-- Show quotes as the source wrote them.
 - No hype and no stereotypes. Describe what the evidence shows.
 
 Example (signature only; the domain is not a fixture):

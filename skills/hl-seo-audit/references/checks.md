@@ -21,7 +21,7 @@ Each item lists what to read, the rule for a finding, and the evidence to quote.
 - **Primary content in HTML**: check that the main text and links appear in the static HTML. If missing from static HTML, mark rendered content unconfirmed. Call it rendered-only only after observing it in the rendered DOM.
 - **Viewport**: read `<meta name="viewport">`. Finding: missing on a page meant for phones.
 - **Mobile parity**: when a phone-width capture and a desktop capture are both supplied, compare their main text and links. Finding: main content or links present on desktop and missing on phone. Note horizontal scroll and crowded tap targets in the phone-width capture as observations.
-- **Field speed**: when Search Console or Chrome UX Report data is supplied, compare LCP (2.5 s or less), INP (200 ms or less), and CLS (0.1 or less) with "good". Lab results are labeled lab data.
+- **Field speed**: when Search Console or Chrome UX Report data is supplied, compare LCP (2.5 s or less), INP (200 ms or less), and CLS (0.1 or less) with "good".
 - **Server response**: when time to first byte readings are supplied, flag a server whose time to first byte (the wait before the first byte of the response) is slower than 1.8 seconds on at least one fifth (20%) of the sampled pages. web.dev rates a time to first byte above 1.8 seconds as poor and notes it is not a Core Web Vitals metric (https://web.dev/articles/ttfb, checked 2026-11-17); the one fifth is a heuristic default. Say that the readings came from one location at one time.
 - **Duplicate URLs**: parameter or trailing-slash variants that serve the same content. With the user's approval, if you can fetch them, compare http, https, www, and the bare domain; each variant that answers on its own is a duplicate; point it to the chosen version with a 301 redirect or a canonical. Finding: duplicates with no canonical or redirect.
 - **URL structure**: read the path of each indexable URL. Finding, Low: uppercase letters, underscores, IDs or query strings in place of words, or pages of one type under different parent paths. Fix for an unpublished URL: a lowercase, hyphenated slug, with each page type under one parent path. Do not recommend changing a live URL for this alone; when a live URL changes for another reason, redirect the old one with a 301.
@@ -58,7 +58,7 @@ Each item lists what to read, the rule for a finding, and the evidence to quote.
 
 ## Structured data
 
-- **JSON-LD in static HTML**: read `<script type="application/ld+json">`. Found: list each type and check that it matches visible content. Not found: write "not in static HTML"; never write "absent".
+- **JSON-LD in static HTML**: read `<script type="application/ld+json">`. Found: list each type and check that it matches visible content. Not found: write "not confirmed in static HTML"; never write "absent".
 - **Rendered check**: needed before you claim markup is absent. Ask the user for a rendered-DOM read, or for the output of a rich-results test.
 - **Mismatch**: markup describes content the page does not show. Finding: High, because it misleads search engines and readers.
 

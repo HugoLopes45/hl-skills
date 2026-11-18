@@ -39,7 +39,7 @@ Plan one stated period. The owner runs the plan; this skill writes it, starts no
 2. **Surfaces.** For each existing marketing surface in the materials, give a rating (strong, adequate, weak, absent, or unknown) and its source. Name the strongest and the weakest. Do not total the ratings.
 3. **Metric.** Pick the main metric from the business model. Name a leading indicator for each stage: Reach, First value, Retain, Refer, Revenue.
 4. **Channels.** Choose channels from evidence of where buyers are. Name each skipped channel and why.
-5. **Bets.** Choose at most three. Each bet has one owner. Count the bets against the people available, and cut the lowest one when they do not fit. Count one bet per person with marketing time, unless the user says otherwise.
+5. **Bets.** Choose at most three. Each bet has one owner. Count the bets against the people available, and cut the lowest one when they do not fit. Assign at most one bet to each person with marketing time, unless the user says otherwise.
 6. **Moves.** For each bet, list moves by stage. Each move names its stage, owner, cost source (a budget line), leading indicator, and stop criterion.
 7. **Stop criteria.** Write each one as a signal the owner can read: a plateau or a kill condition. A plateau is flat additions over the window the owner sets, a rising cost per customer with flat output, or rising effort with flat output. Label any threshold you propose as `proposal`.
 8. **Ownership.** Keep strategy in-house. Outsource only defined execution, with a written brief. The first marketing hire owns strategy.
@@ -65,7 +65,7 @@ Body, numbered points, most decision-relevant first:
 7. **The plan test.** The answers to workflow step 11, one sentence each.
 
 Verdict words, each defined:
-- `Supported`: every move has all six fields, and every figure states its basis.
+- `Supported`: every move has all five fields, and every figure states its basis.
 - `Hypothesis`: a move or bet rests on an assumed input, a missing baseline, an unconfirmed budget line, or a figure marked `unknown: owner to supply`. Confirm it before use.
 - `Reviewed`: a review of a supplied plan. The gaps are listed in Next.
 - `Stopped`: a required input is missing. See Stopped below.

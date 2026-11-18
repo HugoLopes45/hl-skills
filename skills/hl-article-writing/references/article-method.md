@@ -20,13 +20,13 @@ Use this method for an explanatory article, not a landing-page sales structure, 
 - Copyable steps: put only text the reader pastes in a code block, with variables in square brackets. List each such block in the Sources and assumptions note as run in this session or not run.
 - Ending: answer the reader's question, summarize the useful action, and point to a verified destination you own when one is supplied: the publisher's site, email list or community. A rented platform is never the only endpoint.
 
-Produce only requested sections. When a title, summary or body is requested alone, do not require an entire package.
+When a title, summary or body is requested alone, do not require an entire package.
 
 ## Source and permission check
 
-- Each statistic carries source name, date, population and relevant geographic scope. Missing provenance is a placeholder, not a new research finding. Follow a figure to its original study; otherwise keep the placeholder.
+- Missing provenance is a placeholder, not a new research finding. Follow a figure to its original study; otherwise keep the placeholder.
 - Rank sources: official statistics for the article's market, then large independent studies, then industry associations, then vendor data labelled "(vendor data)", then first-hand counts the author confirms. Use a lower rung only when the higher ones lack the figure among sources supplied or read in this session.
-- Each quote needs exact supplied words, speaker and permission. Links must be supplied or read in this session.
+- Links must be supplied or read in this session.
 - Quote a figure as its source words it: keep "may", "up to" and similar qualifiers.
 - Check evidence for health effects, comparisons, rankings and time-bound results. A country change does not justify changing a supplied price, currency, fact or study population.
 - Show an old figure with its year; never present it as current. Label money or result arithmetic as arithmetic, not a promise, and label any hypothetical example as hypothetical.

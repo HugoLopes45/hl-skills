@@ -63,7 +63,7 @@ Verdict words:
 - `Fix first`: a finding blocks being found or chosen: an ineligible listing (under a platform rule you checked and named), a duplicate, or a suspended listing; wrong facts that send customers elsewhere; or leads with no reply.
 - `Fix later`: no blocker; at least one finding remains.
 - `Sound`: no finding in the records you checked; name the records and areas.
-- `Plan only`: no records supplied; the points are proposed checks and drafts.
+- `Plan only`: no record covers a listing, page, review, or lead channel; the points are proposed checks and drafts.
 - `Stopped`: the business, its services, or its places are not described.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one fix or question, in order, with its owner role, the place to edit or the file to open, and the check that proves it.

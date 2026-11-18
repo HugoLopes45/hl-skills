@@ -63,7 +63,7 @@ Saved:
 - When something is left out of the handoff, name it and explain any effect on resuming the work.
 
 `--stuck`:
-- `## Attempts`: a table with columns attempt, what changed, observed result. Short cells. A result never observed is "not run".
+- `## Attempts`: a table with columns attempt, what changed, observed result. Short cells.
 - `## Leftover changes`: a file tree of changes from failed attempts.
 - One sentence names the input the attempts got wrong, from the files you read.
 
@@ -73,7 +73,6 @@ Stopped: line 1 names the missing location or failed write or readback. Say what
 
 Reader rules:
 - Define at first use: "handoff" (notes the next session reads), "stash" (changes set aside and kept), "working copy" (your files on disk).
-- Never write that uncommitted files are lost, or that clearing the context loses them.
 - In `--stuck`, name the cause in plain words, never "you kept retrying".
 
 Example:

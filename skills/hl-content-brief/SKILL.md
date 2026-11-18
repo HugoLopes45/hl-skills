@@ -10,7 +10,7 @@ Do not retry a permission-denied action through another command, tool, path, or 
 
 Ground factual claims in supplied evidence or results you observed in this session.
 - Quote supplied notes exactly when a brief relies on them. Copy identifiers, numbers, and dates unchanged.
-- Name the file or message that supplied each fact. Without one, write "not supplied".
+- Name the file or message that supplied each fact. Without one, mark the fact `to source`.
 - Separate what the notes state, what you infer, and what is unknown.
 
 ## Evidence rules

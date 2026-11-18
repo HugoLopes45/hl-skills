@@ -13,7 +13,7 @@ Use this file when the request asks for a recurring newsletter edition. The arti
 - Write three subject lines that differ in mechanism: a specific curiosity, a question the reader already asks, or a claim the body supports.
 - Do not reuse a prior subject's structure and topic together. Check each new subject against the prior subjects the user supplies. Do not reuse one structure on an adjacent topic in two sends in a row.
 - Pay the subject off in the first paragraph. The preheader extends the subject and never repeats it.
-- Open with the most interesting true thing in the edition. No greeting and no edition preamble.
+- Open with the most interesting true thing in the edition. No edition preamble.
 
 ## Items
 

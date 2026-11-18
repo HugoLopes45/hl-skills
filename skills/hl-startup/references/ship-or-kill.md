@@ -26,7 +26,7 @@ Use for: first-version scope, minimum to launch, boilerplate versus from scratch
 
 Judge one product's survival on traction, not on effort already spent.
 - Signals: revenue trend, retention of the last cohorts, organic growth, and how the founder's time compares with what the product returns.
-- Months of flat revenue with no new lever to test is a kill or pivot signal. Effort already spent is not a reason to continue.
+- Months of flat revenue with no new lever to test is a kill or pivot signal.
 - Do not call a trend from a signal too sparse to read; name the data that would settle it.
 - A review whose supplied data shows no kill or pivot signal returns `Keep` and proposes no product change; Next names the data to check. With no readable data, return `Stopped`.
 - Fit, without vanity metrics (heuristic defaults): the buyer states the value in 30 seconds; buyers from 90 days ago are still active (name the cohort); organic referrals exist. Signups, downloads, and press do not count.

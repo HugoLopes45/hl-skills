@@ -32,7 +32,6 @@ Load when the trigger is a job event (a quote sent, a job completed or paid, a m
 ## Survey scores
 
 - Use a survey score only to route support and follow-up. A low score gets a direct reply from a person.
-- A score never chooses who receives the review ask.
 - An NPS survey (Net Promoter Score, a rating of how likely the person is to recommend the business) asks one question. Ask the reason in a follow-up whose wording depends on the score band, the score range the team sets.
 
 ## Reminders

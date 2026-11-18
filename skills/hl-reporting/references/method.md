@@ -92,7 +92,6 @@ Use this section for a pause, a budget cut or a holdout that the user ran.
 
 - Say "small base" when a count is too low to read a rate reliably. For zero events in N trials, the 95% upper bound on the rate is 1 - 0.05^(1/N), about 3/N for large N; state it before calling the rate zero. Do not set a threshold from memory.
 - One period against one period is not a trend. Compare it with the trailing periods of the same length. Count a move only when the period leaves that range, or when three or more periods move the same way. Heuristic default: three or more periods in one direction.
-- A blank is `not reported`. Zero is a reported zero. Never turn a blank into zero.
 - Describe a change as "from X to Y over these periods". Do not call it an improvement unless the user's metric definition states which direction is better.
 - Heuristic default: for a count in two digits, round the rate to a whole percent. Compare the counts of the rarer event, not the rates.
 - In a before and after comparison, a value inside the normal swing is `no detectable change`, whatever its percentage. Otherwise, label a value outside it `clear change`: the normal swing is the lowest and highest weekly averages of the same count in the before window, as set in Pause and lift readouts. Label it `probably` when the same direction holds across independent instances (weeks, sends). Heuristic default: 3 or more instances. Otherwise label it `can't tell yet` and name the count that would settle it.
@@ -102,7 +101,6 @@ Use this section for a pause, a budget cut or a holdout that the user ran.
 
 ## Currency
 
-- Give one line per currency. Do not total across currencies.
 - A conversion needs a rate, its date, and its source. Without all three, write `not converted`.
 
 ## Business ratios

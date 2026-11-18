@@ -21,7 +21,7 @@ Test each path of an interactive magnet end to end before launch: every result i
 ## Gates and capture
 
 - Show the open part first: the preview, the first chapter, the calculator headline, or the first quiz questions.
-- Gate a personal result behind email at any step; gate a full asset only at the decision step (`offer.md` `acquire`). Ask for the email after the inputs and before the result. A failed email send must not block the result.
+- Ask for the email after the inputs and before the result. A failed email send must not block the result.
 - A partial gate (preview, first chapter, sample output) fits a full asset the buyer must sample first. State its trade-off before choosing it.
 - Keep the segment (the quiz result or the checker band) with the email, so follow-up matches the result. Store only the answers the user gave.
 

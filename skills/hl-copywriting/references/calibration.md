@@ -1,6 +1,6 @@
 # Calibration
 
-Use this file to judge copy before it ships, or to set the target for a rewrite. Score each dimension as weak, adequate, or strong, then rewrite the weakest dimension first. For each weak score, quote the line that caused it; a score with no line attached cannot be acted on. Scores are working notes and never appear in the deliverable.
+Use this file to judge copy before it ships, or to set the target for a rewrite. Score each dimension as weak, adequate, or strong, or not applicable where the dimension says so, then rewrite the weakest dimension first. For each weak score, quote the line that caused it; a score with no line attached cannot be acted on. Scores are working notes and never appear in the deliverable.
 
 Every example uses an invented mail-in knife sharpening service. Every number and detail in the examples is invented. The contrast shows craft, not facts.
 

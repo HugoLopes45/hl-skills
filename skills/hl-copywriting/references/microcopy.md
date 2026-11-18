@@ -2,7 +2,7 @@
 
 Use this file for words inside a product or a site: buttons, empty states, errors, confirmations, forms, popups, upgrade screens, notifications. Read "Rules for all interface copy", then the section you need.
 
-Interface copy is read mid-task by someone who wants to get on with it. The job is always the same: say what happened, what it means for the reader, and what to do next, in that order. Voice lives in word choice and in the low-stakes moments, never in place of the information.
+Interface copy is read mid-task by someone who wants to get on with it. Each section below names its job. Where something happened, say what happened, what it means for the reader, and what to do next, in that order. Voice lives in word choice and in the low-stakes moments, never in place of the information.
 
 Every example line is invented and shows the pattern only.
 

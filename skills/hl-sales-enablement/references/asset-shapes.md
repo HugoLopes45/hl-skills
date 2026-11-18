@@ -66,7 +66,7 @@ Record first: the speaker and role, the deal stage, the next step, and the exact
 
 ## Value calculator spec
 
-- Inputs: each named with its unit and who supplies it, the prospect or the owner. No input has a default value.
+- Inputs: each named with its unit and who supplies it, the prospect or the owner.
 - Formulas: each written out with its inputs, and each input's source beside it.
 - Outputs: the saving per period, payback in months, and the total over the period the owner sets. Show an output only when every input it needs is supplied. Otherwise write a placeholder.
 - Sample: one row with invented values, labeled `sample`, to show the layout. Never present a sample as a result.

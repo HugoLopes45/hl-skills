@@ -48,8 +48,7 @@ Check format limits, music and footage permissions, paid or gifted cooperation l
 
 ## Claim and rights checks
 
-- First-person experience requires the supplied experience. Health effects, comparisons and time-bound results require their supporting evidence.
-- A test figure needs its method, date and source. Preserve supplied price, currency and offer dates; do not infer them from the market.
+- Preserve supplied price, currency and offer dates; do not infer them from the market.
 - Ask for the music license or rights-holder confirmation before treating an asset as cleared. A platform library's existence does not prove that a particular commercial use is permitted.
 - Choose the music source explicitly: an in-app sound or a track mixed into the video. Each needs its own use check: the platform's current official terms for an in-app sound, and the license for a mixed-in track. Check whether a paid placement may use an in-app sound. Mark a fade-out at the music's end in the shot plan (heuristic default: 0.8 s).
 - Keep disclosure checks visible even when no music is proposed. Do not label a draft ready to publish while a relevant permission remains unresolved.

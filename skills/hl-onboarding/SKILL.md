@@ -34,7 +34,6 @@ Use targeted questions only when missing context changes the requested deliverab
 - Act directly when the product and the user's first goal are supplied. State each inference about the goal and label it.
 - Ask in one round when the product or the first goal is missing. Write `Default: none` for each fact, and explain what each answer changes.
 - Missing activation evidence does not stop the design. Label the activation event as a hypothesis.
-- Reuse what the user already supplied.
 - An exact output format the user names replaces the default output. The evidence rules still apply.
 
 ## Modes

@@ -110,7 +110,7 @@ Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is
 Stopped: line 1 says what is missing and why it blocks the audit. Then `Verdict: Stopped`. Next holds the grouped questions, each with its default (or `Default: none` for a fact) and what it changes.
 
 Reader rules:
-- Define each term once at first use: indexing (the search engine stores the page so it can appear in results), canonical (the URL the page names as its main copy), noindex (a tag or header that asks search engines not to list the page), SERP (the search results page), GEO (making content usable in AI answers).
+- Define each term once at first use: indexing (the search engine stores the page so it can appear in results), canonical (the URL the page names as its main copy), noindex (a tag or header that asks search engines not to list the page), GEO (making content usable in AI answers).
 - Quote tags and values exactly, with file and line. Do not paraphrase them.
 - No guarantees ("will rank"), no hype, no blame for the site's owner or developer.
 - A recommended change names the place to edit: the page template, the CMS field, or the server header.

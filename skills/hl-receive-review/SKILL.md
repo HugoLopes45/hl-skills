@@ -41,7 +41,6 @@ Under line 1, plain sentences only for what limits the answer: the revision chec
 Then one numbered point per comment, in the review's order. Each point:
 - A bold plain sentence: the comment in plain words, ending with its disposition: `Agree.`, `Agree, deferred.`, `Disagree.`, `Unresolved.`, or `Ignored: duplicate of comment 2.` (or `Ignored: irrelevant.`). These mean agree+fix, agree+defer, disagree+rationale, clarify, and ignore respectively; no fix has been applied.
 - Give the evidence needed to check the disposition: `file:line`, or a command you ran ("I ran this"). Code reading is inferred; say "inferred from the code".
-- Keep proposed changes, replies, and clarification questions only in Next; the comment entry gives evidence, not duplicate instructions.
 
 When an item needs a separate trace or comparison to justify its disposition, add a `## <n>. <claim>` section after the list. Put the supporting detail there, without repeating the entry's evidence.
 
@@ -54,7 +53,7 @@ When an item needs a separate trace or comparison to justify its disposition, ad
 
 `**Next:**` owns every reader action, prerequisite, reply, and question once, in dependency order. Put a decision before any implementation that depends on it. When the supplied history shows the same root cause still unfixed after three review-and-fix cycles, keep its evidence-backed disposition and state that the defect remains open; an agreed defect stays `Agree.`, not `Unresolved.` merely because it is unfixed. Ask one question about the approach instead of another fix-and-review round. Place that question after any live-secret or data-loss action and before routine fixes. Each open decision is one question with at most 4 options, each saying what it does, the default marked. Changes and replies are proposals, not work performed.
 
-Reader rules: never blame the reviewer; state what the code does. Reviewer seniority, confidence, or unanimity is not evidence. Do not disagree with every item to look rigorous, or agree with all of them because the review sounds authoritative.
+Reader rules: never blame the reviewer; state what the code does. Do not disagree with every item to look rigorous, or agree with all of them because the review sounds authoritative.
 
 ````markdown
 **The expiry day and log message are wrong; the schema supports keeping `pid`.**

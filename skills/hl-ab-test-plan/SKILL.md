@@ -138,6 +138,6 @@ Verdict: Sizing blocked
 
 ## Stop conditions
 
-- No hypothesis and no changed element: Stopped. Ask what the variant changes and why.
+- No hypothesis and no changed element, or several hypotheses with none chosen: Stopped. Ask what the variant changes and why.
 - No variant to compare: Stopped. Ask for the control and the variant.
 - The user cannot assign variants at random: Stopped. Say that this skill needs random assignment, and suggest `hl-reporting` for a non-randomized comparison once before and after data exist.
