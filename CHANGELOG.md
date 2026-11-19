@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/HugoLopes45/hl-skills/compare/v1.12.0...v1.13.0) (2026-11-19)
+
+
+### Features
+
+* shared visual design guide and implicit styling for content skills ([#54](https://github.com/HugoLopes45/hl-skills/issues/54)) ([5a417d0](https://github.com/HugoLopes45/hl-skills/commit/5a417d0718fd8fc442524cd5798ec0c1f1b342d8))
+
+
+### Bug Fixes
+
+* remove duplicated rules and fix contradictions across skills ([f83067c](https://github.com/HugoLopes45/hl-skills/commit/f83067c3fe2fe36f2cb2bcffd5a3500f84bdd8cd))
+
 ## [1.12.0](https://github.com/HugoLopes45/hl-skills/compare/v1.11.0...v1.12.0) (2026-11-18)
 
 
