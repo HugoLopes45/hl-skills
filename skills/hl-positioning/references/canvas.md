@@ -31,7 +31,7 @@ When useful or requested, summarize the supported position in plain language. No
 
 ## Proof status
 
-- `proof supplied`: the user gave a document, a demo, or a measured result with its method and date.
+- `proof supplied`: the user gave, or you read in this session, a document, a demo, or a measured result with its method and date.
 - `proof needed`: nothing supports the attribute yet. Write `[PLACEHOLDER: proof needed]` in the canvas.
 - `not distinctive`: competitors offer it too, or the buyer does not value it. Keep it out of the statement.
 

@@ -56,4 +56,4 @@ A bold idea is a claim or offer the user states that the business does not do ye
 
 - Check each number's unit, period, and basis at the evidence gate: supplied, measured with a stated method, checked source, or estimated from stated assumptions. Show them in the copy only when the reader needs them.
 - Pair each rating with its count and its source: `[rating] from [count] reviews on [platform]`.
-- A price from the brief is supplied. A price you derive is estimated; show the assumption beside it.
+- A price from the brief is supplied. A price you derive with an assumption is estimated; show the assumption beside it.

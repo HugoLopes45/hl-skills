@@ -40,7 +40,7 @@ Not a fit: [a mismatch the source states, with its reason, quoted or cited; a de
 - Do not add a channel, a community, or an influencer unless a source names it. Mark it with its source.
 - A card below the quote bar in `SKILL.md` reads `Hypothesis` in its Status line.
 - Count sources as independent: quotes from one thread, one author, or one review batch count as one source.
-- Confidence tier per pain and objection (heuristic defaults): High is three or more independent sources, unprompted, consistent across segments. Medium is two independent sources, or prompted quotes only, or one segment only. Low is one source. Tiers do not change the Status line.
+- Confidence tier per pain and objection (heuristic defaults): High is three or more independent sources, unprompted, consistent across segments. Low is one source. Medium is two or more independent sources that do not meet High. With no supporting source, write `not in evidence`. Tiers do not change the Status line.
 - List pains and triggers by source count, then by intensity.
 - Keep passion points out of Pains. Beliefs and passion points come only from quotes; write `not in evidence` when no source gives one.
 

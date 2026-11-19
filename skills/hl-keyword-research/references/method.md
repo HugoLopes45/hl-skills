@@ -46,7 +46,7 @@ Assign one intent per keyword. When a keyword mixes two intents, the first inten
 
 - One primary keyword per page.
 - Keywords share a page when the same answer satisfies both and the intent matches.
-- Give a keyword its own page only when its intent differs from the page it would otherwise join.
+- Give a keyword its own page only when its intent or its answer differs from the page it would otherwise join.
 - Propose a pillar page with supporting pages only when the site has, or the user plans, the pillar; the pillar aligns with the offer and is broad enough for subtopics; and supplied evidence shows audience interest in search or social. Label it `proposed`.
 - Build the pillar page before its supporting pages. Give a pillar its own URL only for a major topic; otherwise place it under an existing path.
 - Spot a programmatic pattern (a frame with a slot, such as "X for [industry]") only when two different substitutions of the same frame appear in the evidence. Record the frame and those examples. Never list other substitutions to prove the pattern.

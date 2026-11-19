@@ -118,7 +118,7 @@ Verdict words:
 - `Undecided`: open unknowns could flip an `audit` verdict; Next names the check that decides.
 - `Stopped`: no artifact to read, or a boundary blocks the work.
 
-Add a short qualifier for limited coverage ("Keep, native helper not reviewed").
+Add a short qualifier for limited coverage ("Undecided, native helper not reviewed").
 
 Stopped cases: no artifact supplied or the target is ambiguous; the only copy sits among protected user data; the artifact is not public and the user has not accepted sending it to the model provider; the request needs bypassing a license, copy protection or encryption. Next offers at most 3 ways to unblock, default marked.
 

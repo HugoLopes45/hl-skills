@@ -16,7 +16,7 @@ Load when the recipients did not opt in: prospects from a list you built, or con
 ## Personalization
 
 - Before a professional-network message, read the recipient's profile and send a connection request only with a one-sentence reason. Check the network's current terms before any automation.
-- Write the opener only from a fact the user supplies or a source you cite with its date. Write the fact list first, then the angle from that list only. When no such fact exists, send the segment's message without a personal opener.
+- Base the opener only on a fact the user supplies or a source you cite with its date. List the facts first, then name the angle from that list only. When no such fact exists, send the segment's message without a personal opener.
 - The observation leads into the problem. If the email still works without the opener, the personalization is weak.
 - Signals that can support an opener: a funding round, a job posting, a change in the tools the company uses, a published post, or company news.
 - Pitch one problem per prospect. When the offer fixes a visible page problem, use it only when the prospect sees it on a phone within seconds, the fix takes days, and its result shows within a window the team sets, in a number the prospect already trusts. Otherwise pick another problem.

@@ -49,7 +49,7 @@ Use when the owner repeats the same question set over time.
 
 - Look at each frozen question on each engine and language: whether the brand appears, how the answer describes it, which sources it cites, and each wrong fact (claim rows, as in `answer-claims.md`).
 - Recommend a change only when the same change appears in two runs in a row (heuristic default), when an answer describes the brand as another company, or when a critical wrong fact appears. Report a critical wrong fact at once, under line 1.
-- Stop when the run matches the previous run: report it as stable and recommend no page change.
+- Stop when the run matches the previous run: report it as stable and recommend no new page change. A wrong identity or critical wrong fact that persists stays reported, with its fix.
 - After a content refresh, compare the owner's capture of citations taken at publish time with the current one. For each lost question, name the cause only when the captures show it; otherwise write that the cause is unknown and name one check that would show it.
 - Compare with the previous run the owner supplies. Send no correction or outreach.
 

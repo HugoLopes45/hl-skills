@@ -13,7 +13,7 @@ Read this file from the Site structure mode in `SKILL.md`. Classify the site fro
 
 ## Navigation
 
-For a planned site, give each page in the draft its URL and navigation location, from the owner's page list; the nesting shows its parent. Mark each URL `proposed`.
+For a planned site, give each page in the draft its URL and navigation location, from the owner's page list or offer list; the nesting shows its parent. Mark each URL `proposed`.
 
 In a documentation section, the sidebar marks the current page. A site too large to browse by navigation has a reachable search.
 

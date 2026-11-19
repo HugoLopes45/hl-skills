@@ -66,7 +66,7 @@ Reader: a developer or security owner deciding whether the patch closes the repo
 
 Open with one bold plain sentence stating the repair or blocker. Put active-exposure and unverified-execution limits immediately below it. Explain technical terms at first use. Keep the original failing observation, root-cause change, attack/variant/control results and remaining gaps together. Escape untrusted markup and control characters in excerpts; do not embed their remote images or active content. Do not add a separate report unless requested.
 
-Put commands and evidence before the closing block. End with the literal line `Verdict: <verdict>`, then `**Next:**` and `**Changed:**`, in that order:
+Put commands and evidence before the closing block. End with the literal line `Verdict: <verdict>`, where a short scope qualifier may follow the word, then `**Next:**` and `**Changed:**`, in that order:
 - `Fixed`: the permitted patch closes the demonstrated path; original and variant security checks, legitimate controls and applicable tests pass. Independent review must also pass. Scope the claim to that path and version.
 - `Already safe`: the reported path is protected in the inspected source and supported checks; no repair was needed. State the evidence level, not global safety.
 - `Partial`: a proposal, patch or assessment exists but required evidence, review or verification remains missing or failed.

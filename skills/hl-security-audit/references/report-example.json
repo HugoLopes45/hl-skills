@@ -146,7 +146,7 @@
         "reason": "The application code is as described; the outcome depends on the proxy."
       },
       "blocker": "The proxy configuration for POST /login is not in the repository.",
-      "next_check": "Ask the operator for the effective proxy limits on POST /login: a cap on failed attempts per account refutes the claim; no such cap confirms it."
+      "next_check": "Ask the operator for the effective proxy limits on POST /login: a cap on failed attempts per account refutes the claim; with no such cap, compute the guessing budget from credential space, validity window and allowed attempts, and confirm the claim only if that budget makes unauthorized access feasible."
     },
     {
       "id": "search-sort-sql",

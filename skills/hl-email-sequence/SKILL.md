@@ -100,7 +100,7 @@ After the map, a numbered list of exits, each with its condition and its effect.
 Verdict words:
 - `Planned`: map complete, or an audited program with no missing or stale pattern; timing is identified as user-specified or assumed, and unimplemented conditions are marked proposed.
 - `Gaps found`: the supplied sequence or audited program has at least one missing or stale pattern, trigger, skip rule, or exit. List each gap.
-- `Stopped`: no observable entry condition and no description of the flow to plan from.
+- `Stopped`: no observable entry condition and no description of the flow to plan from, or a supplied sequence with no steps.
 
 Put `Verdict: <word>` on its own line just before `**Next:**`. Each Next line is one action a person can take now, in order.
 
@@ -134,7 +134,7 @@ Verdict: Planned
 **Next:**
 1. Supply the refund window in days, then place the first-win step inside it and steps 2 and 3 before it closes.
 2. Confirm that `order_delivered` and `order_placed` each fire once per order, in the order data.
-3. Confirm the customer agreed to care tips as marketing, or move the steps to a transactional message type.
+3. Confirm the customer agreed to care tips as marketing. Without that consent, the steps are not sent.
 4. Check the current official opt-out rule and its deadline for your market, then write the deadline into the opt-out exit.
 5. Check the sending domain's SPF record (the list of servers allowed to send), DKIM key (the signature that shows the mail was not altered), DMARC policy (what receivers do with mail that fails those checks) and MX record (the route that lets replies reach an inbox), plus the one-click unsubscribe headers and the From domain, against the current official sender requirements before the first send.
 6. Build the three steps in your email tool and keep sending off until the map is checked.

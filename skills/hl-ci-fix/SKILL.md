@@ -43,7 +43,7 @@ Reader: the PR author or maintainer, who asked for green checks and decides whet
 - A numbered list, one item per check: a bold sentence with its result before and after the fix, then the cause and the fix, then the commit. Name each check as CI shows it. Name each retry with both outcomes and any limitation that changes what they prove.
 - Links follow the list, one per line.
 - `Verdict: <word>` on its own line just before `**Next:**`, one of:
-  - `Green`: every required check passed on that head. It covers only the required checks observed for that head.
+  - `Green`: every required check passed on that head. It covers only the required checks observed for that head. With unknown policy and every observed check passed, write `Green, observed checks only` and do not claim merge readiness.
   - `Red`: an observed check still fails on that head. Say how many of how many; call them required only when verified.
   - `Pending`: a required check still runs after the 20-minute wait.
   - `Stopped`: the PR, its logs, or access is missing. Use the Stopped form below.
@@ -67,11 +67,11 @@ Verdict: Green
 **Changed:** `rates.py`, commit `4f0b2d1` pushed to PR 41
 ````
 
-Stopped, when the PR or its logs cannot be read: line 1 says what is missing and why it blocks (for example `**I can't read the checks of PR 12, so I can't find the failure.**`). Under it, the plain sentence `I changed nothing.` Then `Verdict: Stopped`, then `**Next:**` with at most 3 numbered ways to unblock, the default marked `(default)`, listed nowhere else:
+Stopped, when the PR or its logs cannot be read: line 1 says what is missing and why it blocks (for example `**I can't read the checks of PR 12, so I can't find the failure.**`). Under it, one plain sentence that says what you changed before the stop: `I changed nothing.`, or the commits already pushed. Then `Verdict: Stopped`, then `**Next:**` with at most 3 numbered ways to unblock, the default marked `(default)`, listed nowhere else:
 1. Sign in to the GitHub CLI with `gh auth login`, then rerun the skill. (default)
 2. Paste the failing log lines of each check.
 3. Name the PR to use, when the current branch has none.
 
-Then `**Changed:** none`.
+Then `**Changed:** none`, or the files and commits already pushed.
 
 Reader rules: name each check as CI shows it. Never write that CI is green without the head and the check list. No blame on the person who broke the check.

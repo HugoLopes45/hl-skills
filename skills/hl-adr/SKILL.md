@@ -40,6 +40,7 @@ Then the ADR in one `markdown` fence, complete, so it can be saved as is once pl
 
 End with `Verdict: <word>` on its own line, then `**Next:**`:
 - `Proposed`: a draft the team has not agreed to.
+- `Accepted`: the input cites a recorded approval.
 - `Stopped`: no decision to record.
 
 Stopped, no decision: line 1 says in plain words what is missing and why it blocks: `**I need the decision before I can draft the record: what was chosen, and why.**` Then `Verdict: Stopped`, then `**Next:**` with up to 3 numbered ways to send it, default marked, listed nowhere else: a sentence such as "we chose X over Y because Z" (default); a path to meeting notes or a pull request. Naming the options you rejected also helps; the record shows only the ones you name.

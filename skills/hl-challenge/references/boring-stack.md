@@ -18,7 +18,7 @@ Spend novelty only on what differentiates the product. Keep one deployable until
 1. **Day-two test**: can one developer set this up locally and ship a feature on day two? Yes or no, and why.
 2. **Innovation tokens**: where is novelty spent, on the differentiator or on layers a proven default would cover?
 3. **Dependencies and services**: each non-trivial one, and whether it earns its cost.
-4. **What to cut**: 1-3 specific items, each with the principle it violates.
+4. **What to cut**: up to 3 specific items, each with the principle it violates.
 5. **Verdict**: `ship as is` / `cut these first` / `rethink the shape`.
 
 ### `monolith`

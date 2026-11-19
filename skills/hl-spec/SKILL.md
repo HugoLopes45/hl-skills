@@ -106,6 +106,10 @@ The validity period sets the expiry check and the text message, so step 1 waits 
 A gardener books a community plot for a season, then enters a code at the gate.
 The booking page makes no code yet, and nothing stores one.
 
+## Scope
+In: making the code, checking it at the gate, and the text message that carries it.
+Out: payment and the choice of plot.
+
 ## Shape of the change
 ```text
 gate/
@@ -124,6 +128,10 @@ gate/
 3. **Three wrong codes lock the gate for 10 minutes.**
    Input: three wrong codes in a row.
    Verify: none yet; this check waits for decision 2.
+
+## Assumptions and open questions
+Assumed: every booking has a mobile number, inferred from the planned text message; the booking form was not checked.
+Open: decisions 1 and 2.
 
 ## Failure cases
 | Case | How it is detected | Response |

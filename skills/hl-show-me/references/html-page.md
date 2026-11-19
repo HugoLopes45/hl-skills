@@ -102,7 +102,7 @@ Then review the plan against the brief. If a choice is a default you would make 
 - No placeholder text, no lorem ipsum, no filler slogans.
 - Make the reader want it: lead with what the reader gains, shown with a real case and a real figure, never with an adjective. Enthusiasm comes from the concrete result, not from hype words.
 - No sentence that only restates a name ("the API serves the API"). Each one says what, for whom, or with what result.
-- Keep the page clean: no letter badges or monograms in place of icons, no source list under each panel, no disclaimers or hedges on the page. Sources go in one collapsed list at the end; limits go in the reply.
+- Keep the page clean: no letter badges or monograms in place of icons, no source list under each panel, no disclaimers or hedges on the page, except the required unofficial-document notice and `approximate` brand-value labels in the footer. Sources go in one collapsed list at the end; limits go in the reply.
 
 ## Quote real code
 

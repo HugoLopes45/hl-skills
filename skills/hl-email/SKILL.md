@@ -69,8 +69,8 @@ Use targeted questions only when missing context changes the requested deliverab
 ### revise
 
 1. List each fact and claim in the existing email, with the line it comes from.
-2. Mark each claim the brief does not support. Replace it with a placeholder, or remove it.
-3. Run draft steps 2 to 6 as checks on the wording. Change only the sentences the revision needs; keep the rest of the copy as written.
+2. Mark each claim the brief contradicts or the evidence rules do not allow. Replace it with a placeholder, or remove it.
+3. Run draft steps 2 to 6 as checks on the wording; in step 6, trace each claim to either input, subject to the evidence rules. Change only the sentences the revision needs; keep the rest of the copy as written.
 4. Report each changed sentence with its reason in one sentence.
 
 ## Output

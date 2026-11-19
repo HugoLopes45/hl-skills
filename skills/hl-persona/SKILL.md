@@ -52,7 +52,7 @@ Line 1 is one bold plain sentence that names the main buyer or user and the evid
 
 Under line 1, in plain sentences: which cards are `Hypothesis`, the largest gap in the evidence, each finding that contradicts the owner's stated hypothesis or a source's own statements (what customers say against what they do, or an open answer against a closed one) with the next source to read to test it, any card whose newest source is older than 12 months (heuristic default), the number of quotes you flagged and why, and what you did not read or read only in part.
 
-Then one numbered point per card: the segment, its evidence count and date range, its decision role, and its strongest quoted line.
+Then one numbered point per card: the segment, its evidence count and date range, its decision role, and its strongest quoted line when it has one.
 
 Verdict words:
 - `Supported`: every card traces to supplied evidence with its count and dates, and meets the quote bar in Evidence rules.

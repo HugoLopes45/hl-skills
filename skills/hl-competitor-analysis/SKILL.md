@@ -39,7 +39,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 ## Workflow
 
-1. **Set the scope.** List the competitors and alternatives, the depth, and the dimensions. Include the status quo as an alternative. Cap a market-wide set at 3-6 profiles (heuristic default), chosen by buyer overlap, not size. Within that set, where the captures show it, include a rival with a move between two dated captures. Where buyers find vendors through a search or map result, take the roster from the results a buyer sees and record the searcher's place and the date.
+1. **Set the scope.** List the competitors and alternatives, the depth, and the dimensions. Include the status quo as an alternative, except in a named-rival comparison, which keeps its scope. Cap a market-wide set at 3-6 profiles (heuristic default), chosen by buyer overlap, not size. Within that set, where the captures show it, include a rival with a move between two dated captures. Where buyers find vendors through a search or map result, take the roster from the results a buyer sees and record the searcher's place and the date.
 2. **Read each source.** Record the capture date and the source name for every fact.
 3. **Fill the profile** using [references/profile.md](references/profile.md). Keep observed, inferred, and implication lines apart.
 4. **Mark gaps.** For each dimension with no source, write `unavailable` or `not observed`, with its date.
