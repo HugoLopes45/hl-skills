@@ -1,6 +1,8 @@
 # HTML page
 
-Write one self-contained HTML file that answers the question. The reader skims it once, then acts or decides.
+Write one self-contained HTML file that answers the question. The reader skims it once, then acts or decides. The page must look like a document of the company or project it is about, built with the care of a professional designer: every element on one grid, one type scale, one spacing scale.
+
+Follow the shared rules in [visual-design.md](visual-design.md); this file adds what is specific to an HTML page. Work in this order: plan the panels, find the identity, write the design plan, build, check the render, deliver.
 
 ## Plan the panels
 
@@ -10,50 +12,94 @@ Write one self-contained HTML file that answers the question. The reader skims i
 - Over 8 panels: cut panels or split the topic into two pages.
 - Each fact appears once. When a view shows it, the text does not repeat it.
 
-## Draw
+## Find the identity
 
-- Draw diagrams as inline SVG or HTML and CSS. Compute positions from the content, so no label is clipped and every arrow ends on a node. A layered layout is enough: one row or column per call depth or per step.
-- Mark a change on the structure itself: added in green with `+`, removed in red with `-`, changed in amber with `~`. Do not draw a before and an after. A Before / After toggle is optional; the marked view must make sense alone.
-- Tables: status cells use a symbol and a word (`✓ yes`, `✗ no`, `! partial`), never color alone.
-- Charts only from real numbers, with the unit in the axis or header and the row that matters highlighted. Under the chart, put the numbers in a table, collapsed by default. Without real numbers, draw no chart; label any example data `illustrative` next to it.
+The identity is the logo, the colors, the type, the component style, and the vocabulary of whoever or whatever the page is about. Detect it yourself for every page. The user never has to ask for a brand, a theme, or a style, and you never ask for one; an explicit style request from the user overrides what you detect. Take the identity from the first source that applies, and fill gaps from the next:
 
-## Look like the project
+1. The project the page describes, by "Project identity".
+2. An organization the question names or implies, or that owns the project (a company, a public body, a brand, a team), by "Organization identity". Signals of the owner: the copyright line in `LICENSE`, the author, organization, or homepage in the manifest, the title, links, and footer of the README, the owner in the git remote URL, and company email domains in recent commits. Personal hosts and public email providers are not owners.
+3. The topic, by "Topic theme". It always applies: alone when 1 and 2 give nothing, and for the motif and the gaps otherwise.
 
-The page looks like a document of the project it comes from: its logo, colors, type, and component style, laid out with professional care. Build this identity before writing panels.
+Apply an organization only when a signal names it clearly. Weak or conflicting signals: use the strongest one that the files confirm, or fall back to the topic theme, without asking.
+
+### Project identity
 
 1. Read the stack from the manifests at the root: `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `pubspec.yaml`, `build.gradle*`, `*.xcodeproj`, `composer.json`, `Gemfile`. Note the framework, the UI library, and the styling system.
 2. Find the design tokens where that stack keeps them: a Tailwind config or `@theme` block, CSS custom properties in the global stylesheet, a theme object (MUI, Chakra, Mantine, styled-components), shadcn `components.json` and its CSS variables, `tokens.json`, Android `colors.xml`, iOS asset catalogs, a Flutter `ThemeData`, or a brand or style guide in `docs/`.
 3. Find the logo: `logo*`, `favicon*`, `icon*`, or `brand*` files in `public/`, `static/`, `assets/`, `docs/`, `.github/`, or the first image of the README. Prefer SVG.
-4. Read the vocabulary: the product name, the domain terms in the README and the code, and the names of real modules. Use them in titles and labels.
+4. Read the vocabulary: the product name, the domain terms in the README and the code, the names of real modules, and any voice rules in a brand guide. Use them in titles and labels.
 5. When the topic is a UI, read the real components it uses (buttons, cards, tables) and copy their radius, borders, shadows, and spacing.
 
-Bound the search: list files by name first, then read at most about 10 files, only the parts that hold tokens or the logo. Stop when you have the colors, the type, and the logo, or when none exist.
+Bound the search: list files by name first, then read at most about 10 files, only the parts that hold tokens, the logo, or brand rules. Stop when you have the colors, the type, and the logo, or when none exist.
 
-Apply the identity:
+### Organization identity
 
-- Header: the logo at a modest size, the product name, the page title, the date, and the commit or branch the page describes.
+When the question is about an organization, the page looks like a document that organization would publish: its colors, its type, its logo, its layout habits, and its words.
+
+1. Look in this order, and stop when the identity is complete: brand files the user gave or that sit in the project; the organization's official public sources (its brand center, press kit, media library, design system, annual report, or the stylesheet of its official website).
+2. Use web access for the official sources when the host has it. Read only the organization's own domains for brand values; a third-party color site is a hint, not a source. Without web access, use the files you have and say what is missing.
+3. Take from the sources: the primary and secondary colors with their hex values, the typefaces, the logo file, and the layout habits of their documents (heavy color bands, photo-led covers, thin rules, large numbers). Record the source of each value.
+4. Colors you remember but did not read in a source are unverified: use them only when no source is reachable, say so in the reply, and mark them `approximate` in the footer.
+5. The content comes from the organization too: its business lines, products, figures, and dates from its own documents or from sources you checked, each figure with its unit, date, and source. Use its words for its things. Never invent a figure, a quote, or a product.
+6. The footer says the page is not an official document of the organization.
+
+### Topic theme
+
+The page looks like it belongs to its subject's field. With no project or organization identity, the topic sets the whole style; with one, it fills the gaps and gives the motif. Keep what the identity sets and fill only the gaps.
+
+1. Choose the mode and the closest domain in [visual-design.md](visual-design.md), and note what the reader will do with the page: learn, decide, debug, present.
+2. Pick a reference from the domain's own documents and materials: a clinical guideline or patient leaflet for a medical topic, a technical drawing or service manual for mechanics, an engineering drawing for a protocol, a ledger for a budget, an editorial layout for a history, a field notebook for biology, a transit map for a pipeline, a lab report for a benchmark.
+3. Take the palette, the type, and one motif from that reference (a grid, a rule line, a stamp, a margin note, a scale bar). The motif stays in the chrome; the content stays readable.
+
+### Apply the identity
+
+- Header: the logo at a modest size, the product or organization name, the page title, the date, and, for a project, the commit or branch the page describes.
 - Brand colors go to the header, accents, links, and diagram nodes. Status colors keep their meaning: added green, removed red, warning amber, whatever the brand palette.
-- Check contrast. A brand color that fails 4.5:1 for text stays in borders and fills; darken it for text. If the project has no dark palette, derive one and keep the contrast.
-- Type: the project's font names with a system fallback stack. Do not embed font files or load web fonts.
+- A brand color that fails text contrast stays in borders, fills, and large shapes; darken it for text. If the identity has no dark palette, derive one and keep the contrast.
+- Type: the brand's font names first, then a system fallback stack of the same kind (geometric, humanist, or grotesque sans; serif; mono). Do not embed font files or load web fonts.
 - Embed the logo as an `<img>` with a data URL, never as inline SVG markup: an image cannot run scripts the file may contain. Skip a raster logo over 200 KB.
-- Use only assets from the project folder. Never fetch a logo from the web or draw an imitation of one.
-- In the page footer, name the files the identity came from, for example `colors from src/styles/globals.css, logo from public/logo.svg`.
+- Use only official logo files: from the project, from the user, or downloaded from the organization's own domain. No file: show the name in the brand type instead.
+- In the reply, name the identity or topic reference in one short clause, for example `Styled in the Norvik Ferries identity from docs/brand-guide.md.`
+- In the footer, name where the identity came from, for example `colors from src/styles/globals.css, logo from public/logo.svg`, or the official URLs as `[n]` links.
 
-## No project identity
+## Write the design plan
 
-No project, or a project without a logo or tokens: design the page from the topic and the intent instead. A partial identity (a logo but no colors, or colors but no logo) keeps what exists and fills only the gaps this way. The page must look made for this subject, not for any subject.
+Before any code, write the art direction of [visual-design.md](visual-design.md) for yourself, not for the page, with these HTML specifics:
 
-1. Name the domain and what the reader will do with the page: learn, decide, debug, present.
-2. Pick a reference from the domain's own documents and materials: an engineering drawing for a protocol, a ledger for a budget, an editorial layout for a history, a field notebook for biology, a transit map for a pipeline, a lab report for a benchmark.
-3. Write a design brief before any code, in four lines: the tone in 3 words, the palette (one base, one ink, one accent taken from that reference; status colors stay fixed), the type (system serif, sans, or mono stacks, chosen by the reference), and one motif drawn from the domain (a grid, a rule line, a stamp, a margin note, a scale bar).
-4. Apply the brief to the header (the page title and the date), the panel frames, and the diagrams. The motif stays in the chrome; the content stays readable.
-5. In the reply, say in one sentence which reference the page follows.
+- Colors: a hex value for each token, plus the fixed status colors.
+- Type: a scale of 5 to 6 steps. Spacing: 4, 8, 12, 16, 24, 32, 48, 64.
+- Layout: an ASCII wireframe of the page at desktop width and how it collapses on a phone.
+- The one memorable element: the single place the page spends its boldness, drawn from the subject (a hero diagram, a large brand-colored figure, a map). Everything around it stays quiet.
 
-Avoid the generic AI look: no default style you would reuse for any topic. Before saving, check the page against one question: if the title were removed, could a reader guess the topic from the look alone? If not, revise the brief.
+Then review the plan against the brief. If a choice is a default you would make for any page rather than for this subject and this identity, change it; "Avoid generic patterns" in [visual-design.md](visual-design.md) lists the common ones.
 
-## Professional finish
+## Lay out and align
 
-Professional means: one type scale with clear heading levels, one spacing scale, aligned grids, no decoration that carries no meaning, no placeholder text, and real names throughout.
+- Put every value in CSS custom properties on `:root`: colors, type steps, spacing, radii, shadows. Components use only these properties, never raw values.
+- One page container sets the width and the side padding. Panels sit on one CSS grid (`repeat(auto-fit, minmax(…, 1fr))` or a 12-column grid) with one gap from the spacing scale, so every panel edge lines up with another edge.
+- Layout with grid and flex only. No absolute positioning for layout, no negative margins to fix alignment, no magic pixel values.
+- Every margin, padding, and gap comes from the spacing scale. Space inside a group is smaller than space between groups.
+- Left-align text. Center only a short element that stands alone.
+- Headings use `text-wrap: balance`. Numbers compared in a column use `font-variant-numeric: tabular-nums` and align right.
+- Grid and flex children get `min-width: 0`; long words and paths wrap with `overflow-wrap: anywhere`. No horizontal scroll at any width from 360 px up.
+- Below about 520 px, hide secondary table columns and labels that do not fit inside chart marks; the legend or table carries those values.
+- Nested radii: an inner radius is never larger than its outer radius. Use at most 2 radius values.
+- Shadows only to show elevation, in at most 2 levels.
+- Icons: inline SVG, each with a text label or an accessible name.
+- SVG diagrams use a `viewBox` and scale with their panel. Compute positions from the content, so no label is clipped and every arrow ends on a node.
+
+## Draw
+
+- Draw diagrams as inline SVG or HTML and CSS. A layered layout is enough: one row or column per call depth or per step.
+- Mark a change on the structure itself: added in green with `+`, removed in red with `-`, changed in amber with `~`. Do not draw a before and an after. A Before / After toggle is optional; the marked view must make sense alone.
+- Tables: status cells use a symbol and a word (`✓ yes`, `✗ no`, `! partial`).
+- Charts only from real numbers, with the unit in the axis or header and the row that matters highlighted. Under the chart, put the numbers in a table, collapsed by default. Without real numbers, draw no chart; label any example data `illustrative` next to it.
+
+## Write the words
+
+- Sentence case for titles and buttons. A button says what happens: "Copy reply", not "Submit".
+- Use the identity's vocabulary and the reader's words, not internal names, except for code identifiers, which stay exact.
+- No placeholder text, no lorem ipsum, no filler slogans.
 
 ## Quote real code
 
@@ -80,29 +126,44 @@ Comments
 
 - In the reply to the user, say how many decisions are open and that the suggested options are what you would do.
 
-## Page rules
-
-- One file, no network: inline CSS, scripts, SVG, and images as data URLs. No CDN, web fonts, remote images, telemetry, or uploads.
-- Light and dark mode through `prefers-color-scheme`. A print style that shows every panel and step expanded.
-- Desktop and mobile: panels in a grid on wide screens, one column on narrow ones.
-- Accessibility: semantic headings, a text alternative for every diagram (its `title` and a one-sentence description), visible focus, every control usable from the keyboard, and contrast of at least 4.5:1 for text.
-- Interaction: see Motion. With scripts off, every panel still shows its content; only the controls stop working.
-- Save as `show-me-<description>.html` in a temporary directory. Open it in the default browser when you can, and give its absolute path as a `file://` link.
-
 ## Motion
 
-Every page moves and is fun to explore. Be generous with motion and playful details, as long as they come from the topic: a packet that bounces off a firewall, a stamp that lands on an approved invoice, a queue that fills and drains, a cache hit that flashes. A page the reader wants to play with is a page the reader remembers.
+Motion tells the story and answers the reader. Playful details come from the topic: a packet that bounces off a firewall, a stamp that lands on an approved invoice, a queue that fills and drains, a cache hit that flashes.
 
-- Diagrams build in the order of the story: nodes appear step by step, edges draw from source to target, sequence messages travel in time order, a state machine lights each transition in turn.
+- One orchestrated entrance: the hero and the diagrams build in the order of the story. Nodes appear step by step, edges draw from source to target, sequence messages travel in time order, a state machine lights each transition in turn. Do not fade and slide every section; that is the generic default.
 - A flow can show what moves along it: a dot travels the request path, a value passes from one node to the next.
-- Panels enter once, in reading order, with a short stagger. A changed element (`+`, `-`, `~`) gets one brief highlight after its panel appears.
-- Make things respond: hover and focus states on nodes, a click on a node that opens its detail, a drag or a slider that changes a parameter and replays the effect, scroll that advances a step.
-- Add small surprises tied to the topic: a hidden detail on a second click, a playful empty state, a counter that reacts to the reader.
-- Use CSS transitions, keyframes, or the Web Animations API. No animation library.
-- Take durations and easing from the project's motion tokens when they exist; otherwise pick durations and easing that fit the page's tone, and keep them consistent.
+- Motion that answers an action is welcome: hover and focus states on nodes, a click that opens a detail, a slider that changes a parameter and replays the effect, a step-through.
+- A changed element (`+`, `-`, `~`) gets one brief highlight after its panel appears.
+- Never `transition: all`. SVG transforms go on a `<g>` with `transform-box: fill-box`.
+- Use CSS transitions, keyframes, or the Web Animations API. No animation library. Take durations and easing from the identity's motion tokens when they exist.
 - A `Replay` control restarts the motion. Any motion that lasts more than 5 seconds or loops has a `Pause` control.
 - Under `prefers-reduced-motion: reduce`, show the final state at once. Print and pages with scripts off show the final state too.
-- Motion never hides content: the final state holds every label and number, and the reader can read it without waiting for the motion to end.
+
+## Page rules
+
+- One file, no network: inline CSS, scripts, SVG, and images as data URLs. No CDN, web fonts, remote images, telemetry, or uploads. Links to sources are allowed; they load nothing.
+- `<html lang>` set to the page language, a `<title>` that matches the page title, and `<meta name="viewport" content="width=device-width, initial-scale=1">`. Never disable zoom.
+- Light and dark mode through `prefers-color-scheme`, with `color-scheme` set. A print style that shows every panel and step expanded.
+- Desktop and mobile: panels in a grid on wide screens, one column on narrow ones.
+- Accessibility: semantic landmarks and headings in order, a text alternative for every diagram (its `title` and a one-sentence description), decorative elements `aria-hidden`, visible focus with `:focus-visible`, every control a native `button`, `a`, or input usable from the keyboard.
+- With scripts off, every panel still shows its content; only the controls stop working.
+- Save as `show-me-<description>.html` in a temporary directory.
+
+## Check the render
+
+Look at the page before you deliver it. When the host can run a headless browser (for example Playwright or Chrome in headless mode), open the page at 390 px and 1440 px wide, take a screenshot of each, and look at them. Check:
+
+- No horizontal scroll: `document.documentElement.scrollWidth` is at most the window width.
+- No clipped or overlapping label, no arrow that misses its node, no empty panel.
+- Panel edges, headings, and text start on the same lines of the grid.
+- The final state after motion shows every label and number.
+- Every point of "Review the render" in [visual-design.md](visual-design.md) holds.
+
+Fix what fails and check again. Without a browser, say in the reply that the page was not rendered, and check the HTML against the list by reading it.
+
+Then open the page in the default browser when you can, and give its absolute path as a `file://` link.
+
+When the reader will share or present the page, `**Next:**` may suggest `hl-verify --text` to fact-check its figures and `hl-roast` for a critique of the page.
 
 ## Change an existing page
 

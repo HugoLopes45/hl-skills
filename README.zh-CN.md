@@ -86,7 +86,7 @@ npx skills add HugoLopes45/hl-skills
 | [hl-tdd](./skills/hl-tdd/SKILL.md) | 按红、绿、重构实现一个行为，先写失败的测试 | `Use hl-tdd to reject expired invitations, test first.` |
 | [hl-tickets](./skills/hl-tickets/SKILL.md) | 细粒度切片，每片一个拉取请求，输出为文件或 GitHub issue | `Use hl-tickets to turn this feature plan into independently testable tickets.` |
 | [hl-ambitious](./skills/hl-ambitious/SKILL.md) | 更高的任务标准，范围不变 | `Use hl-ambitious to make this task deeper without expanding its scope.` |
-| [hl-show-me](./skills/hl-show-me/SKILL.md) | 用图回答：图示、树、表格或时间线 | `Use hl-show-me to draw how authentication works in this app.` |
+| [hl-show-me](./skills/hl-show-me/SKILL.md) | 用图回答：图示、树、表格、时间线，或采用项目或公司视觉风格的页面；可讲解整个项目 | `Use hl-show-me to draw how authentication works in this app.` |
 | [hl-explainer-video](./skills/hl-explainer-video/SKILL.md) （实验性） | 一个主题的简短配音讲解视频 | `Use hl-explainer-video to make a short narrated video explaining CRDTs.` |
 | [hl-writing-for-agents](./skills/hl-writing-for-agents/SKILL.md) | 为智能体执行而写的提示词和指令 | `Use hl-writing-for-agents to make this prompt shorter without losing its requirements.` |
 
