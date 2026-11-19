@@ -15,7 +15,7 @@ The input is the prompt or intent. `--model <name>` retargets the knobs · `--ve
 
 ## The five things that aren't obvious
 
-The rest of this file is derivable from these. Apply the reason, not the entry.
+Apply the reason, not the entry.
 
 1. **Test the instruction against the symptom.** Look for a conflicting or unnecessary line before adding one. Consider separating candidate discovery from filtering, making scope explicit, or adding an observable stop condition. Check which change addresses the symptom; do not assume the cause.
 2. **Separate settings from instructions.** Name only controls the target host supports. Preserve the task's evidence and scope requirements regardless of settings.

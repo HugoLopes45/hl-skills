@@ -47,10 +47,6 @@ def test_total():
     assert total([10, 5]) == 15
 ```
 
-## Horizontal
-
-All tests first, then all code. The tests describe imagined behavior and lock in a structure before the code teaches anything. Write one test, make it pass, then write the next.
-
 ## Mocks
 
 Mock only what the project does not control: external APIs, clocks, randomness, sometimes the filesystem or database. Never mock the module under test or its internal collaborators. Code that is hard to test without mocking internals usually needs its dependency passed in.

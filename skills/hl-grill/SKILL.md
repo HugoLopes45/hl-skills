@@ -90,14 +90,13 @@ Line 1, bold, one plain sentence in everyday words. The reply ends with `Verdict
 - `Gaps, N blockers, N major, N minor`: `--gaps` totals. Use `1 blocker` for one; otherwise `blockers`. Details follow [references/gaps.md](references/gaps.md).
 Inflect `question` and `open decision` the same way in round and stopped verdicts.
 
-Views: a table of three short columns for three or more options, with the question naming both options when there are two. No codes such as Q1: number the questions 1, 2, 3. Requested ASCII illustrations stay within 8 lines of 80 characters; required artifacts remain complete.
+Views: no codes such as Q1: number the questions 1, 2, 3. Requested ASCII illustrations stay within 8 lines of 80 characters; required artifacts remain complete.
 
 Stopped, nothing to work on: `**I need an idea, a problem, a plan, or a file before I can question it.**` Then `Verdict: Stopped`. `**Next:**` holds up to 3 numbered ways, default marked, listed nowhere else: a sentence such as "a CLI that does X" (default); a path to a written plan or spec; `--gaps` to list what a plan misses.
 
 Reader rules:
 - Say "decision" and "option", not "frontier", "prerequisite", or "design tree".
 - Spell out ADR (architecture decision record: a short note on one hard-to-reverse technical choice) and GLOSSARY.md (the project's word list) at first use.
-- A supported recommendation comes with its reason from the code, the goal, or a stated constraint; "yes" accepts it.
 - A conflict shows both sources side by side, with no blame: "the code uses SQLite; the idea says Postgres. Which is right?"
 
 End: Next holds the round's question blocks and reply route, or the next skill for a completed discussion. Recommend an answer only when the evidence supports it; otherwise name the choice that only the user can settle. `**Changed:** <paths>` when a file was saved (GLOSSARY.md, a brief, or a `*-gaps.md` report); otherwise `**Changed:** none`.

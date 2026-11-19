@@ -51,7 +51,6 @@ Use targeted questions only when missing context changes the requested deliverab
 - Act directly when the brief gives the purpose, the recipient relationship, and the one action.
 - Ask in one round when the purpose, the recipient relationship (for example, past customer, trial user, or prospect), or the one action is missing. Explain what each answer changes. Write `Default: none` for each, because each is a fact.
 - A missing price, date, or proof does not stop the draft. Use placeholders for those.
-- Reuse what the user already supplied. Do not ask again.
 - In revise mode, reconcile the brief and the existing email before editing. When asked to keep every supported fact, include supplied facts from both inputs, even if the old email omitted them: price with billing basis, trial terms, feature, and availability date. Check that inventory against the revised copy. Remove only unsupported claims or facts the user explicitly excludes.
 - An exact output format the user names, for example only the subject line, replaces the default output. The evidence rules still apply.
 - Do not send, schedule, or load the email into a sending tool. If the user asks for that, say that this skill writes text only, and that the send needs its own explicit request.
