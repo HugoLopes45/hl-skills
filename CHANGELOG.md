@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/HugoLopes45/hl-skills/compare/v1.13.1...v1.13.2) (2026-11-19)
+
+
+### Bug Fixes
+
+* **skills:** distinguish reader instructions from review manipulation ([03d9ab1](https://github.com/HugoLopes45/hl-skills/commit/03d9ab12be39f366f459164093a69a7eaf637c2e))
+
 ## [1.13.1](https://github.com/HugoLopes45/hl-skills/compare/v1.13.0...v1.13.1) (2026-11-19)
 
 
