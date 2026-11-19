@@ -50,6 +50,16 @@ class ValidateTest(unittest.TestCase):
         (skill / "references/index.md").write_text("[Detail](detail.md)\n", encoding="utf-8")
         self.assertIn("skills/hl-alpha/references/index.md: broken reference: detail.md", validate(self.root))
 
+    def test_shared_reference_copies_must_match(self) -> None:
+        for name, text in ("hl-alpha", "Rules.\n"), ("hl-beta", "Rules, edited.\n"):
+            skill = write_skill(self.root, name, "See references/visual-design.md.\n")
+            (skill / "references").mkdir()
+            (skill / "references/visual-design.md").write_text(text, encoding="utf-8")
+        self.assertEqual(
+            validate(self.root),
+            ["skills/hl-beta/references/visual-design.md: differs from skills/hl-alpha/references/visual-design.md; shared references stay identical"],
+        )
+
     def test_missing_skill_entrypoint_is_an_error(self) -> None:
         write_skill(self.root, "hl-alpha")
         (self.root / "skills/hl-beta").mkdir()

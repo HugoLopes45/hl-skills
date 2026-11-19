@@ -62,7 +62,7 @@ Open the reply with the one-liner; Next owns the venue and validation action for
 
 ### landing
 
-Complete landing draft, section by section: hero (concise headline, subhead, one CTA), pain mirror (three bullets in the buyer's words), how-it-works (three steps), proof, pricing framing, FAQ (five real objections), final CTA. Designer notes only where copy alone can't carry the section. The page itself starts with the hero headline and its CTA. Pair each placeholder with the plan that earns the real proof. Quote a customer only with their permission, the original date, and the source.
+Complete landing draft, section by section: hero (concise headline, subhead, one CTA), pain mirror (three bullets in the buyer's words), how-it-works (three steps), proof, pricing framing, FAQ (five real objections), final CTA. Designer notes only where copy alone can't carry the section, based on [references/visual-design.md](references/visual-design.md). The page itself starts with the hero headline and its CTA. Pair each placeholder with the plan that earns the real proof. Quote a customer only with their permission, the original date, and the source.
 
 ### launch
 

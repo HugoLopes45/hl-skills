@@ -84,7 +84,7 @@ From the first idea to the merged pull request. Find your moment, then copy the 
 | [hl-tdd](./skills/hl-tdd/SKILL.md) | One behavior built red, green, refactor, failing test first | `Use hl-tdd to reject expired invitations, test first.` |
 | [hl-tickets](./skills/hl-tickets/SKILL.md) | Thin slices, one pull request each, as files or GitHub issues | `Use hl-tickets to turn this feature plan into independently testable tickets.` |
 | [hl-ambitious](./skills/hl-ambitious/SKILL.md) | A higher standard for the task, with the same scope | `Use hl-ambitious to make this task deeper without expanding its scope.` |
-| [hl-show-me](./skills/hl-show-me/SKILL.md) | The answer as a picture: diagram, tree, table, or timeline | `Use hl-show-me to draw how authentication works in this app.` |
+| [hl-show-me](./skills/hl-show-me/SKILL.md) | The answer as a picture: diagram, tree, table, timeline, or a page in the look of your project or company; explains whole projects | `Use hl-show-me to draw how authentication works in this app.` |
 | [hl-explainer-video](./skills/hl-explainer-video/SKILL.md) (experimental) | A short narrated explainer video on one topic | `Use hl-explainer-video to make a short narrated video explaining CRDTs.` |
 | [hl-writing-for-agents](./skills/hl-writing-for-agents/SKILL.md) | Prompts and instructions written for an agent to execute | `Use hl-writing-for-agents to make this prompt shorter without losing its requirements.` |
 
