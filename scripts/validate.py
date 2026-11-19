@@ -12,6 +12,7 @@ LINK_RE = re.compile(r"references/[A-Za-z0-9._/-]+\.md")
 MAX_BODY_LINES = 500
 GROUNDING = "Ground factual claims in supplied evidence or results you observed in this session."
 TRANSLATED_DOCS = ("README.md",)
+SHARED_REFERENCES = ("visual-design.md",)
 
 
 def heading_levels(text: str) -> list[int]:
@@ -115,6 +116,18 @@ def check(skill_md: Path) -> list[str]:
     return errors
 
 
+def shared_reference_errors(root: Path) -> list[str]:
+    errors: list[str] = []
+    for name in SHARED_REFERENCES:
+        copies = sorted(root.glob(f"skills/*/references/{name}"))
+        for copy in copies[1:]:
+            if copy.read_bytes() != copies[0].read_bytes():
+                errors.append(
+                    f"{copy.relative_to(root)}: differs from {copies[0].relative_to(root)}; shared references stay identical"
+                )
+    return errors
+
+
 def validate(root: Path) -> list[str]:
     """Return one 'path: message' line per error under root."""
     skills = sorted(root.glob("skills/*/SKILL.md"))
@@ -133,7 +146,7 @@ def validate(root: Path) -> list[str]:
                     errors.append(f"{reference.relative_to(root)}: broken reference: {link}")
     for nested in sorted(root.glob("skills/*/*/**/SKILL.md")):
         errors.append(f"{nested.relative_to(root)}: nested skill; move it to skills/<name>/SKILL.md")
-    return errors + translation_errors(root)
+    return errors + shared_reference_errors(root) + translation_errors(root)
 
 
 def main() -> int:
