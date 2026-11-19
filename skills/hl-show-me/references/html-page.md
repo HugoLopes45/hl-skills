@@ -7,7 +7,7 @@ Follow the shared rules in [visual-design.md](visual-design.md); this file adds 
 ## Plan the panels
 
 - List the panels before writing: one when a single diagram or infographic answers the question, at most 8 otherwise. Each panel answers one sub-question and has a title that states its point ("Retries double the load", not "Retries").
-- The first panel gives the answer. Any other panels give the evidence, in the order the reader needs it.
+- The first panel gives the answer. Any other panels give the evidence, in the order the reader needs it. A page that explains a project or a concept follows the story in [explain-project.md](explain-project.md): the promise, what it takes over, one worked case, one comparison, then how it is built.
 - Pick each panel's view by the shape of its content, with the table in `SKILL.md`. One view per panel; prose only for what the view cannot show.
 - Over 8 panels: cut panels or split the topic into two pages.
 - Each fact appears once. When a view shows it, the text does not repeat it.
@@ -66,9 +66,9 @@ The page looks like it belongs to its subject's field. With no project or organi
 
 Before any code, write the art direction of [visual-design.md](visual-design.md) for yourself, not for the page, with these HTML specifics:
 
-- Colors: a hex value for each token, plus the fixed status colors.
+- Colors: specify a hex value for each token, including the fixed status colors. Choose the background for the reading task, not to outline white cards. For a patient guide, try white paper, dark ink, and a cool accent on the figure that explains the case. In dark mode, choose the ink and surface together; do not simply invert the page. Use brand colors or a different material when the subject calls for it.
 - Type: a scale of 5 to 6 steps. Spacing: 4, 8, 12, 16, 24, 32, 48, 64.
-- Layout: an ASCII wireframe of the page at desktop width and how it collapses on a phone.
+- Layout: sketch an ASCII wireframe for desktop and phone. For an editorial explanation, put the claim beside its evidence on desktop and immediately before it on a phone. Use space, alignment, and type to separate sections. Add a box only when its boundary explains a group.
 - The one memorable element: the single place the page spends its boldness, drawn from the subject (a hero diagram, a large brand-colored figure, a map). Everything around it stays quiet.
 
 Then review the plan against the brief. If a choice is a default you would make for any page rather than for this subject and this identity, change it; "Avoid generic patterns" in [visual-design.md](visual-design.md) lists the common ones.
@@ -100,6 +100,9 @@ Then review the plan against the brief. If a choice is a default you would make 
 - Sentence case for titles and buttons. A button says what happens: "Copy reply", not "Submit".
 - Use the identity's vocabulary and the reader's words, not internal names, except for code identifiers, which stay exact.
 - No placeholder text, no lorem ipsum, no filler slogans.
+- Make the reader want it: lead with what the reader gains, shown with a real case and a real figure, never with an adjective. Enthusiasm comes from the concrete result, not from hype words.
+- No sentence that only restates a name ("the API serves the API"). Each one says what, for whom, or with what result.
+- Keep the page clean: no letter badges or monograms in place of icons, no source list under each panel, no disclaimers or hedges on the page. Sources go in one collapsed list at the end; limits go in the reply.
 
 ## Quote real code
 
@@ -157,6 +160,8 @@ Look at the page before you deliver it. When the host can run a headless browser
 - No clipped or overlapping label, no arrow that misses its node, no empty panel.
 - Panel edges, headings, and text start on the same lines of the grid.
 - The final state after motion shows every label and number.
+- A reader with no technical background who reads only the titles and the worked case can retell what the subject does and why it matters.
+- Inspect the opening at actual reading size in light and dark, on phone and desktop. Can you see the main claim and its evidence without hunting through decoration? Check that key figures read as units and chart labels clear nearby marks. Reinspect the affected view after a fix; a width or contrast measurement is not a visual review.
 - Every point of "Review the render" in [visual-design.md](visual-design.md) holds.
 
 Fix what fails and check again. Without a browser, say in the reply that the page was not rendered, and check the HTML against the list by reading it.
