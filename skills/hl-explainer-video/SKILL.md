@@ -46,7 +46,7 @@ With narration, generate one audio file per beat. Measure each with `ffprobe -v 
 
 ## 4. Scenes
 
-Write one Manim scene per beat, or one scene that waits per measured duration. A beat's wait is its planned duration minus its animation run time; shorten animations that exceed it.
+Style the scenes by [references/visual-design.md](references/visual-design.md): its art direction sets the palette, type, and motif; its motion and chart rules apply to every beat. Write one Manim scene per beat, or one scene that waits per measured duration. A beat's wait is its planned duration minus its animation run time; shorten animations that exceed it.
 
 Render at low quality first (`-ql`). Verify the preview's stream, duration, and one frame per beat before a final render (`-qh`). A denied required check: immediately report `Stopped` with the exact observed error and partial artifacts, then end tool use. Missing preview verification: stop before the final render. Take each rendered file's path from Manim's log or a confirmed filesystem entry, not a guessed path. Run every render and encode in the foreground, never as a background job, and wait for it to finish before the next step. If the host limits command time, raise the limit or render one scene per command so each finishes within it.
 

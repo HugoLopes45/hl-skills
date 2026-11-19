@@ -45,7 +45,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 2. **Inventory the material.** List each supplied item with its name, its date, and the claims it supports.
 3. **Draft from the shape.** Read [references/asset-shapes.md](references/asset-shapes.md) for this asset before drafting. Follow its order, and tag each claim as you write it. For a supplied asset, treat its claims as the draft, apply steps 4 and 5, and return the corrected asset.
 4. **Apply the evidence rules.** Check each claim. Replace or cut each failing claim, and add it to the unsupported list with its reason.
-5. **Fit the buyer.** Order and emphasize by buyer role, using only supplied buyer notes. Keep one idea per slide, section, or scene.
+5. **Fit the buyer.** Order and emphasize by buyer role, using only supplied buyer notes. Keep one idea per slide, section, or scene. Layout and visual notes for a deck, one-pager, or demo follow [references/visual-design.md](references/visual-design.md).
 6. **Choose the verdict** from the Output list, then write Next.
 
 ## Output

@@ -41,6 +41,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 - Missing non-essential context does not stop the draft. Mark only requested claims that depend on it as placeholders. Do not add an unrequested testimonial, experience or result and then make its missing proof a publishing gate; omit that claim instead.
 - Own feed posts, captions, titled notes and carousels, including requested cover text, image suggestions, alt text and tags. A filmable short-video script belongs to `hl-short-video`; an explanatory article belongs to `hl-article-writing`. For a video note's caption only, stay here; do not add a production plan.
 - Carousels and document posts: pick one structure first, as set out in [references/carousel-method.md](references/carousel-method.md).
+- Image suggestions, cover text, and carousel slides follow [references/visual-design.md](references/visual-design.md).
 - Build-in-public posts from a supplied commit log, diff or release notes: follow [references/build-in-public.md](references/build-in-public.md).
 - Comment and reply drafts for supplied posts: follow [references/engagement-method.md](references/engagement-method.md).
 - One source for several platforms: give each platform a treatment before drafting, as set out in [references/post-method.md](references/post-method.md).
