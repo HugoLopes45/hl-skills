@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/HugoLopes45/hl-skills/compare/v1.13.0...v1.13.1) (2026-11-19)
+
+
+### Bug Fixes
+
+* tell projects as a story in hl-show-me and resolve contradictions across all skills ([#55](https://github.com/HugoLopes45/hl-skills/issues/55)) ([e28a215](https://github.com/HugoLopes45/hl-skills/commit/e28a215fe40e58a8d9a8744cc4f7eb5339583a22))
+
 ## [1.13.0](https://github.com/HugoLopes45/hl-skills/compare/v1.12.0...v1.13.0) (2026-11-19)
 
 
