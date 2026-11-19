@@ -78,7 +78,7 @@ Choose one design before launch and write it in the plan.
 
 1. Restate the hypothesis, the element, the primary metric, guardrails, unit, and eligibility rule.
 2. Check the sizing inputs. Compute the size and duration with the method in [references/sizing.md](references/sizing.md), or mark sizing blocked. If the size or duration is too large, use the options in that file.
-3. Choose the analysis design and write its stopping rule or its single read.
+3. Choose the analysis design and write its stopping rule or its single read. For a sequential design, recompute the size as that file says.
 4. Write the QA checks, the decision rules, and the rollout steps as plan items. Stop before any rollout.
 
 ## Output

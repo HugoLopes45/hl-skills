@@ -102,7 +102,3 @@ When the user asks to change existing work, apply only the operation asked:
 - Harden: fix accessibility, responsiveness, and edge cases.
 
 Do not redesign when the request is a refinement.
-
-## Done
-
-The result is coherent, usable, responsive, accessible, visually intentional, and complete within the requested scope.

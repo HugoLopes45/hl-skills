@@ -10,7 +10,7 @@ Examples use an invented mail-in knife sharpening service. Every number in the e
 
 - Write one sentence, about 6 to 14 words (heuristic default), about the result the reader gets or the problem they name, per the lead, not the product's features. Use the immediate result for an urgent need and the later outcome for a planned one.
 - Make it survive being read alone, with no image and no page around it.
-- Test the line with the prefix "Now you can" in mind; the prefix is a mental test, never published. Keep the line only when the result is a new ability the reader gets and is true.
+- Test a result line with the prefix "Now you can" in mind; the prefix is a mental test, never published. Keep such a line only when the result is a new ability the reader gets and is true.
 - Use the traffic source's words when the page answers that source.
 - Cut a headline that names a category only, joins two promises with "and", or would fit a competitor's page unchanged.
 - Cut a headline that only restates the brief's outcome line. The brief says what the product does; the headline says it the way the buyer would feel it.

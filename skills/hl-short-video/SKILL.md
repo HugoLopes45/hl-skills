@@ -57,7 +57,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 Reader: the person filming or approving the video. Lead with one bold plain sentence stating what can proceed and what blocks it. State shared uncertainty once.
 
-For a complete script, use a Markdown fence with spoken lines, a shot plan (visual and on-screen text per beat), and the requested publishing fields. Localize section labels. State duration estimates and rights/disclosure status outside the spoken lines. For a narrow request, deliver only its requested components.
+For a complete script, use a Markdown fence with spoken lines, a shot plan (visual and on-screen text per beat), and the requested publishing fields. Localize section labels. State duration estimates and rights/disclosure status outside the spoken lines.
 
 Use `Verdict: Draft`, `Verdict: Reviewed` or `Verdict: Stopped` immediately before `**Next:**`. Each Next line names a concrete action; missing proof names what fills it. Publication remains the user's decision.
 

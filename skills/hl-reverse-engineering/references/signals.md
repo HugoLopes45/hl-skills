@@ -43,7 +43,7 @@ BOOT_COMPLETED  device admin  hidden launcher icon
 sleep before acting  sandbox or debugger checks  locale or time-zone checks  CI checks
 ```
 
-Delays and environment checks before a behavior mean it tries to avoid analysis; note them and the condition that releases the behavior.
+Delays and environment checks before a behavior can mean it tries to avoid analysis; note them and the condition that releases the behavior.
 
 ## Obfuscation
 

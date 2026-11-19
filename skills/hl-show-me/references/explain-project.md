@@ -23,7 +23,7 @@ The angle decides which subjects lead and which words the page uses:
 - Technical: the architecture, the stack, the flows as call trees, the data model, the boundaries, the risks.
 - Both: business first, then the technical subjects that carry it.
 
-Ask one question when the request names no angle and the project has both a business side and a technical side. Ask it after the survey, so the options name real subjects. Do not ask when the request already says it ("for my manager", "how is it built", "the architecture"), when only one angle exists (a library with no users of its own: technical), or when the user said to choose. A detail the files answer is never a question.
+Ask one question when the request names no angle and the project has both a business side and a technical side. Ask it after the survey, so the options name real subjects. Do not ask when the request already says it ("for my manager", "for my grandmother", "how is it built", "the architecture"), when only one angle exists (a library with no users of its own: technical), or when the user said to choose. A detail the files answer is never a question.
 
 The question reply:
 
@@ -53,10 +53,19 @@ Verdict: Stopped
 
 After the answer, or when the angle is already known:
 
-- Pick 3 to 6 subjects from the survey, in the order the angle needs. Each becomes one panel on the HTML page, or one heading with one view in a text reply. The first panel answers "what is this project, in one sentence, for whom".
-- A project explanation has 3 or more related concepts, so it gets the HTML page unless the user asked for text.
-- Business panels use the reader's words: users, journeys, rules, value, numbers with their units. Technical panels use the views in the table of `SKILL.md`, with `file:line`.
-- Every claim comes from a file you read. A subject you did not read deeply says so on its panel.
+The reader must leave able to say, in one sentence, what the project changes for whom, and to retell one concrete case. A reader with no technical background, a grandparent, must get it. Tell a story, not an inventory:
+
+1. The promise: what the project makes possible, for whom, in one sentence anyone understands, with the largest real figure the files give (crates per day, sites, euros, hours). This is the hero of the page.
+2. What it takes over: the work people would do by hand or could not do without it, as the code shows it. Say on the page only what the files support; put your inferences in the reply.
+3. One worked case: follow one input through the project to its result, with real values from the code, fixtures, tests, or docs ("Bakery Moreau orders 12 crates; they ride in van 2 with 31 other crates; the driver gets a sheet with 4 stops"). A value you made up carries the label `example`. This is the memorable element: animate it step by step. Its end state shows at first sight, before any click; controls only replay or step through it.
+4. One everyday comparison for the core mechanism, only when it holds ("like packing a car boot: the biggest boxes go in first"). Never stretch it.
+5. How it is built, for the technical and both angles only: the views in the table of `SKILL.md`, with `file:line`, after the story.
+
+- Order the panels by what happens to the user or to the thing that moves, never by repository, folder, or module.
+- Each sentence teaches something the names alone do not. "The factory builds artifacts" restates a name: say what it builds, from what, for whom, with an example.
+- Explain each domain term or acronym in plain words at first use. One the files never explain: say so in the reply, and do not guess it on the page.
+- A project explanation gets the HTML page unless the user asked for text. In a text reply, each story step is one heading with one view.
+- Every claim comes from a file you read. Say in the reply which parts you did not read deeply; the page stays free of hedges.
 
 ## Keep the exchange going
 

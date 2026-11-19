@@ -14,8 +14,8 @@
 1. Confirm the facts with the people who know them directly, not from summaries.
 2. Assign the tier. For tier 4, send the question to the adviser at once.
 3. Name one spokesperson and one channel of record.
-4. Publish a holding statement.
-5. Give staff the same words, and route press and customer questions to one person.
+4. Send the holding statement to directly affected people and to staff, then publish it, in the channel order below.
+5. Route press and customer questions to one person; staff use the same words.
 6. Set the next update time, publish it, and keep it.
 
 Tier 1 runs steps 1 to 3 only. Tiers 2 to 4 run all six.

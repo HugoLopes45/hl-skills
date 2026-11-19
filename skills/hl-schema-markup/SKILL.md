@@ -26,7 +26,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 ## Intent
 
 - Act directly when a page and its type are supplied, or when the request names the type.
-- When the page or its type is missing, ask in focused rounds, grouped in one message. Ask again when an answer raises a new question. Do not cap the number of rounds.
+- When the page is missing, or its type stays unclear after you read it, ask in focused rounds, grouped in one message. Ask again when an answer raises a new question. Do not cap the number of rounds.
 - Facts (URL, page type, render status, market) get `Default: none`. Output format choices get a default.
 - Reuse supplied answers. Do not ask again.
 - An output format the user names (JSON only, one table) replaces the wrapper below. The evidence rules still apply.

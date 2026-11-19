@@ -111,6 +111,7 @@ Verdict: Draft
 2. Name the differentiator the owner supplies, or fill its placeholder. Default: none.
 3. Ask the grower in writing whether the quote may appear in the one-pager. Default: none.
 4. Supply the value of one liter of water, so the payback can be shown with its formula. Default: none.
+5. Name the buyer's deal stage, so any stage-dependent choice can be checked. Default: none.
 ````
 
 ## Stop conditions

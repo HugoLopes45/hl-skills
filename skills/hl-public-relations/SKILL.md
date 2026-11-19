@@ -40,7 +40,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 ### plan (default)
 
 1. **Run the news test.** Read [references/story-and-news-test.md](references/story-and-news-test.md). If the story fails, the verdict is `Hold`, and the plan states what would pass.
-2. **Choose the angle.** Pick one angle from that reference, or a data story. Never make a competitor the enemy.
+2. **Choose the angle.** Pick one angle from that reference. Never make a competitor the enemy.
 3. **Set the target types.** Read [references/pitching.md](references/pitching.md). Name a person only when the input names them and the owner has checked their recent work.
 4. **Write the pitch core** for each target tier. Its parts and length are in that reference. The single email around it belongs to `hl-email`.
 5. **Set the timing.** Offer open release, exclusive, or embargo, each with its cost. Default: open release.

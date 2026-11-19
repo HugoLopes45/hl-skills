@@ -22,7 +22,7 @@ For each file or figure, record these fields. Write `not stated` for each field 
 
 ## Period matching
 
-- Compare periods of equal length in the same time zone. Name the time zone by region when a period crosses a daylight-saving change; a fixed UTC offset is wrong for part of the year.
+- Compare periods of equal length in the same time zone; for unequal periods, apply the exposure rule in `SKILL.md`. Name the time zone by region when a period crosses a daylight-saving change; a fixed UTC offset is wrong for part of the year.
 - Label a partial period `partial`. Leave it out of totals unless the user accepts it.
 - Name a known difference between periods, such as a closure or a holiday, as a possible reason for a change. Write "possibly", and state that the export does not show the cause.
 - Mark a measurement break in the series, such as a change of goal, tag or definition. Do not compare values across it. Check what changed on that date, such as a tag, a platform change, or a site or plugin update, before naming a cause.

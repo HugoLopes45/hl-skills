@@ -179,7 +179,7 @@ One review read: "I own forty socks and no two of them know each other." Every o
 
 ## We do not make a second colour
 
-The answer is in the headline.
+Black is the only one, so every sock matches every other.
 ```
 
 The page says one thing: with a single model, a lost sock does not break a pair. The runner-up was the price per sock.

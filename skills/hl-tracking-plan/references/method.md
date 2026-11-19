@@ -76,7 +76,7 @@ The trigger is the user action or system state that sends the event.
 - `## Decisions and metrics`: decision, owner, metric, numerator, denominator, window, time zone, unit, dedupe key when the metric counts people.
 - `## Events`: event, trigger, platform and sender, consent category, metric, owner, status (`specified`, `not implemented`, or `blocked: <reason>`).
 - `## Conversions`: conversion, event, primary or reporting-only, counting unit, metric it feeds, click-through window, minimum call duration (call conversions), path and ad-platform action (paid-channel leads).
-- `## Properties`: event, property, type, allowed values, required, personal data, owner.
+- `## Properties`: event, property, type, allowed values, required, personal data, consent category, owner.
 - `## Owners`: item, owner, consumer (the report or decision that reads it).
 - `## Privacy and consent`: item, finding, status (`open`, `closed`, or `not stated`), owner who decides.
 - `## Verification`: event, test action, expected fields, where the payload is checked, `fired` status, `arrived` status (each `pending` until its check runs).

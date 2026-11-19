@@ -62,7 +62,7 @@ For up to 5 messages, use a table with the fields Message, Trigger, Consent basi
 
 Verdict words:
 - `Planned`: every message has a trigger, a consent basis, an opt-out where it is marketing, and a stop rule. The adviser checks stay open.
-- `Review first`: a rule has a gap that must close before the first send, such as a missing opt-out line, an unchecked send window, or a trigger with no recorded event.
+- `Review first`: a rule has a gap that must close before the first send, such as a missing opt-out line, an unchecked send window, or a trigger with no recorded event or stated condition.
 - `Consent gap`: a group has no recorded consent for a message, or a list has no traceable origin. Those messages are not planned.
 - `Stopped`: no audience, no messages, or no consent route or recipient market to plan from.
 

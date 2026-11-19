@@ -1,6 +1,6 @@
 # Lenses
 
-Input: `--lens [<lens>] | --panel [--mode <mode>] [--depth quick|deep] [target]`
+Input: `(--lens [<lens>] [--mode <mode>] | --panel) [--depth quick|deep] [target]`
 
 A lens is a fixed method: it changes what you check and report, not your tone.
 

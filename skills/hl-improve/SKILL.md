@@ -80,7 +80,7 @@ Ask which findings to turn into plans, recommending the highest-value ones with 
 
 ### Phase 4, Write the plans
 
-Record `git rev-parse --short HEAD`; every plan stamps the commit it was written against. If `plans/` already exists from a previous run, reconcile: read `plans/README.md`, keep numbering monotonic, skip already-planned findings, mark superseded plans stale. If `plans/` exists for an unrelated purpose, use `advisor-plans/` instead and say so.
+Record `git rev-parse --short HEAD`; every plan stamps the commit it was written against. If `plans/` already exists from a previous run, reconcile: read `plans/README.md`, keep numbering monotonic, skip already-planned findings, mark superseded plans stale. If `plans/` exists for an unrelated purpose, use `advisor-plans/` instead, wherever this file writes `plans/`, and say so.
 
 Plans go in:
 

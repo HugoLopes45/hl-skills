@@ -15,7 +15,7 @@ When the signals conflict, mark the call `assumed` and say which signal decided 
 
 ## Levels and the lead each calls for
 
-1. **New claim.** Buyers did not know a solution was possible. Lead with the plain promise. Skip comparisons; nothing exists to compare with yet.
+1. **New claim.** Buyers did not know a solution was possible. Lead with the plain promise. Skip rival comparisons; no rival claim exists yet. The status quo stays the baseline.
 2. **Escalating claims.** Rivals make similar promises with "fastest", "#1" or bigger numbers. Lead with a specific, measured promise that states its unit. Skip superlatives.
 3. **Claims fatigue.** Ads sound alike, and buyers say "I've tried things like this". Lead with the named method that shows how the promise is kept. Skip bare speed or transformation claims.
 4. **Proof race.** Rivals each claim a method, and ads lead with studies, numbers, posted prices or guarantee terms. Lead with proof density and a method the buyer can see. Skip any claim without proof.

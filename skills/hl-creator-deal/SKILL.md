@@ -32,7 +32,7 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 - Audience data that the creator supplied is self-reported. Label it so.
 - A post sample describes only its own posts. If no sponsored post is in the sample, sponsored performance is `unknown`.
 - A red flag is a question to check, not proof of fraud. Use the list in [references/deal-checks.md](references/deal-checks.md).
-- Use no follower tier, engagement floor, rate card, CPM, reach, or conversion benchmark unless the user supplies it with its source and scope. Compare the creator with the creator's own supplied posts only.
+- Use no follower tier, engagement floor, rate card, CPM, reach, or conversion benchmark unless the user supplies it with its source and scope. Compare the creator with the creator's own supplied posts only, except for the channel comparison in [references/deal-checks.md](references/deal-checks.md).
 - Invent no fee, rate, commission, or usage-right price. Quote a supplied amount as supplied, in its currency. Write the formula from the reference with the owner's inputs, or a `[PLACEHOLDER: owner sets ...]` slot.
 - Write no reach, view, sales, conversion, or return forecast. Name the test that would produce the number.
 - Disclosure status is read, not assumed. Read the current official guidance for each market and platform in this session and record its title and date. Without that read, write `unverified: <market or platform>`.

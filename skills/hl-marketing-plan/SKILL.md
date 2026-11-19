@@ -80,7 +80,7 @@ Stopped: line 1 says in plain words what is missing and why it blocks the plan. 
 3. Name the people who will run the moves, and their hours a week. Default: none.
 
 Reader rules:
-- Define each term once at first use: funnel stage (a step a buyer passes through: reach, first value, retain, refer, revenue), bet (a set of moves toward one outcome), leading indicator (a number that moves before the outcome), stop criterion (the signal that ends a move), cost source (the budget line that pays for a move), plateau (output flat while cost or effort rises).
+- Define each term once at first use: funnel stage (a step a buyer passes through: reach, first value, retain, refer, revenue), bet (a set of moves toward one outcome), leading indicator (a number that moves before the outcome), stop criterion (the signal that ends a move), cost source (the budget line that pays for a move), plateau (additions flat over the owner's window, or output flat while cost or effort rises).
 - Quote metric names and budget line names exactly.
 - No hype, no growth promise, no blame for past results.
 

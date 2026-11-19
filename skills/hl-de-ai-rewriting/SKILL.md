@@ -28,7 +28,6 @@ Ground factual claims in supplied evidence or results you observed in this sessi
 
 - Act directly when text is supplied. A request to make a text read less generated needs no question.
 - Stop only when the text is missing or unreadable (see Stop conditions). A missing audience or purpose does not stop the work: keep the audience the text already shows, and label it as inferred.
-- Reuse what the user supplied.
 - An exclusive output request, such as only the rewritten text or JSON only, replaces the default output. A request for a code block followed by reasons is not exclusive: keep the default Verdict and Next after those parts. Evidence rules apply in every format.
 - When the user asks for a detection result, say in one sentence that this skill does not target detector scores, then rewrite for clarity.
 
@@ -55,8 +54,6 @@ Line 1 is one bold plain sentence that states the result, for example "**The not
 Under line 1, in plain sentences: each claim the rewrite could not state without more information from the author, and each sentence whose meaning you could not confirm. Omit both when none apply.
 
 Rewrite mode puts the full text in a `text` fence with no added headings. After the fence, list each changed sentence: the original in quotes, its pattern, and one sentence of reason. List each flagged sentence you left unchanged the same way, with what the author must supply.
-
-Flag mode lists each flagged sentence with its pattern and reason. It has no rewrite.
 
 Verdict words:
 - `Rewritten`: rewrite mode complete; each change is listed, or none was needed; the claim list is kept.
