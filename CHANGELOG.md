@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/HugoLopes45/hl-skills/compare/v1.13.2...v1.14.0) (2026-11-20)
+
+
+### Features
+
+* **hl-show-me:** guide readers through evidence-led presentations ([a87aefe](https://github.com/HugoLopes45/hl-skills/commit/a87aefe7d93cab60b440bec1e106d36fba6692bc))
+
 ## [1.13.2](https://github.com/HugoLopes45/hl-skills/compare/v1.13.1...v1.13.2) (2026-11-19)
 
 
