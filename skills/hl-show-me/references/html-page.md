@@ -7,7 +7,7 @@ Follow the shared rules in [visual-design.md](visual-design.md); this file adds 
 ## Plan the panels
 
 - List the panels before writing: one when a single diagram or infographic answers the question, at most 8 otherwise. Each panel answers one sub-question and has a title that states its point ("Retries double the load", not "Retries").
-- The first panel gives the answer. Any other panels give the evidence, in the order the reader needs it. A page that explains a project or a concept follows the story in [explain-project.md](explain-project.md): the promise, what it takes over, one worked case, one comparison, then how it is built.
+- Open with the answer beside the evidence that makes it clear: the changed step in a flow, the decisive row in a comparison, or one worked case. Start there, not on a separate cover screen. Later panels explain what the reader still needs. A page that explains a project or a concept follows the story in [explain-project.md](explain-project.md): the promise, what it takes over, one worked case, one comparison, then how it is built.
 - Pick each panel's view by the shape of its content, with the table in `SKILL.md`. One view per panel; prose only for what the view cannot show.
 - Over 8 panels: cut panels or split the topic into two pages.
 - Each fact appears once. When a view shows it, the text does not repeat it.
@@ -69,7 +69,7 @@ Before any code, write the art direction of [visual-design.md](visual-design.md)
 - Colors: specify a hex value for each token, including the fixed status colors. Choose the background for the reading task, not to outline white cards. For a patient guide, try white paper, dark ink, and a cool accent on the figure that explains the case. In dark mode, choose the ink and surface together; do not simply invert the page. Use brand colors or a different material when the subject calls for it.
 - Type: a scale of 5 to 6 steps. Spacing: 4, 8, 12, 16, 24, 32, 48, 64.
 - Layout: sketch an ASCII wireframe for desktop and phone. For an editorial explanation, put the claim beside its evidence on desktop and immediately before it on a phone. Use space, alignment, and type to separate sections. Add a box only when its boundary explains a group.
-- The one memorable element: the single place the page spends its boldness, drawn from the subject (a hero diagram, a large brand-colored figure, a map). Everything around it stays quiet.
+- For a presentation, give the strongest piece of evidence the most space. Show the annotated route, invoice, specimen, or code change that proves the headline. With no usable image, compose with type and the evidence itself; do not invent a product screenshot or fill the space with decorative art.
 
 Then review the plan against the brief. If a choice is a default you would make for any page rather than for this subject and this identity, change it; "Avoid generic patterns" in [visual-design.md](visual-design.md) lists the common ones.
 
@@ -82,7 +82,7 @@ Then review the plan against the brief. If a choice is a default you would make 
 - Left-align text. Center only a short element that stands alone.
 - Headings use `text-wrap: balance`. Numbers compared in a column use `font-variant-numeric: tabular-nums` and align right.
 - Grid and flex children get `min-width: 0`; long words and paths wrap with `overflow-wrap: anywhere`. No horizontal scroll at any width from 360 px up.
-- Below about 520 px, hide secondary table columns and labels that do not fit inside chart marks; the legend or table carries those values.
+- On a phone, keep the claim, its evidence, and its unit together. If a table no longer fits, stack each row with its column labels rather than hiding the values needed for the comparison.
 - Nested radii: an inner radius is never larger than its outer radius. Use at most 2 radius values.
 - Shadows only to show elevation, in at most 2 levels.
 - Icons: inline SVG, each with a text label or an accessible name.
@@ -91,7 +91,7 @@ Then review the plan against the brief. If a choice is a default you would make 
 ## Draw
 
 - Draw diagrams as inline SVG or HTML and CSS. A layered layout is enough: one row or column per call depth or per step.
-- Mark a change on the structure itself: added in green with `+`, removed in red with `-`, changed in amber with `~`. Do not draw a before and an after. A Before / After toggle is optional; the marked view must make sense alone.
+- Mark a change on the structure itself: added in green with `+`, removed in red with `-`, changed in amber with `~`. Use one marked view, not separate before and after views.
 - Tables: status cells use a symbol and a word (`✓ yes`, `✗ no`, `! partial`).
 - Charts only from real numbers, with the unit in the axis or header and the row that matters highlighted. Under the chart, put the numbers in a table, collapsed by default. Without real numbers, draw no chart; label any example data `illustrative` next to it.
 
@@ -129,6 +129,19 @@ Comments
 
 - In the reply to the user, say how many decisions are open and that the suggested options are what you would do.
 
+## Present a guided lesson
+
+When the reader needs to understand a sequence, build one persistent scene rather than a slide per step. Keep the subject recognizable across steps. Highlight what changes and explain the consequence. Match the visual treatment to the subject; use a spatial grid only when position carries meaning.
+
+Put the stage beside a short step explanation on desktop. On a phone, put the stage first, the explanation below, and keep the step controls reachable. One step selection updates the diagram, caption, and current-step indicator together. Back and Next change steps; Replay repeats the current transition without advancing. Under reduced motion, change steps immediately. Without scripts or in print, show the sequence as labeled static steps. Omit course navigation, progress badges, and metric strips unless the content needs them.
+
+## Animate an app walkthrough
+
+- For one feature, follow one real item through its starting state, the user's action, and the visible result. Keep the item recognizable as it moves. For a tour across screens, carry the same task through the scenes; change screens when the task advances, not on a decorative timer.
+- Use supplied captures, components, or an authorized read-only preview to identify the control, its label, and each state. Never perform a live transaction to obtain an after-state. If the result is unknown, ask for that capture or label the scene illustrative. On mobile, follow the actual mobile layout when available; show a tap rather than a desktop cursor.
+- Before building, summarize the sequence in one line: **starting state → action → visible result**. Ask only if the target or result is unclear. Recreate loading states and completion badges only when the source shows them.
+- Freeze each key state in the local demo at the target widths. Inspect the control, the changing item, and the result for clipping or overlays. Then play the sequence without pausing: can the reader see what caused the change and read the result before it disappears? On feedback, edit that state or timing, inspect it again, then replay. Without a browser, mark both checks unverified.
+
 ## Motion
 
 Motion tells the story and answers the reader. Playful details come from the topic: a packet that bounces off a firewall, a stamp that lands on an approved invoice, a queue that fills and drains, a cache hit that flashes.
@@ -139,7 +152,7 @@ Motion tells the story and answers the reader. Playful details come from the top
 - A changed element (`+`, `-`, `~`) gets one brief highlight after its panel appears.
 - Never `transition: all`. SVG transforms go on a `<g>` with `transform-box: fill-box`.
 - Use CSS transitions, keyframes, or the Web Animations API. No animation library. Take durations and easing from the identity's motion tokens when they exist.
-- A `Replay` control restarts the motion. Any motion that lasts more than 5 seconds or loops has a `Pause` control.
+- Add `Replay` only when replaying helps explain a sequence. If motion clarifies a comparison, animate the decisive difference once: trace the gap between two values or carry a source through to its result. Keep the labels visible throughout. Any motion that lasts more than 5 seconds or loops has a `Pause` control.
 - Under `prefers-reduced-motion: reduce`, show the final state at once. Print and pages with scripts off show the final state too.
 
 ## Page rules
@@ -154,13 +167,13 @@ Motion tells the story and answers the reader. Playful details come from the top
 
 ## Check the render
 
-Look at the page before you deliver it. When the host can run a headless browser (for example Playwright or Chrome in headless mode), open the page at 390 px and 1440 px wide, take a screenshot of each, and look at them. Check:
+Look at the page before you deliver it. When browser rendering is available, open the page at 390 px and 1440 px wide, take a screenshot of each, and look at them. Check:
 
 - No horizontal scroll: `document.documentElement.scrollWidth` is at most the window width.
 - No clipped or overlapping label, no arrow that misses its node, no empty panel.
 - Panel edges, headings, and text start on the same lines of the grid.
 - The final state after motion shows every label and number.
-- A reader with no technical background who reads only the titles and the worked case can retell what the subject does and why it matters.
+- Read just the headings: together they should tell the case, not name sections like “Overview”, “Features”, and “Impact”. Try replacing the subject with an unrelated product. If a panel still works unchanged, replace it with specific evidence or cut it.
 - Inspect the opening at actual reading size in light and dark, on phone and desktop. Can you see the main claim and its evidence without hunting through decoration? Check that key figures read as units and chart labels clear nearby marks. Reinspect the affected view after a fix; a width or contrast measurement is not a visual review.
 - Every point of "Review the render" in [visual-design.md](visual-design.md) holds.
 
